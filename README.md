@@ -13,3 +13,5 @@ Dependencies:
 Using premake4 for creating make files or other project files. For more info see:
 http://industriousone.com/premake
 
+Online docs can be found here:
+http://mortennobel.github.io/kick/
