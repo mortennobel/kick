@@ -7,13 +7,16 @@
 //
 
 #include "kick/core/engine.h"
+#include "kick/context/sdl2_context.h"
 
 namespace kick {
     Engine* Engine::instance = nullptr;
     
-    Engine::Engine(Context* context)
-    :context(context)
+    Engine::Engine(int &argc, char **argv,const WindowConfig& config)
+    :context(new SDL2Context())
     {
+        context->init(argc, argv);
+        context->showWindow(config);
         createScene("defaultScene");
         context->setStartFrameCallback([&](){startFrame();});
         context->setUpdateCallback([&](){update();});
@@ -25,7 +28,11 @@ namespace kick {
         
         instance = this;
     }
-    
+
+    void Engine::startMainLoop(){
+        context->mainLoop();
+    }
+
     void Engine::update(){
         defaultKeyHandler.handleKeyPress(this, keyInput);
         activeScene->update();

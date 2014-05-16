@@ -19,7 +19,6 @@ namespace kick {
     Project::Project()
     :assetLoader{new AssetLoader()}
     {
-        
         SDL_version compile_version;
         const SDL_version *link_version=IMG_Linked_Version();
         SDL_IMAGE_VERSION(&compile_version);
@@ -112,9 +111,9 @@ namespace kick {
         }
     }
     
-    int invert_image(int pitch, int height, void* image_pixels)
+    int invert_image(int width, int height, void* image_pixels)
     {
-        auto temp_row = unique_ptr<char>(new char[pitch]);
+        auto temp_row = unique_ptr<char>(new char[width]);
         if (temp_row.get() == nullptr)
         {
             SDL_SetError("Not enough memory for image inversion");
@@ -126,20 +125,20 @@ namespace kick {
             //uses string.h
             memcpy((Uint8 *)temp_row.get(),
                    (Uint8 *)(image_pixels) +
-                   pitch * index,
-                   pitch);
+                   width * index,
+                    width);
             
             memcpy(
                    (Uint8 *)(image_pixels) +
-                   pitch * index,
+                   width * index,
                    (Uint8 *)(image_pixels) +
-                   pitch * (height - index-1),
-                   pitch);
+                   width * (height - index-1),
+                    width);
             memcpy(
                    (Uint8 *)(image_pixels) +
-                   pitch * (height - index-1),
+                   width * (height - index-1),
                    temp_row.get(),
-                   pitch);
+                    width);
         }
         return 0;
     }

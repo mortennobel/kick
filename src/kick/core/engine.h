@@ -30,7 +30,7 @@ namespace kick {
     class Engine {
         friend class Project;
     public:
-        Engine(Context* context);
+        Engine(int &argc, char **argv, const WindowConfig& config = WindowConfig::plain);
         Scene *getActiveScene() { return activeScene; }
         void setActiveScene(Scene *scene) { activeScene = scene; }
         Scene * createScene(const char* name);
@@ -40,10 +40,11 @@ namespace kick {
         std::vector<Scene>::iterator end();
         static Engine* instance;
         EngineConfig config;
-        Context*getContext();
+        Context* getContext();
         const MouseInput& getMouseInput();
         const KeyInput& getKeyInput();
         DefaultKeyHandler & getDefaultKeyHandler();
+        void startMainLoop();
     private:
         void startFrame();
         void update();
