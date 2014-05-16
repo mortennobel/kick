@@ -30,8 +30,15 @@ namespace kick {
 
         SDL_VERSION(&compiled);
         SDL_GetVersion(&linked);
-        printf("We compiled against SDL version %d.%d.%d ...\n", compiled.major, compiled.minor, compiled.patch);
-        printf("But we linked against SDL version %d.%d.%d.\n", linked.major, linked.minor, linked.patch);
+        if (compiled.major != linked.major ||
+                compiled.minor != linked.minor ||
+                compiled.patch != linked.patch ){
+            printf("Compiled against SDL version %d.%d.%d ...\n", compiled.major, compiled.minor, compiled.patch);
+            printf("Compiled linked against SDL version %d.%d.%d.\n", linked.major, linked.minor, linked.patch);
+        } else {
+            printf("SDL version: %d.%d.%d\n", compiled.major, compiled.minor, compiled.patch);
+        }
+
         cout << "SDL_GetBasePath() future ext " << endl;
         basePath = "./";
     }

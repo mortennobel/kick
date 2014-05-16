@@ -22,14 +22,25 @@ namespace kick {
         SDL_version compile_version;
         const SDL_version *link_version=IMG_Linked_Version();
         SDL_IMAGE_VERSION(&compile_version);
-        printf("compiled with SDL_image version: %d.%d.%d\n",
-               compile_version.major,
-               compile_version.minor,
-               compile_version.patch);
-        printf("running with SDL_image version: %d.%d.%d\n",
-               link_version->major,
-               link_version->minor,
-               link_version->patch);
+        if (compile_version.major != link_version->major ||
+                compile_version.minor != link_version->minor ||
+                compile_version.patch != link_version->patch){
+            printf("compiled with SDL_image version: %d.%d.%d\n",
+                    compile_version.major,
+                    compile_version.minor,
+                    compile_version.patch);
+            printf("running with SDL_image version: %d.%d.%d\n",
+                    link_version->major,
+                    link_version->minor,
+                    link_version->patch);
+        } else {
+            printf("SDL_image version: %d.%d.%d\n",
+                    compile_version.major,
+                    compile_version.minor,
+                    compile_version.patch);
+        }
+
+
         int flags=IMG_INIT_JPG|IMG_INIT_PNG;
         int initted=IMG_Init(flags);
         if((initted&flags) != flags) {
