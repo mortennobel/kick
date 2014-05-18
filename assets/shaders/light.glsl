@@ -1,3 +1,7 @@
+uniform mat3 _dLight;
+uniform vec3 _ambient;
+uniform mat3 _pLights[LIGHTS];
+
 vec3 getPointLightDiffuse(vec3 normal, vec3 ecPosition, mat3 pLights[LIGHTS]){
     vec3 diffuse = vec3(0.0);
     for (int i=0;i<LIGHTS;i++){
@@ -81,6 +85,3 @@ void getDirectionalLight(vec3 normal, mat3 dLight, float specularExponent, out v
     diffuse = (colorIntensity * diffuseContribution);
 }
 
-uniform mat3 _dLight;
-uniform vec3 _ambient;
-uniform mat3 _pLights[LIGHTS];
