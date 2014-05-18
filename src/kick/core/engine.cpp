@@ -7,6 +7,7 @@
 //
 
 #include "kick/core/engine.h"
+#include "kick/core/time.h"
 #include "kick/context/sdl2_context.h"
 
 namespace kick {
@@ -30,10 +31,12 @@ namespace kick {
     }
 
     void Engine::startMainLoop(){
+        Time::getTime(); // start timer
         context->mainLoop();
     }
 
     void Engine::update(){
+        Time::frame++;
         defaultKeyHandler.handleKeyPress(this, keyInput);
         activeScene->update();
     }
