@@ -72,42 +72,71 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00012"></a>00012 <span class="preprocessor">#include &lt;vector&gt;</span>
 <a name="l00013"></a>00013 <span class="preprocessor">#include &lt;string&gt;</span>
 <a name="l00014"></a>00014 <span class="preprocessor">#include &lt;memory&gt;</span>
-<a name="l00015"></a>00015 <span class="preprocessor">#include &lt;utility&gt;</span>
-<a name="l00016"></a>00016 <span class="preprocessor">#include &quot;game_object.h&quot;</span>
-<a name="l00017"></a>00017 <span class="preprocessor">#include &quot;component.h&quot;</span>
-<a name="l00018"></a>00018 <span class="preprocessor">#include &quot;kick/core/event.h&quot;</span>
-<a name="l00019"></a>00019 
-<a name="l00020"></a>00020 <span class="keyword">namespace </span>kick {
-<a name="l00021"></a>00021     <span class="keyword">class </span>Camera;
-<a name="l00022"></a>00022     
-<a name="l00023"></a><a class="code" href="classkick_1_1_scene.html">00023</a>     <span class="keyword">class </span><a class="code" href="classkick_1_1_scene.html">Scene</a> {
-<a name="l00024"></a>00024     <span class="keyword">public</span>:
-<a name="l00025"></a>00025         <a class="code" href="classkick_1_1_scene.html">Scene</a>(<a class="code" href="classkick_1_1_scene.html">Scene</a>&amp;&amp; scene);
-<a name="l00026"></a>00026         <a class="code" href="classkick_1_1_scene.html">Scene</a>&amp; operator=(<a class="code" href="classkick_1_1_scene.html">Scene</a>&amp;&amp; other);
-<a name="l00027"></a>00027         <span class="keyword">virtual</span> ~<a class="code" href="classkick_1_1_scene.html">Scene</a>();
-<a name="l00028"></a>00028         <a class="code" href="classkick_1_1_game_object.html">GameObject</a> *createGameObject(<span class="keyword">const</span> std::string &amp;name = <span class="stringliteral">&quot;gameobject&quot;</span>);
-<a name="l00029"></a>00029         <span class="keywordtype">void</span> destroyGameObject(<a class="code" href="classkick_1_1_game_object.html">GameObject</a> * gameObject);
-<a name="l00030"></a>00030         GameObjectIter begin() <span class="keyword">const</span>;
-<a name="l00031"></a>00031         GameObjectIter end() <span class="keyword">const</span>;
-<a name="l00032"></a>00032         std::string getName() <span class="keyword">const</span>;
-<a name="l00033"></a>00033         <span class="keywordtype">void</span> setName(std::string name);
-<a name="l00034"></a>00034         <span class="keywordtype">void</span> update();
-<a name="l00035"></a>00035         <span class="keywordtype">void</span> render(<a class="code" href="structkick_1_1_engine_uniforms.html">EngineUniforms</a>* engineUniforms);
-<a name="l00036"></a>00036         <a class="code" href="classkick_1_1_event.html">Event&lt;std::pair&lt;Component*, ComponentUpdateStatus&gt;</a>&gt; componentEvents;
-<a name="l00037"></a>00037         <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classkick_1_1_engine.html">Engine</a>;
-<a name="l00038"></a>00038         <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classkick_1_1_game_object.html">GameObject</a>;
-<a name="l00039"></a>00039     <span class="keyword">private</span>:
-<a name="l00040"></a>00040         <a class="code" href="classkick_1_1_scene.html">Scene</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* name);
-<a name="l00041"></a>00041         <a class="code" href="classkick_1_1_scene.html">Scene</a>(<span class="keyword">const</span> <a class="code" href="classkick_1_1_scene.html">Scene</a>&amp; scene) = <span class="keyword">delete</span>;
-<a name="l00042"></a>00042         <span class="keywordtype">void</span> componentListener(<a class="code" href="classkick_1_1_component.html">Component</a>* component, ComponentUpdateStatus status);
-<a name="l00043"></a>00043         std::vector&lt;std::unique_ptr&lt;GameObject&gt;&gt; gameObjects;
-<a name="l00044"></a>00044         std::vector&lt;Camera*&gt; cameras;
-<a name="l00045"></a>00045         std::vector&lt;Component*&gt; updatable;
-<a name="l00046"></a>00046         std::string name = <span class="stringliteral">&quot;&quot;</span>;
-<a name="l00047"></a>00047     };
-<a name="l00048"></a>00048 };
-<a name="l00049"></a>00049 
-<a name="l00050"></a>00050 
+<a name="l00015"></a>00015 <span class="preprocessor">#include &lt;unordered_map&gt;</span>
+<a name="l00016"></a>00016 <span class="preprocessor">#include &lt;utility&gt;</span>
+<a name="l00017"></a>00017 <span class="preprocessor">#include &lt;functional&gt;</span>
+<a name="l00018"></a>00018 <span class="preprocessor">#include &quot;game_object.h&quot;</span>
+<a name="l00019"></a>00019 <span class="preprocessor">#include &quot;component.h&quot;</span>
+<a name="l00020"></a>00020 <span class="preprocessor">#include &quot;kick/core/event.h&quot;</span>
+<a name="l00021"></a>00021 <span class="preprocessor">#include &quot;kick/scene/scene_lights.h&quot;</span>
+<a name="l00022"></a>00022 
+<a name="l00023"></a>00023 <span class="keyword">namespace </span>kick {
+<a name="l00024"></a>00024     <span class="keyword">class </span>Camera;
+<a name="l00025"></a>00025     <span class="keyword">class </span>MeshRenderer;
+<a name="l00026"></a>00026     <span class="keyword">class </span>Light;
+<a name="l00027"></a>00027 
+<a name="l00028"></a><a class="code" href="classkick_1_1_scene.html">00028</a>     <span class="keyword">class </span><a class="code" href="classkick_1_1_scene.html">Scene</a> {
+<a name="l00029"></a>00029     <span class="keyword">public</span>:
+<a name="l00030"></a>00030         <a class="code" href="classkick_1_1_scene.html">Scene</a>(<a class="code" href="classkick_1_1_scene.html">Scene</a>&amp;&amp; scene);
+<a name="l00031"></a>00031         <a class="code" href="classkick_1_1_scene.html">Scene</a>&amp; operator=(<a class="code" href="classkick_1_1_scene.html">Scene</a>&amp;&amp; other);
+<a name="l00032"></a>00032         <span class="keyword">virtual</span> ~<a class="code" href="classkick_1_1_scene.html">Scene</a>();
+<a name="l00033"></a>00033         <a class="code" href="classkick_1_1_game_object.html">GameObject</a> *createGameObject(<span class="keyword">const</span> std::string &amp;name = <span class="stringliteral">&quot;gameobject&quot;</span>);
+<a name="l00034"></a>00034         <span class="keywordtype">void</span> destroyGameObject(<a class="code" href="classkick_1_1_game_object.html">GameObject</a> * gameObject);
+<a name="l00035"></a>00035         GameObjectIter begin() <span class="keyword">const</span>;
+<a name="l00036"></a>00036         GameObjectIter end() <span class="keyword">const</span>;
+<a name="l00037"></a>00037         std::string getName() <span class="keyword">const</span>;
+<a name="l00038"></a>00038         <span class="keywordtype">void</span> setName(std::string name);
+<a name="l00039"></a>00039         <span class="keywordtype">void</span> update();
+<a name="l00040"></a>00040         <span class="keywordtype">void</span> render(<a class="code" href="structkick_1_1_engine_uniforms.html">EngineUniforms</a>* engineUniforms);
+<a name="l00041"></a>00041         <a class="code" href="classkick_1_1_event.html">Event&lt;std::pair&lt;Component*, ComponentUpdateStatus&gt;</a>&gt; componentEvents;
+<a name="l00042"></a>00042 
+<a name="l00043"></a>00043         <span class="comment">// helper function, which creates a gameobject and attaches a perspective camera to it</span>
+<a name="l00044"></a>00044         <a class="code" href="classkick_1_1_camera.html">Camera</a>* createPerspectiveCamera();
+<a name="l00045"></a>00045         <span class="comment">// helper function, which creates a gameobject and attaches an orthographic camera to it</span>
+<a name="l00046"></a>00046         <a class="code" href="classkick_1_1_camera.html">Camera</a>* createOrthographicCamera();
+<a name="l00047"></a>00047         <span class="comment">// helper function, which creates a gameobject and attaches a cube with diffuse renderer</span>
+<a name="l00048"></a>00048         <a class="code" href="classkick_1_1_mesh_renderer.html">MeshRenderer</a>* createCube();
+<a name="l00049"></a>00049         <span class="comment">// helper function, which creates a gameobject and attaches a sphere with diffuse renderer</span>
+<a name="l00050"></a>00050         <a class="code" href="classkick_1_1_mesh_renderer.html">MeshRenderer</a>* createSphere();
+<a name="l00051"></a>00051         <span class="comment">// helper function, which creates a gameobject and attaches a plane with diffuse renderer</span>
+<a name="l00052"></a>00052         <a class="code" href="classkick_1_1_mesh_renderer.html">MeshRenderer</a>* createPlane();
+<a name="l00053"></a>00053         <span class="comment">// helper function, which creates a gameobject and attaches a point light</span>
+<a name="l00054"></a>00054         <a class="code" href="classkick_1_1_light.html">Light</a>* createPointLight();
+<a name="l00055"></a>00055         <span class="comment">// helper function, which creates a gameobject and attaches a directional light</span>
+<a name="l00056"></a>00056         <a class="code" href="classkick_1_1_light.html">Light</a>* createDirectionalLight();
+<a name="l00057"></a>00057         <span class="comment">// helper function, which creates a gameobject and attaches an ambient light</span>
+<a name="l00058"></a>00058         <a class="code" href="classkick_1_1_light.html">Light</a>* createAmbientLight(<span class="keywordtype">float</span> intensity = 0.3f, glm::vec3 color = glm::vec3(1));
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060 
+<a name="l00061"></a>00061         <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classkick_1_1_engine.html">Engine</a>;
+<a name="l00062"></a>00062         <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classkick_1_1_game_object.html">GameObject</a>;
+<a name="l00063"></a>00063     <span class="keyword">private</span>:
+<a name="l00064"></a>00064         <a class="code" href="classkick_1_1_scene.html">Scene</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* name);
+<a name="l00065"></a>00065         <a class="code" href="classkick_1_1_scene.html">Scene</a>(<span class="keyword">const</span> <a class="code" href="classkick_1_1_scene.html">Scene</a>&amp; scene) = <span class="keyword">delete</span>;
+<a name="l00066"></a>00066         <span class="keywordtype">void</span> componentListener(<a class="code" href="classkick_1_1_component.html">Component</a>* component, ComponentUpdateStatus status);
+<a name="l00067"></a>00067         <span class="keywordtype">void</span> addLight(<a class="code" href="classkick_1_1_light.html">Light</a> *light);
+<a name="l00068"></a>00068         std::vector&lt;std::unique_ptr&lt;GameObject&gt;&gt; gameObjects;
+<a name="l00069"></a>00069         std::vector&lt;Camera*&gt; cameras;
+<a name="l00070"></a>00070         std::vector&lt;Component*&gt; updatable;
+<a name="l00071"></a>00071         std::unordered_map&lt;Light*, EventListener&lt;Light*&gt;&gt; lights;
+<a name="l00072"></a>00072         <a class="code" href="structkick_1_1_scene_lights.html">SceneLights</a> sceneLights;
+<a name="l00073"></a>00073         std::string name = <span class="stringliteral">&quot;&quot;</span>;
+<a name="l00074"></a>00074 
+<a name="l00075"></a>00075         <span class="keywordtype">void</span> rebuildSceneLights();
+<a name="l00076"></a>00076     };
+<a name="l00077"></a>00077 };
+<a name="l00078"></a>00078 
+<a name="l00079"></a>00079 
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -124,7 +153,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sun May 4 2014 22:54:39 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun May 18 2014 13:07:33 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -78,14 +78,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab1abe8faa25bb8b5d49e13107d336c08"></a><!-- doxytag: member="kick::SceneLights::recomputeLight" ref="ab1abe8faa25bb8b5d49e13107d336c08" args="(glm::mat4 viewMatrix)" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>recomputeLight</b> (glm::mat4 viewMatrix)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a85dc99f7920fac586dc6b26c844de48e"></a><!-- doxytag: member="kick::SceneLights::clear" ref="a85dc99f7920fac586dc6b26c844de48e" args="()" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a63ad538899a72d9fbd2315518bad03b9"></a><!-- doxytag: member="kick::SceneLights::ambientLight" ref="a63ad538899a72d9fbd2315518bad03b9" args="" -->
-<a class="el" href="classkick_1_1_light.html">Light</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>ambientLight</b></td></tr>
+<a class="el" href="classkick_1_1_light.html">Light</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>ambientLight</b> = nullptr</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ba209a358b2389e4b7ad67239466c02"></a><!-- doxytag: member="kick::SceneLights::directionalLight" ref="a1ba209a358b2389e4b7ad67239466c02" args="" -->
-<a class="el" href="classkick_1_1_light.html">Light</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>directionalLight</b></td></tr>
+<a class="el" href="classkick_1_1_light.html">Light</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>directionalLight</b> = nullptr</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a21e2f2d62bfd5d9dc466e7007979db92"></a><!-- doxytag: member="kick::SceneLights::pointLights" ref="a21e2f2d62bfd5d9dc466e7007979db92" args="" -->
 std::vector&lt; <a class="el" href="classkick_1_1_light.html">Light</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>pointLights</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adb844376fb96f56a6593ce6b4e5c7573"></a><!-- doxytag: member="kick::SceneLights::directionalLightData" ref="adb844376fb96f56a6593ce6b4e5c7573" args="" -->
+glm::mat3&#160;</td><td class="memItemRight" valign="bottom"><b>directionalLightData</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae06b04730801839055820d9223b6c358"></a><!-- doxytag: member="kick::SceneLights::pointLightData" ref="ae06b04730801839055820d9223b6c358" args="[KICK_MAX_POINT_LIGHTS]" -->
+glm::mat3&#160;</td><td class="memItemRight" valign="bottom"><b>pointLightData</b> [KICK_MAX_POINT_LIGHTS]</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a008097d5980d86a8a64fcf4074d3e681"></a><!-- doxytag: member="kick::SceneLights::directionalLightWorld" ref="a008097d5980d86a8a64fcf4074d3e681" args="" -->
+glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>directionalLightWorld</b></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
@@ -109,7 +117,7 @@ std::vector&lt; <a class="el" href="classkick_1_1_light.html">Light</a> * &gt;&#
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sun May 4 2014 22:54:39 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun May 18 2014 13:07:34 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
