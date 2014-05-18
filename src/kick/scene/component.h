@@ -36,6 +36,7 @@ namespace kick {
         bool isRenderable();
         bool isUpdateable();
         Transform* getTransform();
+        GameObject* getGameObject();
     protected:
         GameObject* gameObject;
     private:

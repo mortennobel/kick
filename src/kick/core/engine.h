@@ -23,7 +23,7 @@
 namespace kick {
     
     struct EngineConfig {
-        bool shadows = true;
+        bool shadows = false;
         int maxNumerOfLights = 3;
     };
     

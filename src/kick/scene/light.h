@@ -8,7 +8,8 @@
 
 #pragma once
 
-#include "component.h"
+#include "kick/scene/component.h"
+#include "kick/core/event.h"
 #include <glm/glm.hpp>
 
 namespace kick {
@@ -31,10 +32,14 @@ namespace kick {
         glm::vec3 getColorIntensity();
         void setLightType(LightType lightType);
         LightType getLightType();
+        glm::vec3 getAttenuation() const;
+        void setAttenuation(glm::vec3 attenuation);
+        Event<Light*> lightTypeChanged;
     private:
         void updateIntensity();
         glm::vec3 colorIntensity = glm::vec3(1,1,1);
         glm::vec3 color = glm::vec3(1,1,1);
+        glm::vec3 attenuation = glm::vec3(1,0,0);
         float intensity = 1;
         LightType lightType = LightType::Uninitialized;
     };

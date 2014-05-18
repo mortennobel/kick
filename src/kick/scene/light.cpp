@@ -40,6 +40,7 @@ namespace kick {
     void Light::setLightType(LightType lightType) {
         assert(this->lightType == LightType::Uninitialized);
         this->lightType = lightType;
+        lightTypeChanged.notifyListeners(this);
     };
     
     LightType Light::getLightType(){
@@ -48,5 +49,13 @@ namespace kick {
     
     glm::vec3 Light::getColorIntensity(){
         return colorIntensity;
+    }
+
+    glm::vec3 Light::getAttenuation() const {
+        return attenuation;
+    }
+
+    void Light::setAttenuation(glm::vec3 attenuation) {
+        Light::attenuation = attenuation;
     }
 }

@@ -43,4 +43,8 @@ namespace kick {
     Transform* Component::getTransform(){
         return gameObject->getTransform();
     }
+
+    GameObject *Component::getGameObject() {
+        return gameObject;
+    }
 }

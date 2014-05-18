@@ -9,7 +9,8 @@
 #include "kick/material/shader.h"
 #include "kick/material/material.h"
 #include "kick/core/Project.h"
-#include "kick/core/Engine.h"
+#include "kick/core/engine.h"
+#include "kick/core/time.h"
 #include <sstream>
 #include <vector>
 #include <iostream>
@@ -21,6 +22,7 @@
 #include <iterator>
 #include "kick/core/cpp_ext.h"
 #include "kick/scene/transform.h"
+#include "light.h"
 
 using namespace std;
 
@@ -402,7 +404,12 @@ break;
     std::string Shader::getShaderSource(ShaderType type) const {
         return shaderSources.at(type);
     }
-    
+
+    std::string Shader::getPrecompiledShaderSource(ShaderType type) const{
+        string value = getShaderSource(type);
+        return getPrecompiledSource(value);
+    }
+
     const std::vector<AttributeDescriptor >& Shader::getShaderAttributes() const  {
         return shaderAttributes;
     }
@@ -484,7 +491,7 @@ break;
     
     void Shader::bind_uniforms(Material *material, EngineUniforms *engineUniforms, Transform* transform){
         material->bind();
-        
+        SceneLights * sceneLights = engineUniforms->sceneLights;
         for (auto& uniform : shaderUniforms){
             if (uniform.name == UniformNames::modelMatrix){
                 auto globalMatrix = transform->getGlobalMatrix();
@@ -499,15 +506,17 @@ break;
             } else if (uniform.name == UniformNames::v) {
                 auto viewMatrix = engineUniforms->viewMatrix;
                 glUniformMatrix4fv(uniform.index, 1, GL_FALSE, glm::value_ptr(viewMatrix));
+            } else if (uniform.name == UniformNames::proj){
+                glUniformMatrix4fv(uniform.index, 1, GL_FALSE, glm::value_ptr(engineUniforms->projectionMatrix));
             } else if (uniform.name == UniformNames::worldCamPos){
                 auto cameraPos = engineUniforms->currentCameraTransform->getPosition();
                 glUniform3fv(uniform.index, 1, glm::value_ptr(cameraPos));
             } else if (uniform.name == UniformNames::world2object){
                 auto world2object = transform->getGlobalTRSInverse();
-                glUniformMatrix4fv(uniform.index, 1, false, glm::value_ptr(world2object));
+                glUniformMatrix4fv(uniform.index, 1, GL_FALSE, glm::value_ptr(world2object));
             } else if (uniform.name == UniformNames::mvProj){
                 auto mvProj = engineUniforms->viewProjectionMatrix * transform->getGlobalMatrix();
-                glUniformMatrix4fv(uniform.index, 1, false, glm::value_ptr(mvProj));
+                glUniformMatrix4fv(uniform.index, 1, GL_FALSE, glm::value_ptr(mvProj));
             } else if (uniform.name == UniformNames::gameObjectUID){
                 throw invalid_argument("gameObjectUID not yet implemented"); // todo
             } else if (uniform.name == UniformNames::shadowMapTexture) {
@@ -515,8 +524,27 @@ break;
                 cout <<"shadowMapTexture not yet implemented\n"; // todo
             } else if (uniform.name == UniformNames::lightMat){
                 auto lightMatrix = engineUniforms->lightMatrix * transform->getGlobalMatrix();
-                glUniformMatrix4fv(uniform.index, 1, false, glm::value_ptr(lightMatrix));
+                glUniformMatrix4fv(uniform.index, 1, GL_FALSE, glm::value_ptr(lightMatrix));
+            } else if (uniform.name == UniformNames::ambient){
+                glm::vec3 ambientLight = sceneLights->ambientLight ? sceneLights->ambientLight->getColorIntensity() : glm::vec3{0};
+                glUniform3fv(uniform.index, 1, glm::value_ptr(ambientLight));
+                cout << "Set ambient to "<<glm::to_string(ambientLight)<<endl;
+            } else if (uniform.name == UniformNames::pointLight){
+                glUniformMatrix3fv(uniform.index, KICK_MAX_POINT_LIGHTS, GL_FALSE, glm::value_ptr(sceneLights->pointLightData[0]));
+            } else if (uniform.name == UniformNames::directionalLight){
+                glUniformMatrix3fv(uniform.index, 1, GL_FALSE, glm::value_ptr(sceneLights->directionalLightData));
+            } else if (uniform.name == UniformNames::directionalLightWorld){
+                glUniform3fv(uniform.index, 1, glm::value_ptr(sceneLights->directionalLightWorld));
+            } else if (uniform.name == UniformNames::time){
+                float time = Time::getTime();
+                glUniform1f(uniform.index, time);
+            } else if (uniform.name == UniformNames::viewport){
+                glm::vec2 viewportSize = (glm::vec2)engineUniforms->viewportDimension.getValue();
+                glUniform2fv(uniform.index, 1, glm::value_ptr(viewportSize));
             }
+
+
+
             // debug output
             //else {
             //    continue;

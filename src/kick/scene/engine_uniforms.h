@@ -24,6 +24,6 @@ namespace kick {
         glm::mat4 lightMatrix;
         Camera *currentCamera;
         Transform* currentCameraTransform;
-        SceneLights sceneLights;
+        SceneLights* sceneLights;
     };
 }
