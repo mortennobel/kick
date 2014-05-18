@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Morten Nobel-Joergensen. All rights reserved.
 //
 
+#pragma once
+
 #include "glm/glm.hpp"
 
 namespace kick {
