@@ -91,9 +91,6 @@ namespace kick {
         glm::vec2 polygonOffsetFactorAndUnit {2.5, 10};
         ZTestType zTest {ZTestType::Less};
     };
-    
-    std::string to_string(AttributeDescriptor attDesc);
-    
-    std::string to_string(UniformDescriptor uniformDesc);
+
 
 }

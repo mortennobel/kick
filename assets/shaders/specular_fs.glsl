@@ -6,8 +6,8 @@ in vec4 vShadowMapCoord;
 out vec4 fragColor;
 
 uniform vec4 mainColor = vec4(1.0,1.0,1.0,1.0);
-uniform float specularExponent;
-uniform vec4 specularColor;
+uniform float specularExponent = 50;
+uniform vec4 specularColor = vec4(1.0,1.0,1.0,1.0);
 uniform sampler2D mainTexture;
 
 #pragma include "assets/shaders/light.glsl"
@@ -21,7 +21,7 @@ void main(void)
     getDirectionalLight(normal, _dLight, specularExponent, diffuse, specular);
     vec3 diffusePoint;
     float specularPoint;
-    getPointLight(normal,vEcPosition, _pLights,specularExponent,diffusePoint,specularPoint);
+    getPointLight(normal,vEcPosition, _pLights, specularExponent, diffusePoint, specularPoint);
     float visibility;
     if (SHADOWS){
         visibility = computeLightVisibility(vShadowMapCoord);

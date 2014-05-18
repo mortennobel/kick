@@ -137,9 +137,11 @@ namespace kick {
                 break;
             case LightType::Directional:
                 this->sceneLights.directionalLight = light;
+                cout << "Add directional light " << glm::to_string(light->getColorIntensity()) << endl;
                 break;
             case LightType::Point:
                 this->sceneLights.pointLights.push_back(light);
+                cout << "Add point light " << glm::to_string(light->getColorIntensity()) << endl;
                 break;
             case LightType::Uninitialized:
                 cout << "" << endl;

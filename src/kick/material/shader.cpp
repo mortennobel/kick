@@ -528,7 +528,6 @@ break;
             } else if (uniform.name == UniformNames::ambient){
                 glm::vec3 ambientLight = sceneLights->ambientLight ? sceneLights->ambientLight->getColorIntensity() : glm::vec3{0};
                 glUniform3fv(uniform.index, 1, glm::value_ptr(ambientLight));
-                cout << "Set ambient to "<<glm::to_string(ambientLight)<<endl;
             } else if (uniform.name == UniformNames::pointLight){
                 glUniformMatrix3fv(uniform.index, KICK_MAX_POINT_LIGHTS, GL_FALSE, glm::value_ptr(sceneLights->pointLightData[0]));
             } else if (uniform.name == UniformNames::directionalLight){
@@ -552,26 +551,4 @@ break;
             //cout << to_string(uniform)<<"\n";
         }
     }
-    
-    string to_string(AttributeDescriptor attDesc){
-        string res = "AttributeDescriptor {";
-        res = res + " Index: "+std::to_string(attDesc.index)+
-         res + " Size: "+std::to_string(attDesc.size)+
-         res + " Type: "+std::to_string(attDesc.type)+
-         res + " Name: "+attDesc.name+
-         res + " Semantic: "+to_string(attDesc.semantic)+
-        " }";
-        return res;
-    }
-    
-    string to_string(UniformDescriptor uniformDesc){
-        string res = "UniformDescriptor {";
-        res = res + " Index: "+std::to_string(uniformDesc.index)+
-         res + " Size: "+std::to_string(uniformDesc.size)+
-         res + " Type: "+std::to_string(uniformDesc.type)+
-         res + " Name: "+uniformDesc.name+
-        " }";
-        return res;
-    }
-
 }

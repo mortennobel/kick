@@ -118,6 +118,7 @@ namespace kick {
     
     void Camera::render(EngineUniforms *engineUniforms){
         setupCamera(engineUniforms);
+        engineUniforms->sceneLights->recomputeLight(engineUniforms->viewMatrix);
         for (auto c : renderableComponents){
             c->render(engineUniforms);
         }

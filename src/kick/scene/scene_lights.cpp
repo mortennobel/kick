@@ -33,9 +33,12 @@ namespace kick {
             directionalLightData[0] = directionalLightDirection;
 
             // compute half vector
-            directionalLightData[2] = normalize(vec3(0,0,-1) + directionalLightDirection);
+            directionalLightData[2] = -normalize(vec3(0,0,-1) + directionalLightDirection);
 
+            // set color intensity
             directionalLightData[1] = directionalLight->getColorIntensity();
+        }  else {
+            directionalLightData = mat3(0);
         }
         int i = 0;
         for (;i<std::min((size_t)KICK_MAX_POINT_LIGHTS, pointLights.size());i++){
@@ -43,7 +46,7 @@ namespace kick {
             Transform * transform = light->getGameObject()->getTransform();
 
             // save eyespace position
-            pointLightData[i][0] = viewMatrixRotation * transform->getPosition();
+            pointLightData[i][0] = (vec3)(viewMatrix * vec4(transform->getPosition(),1.0f));
             pointLightData[i][1] = light->getColorIntensity();
             pointLightData[i][2] = light->getAttenuation();
         }
@@ -51,20 +54,6 @@ namespace kick {
         for (;i<KICK_MAX_POINT_LIGHTS;i++){
             pointLightData[i] = mat3(0);
         }
-          /*  var index = 0,
-                    i,
-                    pointLight,
-                    pointLightPosition;
-            for (i = pointLights.length - 1; i >= 0; i--) {
-                pointLight = pointLights[i];
-                pointLightPosition = pointLight.transform.position;
-
-                Mat4.multiplyVec3(pointLightDataVec3[index], viewMatrix, pointLightPosition);
-                Vec3.copy(pointLightDataVec3[index + 1], pointLight.colorIntensity);
-                Vec3.copy(pointLightDataVec3[index + 2], pointLight.attenuation);
-                index += 3;
-            }
-                      */
     }
 
     void SceneLights::clear() {

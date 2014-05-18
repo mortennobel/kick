@@ -142,6 +142,10 @@ namespace kick {
                 viewport
         };
     };
+
+    std::string to_string(AttributeDescriptor attDesc);
+
+    std::string to_string(UniformDescriptor uniformDesc);
 }
 
 
