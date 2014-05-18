@@ -174,6 +174,14 @@ namespace kick {
         }
         return texturePtr;
     }
+
+    Texture2D* Project::loadDefaultTexture(){
+        Texture2D *texturePtr = createAsset<Texture2D>();
+        vector<char> data(2*2*4, (char const) 0xFF);
+        ImageFormat imageFormat{};
+        texturePtr->setData(2, 2, &(data[0]), imageFormat);
+        return texturePtr;
+    }
     
     Shader* Project::loadShader(std::string uri){
         using namespace rapidjson;
