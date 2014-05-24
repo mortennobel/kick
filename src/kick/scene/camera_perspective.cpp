@@ -13,10 +13,10 @@ namespace kick {
     CameraPerspective::CameraPerspective(GameObject *gameObject)
             : Camera(gameObject),
               viewportListener{Engine::instance->getContext()->viewPort.createListener([&](ivec2 viewport) {
-                  update();
+                  resetProjectionMatrix();
               })}
     {
-        update();
+        resetProjectionMatrix();
     }
 
     float CameraPerspective::getNear() const {
@@ -25,7 +25,7 @@ namespace kick {
 
     void CameraPerspective::setNear(float near) {
         CameraPerspective::near = near;
-        update();
+        resetProjectionMatrix();
     }
 
     float CameraPerspective::getFar() const {
@@ -34,7 +34,7 @@ namespace kick {
 
     void CameraPerspective::setFar(float far) {
         CameraPerspective::far = far;
-        update();
+        resetProjectionMatrix();
     }
 
     float CameraPerspective::getFieldOfView() const {
@@ -43,24 +43,24 @@ namespace kick {
 
     void CameraPerspective::setFieldOfView(float fieldOfView) {
         CameraPerspective::fieldOfView = fieldOfView;
-        update();
+        resetProjectionMatrix();
     }
 
     void CameraPerspective::set(float near, float far, float fieldOfView) {
         this->near = near;
         this->far = far;
         this->fieldOfView = fieldOfView;
-        update();
-    }
-
-    void CameraPerspective::update() {
-        ivec2 viewportDimension = Engine::instance->getContext()->getViewportDim();
-        update(viewportDimension);
+        resetProjectionMatrix();
     }
 
     void CameraPerspective::update(ivec2 viewportDimension) {
         vec2 dim = normalizedViewportDim * (vec2)viewportDimension;
         float aspect = dim.x/dim.y;
         projectionMatrix = perspective(fieldOfView, aspect, near, far);
+    }
+
+    void CameraPerspective::resetProjectionMatrix() {
+        ivec2 viewportDimension = Engine::instance->getContext()->getViewportDim();
+        update(viewportDimension);
     }
 }

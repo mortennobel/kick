@@ -12,6 +12,7 @@ namespace kick {
     CameraOrthographic::CameraOrthographic(GameObject *gameObject)
             : Camera(gameObject)
     {
+        resetProjectionMatrix();
     }
 
     float CameraOrthographic::getNear() const {
@@ -20,7 +21,7 @@ namespace kick {
 
     void CameraOrthographic::setNear(float near) {
         CameraOrthographic::near = near;
-        update();
+        resetProjectionMatrix();
     }
 
     float CameraOrthographic::getFar() const {
@@ -29,7 +30,7 @@ namespace kick {
 
     void CameraOrthographic::setFar(float far) {
         CameraOrthographic::far = far;
-        update();
+        resetProjectionMatrix();
     }
 
     float CameraOrthographic::getLeft() const {
@@ -38,7 +39,7 @@ namespace kick {
 
     void CameraOrthographic::setLeft(float left) {
         CameraOrthographic::left = left;
-        update();
+        resetProjectionMatrix();
     }
 
     float CameraOrthographic::getRight() const {
@@ -47,7 +48,7 @@ namespace kick {
 
     void CameraOrthographic::setRight(float right) {
         CameraOrthographic::right = right;
-        update();
+        resetProjectionMatrix();
     }
 
     float CameraOrthographic::getBottom() const {
@@ -56,7 +57,7 @@ namespace kick {
 
     void CameraOrthographic::setBottom(float bottom) {
         CameraOrthographic::bottom = bottom;
-        update();
+        resetProjectionMatrix();
     }
 
     float CameraOrthographic::getTop() const {
@@ -65,10 +66,10 @@ namespace kick {
 
     void CameraOrthographic::setTop(float top) {
         CameraOrthographic::top = top;
-        update();
+        resetProjectionMatrix();
     }
 
-    void CameraOrthographic::update() {
+    void CameraOrthographic::resetProjectionMatrix() {
         projectionMatrix = ortho(
                 left, right,
                 bottom, top,
@@ -82,6 +83,6 @@ namespace kick {
         this->right = right;
         this->bottom = bottom;
         this->top = top;
-        update();
+        resetProjectionMatrix();
     }
 }

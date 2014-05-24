@@ -20,9 +20,9 @@ namespace kick {
         float getFieldOfView() const;
         void setFieldOfView(float fieldOfView);
         void set(float near, float far, float fieldOfView);
+        virtual void resetProjectionMatrix() override;
     private:
         void update(glm::ivec2 viewportDimension);
-        void update();
         float near = 0.1f;
         float far = 1000.0f;
         float fieldOfView = glm::radians(60.0f);

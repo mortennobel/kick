@@ -22,6 +22,8 @@ namespace kick {
         virtual void activated();
         virtual void deactivated();
         virtual void render(EngineUniforms *engineUniforms);
+        // reset matrix if used parameters (if any)
+        virtual void resetProjectionMatrix();
         glm::vec4 getClearColor();
         void setClearColor(glm::vec4 clearColor);
         void setClearColor(bool clear);

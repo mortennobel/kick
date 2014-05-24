@@ -159,4 +159,7 @@ namespace kick {
     void Camera::setProjectionMatrix(glm::mat4 projectionMatrix) {
         this->projectionMatrix = projectionMatrix;
     }
+
+    void Camera::resetProjectionMatrix(){
+    }
 }

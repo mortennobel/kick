@@ -27,8 +27,8 @@ namespace kick {
         float getTop() const;
         void setTop(float top);
         void set(float near, float far, float left, float right, float bottom, float top);
+        virtual void resetProjectionMatrix() override;
     private:
-        void update();
         float near = -1;
         float far = 1;
         float left = -1;
