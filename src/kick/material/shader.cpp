@@ -321,8 +321,10 @@ break;
 
         shaderAttributes = getActiveShaderAttributes(shaderProgram);
         shaderUniforms = getActiveShaderUniforms(shaderProgram);
-        
-        shaderProgramChanged.notifyListeners(this);
+
+        updateDefaultShaderLocation();
+
+        shaderChanged.notifyListeners({this, ShaderEventType::shader });
 
     }
     
@@ -542,13 +544,55 @@ break;
                 glUniform2fv(uniform.index, 1, glm::value_ptr(viewportSize));
             }
 
-
-
             // debug output
             //else {
             //    continue;
             //}
             //cout << to_string(uniform)<<"\n";
         }
+    }
+
+    void Shader::updateDefaultShaderLocation(){
+        for (auto & e : defaultUniformData){
+            updateShaderLocation(e.first, e.second);
+        }
+    }
+
+    void Shader::updateShaderLocation(std::string name, MaterialData& value){
+        auto descriptor = getShaderUniform(name);
+        value.defaultUniform = true;
+        if (descriptor == nullptr){
+            value.shaderLocation = -1;
+        } else {
+            value.shaderLocation = descriptor->index;
+        }
+    }
+
+    void Shader::setDefaultUniformData(std::string name, MaterialData &&value) {
+        auto pos = defaultUniformData.find(name);
+        if (pos != defaultUniformData.end()){
+            pos->second.value.mat4Value = value.value.mat4Value; // copy largest element
+            if (pos->second.glType != value.glType){
+                pos->second.glType = value.glType;
+                updateShaderLocation(name, pos->second);
+            }
+        } else {
+            // not found insert new
+            auto insertedElement = defaultUniformData.emplace(make_pair(name, move(value)));
+            bool didInsert = insertedElement.second;
+            assert(didInsert);
+            auto insertedIterator = insertedElement.first;
+            updateShaderLocation(name, insertedIterator->second);
+        }
+        shaderChanged.notifyListeners({this, ShaderEventType::defaultUniform });
+    }
+
+    bool Shader::tryGetDefaultUniform(std::string name, MaterialData &value) {
+        auto pos = defaultUniformData.find(name);
+        if (pos != defaultUniformData.end()){
+            value = pos->second;
+            return true;
+        }
+        return false;
     }
 }

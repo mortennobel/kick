@@ -16,6 +16,7 @@
 #include "kick/core/event_listener.h"
 #include "kick/core/kickgl.h"
 #include "kick/texture/texture2d.h"
+#include "shader_enums.h"
 
 namespace kick {
     
@@ -30,9 +31,8 @@ namespace kick {
         MaterialData(Texture2D *textureValue):value{textureValue}, glType{GL_SAMPLER_2D}{}
         
         MaterialData(const MaterialData & val);
-        
-        int shaderLocation;
-        int glType;
+        MaterialData& operator=(const MaterialData& other);
+
         union ValueType{
             // union constructors
             ValueType(int intValue):intValue{intValue}{}
@@ -48,6 +48,10 @@ namespace kick {
             glm::mat4 mat4Value;
             Texture2D* texture2D;
         } value;
+        int shaderLocation;
+        int glType;
+        // is the value inherited from the default uniform value in the shader
+        bool defaultUniform = false;
     };
     
     class Material : public ProjectAsset {
@@ -56,18 +60,19 @@ namespace kick {
         ~Material();
         void setShader(Shader *shader);
         Shader* getShader();
-        void shaderProgramChanged(Shader *);
-        
+
         template <class E>
         void setUniform(std::string name, E value);
         int bind();
     private:
+        void shaderChanged(ShaderEvent se);
+        void setDefaultUniforms();
         void updateShaderLocation(std::string name, MaterialData& value);
         void setUniformData(std::string name, MaterialData&& value);
         // current data (may misfit with current shader)
-        std::map<std::string, MaterialData> currentMaterialData;
+        std::map<std::string, MaterialData> currentUniformData;
         Shader* shader = nullptr;
-        EventListener<Shader*> shaderChangedListener;
+        EventListener<ShaderEvent> shaderChangedListener;
     };
     
     std::string to_string(MaterialData & data);

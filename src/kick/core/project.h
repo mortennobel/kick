@@ -60,7 +60,6 @@ namespace kick {
         static std::string loadTextResource(std::string uri);
         static std::vector<char> loadBinaryResource(std::string uri);
         static Shader* loadShader(std::string uri);
-        static Texture2D* loadDefaultTexture();
         static Texture2D* loadTexture(std::string uri);
         static Texture2D* loadTextureFromMemory(const char *data, int size);
         

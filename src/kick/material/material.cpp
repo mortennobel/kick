@@ -21,9 +21,18 @@ namespace kick {
     MaterialData::MaterialData(const MaterialData & val)
     :shaderLocation(val.shaderLocation),
     glType(val.glType),
-    value(0)
+    value(0),
+    defaultUniform(val.defaultUniform)
     {
         value.mat4Value = val.value.mat4Value; // if this safe?
+    }
+
+    MaterialData& MaterialData::operator=(const MaterialData& other){
+        shaderLocation = other.shaderLocation;
+        glType = other.glType;
+        value.mat4Value = other.value.mat4Value; // copy largest element
+        defaultUniform = other.defaultUniform;
+        return *this;
     }
     
     Material::Material(Project *p, Shader* s)
@@ -37,14 +46,16 @@ namespace kick {
     }
     
     void Material::setShader(Shader *shader){
+        if (this->shader == shader) return;
         this->shader = shader;
         if (shader){
             using namespace std::placeholders;
-            auto f = std::bind(&Material::shaderProgramChanged, this, _1);
-            shaderChangedListener = shader->shaderProgramChanged.createListener(f);
-            shaderProgramChanged(shader);
+            auto f = std::bind(&Material::shaderChanged, this, _1);
+            shaderChangedListener = shader->shaderChanged.createListener(f);
+            shaderChanged({shader, ShaderEventType::all });
+            setDefaultUniforms();
         } else {
-            shaderChangedListener = EventListener<Shader*>();
+            shaderChangedListener = EventListener<ShaderEvent>();
         }
     }
     
@@ -52,10 +63,17 @@ namespace kick {
         return shader;
     }
         
-    void Material::shaderProgramChanged(Shader *shader){
-        for (auto & pair : currentMaterialData) {
-            updateShaderLocation(pair.first, pair.second);
+    void Material::shaderChanged(ShaderEvent se){
+        Shader *shader = se.shader;
+        if (se.eventType == ShaderEventType::all || se.eventType == ShaderEventType::shader) {
+            for (auto &pair : currentUniformData) {
+                updateShaderLocation(pair.first, pair.second);
+            }
         }
+        if (se.eventType == ShaderEventType::all || se.eventType == ShaderEventType::defaultUniform) {
+            setDefaultUniforms();
+        }
+
     }
     
     void Material::updateShaderLocation(std::string name, MaterialData& value){
@@ -72,8 +90,8 @@ namespace kick {
     }
     
     void Material::setUniformData(std::string name, MaterialData&& value){
-        auto pos = currentMaterialData.find(name);
-        if (pos != currentMaterialData.end()){
+        auto pos = currentUniformData.find(name);
+        if (pos != currentUniformData.end()){
             pos->second.value.mat4Value = value.value.mat4Value; // copy largest element
             if (pos->second.glType != value.glType){
                 pos->second.glType = value.glType;
@@ -81,7 +99,7 @@ namespace kick {
             }
         } else {
             // not found insert new
-            auto insertedElement = currentMaterialData.emplace(make_pair(name, move(value)));
+            auto insertedElement = currentUniformData.emplace(make_pair(name, move(value)));
             bool didInsert = insertedElement.second;
             assert(didInsert);
             auto insertedIterator = insertedElement.first;
@@ -92,7 +110,7 @@ namespace kick {
     int Material::bind(){
         shader->bind();// should not be needed
         int currentTexture = 0;
-        for (auto & uniform : currentMaterialData) {
+        for (auto & uniform : currentUniformData) {
             auto & materialData = uniform.second;
             if (materialData.shaderLocation == -1){
                 continue;
@@ -171,5 +189,26 @@ namespace kick {
                 break;
         }
         return res;
+    }
+
+    void Material::setDefaultUniforms() {
+        vector<string> unmappedOrDefaultUniforms;
+        for (auto& u : shader->getShaderUniforms()){
+            bool isAutoMapped = u.name.length()>0 && u.name[0] == '_';
+            if (isAutoMapped){
+                continue;
+            }
+            auto currentValue = currentUniformData.find(u.name);
+            bool isUnmapped = currentValue == currentUniformData.end();
+            if (isUnmapped || currentValue->second.defaultUniform){
+                unmappedOrDefaultUniforms.push_back(u.name);
+            }
+        }
+        for (auto & name : unmappedOrDefaultUniforms){
+            MaterialData mat{0};
+            if (shader->tryGetDefaultUniform(name, mat)){
+                setUniformData(name, move(mat));
+            }
+        }
     }
 }

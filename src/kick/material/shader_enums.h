@@ -9,6 +9,20 @@
 #include <string>
 
 namespace kick {
+
+    class Shader;
+
+    enum class ShaderEventType {
+        all,
+        shader,
+        defaultUniform
+    };
+
+    struct ShaderEvent {
+        Shader *shader;
+        ShaderEventType eventType;
+    };
+
     enum class ShaderType {
         VertexShader = GL_VERTEX_SHADER,
         FragmentShader = GL_FRAGMENT_SHADER,

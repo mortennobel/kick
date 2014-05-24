@@ -80,7 +80,7 @@ namespace kick {
         ifstream file(uri, ios::in | ios::binary | ios::ate);
         if(!file.is_open())
             throw runtime_error(string{"couldn't open "}+uri);
-        vector<char> fileContents(file.tellg());
+        vector<char> fileContents((unsigned long) file.tellg());
 
         
         file.seekg(0, ios::beg);
@@ -172,14 +172,6 @@ namespace kick {
             }
 //            SDL_FreeRW(source); // fix
         }
-        return texturePtr;
-    }
-
-    Texture2D* Project::loadDefaultTexture(){
-        Texture2D *texturePtr = createAsset<Texture2D>();
-        vector<char> data(2*2*4, (char const) 0xFF);
-        ImageFormat imageFormat{};
-        texturePtr->setData(2, 2, &(data[0]), imageFormat);
         return texturePtr;
     }
     

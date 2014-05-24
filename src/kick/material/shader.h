@@ -18,7 +18,7 @@
 #include "kick/core/project_asset.h"
 #include "kick/mesh/mesh_data.h"
 #include "kick/material/shader_enums.h"
-
+#include "kick/material/material.h"
 namespace kick {
     
     class Material;
@@ -26,7 +26,10 @@ namespace kick {
     class Transform;
 
     class Project;
-    
+    class Shader;
+
+
+
     class Shader : public ProjectAsset {
     public:
         /// If vertexShader and fragmentShader is specified then apply is called
@@ -45,7 +48,7 @@ namespace kick {
         const std::vector<UniformDescriptor >& getShaderUniforms() const;
         const AttributeDescriptor* getShaderAttribute(VertexAttributeSemantic semantic) const;
         const UniformDescriptor* getShaderUniform(std::string name) const;
-        Event<Shader*> shaderProgramChanged;
+        Event<ShaderEvent> shaderChanged;
         void setBlend(bool b);
         bool getBlend();
         BlendType getBlendDFactorAlpha();
@@ -69,7 +72,14 @@ namespace kick {
         const std::vector<AttributeDescriptor>& getShaderAttributes() { return shaderAttributes; }
         void bind_uniforms(Material *material, EngineUniforms *engineUniforms, Transform* transform);
         GLuint getShaderProgram(){ return shaderProgram; }
+        // Default uniform are assigned to materials where uniforms are not mapped
+        template <class E>
+        void setDefaultUniform(std::string name, E value);
+        bool tryGetDefaultUniform(std::string name, MaterialData& value);
     private:
+        void updateShaderLocation(std::string name, MaterialData& value);
+        void setDefaultUniformData(std::string name, MaterialData&& value);
+        void updateDefaultShaderLocation();
         static std::string getPrecompiledSource(std::string source);
         /// throws ShaderBuildException if unsuccessfull
         void linkProgram();
@@ -90,7 +100,13 @@ namespace kick {
         bool polygonOffsetEnabled {false};
         glm::vec2 polygonOffsetFactorAndUnit {2.5, 10};
         ZTestType zTest {ZTestType::Less};
+        std::map<std::string, MaterialData> defaultUniformData;
     };
 
 
+    template <class E>
+    void Shader::setDefaultUniform(std::string name, E value){
+        MaterialData data{value};
+        setDefaultUniformData(name, std::move(data));
+    }
 }
