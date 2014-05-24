@@ -1,5 +1,5 @@
 uniform sampler2D mainTexture;
-uniform vec4 mainColor = vec4(1.0,1.0,1.0,1.0);
+uniform vec4 mainColor;
 
 out vec4 fragColor;
 
@@ -9,4 +9,3 @@ void main(void)
 	UVflippedY.y = 1.0 - UVflippedY.y;
     fragColor = texture(mainTexture, UVflippedY) * mainColor;
 }
-	

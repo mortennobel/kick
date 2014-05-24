@@ -4,9 +4,7 @@ in vec3 vEcPosition;
 
 out vec4 fragColor;
 
-uniform vec4 mainColor = vec4(1.0,1.0,1.0,1.0);
-uniform float specularExponent;
-uniform vec4 specularColor;
+uniform vec4 mainColor;
 uniform sampler2D mainTexture;
 
 #pragma include "assets/shaders/light.glsl"

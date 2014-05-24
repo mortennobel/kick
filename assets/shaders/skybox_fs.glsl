@@ -1,4 +1,4 @@
-uniform vec4 mainColor = vec4(1.0,1.0,1.0,1.0);
+uniform vec4 mainColor;
 uniform samplerCube mainTexture;
 
 in vec3 vPos;

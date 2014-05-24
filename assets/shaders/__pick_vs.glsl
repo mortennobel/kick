@@ -8,6 +8,5 @@ out vec4 gameObjectUID;
 void main(void) {
     // compute position
     gl_Position = _mvProj * position;
-
     gameObjectUID = _gameObjectUID;
 }

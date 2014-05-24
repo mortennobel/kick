@@ -12,6 +12,7 @@
 #include <SDL2_image/SDL_image.h>
 #include "kick/texture/image_format.h"
 #include "rapidjson/document.h"
+#include <glm/gtc/type_ptr.hpp>
 
 using namespace std;
 
@@ -249,6 +250,66 @@ namespace kick {
             shader->setPolygonOffsetFactorAndUnit(vec2{polygonOffsetFactor, polygonOffsetUnit});
             shader->setZTest(zTest);
             shader->apply();
+            if (document.HasMember("defaultUniform") && document["defaultUniform"].IsObject()){
+                auto & defaultUniformArray = document["defaultUniform"];
+                for (auto memberIter = defaultUniformArray.MemberBegin();memberIter != defaultUniformArray.MemberEnd();memberIter++){
+                    string name = memberIter->name.GetString();
+                    auto& uniformValue = memberIter->value;
+                    const UniformDescriptor * uniform = shader->getShaderUniform(name);
+                    if (uniform) {
+                        switch (uniform->type){
+                            case GL_INT:
+                            {
+                                int value = uniformValue.GetInt();
+                                shader->setDefaultUniform(name, value);
+                            }
+                                break;
+                            case GL_FLOAT:
+                            {
+                                float value = (float) uniformValue.GetDouble();
+                                shader->setDefaultUniform(name, value);
+                            }
+                                break;
+                            case GL_FLOAT_VEC4:
+                            {
+                                vec4 value;
+                                for (SizeType i=0;i<4;i++){
+                                    value[i] = (float)uniformValue[i].GetDouble();
+                                }
+                                shader->setDefaultUniform(name, value);
+                            }
+                                break;
+                            case GL_FLOAT_MAT3:
+                            {
+                                mat3 value;
+                                float *valuePtr = value_ptr(value);
+                                for (SizeType i=0;i<9;i++){
+                                    valuePtr[i] = (float)uniformValue[i].GetDouble();
+                                }
+                                shader->setDefaultUniform(name, value);
+                            }
+                                break;
+                            case GL_FLOAT_MAT4:
+                            {
+                                mat4 value;
+                                float *valuePtr = value_ptr(value);
+                                for (SizeType i = 0; i < 16; i++) {
+                                    valuePtr[i] = (float) uniformValue[i].GetDouble();
+                                }
+                                shader->setDefaultUniform(name, value);
+                            }
+                                break;
+                            case GL_SAMPLER_2D:
+                            {
+                                string texName = memberIter->value.GetString();
+                                Texture2D* value = loadTexture(texName);
+                                shader->setDefaultUniform(name, value);
+                            }
+                                break;
+                        }
+                    }
+                }
+            }
         }
         return shader;
     }
