@@ -14,6 +14,7 @@
 #include <vector>
 #include <unordered_map>
 #include <string>
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <exception>
 

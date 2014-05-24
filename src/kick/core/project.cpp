@@ -12,6 +12,7 @@
 #include <SDL2_image/SDL_image.h>
 #include "kick/texture/image_format.h"
 #include "rapidjson/document.h"
+#define GLM_FORCE_RADIANS
 #include <glm/gtc/type_ptr.hpp>
 
 using namespace std;

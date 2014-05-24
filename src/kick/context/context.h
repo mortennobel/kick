@@ -11,6 +11,7 @@
 #include <iostream>
 #include <functional>
 #include <string>
+#define GLM_FORCE_RADIANS
 #include "glm/glm.hpp"
 #include "kick/core/event.h"
 #include "kick/context/window_config.h"

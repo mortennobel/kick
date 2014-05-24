@@ -64,7 +64,6 @@ namespace kick {
     }
         
     void Material::shaderChanged(ShaderEvent se){
-        Shader *shader = se.shader;
         if (se.eventType == ShaderEventType::all || se.eventType == ShaderEventType::shader) {
             for (auto &pair : currentUniformData) {
                 updateShaderLocation(pair.first, pair.second);

@@ -13,6 +13,7 @@
 #include "kick/scene/light.h"
 #include "kick/scene/game_object.h"
 #include "kick/scene/transform.h"
+
 #include "glm/gtx/quaternion.hpp"
 
 using namespace std;

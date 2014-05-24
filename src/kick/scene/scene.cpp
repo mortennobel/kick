@@ -152,7 +152,7 @@ namespace kick {
         CameraPerspective *cam = cameraObject->addComponent<CameraPerspective>();
         cam->setNear(0.1f);
         cam->setFar(100);
-        cam->setFieldOfView(60);
+        cam->setFieldOfView(glm::radians(60.0f));
         cam->setClearColor(glm::vec4(0,0,0,1));
         return cam;
     }

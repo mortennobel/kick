@@ -8,5 +8,4 @@
         "specularColor": [1.0,1.0,1.0,1.0],
         "mainTexture": "assets/textures/white.png"
     }
-
 }

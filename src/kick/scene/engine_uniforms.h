@@ -7,7 +7,7 @@
 //
 
 #pragma once
-
+#define GLM_FORCE_RADIANS
 #include "glm/glm.hpp"
 #include "kick/scene/scene_lights.h"
 #include "kick/core/event_listener.h"

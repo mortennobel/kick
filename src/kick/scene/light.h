@@ -10,6 +10,7 @@
 
 #include "kick/scene/component.h"
 #include "kick/core/event.h"
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 
 namespace kick {

@@ -24,7 +24,7 @@ namespace kick {
     
     MeshData* MeshFactory::createTriangleData(){
         auto meshData = Project::createAsset<MeshData>();
-        float sqrt75 = sqrt(0.75f);
+        float sqrt75 = glm::sqrt(0.75f);
         meshData->setPosition({
             vec3{0,1,0},
             vec3{-sqrt75,-0.5f,0},
