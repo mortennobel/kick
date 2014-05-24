@@ -41,7 +41,6 @@ namespace kick {
         std::string getGLSLPrefix();
         void setMouseInput(MouseInput* mouseInput);
         void setKeyInput(KeyInput* keyInput);
-
     protected:
         glm::ivec2 viewportDim = glm::ivec2{512, 512};
         std::function<void ()> startFrameCallback;

@@ -15,6 +15,7 @@
 #include "kick/scene/game_object.h"
 #include "kick/scene/transform.h"
 #include "kick/scene/scene.h"
+#include "engine.h"
 
 using namespace std;
 using namespace glm;
@@ -22,10 +23,9 @@ using namespace glm;
 namespace kick {
     
     Camera::Camera(GameObject *gameObject)
-    :Component(gameObject, false, false), clearFlag(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT){
-        cameraValues.perspective.near = 0.1;
-        cameraValues.perspective.far = 1000.0;
-        cameraValues.perspective.fieldOfView = 60;
+    :Component(gameObject, false, false), clearFlag(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT),
+     projectionMatrix{1}{
+
     }
     
     void Camera::activated(){
@@ -102,15 +102,7 @@ namespace kick {
             }
             glClear(clearFlag);
         }
-        mat4 projectionMatrix;
-        if (cameraType == CameraType::Perspective) {
-            projectionMatrix = glm::perspectiveFov(cameraValues.perspective.fieldOfView, viewportDimension.x, viewportDimension.y, cameraValues.perspective.near, cameraValues.perspective.far);
-        } else {
-            projectionMatrix = ortho(
-                cameraValues.orthographic.left, cameraValues.orthographic.right,
-                cameraValues.orthographic.bottom, cameraValues.orthographic.top,
-                cameraValues.orthographic.near, cameraValues.orthographic.far);
-        }
+
         engineUniforms->viewMatrix = gameObject->getTransform()->getGlobalTRSInverse();
         engineUniforms->viewProjectionMatrix = projectionMatrix * engineUniforms->viewMatrix;
         engineUniforms->projectionMatrix = projectionMatrix;
@@ -160,36 +152,11 @@ namespace kick {
         return clearFlag & GL_STENCIL_BUFFER_BIT;
     }
 
+    glm::mat4 Camera::getProjectionMatrix() {
+        return projectionMatrix;
+    }
 
-    void Camera::setCameraType(CameraType cameraType) { this->cameraType = cameraType; }
-
-    CameraType Camera::getCameraType() { return cameraType;}
-
-    void Camera::setNear(float near) { cameraValues.perspective.near = near; }
-
-    float Camera::getNear() { return cameraValues.perspective.near; }
-
-    void Camera::setFar(float far) { cameraValues.perspective.far = far;}
-
-    float Camera::getFar() { return cameraValues.perspective.far; }
-
-    void Camera::setFieldOfView(float fov) { cameraValues.perspective.fieldOfView = fov; }
-
-    float Camera::getFieldOfView() { return cameraValues.perspective.fieldOfView; }
-
-    void Camera::setLeft(float left) { cameraValues.orthographic.left = left; }
-
-    float Camera::getLeft() { return cameraValues.orthographic.left; }
-
-    void Camera::setRight(float right) { cameraValues.orthographic.right = right;}
-
-    float Camera::getRight() { return cameraValues.orthographic.right; }
-
-    void Camera::setBottom(float bottom) { cameraValues.orthographic.bottom = bottom;}
-
-    float Camera::getBottom() { return cameraValues.orthographic.bottom; }
-
-    void Camera::setTop(float top) { cameraValues.orthographic.top = top; }
-
-    float Camera::getTop() { return cameraValues.orthographic.top; }
+    void Camera::setProjectionMatrix(glm::mat4 projectionMatrix) {
+        this->projectionMatrix = projectionMatrix;
+    }
 }

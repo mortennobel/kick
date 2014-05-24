@@ -15,12 +15,7 @@
 
 namespace kick {
     class GameObject;
-    
-    enum class CameraType {
-        Perspective = 0,
-        Orthographic = 1
-    };
-    
+
     class Camera : public Component {
     public:
         Camera(GameObject *gameObject);
@@ -36,24 +31,13 @@ namespace kick {
         void setClearStencil(bool clear);
         bool isClearStencil();
         void setupCamera(EngineUniforms *engineUniforms);
-        void setCameraType(CameraType cameraType);
-        CameraType getCameraType();
-        void setNear(float near);
-        float getNear();
-        void setFar(float far);
-        float getFar();
-        /// set field of view in degrees
-        void setFieldOfView(float fov);
-        /// set field of view in degrees
-        float getFieldOfView();
-        void setLeft(float left);
-        float getLeft();
-        void setRight(float right);
-        float getRight();
-        void setBottom(float bottom);
-        float getBottom();
-        void setTop(float top);
-        float getTop();
+        glm::mat4 getProjectionMatrix();
+        // override projection matrix
+        void setProjectionMatrix(glm::mat4 projectionMatrix);
+    protected:
+        glm::mat4 projectionMatrix;
+        glm::vec2 normalizedViewportOffset = glm::vec2(0,0);
+        glm::vec2 normalizedViewportDim = glm::vec2(1,1);
     private:
         void rebuildComponentList();
         bool includeComponent(Component* comp);
@@ -62,24 +46,6 @@ namespace kick {
         std::vector<Component*> renderableComponents;
         glm::vec4 clearColor = glm::vec4(0,0,0,1);
         int clearFlag; // default clear color clear depth
-        CameraType cameraType = CameraType::Perspective;
         void* renderTarget = nullptr;
-        glm::vec2 normalizedViewportOffset = glm::vec2(0,0);
-        glm::vec2 normalizedViewportDim = glm::vec2(1,1);
-        union {
-            struct {
-                float near;
-                float far;
-                float fieldOfView;
-            } perspective;
-            struct {
-                float near;
-                float far;
-                float left;
-                float right;
-                float bottom;
-                float top;
-            } orthographic;
-        } cameraValues;
     };
 }

@@ -7,7 +7,7 @@
 //
 #pragma once
 
-#include "SDL2/SDL_keycode.h"
+#include <SDL2/SDL_keycode.h>
 #include <set>
 #include <vector>
 #include <initializer_list>

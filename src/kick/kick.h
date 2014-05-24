@@ -1,4 +1,5 @@
-#include "kick/context/sdl2_context.h"
+#pragma once
+
 #include "kick/context/context.h"
 #include "kick/core/engine.h"
 #include "kick/core/event.h"

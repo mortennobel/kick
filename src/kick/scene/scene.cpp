@@ -10,6 +10,8 @@
 #include <iostream>
 #include "kick/scene/engine_uniforms.h"
 #include "kick/scene/camera.h"
+#include "kick/scene/camera_orthographic.h"
+#include "kick/scene/camera_perspective.h"
 #include "kick/scene/mesh_renderer.h"
 #include "kick/mesh/mesh_factory.h"
 #include "kick/mesh/mesh.h"
@@ -147,8 +149,7 @@ namespace kick {
 
     Camera* Scene::createPerspectiveCamera(){
         GameObject *cameraObject = createGameObject("PerspectiveCamera");
-        Camera *cam = cameraObject->addComponent<Camera>();
-        cam->setCameraType(CameraType::Perspective);
+        CameraPerspective *cam = cameraObject->addComponent<CameraPerspective>();
         cam->setNear(0.1f);
         cam->setFar(100);
         cam->setFieldOfView(60);
@@ -158,8 +159,7 @@ namespace kick {
 
     Camera *Scene::createOrthographicCamera() {
         GameObject *cameraObject = createGameObject("OrthographicCamera");
-        Camera *cam = cameraObject->addComponent<Camera>();
-        cam->setCameraType(CameraType::Orthographic);
+        CameraOrthographic *cam = cameraObject->addComponent<CameraOrthographic>();
         cam->setNear(-10);
         cam->setFar(10);
         cam->setLeft(-10);
