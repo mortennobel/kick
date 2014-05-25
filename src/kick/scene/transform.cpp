@@ -40,11 +40,7 @@ namespace kick {
         }
         // todo test for correctness
         vec3 currentPosition = getPosition();
-        setLocalPosition(vec3{
-            currentPosition.x - position.x,
-            currentPosition.y - position.y,
-            currentPosition.z - position.z
-        });
+        setLocalPosition(currentPosition - position);
         markLocalDirty();
     }
     
@@ -68,23 +64,23 @@ namespace kick {
         return localPosition;
     }
     
-    void Transform::setLocalRotationEuler(glm::vec3 rot){
-        vec3 rotRadians = radians(rot);
-        localRotationQuat = quat(rotRadians);
+    void Transform::setLocalRotationEuler(glm::vec3 angles){
+        mat4 rot = yawPitchRoll(angles.y, angles.x, angles.z);
+        localRotationQuat = quat_cast(rot);
         markLocalDirty();
     }
     
     glm::vec3 Transform::getLocalRotationEuler(){
-        return degrees(eulerAngles(localRotationQuat));
+        return eulerAngles(localRotationQuat);
     }
     
-    void Transform::setRotationEuler(glm::vec3 rot){
-        vec3 rotationRadians = radians(rot);
-        setRotation(quat(rotationRadians));
+    void Transform::setRotationEuler(glm::vec3 angles){
+        mat4 rot = yawPitchRoll(angles.y, angles.x, angles.z);
+        setRotation(quat_cast(rot));
     }
     
     glm::vec3 Transform::getRotationEuler(){
-        return degrees(eulerAngles(getRotation()));
+        return eulerAngles(getRotation());
     }
     
     void Transform::setRotation(glm::quat rot){

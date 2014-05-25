@@ -29,7 +29,7 @@ int RayClosestPointsTest(){
     bool found = kick::Ray::ClosestPoints(vec3{0,2,-1},vec3{1,1,2},vec3{1,0,-1},vec3{1,1,3},pos1, pos2);
     TINYTEST_ASSERT(found);
     float distance = length(pos1 - pos2);
-    TINYTEST_ASSERT(fabs(distance - (3.0f/2) * sqrt(2.0f)) < 0.01);
+    TINYTEST_ASSERT(fabs(distance - (3.0f/2) * std::sqrt(2.0f)) < 0.01);
     return 1;
 }
 

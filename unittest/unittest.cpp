@@ -38,6 +38,7 @@ TINYTEST_ADD_TEST(TestKeyInputButton);
 TINYTEST_ADD_TEST(TestKeyMapping);
 TINYTEST_ADD_TEST(TestKeyMappingMulti);
 TINYTEST_ADD_TEST(TestMouseInputButton);
+TINYTEST_ADD_TEST(TestTransform);
 
 TINYTEST_END_SUITE();
 

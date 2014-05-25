@@ -27,7 +27,8 @@ namespace kick {
             // compute light direction
             vec3 lightDirection{0,0,-1};
             auto transform = directionalLight->getGameObject()->getTransform();
-            directionalLightWorld = rotate(transform->getRotation(), lightDirection);
+            mat3 rotation = mat3_cast(transform->getRotation());
+            directionalLightWorld = rotation * lightDirection;
 
             // transform to eye space
             vec3 directionalLightDirection = normalize(viewMatrixRotation * directionalLightWorld);

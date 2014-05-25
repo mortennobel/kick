@@ -77,11 +77,11 @@ namespace kick {
         template <class E>
         void setDefaultUniform(std::string name, E value);
         bool tryGetDefaultUniform(std::string name, MaterialData& value);
+        static std::string getPrecompiledSource(std::string source);
     private:
         void updateShaderLocation(std::string name, MaterialData& value);
         void setDefaultUniformData(std::string name, MaterialData&& value);
         void updateDefaultShaderLocation();
-        static std::string getPrecompiledSource(std::string source);
         /// throws ShaderBuildException if unsuccessfull
         void linkProgram();
         /// throws ShaderBuildException if unsuccessfull

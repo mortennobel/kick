@@ -16,6 +16,8 @@
 #include "kick/core/kickgl.h"
 #include "kick/core/key_input.h"
 #include "kick/core/mouse_input.h"
+#define GLM_FORCE_RADIANS
+#include "glm_ext.h"
 
 using namespace kick;
 using namespace std;
@@ -26,13 +28,8 @@ Engine *engine;
 void initEngine(int& argc, char** argv){
     // Manually create engine instance
     //GLUTContext cont;
-    SDL2Context* cont = new SDL2Context{};
-    cont->init(argc, argv);
-    cont->showWindow();
 
-    cout <<  glGetString(GL_VERSION) << endl;
-
-    ::engine = new Engine (cont);
+    ::engine = new Engine (argc, argv);
 }
 
 int TestShader() {
@@ -204,8 +201,8 @@ int TestMeshData(){
 
     const vec3 p0{0,0,0};
     const vec3 p1{1,0,0};
-    const vec3 p2{0.5f,0,sqrt(0.75f)};
-    const vec3 p3{0.5f,sqrt(0.75f),sqrt(0.75f)/3};
+    const vec3 p2{0.5f,0,std::sqrt(0.75f)};
+    const vec3 p3{0.5f,std::sqrt(0.75f),std::sqrt(0.75f)/3};
 
     meshData->setPosition({
             p0,p1,p2,
@@ -223,7 +220,7 @@ int TestMeshData(){
 
     AABB aabb = meshData->getAabb();
     TINYTEST_ASSERT(aabb.min == p0);
-    vec3 vec3max{1,sqrt(0.75f),sqrt(0.75f)};
+    vec3 vec3max{1,std::sqrt(0.75f),std::sqrt(0.75f)};
     TINYTEST_ASSERT(aabb.max == vec3max);
 
     meshData->recalculate_normals();
@@ -277,7 +274,7 @@ int TestLoadBinaryFile(){
 }
 
 int TestLoadTexture(){
-    auto img = Project::loadTexture("assets/images/logo.png");
+    auto img = Project::loadTexture("assets/textures/logo.png");
 
     return 1;
 }
@@ -511,3 +508,42 @@ int TestMouseInputButton(){
     return 1;
 }
 
+bool equal(glm::mat4 m1, glm::mat4 m2, float eps = 0.001f){
+    mat4 diff = m1-m2;
+    for (int x=0;x<4;x++) {
+        for (int y = 0; y < 4; y++) {
+            if (std::abs(diff[x][y]) > eps){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+int TestTransform(){
+    auto gameObject = Engine::instance->getActiveScene()->createGameObject("SomeObject");
+    TINYTEST_EQUAL(gameObject->getTransform()->getLocalMatrix(), gameObject->getTransform()->getGlobalMatrix());
+    TINYTEST_EQUAL(gameObject->getTransform()->getLocalMatrix(), gameObject->getTransform()->getLocalTRSInverse());
+    TINYTEST_EQUAL(glm::mat4{1}, gameObject->getTransform()->getGlobalMatrix());
+    gameObject->getTransform()->setLocalPosition(vec3{1,2,3});
+    mat4 transformMatrix = glm::translate(vec3{1,2,3});
+    TINYTEST_EQUAL(transformMatrix, gameObject->getTransform()->getGlobalMatrix());
+    gameObject->getTransform()->setLocalPosition(vec3{0,0,0});
+
+    std::vector<vec3> rotations;
+    rotations.push_back(vec3{glm::half_pi<float>(),0,0});
+    rotations.push_back(vec3{0,1,0});
+    rotations.push_back(vec3{0,0,1});
+    rotations.push_back(vec3{1,2,3});
+
+    for (auto r : rotations){
+        gameObject->getTransform()->setRotationEuler(r);
+        auto expected =  yawPitchRoll(r.y, r.x, r.z);
+//        cout <<glm::to_string(r) <<" becomes "<<glm::to_string(gameObject->getTransform()->getGlobalMatrix())<<" converted to euler "<<glm::to_string(eulerAngles(gameObject->getTransform()->getRotation()))<<endl;
+        bool isEqual = equal(expected, gameObject->getTransform()->getGlobalMatrix());
+        TINYTEST_ASSERT_MSG(isEqual, (string{"error comparing matrices \n"}+
+                glm::to_string( gameObject->getTransform()->getGlobalMatrix())+"\n"+glm::to_string(expected)+"\n").c_str());
+    }
+
+    return 1;
+}
