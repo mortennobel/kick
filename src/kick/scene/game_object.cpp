@@ -47,11 +47,12 @@ namespace kick {
         return *this;
     }
     
-    bool GameObject::removeComponent(Component* component){
+    bool GameObject::destroyComponent(Component *component){
         auto pos = find(components.begin(), components.end(), component);
         if (pos != components.end()){
             component->deactivated();
             components.erase(pos);
+            delete component;
             return true;
         }
         return false;

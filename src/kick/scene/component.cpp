@@ -22,7 +22,11 @@ namespace kick {
     :gameObject(move(component.gameObject)), renderable(move(component.renderable)), updateable(move(component.updateable))
     {
     }
-    
+
+    Component::~Component() {
+
+    }
+
     Component& Component::operator=(const Component& other){
         if (this != &other){
             gameObject = move(other.gameObject);

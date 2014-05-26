@@ -39,6 +39,7 @@ TINYTEST_ADD_TEST(TestMouseInputButton);
 TINYTEST_ADD_TEST(TestTransform);
 TINYTEST_ADD_TEST(TestGetComponent);
 TINYTEST_ADD_TEST(TestGetComponents);
+TINYTEST_ADD_TEST(TestDeleteComponent);
 TINYTEST_END_SUITE();
 
 int main(int argc, char* argv[])

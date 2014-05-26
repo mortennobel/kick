@@ -31,7 +31,7 @@ namespace kick {
         C* getComponent();
         template <typename C>
         std::vector<C*> getComponents();
-        bool removeComponent(Component* component);
+        bool destroyComponent(Component *component);
         ConstComponentIter begin() const;
         ConstComponentIter end() const;
         ComponentIter begin();

@@ -569,9 +569,39 @@ int TestGetComponents(){
     TINYTEST_ASSERT(mr2 != nullptr);
     meshRenderers = gameObject->getComponents<MeshRenderer>();
     TINYTEST_EQUAL(2, meshRenderers.size());
-    gameObject->removeComponent(mr);
+    gameObject->destroyComponent(mr);
     meshRenderers = gameObject->getComponents<MeshRenderer>();
     TINYTEST_EQUAL(1, meshRenderers.size());
     return 1;
 }
 
+
+class TrackComponent : public Component {
+public:
+    TrackComponent(GameObject *gameObject)
+    : Component(gameObject, false, true) {}
+
+    virtual ~TrackComponent(){
+        *destroyed = true;
+    }
+
+    bool * destroyed;
+
+};
+
+int TestDeleteComponent(){
+    bool destroyedOnClassDestruction = false;
+    auto gameObject = Engine::instance->getActiveScene()->createGameObject("SomeObject");
+
+    bool destroyed = false;
+
+    TrackComponent *tc = gameObject->addComponent<TrackComponent>();
+    tc->destroyed= &destroyed;
+    TrackComponent *tc2 = gameObject->addComponent<TrackComponent>();
+    tc2->destroyed = &destroyedOnClassDestruction;
+    gameObject->destroyComponent(tc);
+    TINYTEST_ASSERT(destroyed);
+    Engine::instance->getActiveScene()->destroyGameObject(gameObject);
+    TINYTEST_ASSERT(destroyedOnClassDestruction);
+    return 1;
+}

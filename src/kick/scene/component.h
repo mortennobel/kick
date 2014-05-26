@@ -29,6 +29,7 @@ namespace kick {
         Component(GameObject* gameObject, bool renderable, bool updateable);
         Component(Component&& component);
         Component& operator=(const Component& other);
+        virtual ~Component();
         virtual void activated(){}
         virtual void deactivated(){}
         virtual void render(EngineUniforms *engineUniforms){}
