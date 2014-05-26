@@ -54,7 +54,8 @@ namespace kick {
     }
     
     bool SDL2Context::init(int &argc, char **argv){
-        return SDL_Init(SDL_INIT_VIDEO) >= 0;
+        bool res = SDL_Init(SDL_INIT_VIDEO) >= 0;
+        return res;
     }
     
     bool SDL2Context::showWindow(const WindowConfig& config){
@@ -240,6 +241,9 @@ namespace kick {
     void SDL2Context::handleKey(SDL_KeyboardEvent event, bool keyDown){
         Key key = static_cast<Key>(event.keysym.sym);
         if (keyDown){
+            if (event.repeat){
+                return;
+            }
             keyInput->pressBegin(key);
         } else {
             keyInput->pressEnd(key);
