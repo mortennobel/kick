@@ -9,4 +9,27 @@ namespace kick {
         fireComponentEvent(res, ComponentUpdateStatus::Added);
         return res;
     }
+
+    template <typename C>
+    inline C* GameObject::getComponent(){
+        for (auto c : components){
+            C* comp = dynamic_cast<C*>(c);
+            if (comp){
+                return comp;
+            }
+        }
+        return nullptr;
+    }
+
+    template <typename C>
+    std::vector<C*> GameObject::getComponents(){
+        std::vector<C*> res;
+        for (auto c : components){
+            C* comp = dynamic_cast<C*>(c);
+            if (comp){
+                res.push_back(comp);
+            }
+        }
+        return res;
+    }
 }

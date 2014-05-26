@@ -547,3 +547,31 @@ int TestTransform(){
 
     return 1;
 }
+
+int TestGetComponent(){
+    auto gameObject = Engine::instance->getActiveScene()->createGameObject("SomeObject");
+
+    MeshRenderer *mr = gameObject->addComponent<MeshRenderer>();
+    TINYTEST_EQUAL(mr, gameObject->getComponent<MeshRenderer>());
+    TINYTEST_EQUAL(nullptr, gameObject->getComponent<Camera>());
+    return 1;
+}
+
+int TestGetComponents(){
+    auto gameObject = Engine::instance->getActiveScene()->createGameObject("SomeObject");
+
+    MeshRenderer *mr = gameObject->addComponent<MeshRenderer>();
+    auto meshRenderers = gameObject->getComponents<MeshRenderer>();
+    TINYTEST_EQUAL(1, meshRenderers.size());
+    TINYTEST_EQUAL(mr, meshRenderers.front());
+    TINYTEST_EQUAL(nullptr, gameObject->getComponent<Camera>());
+    MeshRenderer *mr2 = gameObject->addComponent<MeshRenderer>();
+    TINYTEST_ASSERT(mr2 != nullptr);
+    meshRenderers = gameObject->getComponents<MeshRenderer>();
+    TINYTEST_EQUAL(2, meshRenderers.size());
+    gameObject->removeComponent(mr);
+    meshRenderers = gameObject->getComponents<MeshRenderer>();
+    TINYTEST_EQUAL(1, meshRenderers.size());
+    return 1;
+}
+

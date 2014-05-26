@@ -27,6 +27,10 @@ namespace kick {
         ~GameObject();
         template <typename C>
         C *addComponent();
+        template <typename C>
+        C* getComponent();
+        template <typename C>
+        std::vector<C*> getComponents();
         bool removeComponent(Component* component);
         ConstComponentIter begin() const;
         ConstComponentIter end() const;

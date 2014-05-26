@@ -33,19 +33,3 @@ int RayClosestPointsTest(){
     return 1;
 }
 
-int FrustumAABBTest(){
-
-    return 1;
-}
-
-int ProjectionTest(){
-
-    mat4 res = perspective(45.0f,
-            1.0f,
-            0.1f,
-            100.0f);
-    vec4 one{1,1,1,1};
-    vec4 resVector = res*one;
-    cout << to_string(resVector) << endl;
-    return 1;
-}
