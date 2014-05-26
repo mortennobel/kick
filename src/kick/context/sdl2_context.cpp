@@ -272,8 +272,8 @@ namespace kick {
     }
 
     void SDL2Context::setFullscreen(bool fullscreen) {
-        cout << "Fullscreen "<<fullscreen<<" value "<<(fullscreen?SDL_WINDOW_FULLSCREEN:0)<<endl;
-        int error = SDL_SetWindowFullscreen(window, fullscreen?SDL_WINDOW_FULLSCREEN:0);
+        cout << "Fullscreen "<<fullscreen<<" value "<<(fullscreen ? SDL_WINDOW_FULLSCREEN : 0)<<endl;
+        int error = SDL_SetWindowFullscreen(window, fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
         if (error){
             cout << "Error "<<SDL_GetError()<<endl;
         }
