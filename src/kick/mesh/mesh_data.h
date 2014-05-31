@@ -104,7 +104,7 @@ namespace kick {
         std::vector<SubMeshData> getIndicesFormat();
         
         // recomputing normals (using angle weighted normals)
-        void recalculate_normals();
+        void recomputeNormals();
     private:
         AABB aabb;
         MeshUsage mesh_usage = MeshUsage::StaticDraw;
@@ -121,6 +121,6 @@ namespace kick {
         };
         
         std::vector<SubMeshInternal> subMeshes;
-        int compute_interleaved_data_size();
+        int computeInterleavedDataSize();
     };
 }

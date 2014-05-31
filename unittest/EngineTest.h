@@ -8,6 +8,7 @@
 
 #pragma once
 
+#define GLM_FORCE_RADIANS
 
 #include "EngineTest.h"
 #include "tinytest/tinytest.h"
@@ -16,8 +17,9 @@
 #include "kick/core/kickgl.h"
 #include "kick/core/key_input.h"
 #include "kick/core/mouse_input.h"
-#define GLM_FORCE_RADIANS
+
 #include "glm_ext.h"
+#include "glm/gtx/string_cast.hpp"
 
 using namespace kick;
 using namespace std;
@@ -223,7 +225,7 @@ int TestMeshData(){
     vec3 vec3max{1,std::sqrt(0.75f),std::sqrt(0.75f)};
     TINYTEST_ASSERT(aabb.max == vec3max);
 
-    meshData->recalculate_normals();
+    meshData->recomputeNormals();
     TINYTEST_ASSERT(meshData->getNormal().size() == meshData->getPosition().size());
     for (auto normal : meshData->getNormal()){
         TINYTEST_ASSERT(normal != vec3(0));
@@ -575,21 +577,19 @@ int TestGetComponents(){
     return 1;
 }
 
-
-class TrackComponent : public Component {
-public:
-    TrackComponent(GameObject *gameObject)
-    : Component(gameObject, false, true) {}
-
-    virtual ~TrackComponent(){
-        *destroyed = true;
-    }
-
-    bool * destroyed;
-
-};
-
 int TestDeleteComponent(){
+    class TrackComponent : public Component {
+    public:
+        TrackComponent(GameObject *gameObject)
+                : Component(gameObject, false, true) {}
+
+        virtual ~TrackComponent(){
+            *destroyed = true;
+        }
+
+        bool * destroyed;
+
+    };
     bool destroyedOnClassDestruction = false;
     auto gameObject = Engine::instance->getActiveScene()->createGameObject("SomeObject");
 
@@ -603,5 +603,95 @@ int TestDeleteComponent(){
     TINYTEST_ASSERT(destroyed);
     Engine::instance->getActiveScene()->destroyGameObject(gameObject);
     TINYTEST_ASSERT(destroyedOnClassDestruction);
+    return 1;
+}
+
+int TestTransformComponent(){
+    vector<Transform*> transforms;
+    for (int i=0;i<3;i++){
+        auto gameObject = Engine::instance->getActiveScene()->createGameObject("SomeObject");
+        auto transform = gameObject->getTransform();
+        if (i>0){
+            transform->setParent(transforms[transforms.size()-1]);
+        }
+        transforms.push_back(transform);
+    }
+    glm::vec3 offset{1,2,3};
+    transforms[0]->setLocalPosition(offset);
+    glm::vec3 e{ 0.00001 };
+    TINYTEST_ASSERT(all(epsilonEqual(offset, transforms[1]->getPosition(),e)));
+    TINYTEST_ASSERT(all(epsilonEqual(offset, transforms[2]->getPosition(),e)));
+    transforms[1]->setLocalPosition(offset);
+    TINYTEST_ASSERT(all(epsilonEqual(offset*2.0f, transforms[1]->getPosition(),e)));
+    TINYTEST_ASSERT(all(epsilonEqual(offset*2.0f, transforms[2]->getPosition(),e)));
+    transforms[1]->setLocalPosition(vec3{0});
+    transforms[0]->setRotationEuler(radians(vec3{0,90,0}));
+    TINYTEST_ASSERT(all(epsilonEqual(offset, transforms[1]->getPosition(),e)));
+    TINYTEST_ASSERT(all(epsilonEqual(offset, transforms[2]->getPosition(),e)));
+    transforms[1]->setLocalPosition(vec3{1,0,0});
+    auto expected = glm::vec3{1,2,3-1};
+    TINYTEST_ASSERT(all(epsilonEqual(expected, transforms[1]->getPosition(),e)));
+    TINYTEST_ASSERT(all(epsilonEqual(expected, transforms[2]->getPosition(),e)));
+    transforms[0]->setLocalScale(vec3{10});
+    expected = glm::vec3{1,2,3-10};
+    TINYTEST_ASSERT_MSG(all(epsilonEqual(expected, transforms[1]->getPosition(),e)), glm::to_string(transforms[1]->getPosition()).c_str());
+    TINYTEST_ASSERT_MSG(all(epsilonEqual(expected, transforms[2]->getPosition(),e)), glm::to_string(transforms[2]->getPosition()).c_str());
+
+    return 1;
+}
+
+bool isEqual_(glm::quat q1, glm::quat q2, float epsilon = 1e-7){
+    quat q3 = inverse(q1) * q2;
+    if (q3.x == 0 && q3.y == 0 && q3.z == 0){
+        return true;
+    }
+    float a = angle(q3);
+    return fabs(a) < epsilon;
+}
+
+int TestTransformRotationsComponent(){
+    vector<Transform*> transforms;
+    for (int i=0;i<3;i++){
+        auto gameObject = Engine::instance->getActiveScene()->createGameObject("SomeObject");
+        auto transform = gameObject->getTransform();
+        if (i>0){
+            transform->setParent(transforms[transforms.size()-1]);
+        }
+        transforms.push_back(transform);
+    }
+    auto q1 = quat_cast(yawPitchRoll(10.0f,20.0f,30.0f));
+    auto q0 = quat_cast(yawPitchRoll(00.0f,00.0f,00.0f));
+    transforms[0]->setLocalRotation(q1);
+    transforms[1]->setLocalRotation(inverse(q1));
+
+    TINYTEST_ASSERT(isEqual_(q0,transforms[1]->getRotation()));
+
+    transforms[1]->setLocalRotation(q1);
+    q1 = q1*q1; // double rotation
+    TINYTEST_ASSERT(isEqual_(q1,transforms[1]->getRotation()));
+    return 1;
+}
+
+int TestTransformLookAt(){
+    auto transform1 = Engine::instance->getActiveScene()->createGameObject()->getTransform();
+    auto transform2 = Engine::instance->getActiveScene()->createGameObject()->getTransform();
+
+    transform2->setLocalPosition(vec3{0,0,-10});
+    transform1->lookAt(transform2);
+
+    auto expected = quat_cast(yawPitchRoll(0.0f,radians(0.0f),0.0f));
+    TINYTEST_ASSERT(isEqual_(expected,transform1->getRotation()));
+
+    transform2->setLocalPosition(vec3{10,0.0,0});
+    transform1->lookAt(transform2);
+
+    expected = quat_cast(yawPitchRoll(radians(-90.0f),0.0f,0.0f));
+    TINYTEST_ASSERT_MSG(isEqual_(expected,transform1->getRotation()), (glm::to_string(eulerAngles(expected))+" was "+glm::to_string(transform1->getLocalRotationEuler())+" "+glm::to_string(transform1->getRotationEuler())).c_str());
+
+    // different up axis
+    transform1->lookAt(transform2, vec3(0,0,-1));
+    expected = quat_cast(yawPitchRoll(radians(-90.0f),0.0f,radians(90.0f)));
+    TINYTEST_ASSERT_MSG(isEqual_(expected,transform1->getRotation()), (glm::to_string(eulerAngles(expected))+" was "+glm::to_string(transform1->getLocalRotationEuler())+" "+glm::to_string(transform1->getRotationEuler())).c_str());
+
     return 1;
 }

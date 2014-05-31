@@ -40,7 +40,7 @@ namespace kick {
         void setLocalScale(glm::vec3 scale);
         glm::vec3 getLocalScale();
         void setParent(Transform *parent);
-        void lookAt(Transform *transform, glm::vec3 up);
+        void lookAt(Transform *target, glm::vec3 up = glm::vec3{0,1,0});
         glm::mat4 getLocalMatrix();
         glm::mat4 getGlobalMatrix();
         glm::mat4 getLocalTRSInverse();

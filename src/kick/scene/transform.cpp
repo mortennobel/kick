@@ -9,6 +9,7 @@
 #include "kick/scene/transform.h"
 #include "kick/math/glm_ext.h"
 #include <algorithm>
+#include <iostream>
 
 using namespace glm;
 
@@ -34,6 +35,7 @@ namespace kick {
     }
     
     void Transform::setPosition(glm::vec3 position){
+        assert(!glm::any(glm::isnan(position)));
         if (!parent){
             setLocalPosition(position);
             return;
@@ -45,7 +47,7 @@ namespace kick {
     }
     
     glm::vec3 Transform::getPosition(){
-        if (parent == nullptr){
+        if (!parent){
             return localPosition;
         }
         if (dirty.globalPos){
@@ -56,6 +58,7 @@ namespace kick {
     }
     
     void Transform::setLocalPosition(glm::vec3 position){
+        assert(!glm::any(glm::isnan(position)));
         localPosition = position;
         markLocalDirty();
     }
@@ -65,6 +68,7 @@ namespace kick {
     }
     
     void Transform::setLocalRotationEuler(glm::vec3 angles){
+        assert(!glm::any(glm::isnan(angles)));
         mat4 rot = yawPitchRoll(angles.y, angles.x, angles.z);
         localRotationQuat = quat_cast(rot);
         markLocalDirty();
@@ -75,6 +79,7 @@ namespace kick {
     }
     
     void Transform::setRotationEuler(glm::vec3 angles){
+        assert(!glm::any(glm::isnan(angles)));
         mat4 rot = yawPitchRoll(angles.y, angles.x, angles.z);
         setRotation(quat_cast(rot));
     }
@@ -84,11 +89,13 @@ namespace kick {
     }
     
     void Transform::setRotation(glm::quat rot){
+        assert(!glm::isnan(rot.w) && !glm::isnan(rot.x) && !glm::isnan(rot.y) && !glm::isnan(rot.z));
         if (parent == nullptr){
-            localRotationQuat = rot;
+            setLocalRotation(rot);
+        } else {
+            quat diff = conjugate(rot) * getRotation();
+            setLocalRotation(localRotationQuat * diff);
         }
-        quat diff = inverse(rot) * getRotation();
-        setLocalRotation(localRotationQuat * diff);
     }
     
     glm::quat Transform::getRotation(){
@@ -107,6 +114,7 @@ namespace kick {
     }
     
     void Transform::setLocalRotation(glm::quat rot){
+        assert(!glm::isnan(rot.w) && !glm::isnan(rot.x) && !glm::isnan(rot.y) && !glm::isnan(rot.z));
         localRotationQuat = rot;
         markLocalDirty();
     }
@@ -116,6 +124,7 @@ namespace kick {
     }
     
     void Transform::setLocalScale(glm::vec3 scale){
+        assert(!glm::any(glm::isnan(scale)));
         localScale = scale;
         markLocalDirty();
     }
@@ -147,7 +156,7 @@ namespace kick {
         if (dirty.globalInv){
             globalMatrixInverse = getLocalTRSInverse();
             auto transformIterator = parent;
-            while (transformIterator != nullptr){
+            while (transformIterator){
                 globalMatrixInverse = globalMatrixInverse * transformIterator->getLocalTRSInverse();
                 transformIterator = transformIterator->parent;
             }
@@ -156,9 +165,13 @@ namespace kick {
         return globalMatrixInverse;
     }
     
-    void Transform::lookAt(Transform *transform, glm::vec3 up){
-        localRotationQuat = Math::lookAt(getPosition(), transform->getPosition(), up);
-        markLocalDirty();
+    void Transform::lookAt(Transform *target, glm::vec3 up){
+        assert(!glm::any(glm::isnan(up)));
+        vec3 eye = getPosition();
+        vec3 center = target->getPosition();
+        assert(glm::length(eye - center) > glm::epsilon<float>());
+        auto rotation = Math::lookAt(eye, center, up);
+        setRotation(conjugate(rotation));
     }
     
     glm::mat4 Transform::getLocalMatrix(){
@@ -174,7 +187,7 @@ namespace kick {
             globalMatrix = getLocalMatrix();
             
             Transform * transformIterator = parent;
-            while (transformIterator != nullptr) {
+            while (transformIterator) {
                 globalMatrix = transformIterator->getLocalMatrix() * globalMatrix;
                 transformIterator  = transformIterator->parent;
             }

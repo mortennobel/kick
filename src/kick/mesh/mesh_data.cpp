@@ -85,7 +85,7 @@ namespace kick {
         return static_cast<unsigned int>(subMeshes.size());
     }
     
-    int MeshData::compute_interleaved_data_size(){
+    int MeshData::computeInterleavedDataSize(){
         int numberOfElements = static_cast<int>(position.size());
         int vertexSize = 3;
         if (normal.size() > 0) {
@@ -126,7 +126,7 @@ namespace kick {
     }
     
     vector<float> MeshData::getInterleavedData(){
-        const int floatElements = compute_interleaved_data_size();
+        const int floatElements = computeInterleavedDataSize();
         const int stride = floatElements / position.size();
         vector<float> res(floatElements);
         size_t offset = add_data(position, res, 0, stride);
@@ -215,7 +215,7 @@ namespace kick {
         return subMeshes.at(index).meshType;
     }
     
-    void MeshData::recalculate_normals(){
+    void MeshData::recomputeNormals(){
         // empty
         normal.resize(position.size());
         for (int i=0;i<normal.size();i++){

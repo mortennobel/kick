@@ -8,15 +8,18 @@
 
 #include "kick/math/glm_ext.h"
 
+
+
 using namespace glm;
 
 namespace kick {
     glm::mat4 Math::TRS(glm::vec3 translate, glm::quat rotateQuat, glm::vec3 scale){
-        glm::mat4 res;
+        return glm::translate(translate) * mat4_cast(rotateQuat) * glm::scale(scale);
+        /*glm::mat4 res;
         float *out = &(res[0][0]);
         // Quaternion math
         float scaleX = scale[0], scaleY = scale[1], scaleZ = scale[2],
-        x = rotateQuat[0], y = rotateQuat[1], z = rotateQuat[2], w = rotateQuat[3],
+        x = rotateQuat[1], y = rotateQuat[2], z = rotateQuat[3], w = rotateQuat[0],
         x2 = x + x,
         y2 = y + y,
         z2 = z + z,
@@ -48,10 +51,12 @@ namespace kick {
         out[14] = translate[2];
         out[15] = 1;
         
-        return res;
+        return res;       */
     }
     
     glm::mat4 Math::TRSInverse(glm::vec3 translate, glm::quat rotateQuat, glm::vec3 scale){
+        return inverse(TRS(translate, rotateQuat, scale));
+        /*
         // Quaternion math
         float scaleX = scale.x, scaleY = scale.y, scaleZ = scale.z,
         x = rotateQuat.x, y = rotateQuat.y, z = rotateQuat.z, w = rotateQuat.w,
@@ -120,25 +125,10 @@ namespace kick {
         out[14] = (-a30 * b03 + a31 * b01 - a32 * b00) * invDet;
         out[15] = (a20 * b03 - a21 * b01 + a22 * b00) * invDet;
         
-        return res;
+        return res;   */
     }
-    
-    
-    glm::quat Math::lookAt(glm::vec3 position, glm::vec3 lookVector, glm::vec3 up){
-        assert(lookVector != position);
-        
-        glm::vec3 direction = glm::normalize(lookVector-position);
-        float dot = glm::dot(glm::vec3(0, 0, 1), direction);
-        if (fabs(dot - (-1.0f)) < 0.000001f) {
-            return glm::angleAxis((float)M_PI, glm::vec3(0, 1, 0));
-        }
-        else if (fabs(dot - (1.0f)) < 0.000001f) {
-            return glm::quat();
-        }
-        
-        float angle = -acosf(dot);
-        
-        glm::vec3 cross = glm::normalize(glm::cross(glm::vec3(0, 0, 1), direction));
-        return glm::normalize(glm::angleAxis(angle, cross));
+
+    glm::quat Math::lookAt(glm::vec3 eyePosition, glm::vec3 lookAtPos, glm::vec3 up){
+        return quat_cast(glm::lookAt(eyePosition, lookAtPos, up));
     }
 }

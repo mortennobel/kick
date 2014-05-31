@@ -20,6 +20,6 @@ namespace kick {
         static glm::mat4 TRSInverse(glm::vec3 translate, glm::quat rotate, glm::vec3 scale);
         
         // based on http://stackoverflow.com/questions/18172388/glm-quaternion-lookat-function
-        static glm::quat lookAt(glm::vec3 position, glm::vec3 lookAtPos, glm::vec3 up = glm::vec3(0,0,1));
+        static glm::quat lookAt(glm::vec3 eyePosition, glm::vec3 lookAtPos, glm::vec3 up = glm::vec3(0,1,0));
     };
 };

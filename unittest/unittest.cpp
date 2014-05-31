@@ -40,6 +40,9 @@ TINYTEST_ADD_TEST(TestTransform);
 TINYTEST_ADD_TEST(TestGetComponent);
 TINYTEST_ADD_TEST(TestGetComponents);
 TINYTEST_ADD_TEST(TestDeleteComponent);
+TINYTEST_ADD_TEST(TestTransformComponent);
+TINYTEST_ADD_TEST(TestTransformRotationsComponent);
+TINYTEST_ADD_TEST(TestTransformLookAt);
 TINYTEST_END_SUITE();
 
 int main(int argc, char* argv[])
