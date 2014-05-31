@@ -39,7 +39,6 @@ namespace kick {
             printf("SDL version: %d.%d.%d\n", compiled.major, compiled.minor, compiled.patch);
         }
 
-        cout << "SDL_GetBasePath() future ext " << endl;
         basePath = "./";
     }
     
@@ -54,7 +53,13 @@ namespace kick {
     }
     
     bool SDL2Context::init(int &argc, char **argv){
-        bool res = SDL_Init(SDL_INIT_VIDEO) >= 0;
+        SDL_SetMainReady();
+        bool res = SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO) >= 0;
+
+        if (SDL_IsScreenSaverEnabled()){
+            SDL_DisableScreenSaver();
+        }
+
         return res;
     }
     
