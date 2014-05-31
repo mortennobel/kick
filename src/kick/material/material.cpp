@@ -153,6 +153,10 @@ namespace kick {
                     throw invalid_argument("GL_INT_VEC4 is currently unsupported");
                     break;
                 case GL_SAMPLER_CUBE:
+                    value.textureCube->bind(currentTexture);
+                    glUniform1i(location, currentTexture);
+                    currentTexture++;
+                    break;
                 case GL_SAMPLER_2D:
                     value.texture2D->bind(currentTexture);
                     glUniform1i(location, currentTexture);

@@ -276,7 +276,7 @@ int TestLoadBinaryFile(){
 }
 
 int TestLoadTexture(){
-    auto img = Project::loadTexture("assets/textures/logo.png");
+    auto img = Project::loadTexture2D("assets/textures/logo.png");
 
     return 1;
 }
@@ -294,7 +294,7 @@ int TestLoadTextureTypes(){
     };
     int expectedTypes[6] = {GL_RGB,GL_RGB,GL_RGBA,GL_RGBA};
     for (int i=0;i<6;i++){
-        Texture2D *img = Project::loadTexture(imgPaths[i]);
+        Texture2D *img = Project::loadTexture2D(imgPaths[i]);
         error = glGetError();
         TINYTEST_ASSERT_MSG(error == GL_NO_ERROR, imgPaths[i].c_str());
     }
@@ -693,5 +693,10 @@ int TestTransformLookAt(){
     expected = quat_cast(yawPitchRoll(radians(-90.0f),0.0f,radians(90.0f)));
     TINYTEST_ASSERT_MSG(isEqual_(expected,transform1->getRotation()), (glm::to_string(eulerAngles(expected))+" was "+glm::to_string(transform1->getLocalRotationEuler())+" "+glm::to_string(transform1->getRotationEuler())).c_str());
 
+    return 1;
+}
+
+int TestLoadCubemap(){
+    auto img = Project::loadTexture2D("assets/textures/cubemap.png");
     return 1;
 }

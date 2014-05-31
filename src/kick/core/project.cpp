@@ -91,10 +91,10 @@ namespace kick {
         return move(fileContents);
     }
     
-    Texture2D* Project::loadTexture(std::string uri){
+    Texture2D* Project::loadTexture2D(std::string uri){
         vector<char> res = loadBinaryResource(uri);
         if (res.size()>0){
-            return loadTextureFromMemory(&(res[0]), res.size());
+            return loadTexture2DFromMemory(&(res[0]), res.size());
         } else {
             return nullptr;
         }
@@ -156,7 +156,7 @@ namespace kick {
         return 0;
     }
     
-    Texture2D* Project::loadTextureFromMemory(const char *data, int size){
+    Texture2D* Project::loadTexture2DFromMemory(const char *data, int size){
         Texture2D *texturePtr = nullptr;
         SDL_RWops* source = SDL_RWFromConstMem(data, size);
         if (source){
@@ -170,13 +170,49 @@ namespace kick {
                 convertTextureIfNeeded(imageFormat, &image);
                 invert_image(image->pitch, image->h, image->pixels);
                 texturePtr->setData(image->w, image->h, static_cast<char*>(image->pixels), imageFormat);
-//                SDL_FreweSurface(image); // fix
+                SDL_FreeSurface(image);
+            } else {
+                SDL_FreeRW(source);
             }
-//            SDL_FreeRW(source); // fix
         }
         return texturePtr;
     }
-    
+
+    TextureCube* Project::loadTextureCubeFromMemory(const char *data, int size){
+        TextureCube *texturePtr = nullptr;
+        SDL_RWops* source = SDL_RWFromConstMem(data, size);
+        if (source){
+            // load uri into memory
+            SDL_Surface *image = nullptr;
+            image = IMG_Load_RW(source, 1);
+
+            ImageFormat imageFormat;
+
+            if (image) {
+                texturePtr = createAsset<TextureCube>();
+                convertTextureIfNeeded(imageFormat, &image);
+                assert(image->h == image->w * 6);
+                for (int i = 0; i < 6; i++) {
+                    texturePtr->setData(image->w, image->h, static_cast<char *>(image->pixels) + image->pitch * image->w * i, i, imageFormat);
+                }
+                SDL_FreeSurface(image);
+            } else {
+                SDL_FreeRW(source);
+            }
+
+        }
+        return texturePtr;
+    }
+
+    TextureCube* Project::loadTextureCube(std::string uri){
+        vector<char> res = loadBinaryResource(uri);
+        if (res.size()>0){
+            return loadTextureCubeFromMemory(&(res[0]), res.size());
+        } else {
+            return nullptr;
+        }
+    }
+
     Shader* Project::loadShader(std::string uri){
         using namespace rapidjson;
         using namespace glm;
@@ -303,7 +339,14 @@ namespace kick {
                             case GL_SAMPLER_2D:
                             {
                                 string texName = memberIter->value.GetString();
-                                Texture2D* value = loadTexture(texName);
+                                Texture2D* value = loadTexture2D(texName);
+                                shader->setDefaultUniform(name, value);
+                            }
+                                break;
+                            case GL_SAMPLER_CUBE:
+                            {
+                                string texName = memberIter->value.GetString();
+                                TextureCube* value = loadTextureCube(texName);
                                 shader->setDefaultUniform(name, value);
                             }
                                 break;

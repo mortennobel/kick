@@ -26,4 +26,5 @@
 #include "kick/scene/scene.h"
 #include "kick/scene/transform.h"
 #include "kick/texture/texture2d.h"
+#include "kick/texture/texture_cube.h"
 #include "kick/texture/image_format.h"

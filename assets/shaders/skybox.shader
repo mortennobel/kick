@@ -4,7 +4,7 @@
 "defaultUniform":
     {
         "mainColor": [1.0,1.0,1.0,1.0],
-        "mainTexture": "assets/textures/white-cube.png"
+        "mainTexture": "assets/textures/cubemap.png"
     }
 
 }

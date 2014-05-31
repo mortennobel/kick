@@ -30,6 +30,7 @@ namespace kick {
     struct TextureSampler {
         TextureWrap wrapS = TextureWrap::Repeat;
         TextureWrap wrapT = TextureWrap::Repeat;
+        TextureWrap wrapW = TextureWrap::Repeat;
         TextureFilter filterMin = TextureFilter::Nearest;
         TextureFilter filterMag = TextureFilter::Nearest;
     };

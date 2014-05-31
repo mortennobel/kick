@@ -17,6 +17,7 @@
 #include "kick/core/event_listener.h"
 #include "kick/core/kickgl.h"
 #include "kick/texture/texture2d.h"
+#include "kick/texture/texture_cube.h"
 #include "shader_enums.h"
 
 namespace kick {
@@ -30,7 +31,8 @@ namespace kick {
         MaterialData(glm::mat3 mat3Value):value{mat3Value}, glType{GL_FLOAT_MAT3}{}
         MaterialData(glm::mat4 mat4Value):value{mat4Value}, glType{GL_FLOAT_MAT4}{}
         MaterialData(Texture2D *textureValue):value{textureValue}, glType{GL_SAMPLER_2D}{}
-        
+        MaterialData(TextureCube *textureValue):value{textureValue}, glType{GL_SAMPLER_CUBE}{}
+
         MaterialData(const MaterialData & val);
         MaterialData& operator=(const MaterialData& other);
 
@@ -42,12 +44,14 @@ namespace kick {
             ValueType(glm::mat3 mat3Value):mat3Value{mat3Value}{}
             ValueType(glm::mat4 mat4Value):mat4Value{mat4Value}{}
             ValueType(Texture2D* texture2D):texture2D{texture2D}{}
+            ValueType(TextureCube* textureCube):textureCube{textureCube}{}
             int intValue;
             float floatValue;
             glm::vec4 vec4Value;
             glm::mat3 mat3Value;
             glm::mat4 mat4Value;
             Texture2D* texture2D;
+            TextureCube* textureCube;
         } value;
         int shaderLocation;
         int glType;
