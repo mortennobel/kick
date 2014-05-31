@@ -18,6 +18,10 @@ namespace kick {
     {
         context->init(argc, argv);
         context->showWindow(config);
+        printf("%s (%s)\n",
+                glGetString(GL_RENDERER),  // e.g. Intel HD Graphics 3000 OpenGL Engine
+                glGetString(GL_VERSION)    // e.g. 3.2  INTEL-8.0.61
+        );
         createScene("defaultScene");
         context->setStartFrameCallback([&](){startFrame();});
         context->setUpdateCallback([&](){update();});
