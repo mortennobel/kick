@@ -280,4 +280,13 @@ namespace kick {
         this->fullscreen = fullscreen;
 
     }
+
+    void SDL2Context::setWindowTitle(std::string title) {
+        SDL_SetWindowTitle(window, title.c_str());
+    }
+
+    std::string SDL2Context::getWindowTitle() {
+        string title{SDL_GetWindowTitle(window)};
+        return title;
+    }
 }

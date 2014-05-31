@@ -25,6 +25,10 @@ namespace kick {
 
         virtual void setFullscreen(bool fullscreen);
 
+        virtual void setWindowTitle(std::string title) override;
+
+        virtual std::string getWindowTitle() override;
+
         void step();
     private:
         void handleMouseMotion(SDL_MouseMotionEvent event);

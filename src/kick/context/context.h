@@ -33,6 +33,8 @@ namespace kick {
         virtual void setUpdateCallback(std::function<void ()> updateCallback);
         virtual bool isFullscreen() = 0;
         virtual void setFullscreen(bool fullscreen) = 0;
+        virtual void setWindowTitle(std::string title) = 0;
+        virtual std::string getWindowTitle() = 0;
         /**
          * Return the resource base path
          */
