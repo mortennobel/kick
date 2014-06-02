@@ -13,10 +13,13 @@ namespace kick {
     public:
         // return time since startup
         static float getTime();
+        // return time since startup
+        static float getDeltaTime();
         // return frame count since startup
         static long getFrame();
         friend class Engine;
     private:
         static long frame;
+        static float deltaTime;
     };
 }

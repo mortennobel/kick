@@ -46,6 +46,7 @@ namespace kick {
         DefaultKeyHandler & getDefaultKeyHandler();
         void startMainLoop();
     private:
+        float tickStartTime;
         void startFrame();
         void update();
         void render();
