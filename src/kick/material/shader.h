@@ -60,8 +60,8 @@ namespace kick {
         void setBlendDFactorRGB(BlendType blendDFactorRGB);
         void setBlendSFactorAlpha(BlendType blendSFactorAlpha);
         void setBlendSFactorRGB(BlendType blendSFactorRGB);
-        void setDepthMask(bool depthMask);
-        bool getDepthMash();
+        void setDepthWrite(bool depthMask);
+        bool getDepthWrite();
         void setFaceCulling(FaceCullingType faceCulling);
         FaceCullingType getFaceCulling();
         void setPolygonOffsetEnabled(bool polygonOffsetEnabled);
@@ -96,7 +96,7 @@ namespace kick {
         BlendType blendDFactorRGB {BlendType::OneMinusSrcAlpha};
         BlendType blendSFactorAlpha {BlendType::SrcAlpha};
         BlendType blendSFactorRGB {BlendType::SrcAlpha};
-        bool depthMask {true};
+        bool depthBufferWrite{true};
         FaceCullingType faceCulling {FaceCullingType::Back};
         bool polygonOffsetEnabled {false};
         glm::vec2 polygonOffsetFactorAndUnit {2.5, 10};

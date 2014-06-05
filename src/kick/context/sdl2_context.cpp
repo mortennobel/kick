@@ -82,7 +82,7 @@ namespace kick {
             /* Turn on double buffering with a 24bit Z buffer.
              * You may need to change this to 16 or 32 for your system */
             SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-            SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+            SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, depthSize);
         }
         
         /* Create our window centered at 512x512 resolution */

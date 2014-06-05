@@ -265,7 +265,7 @@ namespace kick {
             BlendType blendDFactorRGB   = getBlendType("blendDFactorRGB", BlendType::OneMinusSrcAlpha);
             BlendType blendSFactorAlpha = getBlendType("blendSFactorAlpha", BlendType::SrcAlpha);
             BlendType blendSFactorRGB   = getBlendType("blendSFactorRGB", BlendType::SrcAlpha);
-            bool depthMask              = getBool("depthMask", false);
+            bool depthWrite             = getBool("depthWrite", true);
             FaceCullingType faceCulling = getFaceCullingType("faceCulling", FaceCullingType::Back);
             bool polygonOffsetEnabled   = getBool("polygonOffsetEnabled", false);
             float polygonOffsetFactor   = getFloat("polygonOffsetFactor", 1);
@@ -281,7 +281,7 @@ namespace kick {
             shader->setBlendDFactorRGB(blendDFactorRGB);
             shader->setBlendSFactorAlpha(blendSFactorAlpha);
             shader->setBlendSFactorRGB(blendSFactorRGB);
-            shader->setDepthMask(depthMask);
+            shader->setDepthWrite(depthWrite);
             shader->setFaceCulling(faceCulling);
             shader->setPolygonOffsetEnabled(polygonOffsetEnabled);
             shader->setPolygonOffsetFactorAndUnit(vec2{polygonOffsetFactor, polygonOffsetUnit});

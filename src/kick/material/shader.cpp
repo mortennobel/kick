@@ -156,7 +156,7 @@ break;
         swap(blendDFactorRGB, o.blendDFactorRGB);
         swap(blendSFactorAlpha, o.blendSFactorAlpha);
         swap(blendSFactorRGB, o.blendSFactorRGB);
-        swap(depthMask, o.depthMask);
+        swap(depthBufferWrite, o.depthBufferWrite);
         swap(faceCulling, o.faceCulling);
         swap(polygonOffsetEnabled, o.polygonOffsetEnabled);
         swap(polygonOffsetFactorAndUnit, o.polygonOffsetFactorAndUnit);
@@ -353,14 +353,14 @@ break;
         }
     }
     
-    void updateDepthProperties(ZTestType zTest, bool depthMask){
+    void updateDepthProperties(ZTestType zTest, bool depthWrite){
         if (zTest == ZTestType::Never){
             glDisable(GL_DEPTH_TEST);
         } else {
             glEnable(GL_DEPTH_TEST);
         }
         glDepthFunc(static_cast<GLuint>(zTest));
-        glDepthMask((GLboolean) depthMask);
+        glDepthMask(depthWrite ? GL_TRUE : GL_FALSE);
     }
     
     void updateBlending(bool blend, BlendType blendDFactorAlpha,BlendType blendDFactorRGB, BlendType blendSFactorAlpha, BlendType blendSFactorRGB){
@@ -379,7 +379,7 @@ break;
     void Shader::bind(){
         glUseProgram(shaderProgram);
         updateFaceCulling(faceCulling);
-        updateDepthProperties(zTest, depthMask);
+        updateDepthProperties(zTest, depthBufferWrite);
         updateBlending(blend, blendDFactorAlpha, blendDFactorRGB, blendSFactorAlpha, blendSFactorRGB);
     }
     
@@ -480,8 +480,8 @@ break;
     void Shader::setBlendDFactorRGB(BlendType blendDFactorRGB) { this->blendDFactorRGB=blendDFactorRGB; }
     void Shader::setBlendSFactorAlpha(BlendType blendSFactorAlpha) { this->blendSFactorAlpha = blendSFactorAlpha; }
     void Shader::setBlendSFactorRGB(BlendType blendSFactorRGB) { this->blendSFactorRGB = blendSFactorRGB; }
-    void Shader::setDepthMask(bool depthMask) { this->depthMask = depthMask;}
-    bool Shader::getDepthMash() { return depthMask; }
+    void Shader::setDepthWrite(bool depthMask) { this->depthBufferWrite = depthMask;}
+    bool Shader::getDepthWrite() { return depthBufferWrite; }
     void Shader::setFaceCulling(FaceCullingType faceCulling) { this->faceCulling = faceCulling; }
     FaceCullingType Shader::getFaceCulling() { return faceCulling; }
     void Shader::setPolygonOffsetEnabled(bool polygonOffsetEnabled) { this->polygonOffsetEnabled = polygonOffsetEnabled; }
