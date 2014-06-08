@@ -48,7 +48,12 @@ namespace kick {
     
     GameObject *Scene::createGameObject(const string &name){
         auto res = new GameObject(name, this);
+        EventListener<std::pair<Component*, ComponentUpdateStatus>> eventListener = res->componentEvent.createListener([&](std::pair<Component*, ComponentUpdateStatus> e){
+            componentListener(e.first, e.second);
+        });
+
         gameObjects.push_back(unique_ptr<GameObject>(res));
+        componentListeners[res] = move(eventListener);
         return res;
     }
 
@@ -56,6 +61,7 @@ namespace kick {
         for (int i=0;i<gameObjects.size();i++){
             if (gameObjects[i].get() == gameObject){
                 gameObjects.erase(gameObjects.begin()+i);
+                componentListeners.erase(gameObject);
                 return;
             }
         }
@@ -95,7 +101,7 @@ namespace kick {
         componentEvents.notifyListeners({component, status});
         Camera *camera = dynamic_cast<Camera*>(component);
         Light *light = dynamic_cast<Light*>(component);
-        if (status == ComponentUpdateStatus::Added){
+        if (status == ComponentUpdateStatus::Created){
             if (camera){
                 cameras.push_back(camera);
             } else if (light){
@@ -108,7 +114,7 @@ namespace kick {
                 updatable.push_back(component);
             }
         }
-        if (status == ComponentUpdateStatus::Removed){
+        if (status == ComponentUpdateStatus::Destroyed){
             if (camera){
                 auto pos = find(cameras.begin(), cameras.end(), camera);
                 if (pos != cameras.end()){

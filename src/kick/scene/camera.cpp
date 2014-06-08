@@ -37,11 +37,11 @@ namespace kick {
     void Camera::activated(){
         Scene* scene = gameObject->getScene();
         componentListener = scene->componentEvents.createListener([&](pair<Component*, ComponentUpdateStatus> value){
-            if (value.second == ComponentUpdateStatus::Added){
+            if (value.second == ComponentUpdateStatus::Created){
                 if (includeComponent(value.first)){
                     renderableComponents.push_back(value.first);
                 }
-            } else if (value.second == ComponentUpdateStatus::Removed){
+            } else if (value.second == ComponentUpdateStatus::Destroyed){
                 auto iter = find(renderableComponents.begin(),renderableComponents.end(), value.first);
                 if (iter != renderableComponents.end()){
                     renderableComponents.erase(iter);

@@ -51,6 +51,7 @@ namespace kick {
         auto pos = find(components.begin(), components.end(), component);
         if (pos != components.end()){
             component->deactivated();
+            componentEvent.notifyListeners({component, ComponentUpdateStatus::Destroyed});
             components.erase(pos);
             delete component;
             return true;
@@ -74,13 +75,6 @@ namespace kick {
         return components.end();
     }
     
-    void GameObject::addComponentListener(std::function<void (Component*, ComponentUpdateStatus)> &f){
-        componentListeners.push_back(f);
-    }
-    
-    void GameObject::removeComponentListener(std::function<void (Component*, ComponentUpdateStatus)> &f){
-    }
-    
     std::string GameObject::getName() const {
         return name;
     }
@@ -88,16 +82,17 @@ namespace kick {
     void GameObject::setName(std::string str){
         name = str;
     }
-    
-    void GameObject::fireComponentEvent(Component* component, ComponentUpdateStatus status){
-        scene->componentListener(component, status);
-    }
 
     int GameObject::getLayer() const {
         return layer;
     }
 
     void GameObject::setLayer(int layer) {
-        GameObject::layer = layer;
+        if (GameObject::layer != layer){
+            GameObject::layer = layer;
+            for (auto c : components){
+                componentEvent.notifyListeners({c, ComponentUpdateStatus::Updated});
+            }
+        }
     }
 };

@@ -15,8 +15,9 @@
 #include <unordered_map>
 #include <utility>
 #include <functional>
-#include "game_object.h"
-#include "component.h"
+#include <map>
+#include "kick/scene/game_object.h"
+#include "kick/scene/component.h"
 #include "kick/core/event.h"
 #include "kick/scene/scene_lights.h"
 
@@ -66,6 +67,7 @@ namespace kick {
         void componentListener(Component* component, ComponentUpdateStatus status);
         void addLight(Light *light);
         std::vector<std::unique_ptr<GameObject>> gameObjects;
+        std::map<GameObject*,EventListener<std::pair<Component*, ComponentUpdateStatus>>> componentListeners;
         std::vector<Camera*> cameras;
         std::vector<Component*> updatable;
         std::unordered_map<Light*, EventListener<Light*>> lights;

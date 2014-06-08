@@ -13,7 +13,9 @@
 #include <vector>
 #include <functional>
 #include <memory>
-#include "component.h"
+#include "kick/scene/component.h"
+#include "kick/core/event.h"
+
 
 namespace kick {
     class Transform;
@@ -36,8 +38,7 @@ namespace kick {
         ConstComponentIter end() const;
         ComponentIter begin();
         ComponentIter end();
-        void addComponentListener(std::function<void (Component*, ComponentUpdateStatus)> &f);
-        void removeComponentListener(std::function<void (Component*, ComponentUpdateStatus)> &f);
+        Event<std::pair<Component*, ComponentUpdateStatus>> componentEvent;
         std::string getName() const;
         void setName(std::string str);
         
@@ -49,7 +50,6 @@ namespace kick {
         void setLayer(int layer);
         friend class Scene;
     private:
-        void fireComponentEvent(Component* component, ComponentUpdateStatus status);
         GameObject(const std::string &name, Scene *scene);
         Scene *scene;
         std::string name;

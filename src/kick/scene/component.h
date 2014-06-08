@@ -19,8 +19,8 @@ namespace kick {
     class Transform;
     
     enum class ComponentUpdateStatus {
-        Added,
-        Removed,
+        Created,
+        Destroyed,
         Updated
     };
     

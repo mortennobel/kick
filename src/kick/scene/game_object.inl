@@ -6,7 +6,7 @@ namespace kick {
         auto res = new C(this);
         components.push_back(res);
         res->activated();
-        fireComponentEvent(res, ComponentUpdateStatus::Added);
+        componentEvent.notifyListeners({res, ComponentUpdateStatus::Created});
         return res;
     }
 
