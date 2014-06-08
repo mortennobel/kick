@@ -44,6 +44,7 @@ TINYTEST_ADD_TEST(TestTransformComponent);
 TINYTEST_ADD_TEST(TestTransformRotationsComponent);
 TINYTEST_ADD_TEST(TestTransformLookAt);
 TINYTEST_ADD_TEST(TestLoadCubemap);
+TINYTEST_ADD_TEST(TestComponentListener);
 TINYTEST_END_SUITE();
 
 int main(int argc, char* argv[])

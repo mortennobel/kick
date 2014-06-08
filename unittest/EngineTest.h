@@ -20,6 +20,7 @@
 
 #include "glm_ext.h"
 #include "glm/gtx/string_cast.hpp"
+#include "camera_perspective.h"
 
 using namespace kick;
 using namespace std;
@@ -698,5 +699,21 @@ int TestTransformLookAt(){
 
 int TestLoadCubemap(){
     auto img = Project::loadTexture2D("assets/textures/cubemap.png");
+    return 1;
+}
+
+int TestComponentListener(){
+    set<ComponentUpdateStatus> events;
+    auto listener = Engine::instance->getActiveScene()->componentEvents.createListener([&](std::pair<Component*, ComponentUpdateStatus> e){
+        events.insert(e.second);
+    });
+    auto gameObject = Engine::instance->getActiveScene()->createGameObject("SomeObject");
+    TINYTEST_EQUAL(0, events.size());
+    auto camera = gameObject->addComponent<CameraPerspective>();
+    TINYTEST_EQUAL(1, events.size());
+    gameObject->setLayer(2);
+    TINYTEST_EQUAL(2, events.size());
+    gameObject->destroyComponent(camera);
+    TINYTEST_EQUAL(3, events.size());
     return 1;
 }
