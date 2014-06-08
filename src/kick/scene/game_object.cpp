@@ -92,5 +92,12 @@ namespace kick {
     void GameObject::fireComponentEvent(Component* component, ComponentUpdateStatus status){
         scene->componentListener(component, status);
     }
-    
+
+    int GameObject::getLayer() const {
+        return layer;
+    }
+
+    void GameObject::setLayer(int layer) {
+        GameObject::layer = layer;
+    }
 };

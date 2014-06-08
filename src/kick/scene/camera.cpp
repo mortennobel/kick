@@ -15,7 +15,9 @@
 #include "kick/scene/game_object.h"
 #include "kick/scene/transform.h"
 #include "kick/scene/scene.h"
+#include "kick/texture/texture_render_target.h"
 #include "engine.h"
+#include "light.h"
 
 using namespace std;
 using namespace glm;
@@ -26,6 +28,10 @@ namespace kick {
     :Component(gameObject, false, false), clearFlag(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT),
      projectionMatrix{1}{
 
+    }
+
+    Camera::~Camera() {
+        destroyShadowMap();
     }
     
     void Camera::activated(){
@@ -107,12 +113,29 @@ namespace kick {
         engineUniforms->viewProjectionMatrix = projectionMatrix * engineUniforms->viewMatrix;
         engineUniforms->projectionMatrix = projectionMatrix;
     }
+
+    void Camera::renderShadowMap(Light* directionalLight){
+
+    }
     
     void Camera::render(EngineUniforms *engineUniforms){
+        auto sceneLights = engineUniforms->sceneLights;
+        if (shadow && sceneLights->directionalLight && sceneLights->directionalLight->getShadowType() != ShadowType::None) {
+            renderShadowMap(sceneLights->directionalLight);
+        }
+
+        if (target){
+            target->bind();
+        }
         setupCamera(engineUniforms);
         engineUniforms->sceneLights->recomputeLight(engineUniforms->viewMatrix);
         for (auto c : renderableComponents){
-            c->render(engineUniforms);
+            if (c->getGameObject()->getLayer() & layerMask) {
+                c->render(engineUniforms);
+            }
+        }
+        if (target){
+            target->unbind();
         }
     }
     
@@ -125,7 +148,7 @@ namespace kick {
     }
     
     bool Camera::isClearColor(){
-        return clearFlag & GL_COLOR_BUFFER_BIT;
+        return (bool) (clearFlag & GL_COLOR_BUFFER_BIT);
     }
     
     void Camera::setClearDepth(bool clear){
@@ -137,7 +160,7 @@ namespace kick {
     }
     
     bool Camera::isClearDepth(){
-        return clearFlag & GL_DEPTH_BUFFER_BIT;
+        return (bool) (clearFlag & GL_DEPTH_BUFFER_BIT);
     }
     
     void Camera::setClearStencil(bool clear){
@@ -149,7 +172,7 @@ namespace kick {
     }
     
     bool Camera::isClearStencil(){
-        return clearFlag & GL_STENCIL_BUFFER_BIT;
+        return (bool) (clearFlag & GL_STENCIL_BUFFER_BIT);
     }
 
     glm::mat4 Camera::getProjectionMatrix() {
@@ -161,5 +184,45 @@ namespace kick {
     }
 
     void Camera::resetProjectionMatrix(){
+    }
+
+    bool Camera::isShadow() const {
+        return shadow;
+    }
+
+    void Camera::setShadow(bool renderShadow) {
+        if (Camera::shadow != renderShadow) {
+            Camera::shadow = renderShadow;
+            if (renderShadow){
+                initShadowMap();
+            } else {
+                destroyShadowMap();
+            }
+        }
+    }
+
+    void Camera::initShadowMap() {
+        shadowMapShader = Project::loadShader("assets/shaders/__shadowmap.shader");
+        shadowMapMaterial = Project::createAsset<Material>();
+        shadowMapMaterial->setShader(shadowMapShader);
+    }
+
+    void Camera::destroyShadowMap() {
+    }
+
+    int Camera::getLayerMask() const {
+        return layerMask;
+    }
+
+    void Camera::setLayerMask(int layerMask) {
+        Camera::layerMask = layerMask;
+    }
+
+    TextureRenderTarget *Camera::getTarget() const {
+        return target;
+    }
+
+    void Camera::setTarget(TextureRenderTarget *target) {
+        Camera::target = target;
     }
 }

@@ -16,10 +16,14 @@
 
 namespace kick {
     class GameObject;
+    class Shader;
+    class Material;
+    class TextureRenderTarget;
 
     class Camera : public Component {
     public:
         Camera(GameObject *gameObject);
+        ~Camera();
         virtual void activated();
         virtual void deactivated();
         virtual void render(EngineUniforms *engineUniforms);
@@ -37,18 +41,31 @@ namespace kick {
         glm::mat4 getProjectionMatrix();
         // override projection matrix
         void setProjectionMatrix(glm::mat4 projectionMatrix);
+        bool isShadow() const;
+        void setShadow(bool renderShadow);
+        int getLayerMask() const;
+        void setLayerMask(int layerMask);
+        TextureRenderTarget * getTarget() const;
+        void setTarget(TextureRenderTarget *target);
     protected:
         glm::mat4 projectionMatrix;
         glm::vec2 normalizedViewportOffset = glm::vec2(0,0);
         glm::vec2 normalizedViewportDim = glm::vec2(1,1);
     private:
+        void initShadowMap();
+        void destroyShadowMap();
+        void renderShadowMap(Light* directionalLight);
         void rebuildComponentList();
         bool includeComponent(Component* comp);
+        Shader* shadowMapShader;
+        Material* shadowMapMaterial;
         EventListener<std::pair<Component*, ComponentUpdateStatus>> componentListener;
         void setupViewport(glm::vec2 &offset, glm::vec2 &dim);
         std::vector<Component*> renderableComponents;
         glm::vec4 clearColor = glm::vec4(0,0,0,1);
+        int layerMask = 0xffffffff;
         int clearFlag; // default clear color clear depth
-        void* renderTarget = nullptr;
+        bool shadow = false;
+        TextureRenderTarget* target = nullptr;
     };
 }

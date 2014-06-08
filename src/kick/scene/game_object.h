@@ -44,13 +44,16 @@ namespace kick {
         Transform *getTransform(){ return transform; }
         
         Scene* getScene(){ return scene; }
-        
+
+        int getLayer() const;
+        void setLayer(int layer);
         friend class Scene;
     private:
         void fireComponentEvent(Component* component, ComponentUpdateStatus status);
         GameObject(const std::string &name, Scene *scene);
         Scene *scene;
         std::string name;
+        int layer = 1;
         bool destroyed = false;
         std::vector<Component*> components;
         std::vector<std::function<void (Component*, ComponentUpdateStatus)>> componentListeners;

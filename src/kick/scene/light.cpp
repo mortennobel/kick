@@ -58,4 +58,14 @@ namespace kick {
     void Light::setAttenuation(glm::vec3 attenuation) {
         Light::attenuation = attenuation;
     }
+
+    ShadowType const &Light::getShadowType() const {
+        return shadowType;
+    }
+
+    void Light::setShadowType(ShadowType const &shadowType) {
+        Light::shadowType = shadowType;
+    }
+
+
 }

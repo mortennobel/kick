@@ -30,6 +30,7 @@ namespace kick {
         void setTextureSampler(const TextureSampler & textureSampler);
         TextureSampler getTextureSampler() const;
         ImageFormat getImageFormat() const;
+        friend class TextureRenderTarget;
     private:
         GLuint textureid;
         int width = -1;

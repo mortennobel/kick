@@ -22,6 +22,12 @@ namespace kick {
         Directional,
         Point
     };
+
+    enum class ShadowType{
+        None,
+        Hard,
+        Soft
+    };
     
     class Light : public Component {
     public:
@@ -36,6 +42,8 @@ namespace kick {
         glm::vec3 getAttenuation() const;
         void setAttenuation(glm::vec3 attenuation);
         Event<Light*> lightTypeChanged;
+        ShadowType const & getShadowType() const;
+        void setShadowType(ShadowType const &shadowType);
     private:
         void updateIntensity();
         glm::vec3 colorIntensity = glm::vec3(1,1,1);
@@ -43,5 +51,6 @@ namespace kick {
         glm::vec3 attenuation = glm::vec3(1,0,0);
         float intensity = 1;
         LightType lightType = LightType::Uninitialized;
+        ShadowType shadowType = ShadowType::None;
     };
 }
