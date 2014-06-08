@@ -28,6 +28,7 @@ vec3 getPointLightDiffuse(vec3 normal, vec3 ecPosition, mat3 pLights[LIGHTS]){
     return diffuse;
 }
 
+// // modified blin-phong
 void getPointLight(vec3 normal, vec3 ecPosition, mat3 pLights[LIGHTS],float specularExponent, out vec3 diffuse, out float specular){
     diffuse = vec3(0.0, 0.0, 0.0);
     specular = 0.0;
@@ -52,13 +53,9 @@ void getPointLight(vec3 normal, vec3 ecPosition, mat3 pLights[LIGHTS],float spec
         vec3 halfVector = normalize(VP + eye);
 
         float nDotVP = max(0.0, dot(normal, VP));
-        float pf;
-        if (nDotVP <= 0.0){
-            pf = 0.0;
-        } else {
-            float nDotHV = max(0.0, dot(normal, halfVector));
-            pf = pow(nDotHV, specularExponent);
-        }
+        float nDotHV = max(0.0, dot(normal, halfVector));
+        float pf = nDotVP * pow(nDotHV, specularExponent);
+
         bool isLightEnabled = (attenuationVector[0]+attenuationVector[1]+attenuationVector[2]) > 0.0;
         if (isLightEnabled){
             diffuse += colorIntensity * nDotVP * attenuation;
@@ -75,15 +72,14 @@ vec3 getDirectionalLightDiffuse(vec3 normal, mat3 dLight){
 }
 
 // assumes that normal is normalized
+// modified blin-phong
 void getDirectionalLight(vec3 normal, mat3 dLight, float specularExponent, out vec3 diffuse, out float specular){
     vec3 ecLightDir = dLight[0]; // light direction in eye coordinates
     vec3 colorIntensity = dLight[1];
     vec3 halfVector = dLight[2];
     float diffuseContribution = max(dot(normal, -ecLightDir), 0.0);
-    float specularContribution = 0;
-    if (diffuseContribution>0){
-        specularContribution = max(dot(normal, halfVector), 0.0);
-    }
+    float specularContribution = diffuseContribution * max(dot(normal, halfVector), 0.0);
+
     specular =  pow(specularContribution, specularExponent);
     diffuse = (colorIntensity * diffuseContribution);
 }
