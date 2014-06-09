@@ -130,7 +130,7 @@ namespace kick {
         setupCamera(engineUniforms);
         engineUniforms->sceneLights->recomputeLight(engineUniforms->viewMatrix);
         for (auto c : renderableComponents){
-            if (c->getGameObject()->getLayer() & layerMask) {
+            if (c->getGameObject()->getLayer() & cullingMask) {
                 c->render(engineUniforms);
             }
         }
@@ -210,12 +210,12 @@ namespace kick {
     void Camera::destroyShadowMap() {
     }
 
-    int Camera::getLayerMask() const {
-        return layerMask;
+    int Camera::getCullingMask() const {
+        return cullingMask;
     }
 
-    void Camera::setLayerMask(int layerMask) {
-        Camera::layerMask = layerMask;
+    void Camera::setCullingMask(int cullingMask) {
+        Camera::cullingMask = cullingMask;
     }
 
     TextureRenderTarget *Camera::getTarget() const {

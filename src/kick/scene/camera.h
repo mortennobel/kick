@@ -43,8 +43,8 @@ namespace kick {
         void setProjectionMatrix(glm::mat4 projectionMatrix);
         bool isShadow() const;
         void setShadow(bool renderShadow);
-        int getLayerMask() const;
-        void setLayerMask(int layerMask);
+        int getCullingMask() const;
+        void setCullingMask(int cullingMask);
         TextureRenderTarget * getTarget() const;
         void setTarget(TextureRenderTarget *target);
     protected:
@@ -63,7 +63,7 @@ namespace kick {
         void setupViewport(glm::vec2 &offset, glm::vec2 &dim);
         std::vector<Component*> renderableComponents;
         glm::vec4 clearColor = glm::vec4(0,0,0,1);
-        int layerMask = 0xffffffff;
+        int cullingMask = 0xffffffff;
         int clearFlag; // default clear color clear depth
         bool shadow = false;
         TextureRenderTarget* target = nullptr;
