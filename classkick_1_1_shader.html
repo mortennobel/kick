@@ -66,6 +66,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">kick::Shader Class Reference</div>  </div>
@@ -135,10 +136,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setBlendDFactorRGB</b
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setBlendSFactorAlpha</b> (BlendType blendSFactorAlpha)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a73a1f06d18854c310305c28cf8c0510f"></a><!-- doxytag: member="kick::Shader::setBlendSFactorRGB" ref="a73a1f06d18854c310305c28cf8c0510f" args="(BlendType blendSFactorRGB)" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setBlendSFactorRGB</b> (BlendType blendSFactorRGB)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ada0d3c907fe21dd85d1c1125026bb457"></a><!-- doxytag: member="kick::Shader::setDepthMask" ref="ada0d3c907fe21dd85d1c1125026bb457" args="(bool depthMask)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setDepthMask</b> (bool depthMask)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8aa486e8f9d2af3bf97955ce43aadd06"></a><!-- doxytag: member="kick::Shader::getDepthMash" ref="a8aa486e8f9d2af3bf97955ce43aadd06" args="()" -->
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>getDepthMash</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4ee574b3c56f89b32da46cd83ec24eae"></a><!-- doxytag: member="kick::Shader::setDepthWrite" ref="a4ee574b3c56f89b32da46cd83ec24eae" args="(bool depthMask)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setDepthWrite</b> (bool depthMask)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7af2b060d61c2474437adcdbb33f5992"></a><!-- doxytag: member="kick::Shader::getDepthWrite" ref="a7af2b060d61c2474437adcdbb33f5992" args="()" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>getDepthWrite</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ade4dcc36fef8340cde8ac9578181bcad"></a><!-- doxytag: member="kick::Shader::setFaceCulling" ref="ade4dcc36fef8340cde8ac9578181bcad" args="(FaceCullingType faceCulling)" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setFaceCulling</b> (FaceCullingType faceCulling)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa857e2ea81d2b3e32e047862ac5e93c7"></a><!-- doxytag: member="kick::Shader::getFaceCulling" ref="aa857e2ea81d2b3e32e047862ac5e93c7" args="()" -->
@@ -162,17 +163,26 @@ const std::vector<br class="typebreak"/>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>bind_uniforms</b> (<a class="el" href="classkick_1_1_material.html">Material</a> *material, <a class="el" href="structkick_1_1_engine_uniforms.html">EngineUniforms</a> *engineUniforms, <a class="el" href="classkick_1_1_transform.html">Transform</a> *transform)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a16322de7b5eee6f249ad2b0aebc54825"></a><!-- doxytag: member="kick::Shader::getShaderProgram" ref="a16322de7b5eee6f249ad2b0aebc54825" args="()" -->
 GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>getShaderProgram</b> ()</td></tr>
+<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="afed608d807af198211109c9572ccc72d"></a><!-- doxytag: member="kick::Shader::setDefaultUniform" ref="afed608d807af198211109c9572ccc72d" args="(std::string name, E value)" -->
+template&lt;class E &gt; </td></tr>
+<tr><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setDefaultUniform</b> (std::string name, E value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5a9625a8733394d7169c00e4f857c570"></a><!-- doxytag: member="kick::Shader::tryGetDefaultUniform" ref="a5a9625a8733394d7169c00e4f857c570" args="(std::string name, MaterialData &amp;value)" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>tryGetDefaultUniform</b> (std::string name, <a class="el" href="structkick_1_1_material_data.html">MaterialData</a> &amp;value)</td></tr>
+<tr><td colspan="2"><h2><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af26aecb2b5df1898d205a788ed625c42"></a><!-- doxytag: member="kick::Shader::getPrecompiledSource" ref="af26aecb2b5df1898d205a788ed625c42" args="(std::string source)" -->
+static std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getPrecompiledSource</b> (std::string source)</td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a84085d5f33fc95f0364b761c234e89e0"></a><!-- doxytag: member="kick::Shader::shaderProgramChanged" ref="a84085d5f33fc95f0364b761c234e89e0" args="" -->
-<a class="el" href="classkick_1_1_event.html">Event</a>&lt; <a class="el" href="classkick_1_1_shader.html">Shader</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>shaderProgramChanged</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afb9f544426fd98f56ca1d88e2c212441"></a><!-- doxytag: member="kick::Shader::shaderChanged" ref="afb9f544426fd98f56ca1d88e2c212441" args="" -->
+<a class="el" href="classkick_1_1_event.html">Event</a>&lt; <a class="el" href="structkick_1_1_shader_event.html">ShaderEvent</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>shaderChanged</b></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="shader_8h_source.html#l00030">30</a> of file <a class="el" href="shader_8h_source.html">shader.h</a>.</p>
+<p>Definition at line <a class="el" href="shader_8h_source.html#l00034">34</a> of file <a class="el" href="shader_8h_source.html">shader.h</a>.</p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
-<li>kick/material/<a class="el" href="shader_8h_source.html">shader.h</a></li>
-<li>kick/material/<a class="el" href="shader_8cpp_source.html">shader.cpp</a></li>
+<li>/Users/morten/Programmering/cpp/kick/src/kick/material/<a class="el" href="shader_8h_source.html">shader.h</a></li>
+<li>/Users/morten/Programmering/cpp/kick/src/kick/material/<a class="el" href="shader_8cpp_source.html">shader.cpp</a></li>
 </ul>
 </div>
 <!-- window showing the filter options -->
@@ -189,7 +199,7 @@ Public Attributes</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sun May 18 2014 13:07:33 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Jun 10 2014 21:47:05 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

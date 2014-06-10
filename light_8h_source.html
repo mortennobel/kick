@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>kick: kick/scene/light.h Source File</title>
+<title>kick: /Users/morten/Programmering/cpp/kick/src/kick/scene/light.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
@@ -55,7 +55,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 <div class="header">
   <div class="headertitle">
-<div class="title">kick/scene/light.h</div>  </div>
+<div class="title">/Users/morten/Programmering/cpp/kick/src/kick/scene/light.h</div>  </div>
 </div>
 <div class="contents">
 <div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">//</span>
@@ -70,40 +70,50 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00010"></a>00010 <span class="preprocessor"></span>
 <a name="l00011"></a>00011 <span class="preprocessor">#include &quot;kick/scene/component.h&quot;</span>
 <a name="l00012"></a>00012 <span class="preprocessor">#include &quot;kick/core/event.h&quot;</span>
-<a name="l00013"></a>00013 <span class="preprocessor">#include &lt;glm/glm.hpp&gt;</span>
-<a name="l00014"></a>00014 
-<a name="l00015"></a>00015 <span class="keyword">namespace </span>kick {
-<a name="l00016"></a>00016     <span class="keyword">class </span>GameObject;
-<a name="l00017"></a>00017     
-<a name="l00018"></a>00018     <span class="keyword">enum class</span> LightType{
-<a name="l00019"></a>00019         Uninitialized,
-<a name="l00020"></a>00020         Ambient,
-<a name="l00021"></a>00021         Directional,
-<a name="l00022"></a>00022         Point
-<a name="l00023"></a>00023     };
-<a name="l00024"></a>00024     
-<a name="l00025"></a><a class="code" href="classkick_1_1_light.html">00025</a>     <span class="keyword">class </span><a class="code" href="classkick_1_1_light.html">Light</a> : <span class="keyword">public</span> <a class="code" href="classkick_1_1_component.html">Component</a> {
-<a name="l00026"></a>00026     <span class="keyword">public</span>:
-<a name="l00027"></a>00027         <a class="code" href="classkick_1_1_light.html">Light</a>(<a class="code" href="classkick_1_1_game_object.html">GameObject</a> *gameObject);
-<a name="l00028"></a>00028         <span class="keywordtype">void</span> setColor(glm::vec3 color);
-<a name="l00029"></a>00029         glm::vec3 getColor();
-<a name="l00030"></a>00030         <span class="keywordtype">void</span> setIntensity(<span class="keywordtype">float</span> intensity);
-<a name="l00031"></a>00031         <span class="keywordtype">float</span> getIntensity();
-<a name="l00032"></a>00032         glm::vec3 getColorIntensity();
-<a name="l00033"></a>00033         <span class="keywordtype">void</span> setLightType(LightType lightType);
-<a name="l00034"></a>00034         LightType getLightType();
-<a name="l00035"></a>00035         glm::vec3 getAttenuation() <span class="keyword">const</span>;
-<a name="l00036"></a>00036         <span class="keywordtype">void</span> setAttenuation(glm::vec3 attenuation);
-<a name="l00037"></a>00037         <a class="code" href="classkick_1_1_event.html">Event&lt;Light*&gt;</a> lightTypeChanged;
-<a name="l00038"></a>00038     <span class="keyword">private</span>:
-<a name="l00039"></a>00039         <span class="keywordtype">void</span> updateIntensity();
-<a name="l00040"></a>00040         glm::vec3 colorIntensity = glm::vec3(1,1,1);
-<a name="l00041"></a>00041         glm::vec3 color = glm::vec3(1,1,1);
-<a name="l00042"></a>00042         glm::vec3 attenuation = glm::vec3(1,0,0);
-<a name="l00043"></a>00043         <span class="keywordtype">float</span> intensity = 1;
-<a name="l00044"></a>00044         LightType lightType = LightType::Uninitialized;
-<a name="l00045"></a>00045     };
-<a name="l00046"></a>00046 }
+<a name="l00013"></a>00013 <span class="preprocessor">#define GLM_FORCE_RADIANS</span>
+<a name="l00014"></a>00014 <span class="preprocessor"></span><span class="preprocessor">#include &lt;glm/glm.hpp&gt;</span>
+<a name="l00015"></a>00015 
+<a name="l00016"></a>00016 <span class="keyword">namespace </span>kick {
+<a name="l00017"></a>00017     <span class="keyword">class </span>GameObject;
+<a name="l00018"></a>00018     
+<a name="l00019"></a>00019     <span class="keyword">enum class</span> LightType{
+<a name="l00020"></a>00020         Uninitialized,
+<a name="l00021"></a>00021         Ambient,
+<a name="l00022"></a>00022         Directional,
+<a name="l00023"></a>00023         Point
+<a name="l00024"></a>00024     };
+<a name="l00025"></a>00025 
+<a name="l00026"></a>00026     <span class="keyword">enum class</span> ShadowType{
+<a name="l00027"></a>00027         None,
+<a name="l00028"></a>00028         Hard,
+<a name="l00029"></a>00029         Soft
+<a name="l00030"></a>00030     };
+<a name="l00031"></a>00031     
+<a name="l00032"></a><a class="code" href="classkick_1_1_light.html">00032</a>     <span class="keyword">class </span><a class="code" href="classkick_1_1_light.html">Light</a> : <span class="keyword">public</span> <a class="code" href="classkick_1_1_component.html">Component</a> {
+<a name="l00033"></a>00033     <span class="keyword">public</span>:
+<a name="l00034"></a>00034         <a class="code" href="classkick_1_1_light.html">Light</a>(<a class="code" href="classkick_1_1_game_object.html">GameObject</a> *gameObject);
+<a name="l00035"></a>00035         <span class="keywordtype">void</span> setColor(glm::vec3 color);
+<a name="l00036"></a>00036         glm::vec3 getColor();
+<a name="l00037"></a>00037         <span class="keywordtype">void</span> setIntensity(<span class="keywordtype">float</span> intensity);
+<a name="l00038"></a>00038         <span class="keywordtype">float</span> getIntensity();
+<a name="l00039"></a>00039         glm::vec3 getColorIntensity();
+<a name="l00040"></a>00040         <span class="keywordtype">void</span> setLightType(LightType lightType);
+<a name="l00041"></a>00041         LightType getLightType();
+<a name="l00042"></a>00042         glm::vec3 getAttenuation() <span class="keyword">const</span>;
+<a name="l00043"></a>00043         <span class="keywordtype">void</span> setAttenuation(glm::vec3 attenuation);
+<a name="l00044"></a>00044         <a class="code" href="classkick_1_1_event.html">Event&lt;Light*&gt;</a> lightTypeChanged;
+<a name="l00045"></a>00045         ShadowType <span class="keyword">const</span> &amp; getShadowType() <span class="keyword">const</span>;
+<a name="l00046"></a>00046         <span class="keywordtype">void</span> setShadowType(ShadowType <span class="keyword">const</span> &amp;shadowType);
+<a name="l00047"></a>00047     <span class="keyword">private</span>:
+<a name="l00048"></a>00048         <span class="keywordtype">void</span> updateIntensity();
+<a name="l00049"></a>00049         glm::vec3 colorIntensity = glm::vec3(1,1,1);
+<a name="l00050"></a>00050         glm::vec3 color = glm::vec3(1,1,1);
+<a name="l00051"></a>00051         glm::vec3 attenuation = glm::vec3(1,0,0);
+<a name="l00052"></a>00052         <span class="keywordtype">float</span> intensity = 1;
+<a name="l00053"></a>00053         LightType lightType = LightType::Uninitialized;
+<a name="l00054"></a>00054         ShadowType shadowType = ShadowType::None;
+<a name="l00055"></a>00055     };
+<a name="l00056"></a>00056 }
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -120,7 +130,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sun May 18 2014 13:07:33 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Jun 10 2014 21:47:04 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

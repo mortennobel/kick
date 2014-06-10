@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>kick: kick/kick.h Source File</title>
+<title>kick: /Users/morten/Programmering/cpp/kick/src/kick/kick.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
@@ -55,23 +55,42 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 <div class="header">
   <div class="headertitle">
-<div class="title">kick/kick.h</div>  </div>
+<div class="title">/Users/morten/Programmering/cpp/kick/src/kick/kick.h</div>  </div>
 </div>
 <div class="contents">
-<div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#include &quot;kick/context/sdl2_context.h&quot;</span>
-<a name="l00002"></a>00002 <span class="preprocessor">#include &quot;kick/context/context.h&quot;</span>
-<a name="l00003"></a>00003 <span class="preprocessor">#include &quot;kick/core/engine.h&quot;</span>
-<a name="l00004"></a>00004 <span class="preprocessor">#include &quot;kick/scene/game_object.h&quot;</span>
-<a name="l00005"></a>00005 <span class="preprocessor">#include &quot;kick/scene/camera.h&quot;</span>
-<a name="l00006"></a>00006 <span class="preprocessor">#include &quot;kick/scene/light.h&quot;</span>
-<a name="l00007"></a>00007 <span class="preprocessor">#include &quot;kick/scene/transform.h&quot;</span>
-<a name="l00008"></a>00008 <span class="preprocessor">#include &quot;kick/material/material.h&quot;</span>
-<a name="l00009"></a>00009 <span class="preprocessor">#include &quot;kick/material/shader.h&quot;</span>
-<a name="l00010"></a>00010 <span class="preprocessor">#include &quot;kick/core/project.h&quot;</span>
+<div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#pragma once</span>
+<a name="l00002"></a>00002 <span class="preprocessor"></span>
+<a name="l00003"></a>00003 <span class="preprocessor">#include &quot;kick/context/context.h&quot;</span>
+<a name="l00004"></a>00004 <span class="preprocessor">#include &quot;kick/core/engine.h&quot;</span>
+<a name="l00005"></a>00005 <span class="preprocessor">#include &quot;kick/core/event.h&quot;</span>
+<a name="l00006"></a>00006 <span class="preprocessor">#include &quot;kick/core/key_input.h&quot;</span>
+<a name="l00007"></a>00007 <span class="preprocessor">#include &quot;kick/core/mouse_input.h&quot;</span>
+<a name="l00008"></a>00008 <span class="preprocessor">#include &quot;kick/core/project.h&quot;</span>
+<a name="l00009"></a>00009 <span class="preprocessor">#include &quot;kick/core/project_asset.h&quot;</span>
+<a name="l00010"></a>00010 <span class="preprocessor">#include &quot;kick/core/time.h&quot;</span>
 <a name="l00011"></a>00011 <span class="preprocessor">#include &quot;kick/material/material.h&quot;</span>
-<a name="l00012"></a>00012 <span class="preprocessor">#include &quot;kick/mesh/mesh_data.h&quot;</span>
-<a name="l00013"></a>00013 <span class="preprocessor">#include &quot;kick/texture/texture2d.h&quot;</span>
-<a name="l00014"></a>00014 <span class="preprocessor">#include &quot;kick/texture/image_format.h&quot;</span>
+<a name="l00012"></a>00012 <span class="preprocessor">#include &quot;kick/material/shader.h&quot;</span>
+<a name="l00013"></a>00013 <span class="preprocessor">#include &quot;kick/math/aabb.h&quot;</span>
+<a name="l00014"></a>00014 <span class="preprocessor">#include &quot;kick/math/frustum.h&quot;</span>
+<a name="l00015"></a>00015 <span class="preprocessor">#include &quot;kick/math/glm_ext.h&quot;</span>
+<a name="l00016"></a>00016 <span class="preprocessor">#include &quot;kick/math/ray.h&quot;</span>
+<a name="l00017"></a>00017 <span class="preprocessor">#include &quot;kick/mesh/mesh.h&quot;</span>
+<a name="l00018"></a>00018 <span class="preprocessor">#include &quot;kick/mesh/mesh_data.h&quot;</span>
+<a name="l00019"></a>00019 <span class="preprocessor">#include &quot;kick/mesh/mesh_factory.h&quot;</span>
+<a name="l00020"></a>00020 <span class="preprocessor">#include &quot;kick/scene/camera.h&quot;</span>
+<a name="l00021"></a>00021 <span class="preprocessor">#include &quot;kick/scene/component.h&quot;</span>
+<a name="l00022"></a>00022 <span class="preprocessor">#include &quot;kick/scene/component_updatable.h&quot;</span>
+<a name="l00023"></a>00023 <span class="preprocessor">#include &quot;kick/scene/component_renderable.h&quot;</span>
+<a name="l00024"></a>00024 <span class="preprocessor">#include &quot;kick/scene/engine_uniforms.h&quot;</span>
+<a name="l00025"></a>00025 <span class="preprocessor">#include &quot;kick/scene/game_object.h&quot;</span>
+<a name="l00026"></a>00026 <span class="preprocessor">#include &quot;kick/scene/light.h&quot;</span>
+<a name="l00027"></a>00027 <span class="preprocessor">#include &quot;kick/scene/mesh_renderer.h&quot;</span>
+<a name="l00028"></a>00028 <span class="preprocessor">#include &quot;kick/scene/scene.h&quot;</span>
+<a name="l00029"></a>00029 <span class="preprocessor">#include &quot;kick/scene/transform.h&quot;</span>
+<a name="l00030"></a>00030 <span class="preprocessor">#include &quot;kick/texture/texture2d.h&quot;</span>
+<a name="l00031"></a>00031 <span class="preprocessor">#include &quot;kick/texture/texture_cube.h&quot;</span>
+<a name="l00032"></a>00032 <span class="preprocessor">#include &quot;kick/texture/texture_render_target.h&quot;</span>
+<a name="l00033"></a>00033 <span class="preprocessor">#include &quot;kick/texture/image_format.h&quot;</span>
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -88,7 +107,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sun May 18 2014 13:07:33 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Jun 10 2014 21:47:04 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

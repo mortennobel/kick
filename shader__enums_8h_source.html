@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>kick: kick/material/shader_enums.h Source File</title>
+<title>kick: /Users/morten/Programmering/cpp/kick/src/kick/material/shader_enums.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
@@ -55,7 +55,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 <div class="header">
   <div class="headertitle">
-<div class="title">kick/material/shader_enums.h</div>  </div>
+<div class="title">/Users/morten/Programmering/cpp/kick/src/kick/material/shader_enums.h</div>  </div>
 </div>
 <div class="contents">
 <div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">//</span>
@@ -69,146 +69,160 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00009"></a>00009 <span class="preprocessor">#include &lt;string&gt;</span>
 <a name="l00010"></a>00010 
 <a name="l00011"></a>00011 <span class="keyword">namespace </span>kick {
-<a name="l00012"></a>00012     <span class="keyword">enum class</span> ShaderType {
-<a name="l00013"></a>00013         VertexShader = GL_VERTEX_SHADER,
-<a name="l00014"></a>00014         FragmentShader = GL_FRAGMENT_SHADER,
-<a name="l00015"></a>00015         GeometryShader = GL_GEOMETRY_SHADER
-<a name="l00016"></a>00016     };
-<a name="l00017"></a>00017 
-<a name="l00018"></a>00018     <span class="keyword">enum class</span> ShaderErrorType {
-<a name="l00019"></a>00019         VertexShader = GL_VERTEX_SHADER,
-<a name="l00020"></a>00020         FragmentShader = GL_FRAGMENT_SHADER,
-<a name="l00021"></a>00021         GeometryShader = GL_GEOMETRY_SHADER,
-<a name="l00022"></a>00022         Linker,
-<a name="l00023"></a>00023         IncompleteShader
+<a name="l00012"></a>00012 
+<a name="l00013"></a>00013     <span class="keyword">class </span>Shader;
+<a name="l00014"></a>00014 
+<a name="l00015"></a>00015     <span class="keyword">enum class</span> ShaderEventType {
+<a name="l00016"></a>00016         all,
+<a name="l00017"></a>00017         shader,
+<a name="l00018"></a>00018         defaultUniform
+<a name="l00019"></a>00019     };
+<a name="l00020"></a>00020 
+<a name="l00021"></a><a class="code" href="structkick_1_1_shader_event.html">00021</a>     <span class="keyword">struct </span><a class="code" href="structkick_1_1_shader_event.html">ShaderEvent</a> {
+<a name="l00022"></a>00022         <a class="code" href="classkick_1_1_shader.html">Shader</a> *shader;
+<a name="l00023"></a>00023         ShaderEventType eventType;
 <a name="l00024"></a>00024     };
 <a name="l00025"></a>00025 
-<a name="l00026"></a>00026     <span class="keyword">enum class</span> BlendType {
-<a name="l00027"></a>00027         Zero = GL_ZERO,
-<a name="l00028"></a>00028         One = GL_ONE,
-<a name="l00029"></a>00029         SrcColor = GL_SRC_COLOR,
-<a name="l00030"></a>00030         OneMinusSrcColor = GL_ONE_MINUS_SRC_COLOR,
-<a name="l00031"></a>00031         DstColor = GL_DST_COLOR,
-<a name="l00032"></a>00032         OneMinusDstColor = GL_ONE_MINUS_DST_COLOR,
-<a name="l00033"></a>00033         SrcAlpha = GL_SRC_ALPHA,
-<a name="l00034"></a>00034         OneMinusSrcAlpha = GL_ONE_MINUS_SRC_ALPHA,
-<a name="l00035"></a>00035         DstAlpha = GL_DST_ALPHA,
-<a name="l00036"></a>00036         OneMinusDstAlpha = GL_ONE_MINUS_DST_ALPHA,
-<a name="l00037"></a>00037         ConstantColor = GL_CONSTANT_COLOR,
-<a name="l00038"></a>00038         OneMinusConstantColor = GL_ONE_MINUS_CONSTANT_COLOR,
-<a name="l00039"></a>00039         ConstantAlpha = GL_CONSTANT_ALPHA,
-<a name="l00040"></a>00040         OneMinusConstantAlpha = GL_ONE_MINUS_CONSTANT_ALPHA
-<a name="l00041"></a>00041     };
-<a name="l00042"></a>00042 
-<a name="l00043"></a>00043     <span class="keyword">enum class</span> FaceCullingType {
-<a name="l00044"></a>00044         Front = GL_FRONT,
-<a name="l00045"></a>00045         Back = GL_BACK,
-<a name="l00046"></a>00046         FrontAndBack = GL_FRONT_AND_BACK,
-<a name="l00047"></a>00047         None = GL_NONE
-<a name="l00048"></a>00048     };
-<a name="l00049"></a>00049 
-<a name="l00050"></a>00050     <span class="keyword">enum class</span> ZTestType {
-<a name="l00051"></a>00051         Never = GL_NEVER,
-<a name="l00052"></a>00052         Less = GL_LESS,
-<a name="l00053"></a>00053         Equal = GL_EQUAL,
-<a name="l00054"></a>00054         LEqual = GL_LEQUAL,
-<a name="l00055"></a>00055         Greater = GL_GREATER,
-<a name="l00056"></a>00056         NotEqual = GL_NOTEQUAL,
-<a name="l00057"></a>00057         GEqual = GL_GEQUAL,
-<a name="l00058"></a>00058         Always = GL_ALWAYS
-<a name="l00059"></a>00059     };
-<a name="l00060"></a>00060 
-<a name="l00061"></a>00061     <span class="keywordtype">bool</span> toEnum(<span class="keywordtype">int</span> value, ShaderType&amp; enumValue);
-<a name="l00062"></a>00062     <span class="keywordtype">bool</span> toEnum(<span class="keywordtype">int</span> value, ShaderErrorType&amp; enumValue);
-<a name="l00063"></a>00063     <span class="keywordtype">bool</span> toEnum(<span class="keywordtype">int</span> value, BlendType&amp; enumValue);
-<a name="l00064"></a>00064     <span class="keywordtype">bool</span> toEnum(<span class="keywordtype">int</span> value, FaceCullingType&amp; enumValue);
-<a name="l00065"></a>00065     <span class="keywordtype">bool</span> toEnum(<span class="keywordtype">int</span> value, ZTestType&amp; enumValue);
-<a name="l00066"></a>00066     <span class="keywordtype">bool</span> toEnum(<span class="keywordtype">int</span> value, FaceCullingType&amp; enumValue);
-<a name="l00067"></a>00067 
-<a name="l00068"></a><a class="code" href="classkick_1_1_shader_obj.html">00068</a>     <span class="keyword">class </span><a class="code" href="classkick_1_1_shader_obj.html">ShaderObj</a> {
-<a name="l00069"></a>00069     <span class="keyword">public</span>:
-<a name="l00070"></a>00070         <a class="code" href="classkick_1_1_shader_obj.html">ShaderObj</a>() {}
-<a name="l00071"></a>00071         <span class="keyword">explicit</span> <a class="code" href="classkick_1_1_shader_obj.html">ShaderObj</a>(ShaderType type);
-<a name="l00072"></a>00072         ~<a class="code" href="classkick_1_1_shader_obj.html">ShaderObj</a>();
-<a name="l00073"></a>00073         <a class="code" href="classkick_1_1_shader_obj.html">ShaderObj</a>(<a class="code" href="classkick_1_1_shader_obj.html">ShaderObj</a>&amp;&amp;);
-<a name="l00074"></a>00074         <a class="code" href="classkick_1_1_shader_obj.html">ShaderObj</a>(<span class="keyword">const</span> <a class="code" href="classkick_1_1_shader_obj.html">ShaderObj</a>&amp;) = <span class="keyword">delete</span>;
-<a name="l00075"></a>00075         <a class="code" href="classkick_1_1_shader_obj.html">ShaderObj</a>&amp; operator=(<a class="code" href="classkick_1_1_shader_obj.html">ShaderObj</a>&amp;&amp; other);
-<a name="l00076"></a>00076         <span class="keywordtype">void</span> detach(GLuint shaderProgram);
-<a name="l00077"></a>00077         operator GLuint() { <span class="keywordflow">return</span> shader; }
-<a name="l00078"></a>00078     <span class="keyword">private</span>:
-<a name="l00079"></a>00079         GLuint shader = 0;
-<a name="l00080"></a>00080     };
+<a name="l00026"></a>00026     <span class="keyword">enum class</span> ShaderType {
+<a name="l00027"></a>00027         VertexShader = GL_VERTEX_SHADER,
+<a name="l00028"></a>00028         FragmentShader = GL_FRAGMENT_SHADER,
+<a name="l00029"></a>00029         GeometryShader = GL_GEOMETRY_SHADER
+<a name="l00030"></a>00030     };
+<a name="l00031"></a>00031 
+<a name="l00032"></a>00032     <span class="keyword">enum class</span> ShaderErrorType {
+<a name="l00033"></a>00033         VertexShader = GL_VERTEX_SHADER,
+<a name="l00034"></a>00034         FragmentShader = GL_FRAGMENT_SHADER,
+<a name="l00035"></a>00035         GeometryShader = GL_GEOMETRY_SHADER,
+<a name="l00036"></a>00036         Linker,
+<a name="l00037"></a>00037         IncompleteShader
+<a name="l00038"></a>00038     };
+<a name="l00039"></a>00039 
+<a name="l00040"></a>00040     <span class="keyword">enum class</span> BlendType {
+<a name="l00041"></a>00041         Zero = GL_ZERO,
+<a name="l00042"></a>00042         One = GL_ONE,
+<a name="l00043"></a>00043         SrcColor = GL_SRC_COLOR,
+<a name="l00044"></a>00044         OneMinusSrcColor = GL_ONE_MINUS_SRC_COLOR,
+<a name="l00045"></a>00045         DstColor = GL_DST_COLOR,
+<a name="l00046"></a>00046         OneMinusDstColor = GL_ONE_MINUS_DST_COLOR,
+<a name="l00047"></a>00047         SrcAlpha = GL_SRC_ALPHA,
+<a name="l00048"></a>00048         OneMinusSrcAlpha = GL_ONE_MINUS_SRC_ALPHA,
+<a name="l00049"></a>00049         DstAlpha = GL_DST_ALPHA,
+<a name="l00050"></a>00050         OneMinusDstAlpha = GL_ONE_MINUS_DST_ALPHA,
+<a name="l00051"></a>00051         ConstantColor = GL_CONSTANT_COLOR,
+<a name="l00052"></a>00052         OneMinusConstantColor = GL_ONE_MINUS_CONSTANT_COLOR,
+<a name="l00053"></a>00053         ConstantAlpha = GL_CONSTANT_ALPHA,
+<a name="l00054"></a>00054         OneMinusConstantAlpha = GL_ONE_MINUS_CONSTANT_ALPHA
+<a name="l00055"></a>00055     };
+<a name="l00056"></a>00056 
+<a name="l00057"></a>00057     <span class="keyword">enum class</span> FaceCullingType {
+<a name="l00058"></a>00058         Front = GL_FRONT,
+<a name="l00059"></a>00059         Back = GL_BACK,
+<a name="l00060"></a>00060         FrontAndBack = GL_FRONT_AND_BACK,
+<a name="l00061"></a>00061         None = GL_NONE
+<a name="l00062"></a>00062     };
+<a name="l00063"></a>00063 
+<a name="l00064"></a>00064     <span class="keyword">enum class</span> ZTestType {
+<a name="l00065"></a>00065         Never = GL_NEVER,
+<a name="l00066"></a>00066         Less = GL_LESS,
+<a name="l00067"></a>00067         Equal = GL_EQUAL,
+<a name="l00068"></a>00068         LEqual = GL_LEQUAL,
+<a name="l00069"></a>00069         Greater = GL_GREATER,
+<a name="l00070"></a>00070         NotEqual = GL_NOTEQUAL,
+<a name="l00071"></a>00071         GEqual = GL_GEQUAL,
+<a name="l00072"></a>00072         Always = GL_ALWAYS
+<a name="l00073"></a>00073     };
+<a name="l00074"></a>00074 
+<a name="l00075"></a>00075     <span class="keywordtype">bool</span> toEnum(<span class="keywordtype">int</span> value, ShaderType&amp; enumValue);
+<a name="l00076"></a>00076     <span class="keywordtype">bool</span> toEnum(<span class="keywordtype">int</span> value, ShaderErrorType&amp; enumValue);
+<a name="l00077"></a>00077     <span class="keywordtype">bool</span> toEnum(<span class="keywordtype">int</span> value, BlendType&amp; enumValue);
+<a name="l00078"></a>00078     <span class="keywordtype">bool</span> toEnum(<span class="keywordtype">int</span> value, FaceCullingType&amp; enumValue);
+<a name="l00079"></a>00079     <span class="keywordtype">bool</span> toEnum(<span class="keywordtype">int</span> value, ZTestType&amp; enumValue);
+<a name="l00080"></a>00080     <span class="keywordtype">bool</span> toEnum(<span class="keywordtype">int</span> value, FaceCullingType&amp; enumValue);
 <a name="l00081"></a>00081 
-<a name="l00082"></a>00082 
-<a name="l00083"></a><a class="code" href="structkick_1_1_shader_build_exception.html">00083</a>     <span class="keyword">struct </span><a class="code" href="structkick_1_1_shader_build_exception.html">ShaderBuildException</a> {
-<a name="l00084"></a>00084         std::string errorMessage;
-<a name="l00085"></a>00085         ShaderErrorType errorType;
-<a name="l00086"></a>00086         std::string codeSnippet;
-<a name="l00087"></a>00087         <span class="keyword">static</span> <span class="keywordtype">void</span> throwCurrentCompileException(GLuint shader, ShaderErrorType type, std::string source);
-<a name="l00088"></a>00088         <span class="keyword">static</span> std::string extractLines(std::string errorMessage, std::string source, <span class="keywordtype">int</span> extraLines = 2);
-<a name="l00089"></a>00089     };
-<a name="l00090"></a>00090 
-<a name="l00091"></a><a class="code" href="structkick_1_1_attribute_descriptor.html">00091</a>     <span class="keyword">struct </span><a class="code" href="structkick_1_1_attribute_descriptor.html">AttributeDescriptor</a>  {
-<a name="l00092"></a>00092         GLuint index;
-<a name="l00093"></a>00093         GLint size;
-<a name="l00094"></a>00094         GLenum type;
-<a name="l00095"></a>00095         std::string name;
-<a name="l00096"></a>00096         VertexAttributeSemantic semantic;
-<a name="l00097"></a>00097     };
-<a name="l00098"></a>00098 
-<a name="l00099"></a><a class="code" href="structkick_1_1_uniform_descriptor.html">00099</a>     <span class="keyword">struct </span><a class="code" href="structkick_1_1_uniform_descriptor.html">UniformDescriptor</a>  {
-<a name="l00100"></a>00100         GLuint index;
-<a name="l00101"></a>00101         GLint size;
-<a name="l00102"></a>00102         GLenum type;
-<a name="l00103"></a>00103         std::string name;
-<a name="l00104"></a>00104     };
-<a name="l00105"></a>00105 
-<a name="l00106"></a>00106     <span class="keyword">namespace </span>UniformNames {
-<a name="l00107"></a>00107         <span class="keyword">const</span> std::string modelMatrix{<span class="stringliteral">&quot;_modelMatrix&quot;</span>};
-<a name="l00108"></a>00108         <span class="keyword">const</span> std::string mv{<span class="stringliteral">&quot;_mv&quot;</span>};
-<a name="l00109"></a>00109         <span class="keyword">const</span> std::string norm{<span class="stringliteral">&quot;_norm&quot;</span>};
-<a name="l00110"></a>00110         <span class="keyword">const</span> std::string v{<span class="stringliteral">&quot;_v&quot;</span>};
-<a name="l00111"></a>00111         <span class="keyword">const</span> std::string worldCamPos{<span class="stringliteral">&quot;_worldCamPos&quot;</span>};
-<a name="l00112"></a>00112         <span class="keyword">const</span> std::string world2object{<span class="stringliteral">&quot;_world2object&quot;</span>};
-<a name="l00113"></a>00113         <span class="keyword">const</span> std::string mvProj{<span class="stringliteral">&quot;_mvProj&quot;</span>};
-<a name="l00114"></a>00114         <span class="keyword">const</span> std::string proj{<span class="stringliteral">&quot;_proj&quot;</span>};
-<a name="l00115"></a>00115         <span class="keyword">const</span> std::string gameObjectUID{<span class="stringliteral">&quot;_gameObjectUID&quot;</span>};
-<a name="l00116"></a>00116         <span class="keyword">const</span> std::string shadowMapTexture{<span class="stringliteral">&quot;_shadowMapTexture&quot;</span>};
-<a name="l00117"></a>00117         <span class="keyword">const</span> std::string lightMat{<span class="stringliteral">&quot;_lightMat&quot;</span>};
-<a name="l00118"></a>00118         <span class="keyword">const</span> std::string ambient{<span class="stringliteral">&quot;_ambient&quot;</span>};
-<a name="l00119"></a>00119         <span class="keyword">const</span> std::string pointLight{<span class="stringliteral">&quot;_pLights[0]&quot;</span>};
-<a name="l00120"></a>00120         <span class="keyword">const</span> std::string directionalLight{<span class="stringliteral">&quot;_dLight&quot;</span>};
-<a name="l00121"></a>00121         <span class="keyword">const</span> std::string directionalLightWorld{<span class="stringliteral">&quot;_dLightWorldDir&quot;</span>};
-<a name="l00122"></a>00122         <span class="keyword">const</span> std::string time{<span class="stringliteral">&quot;_time&quot;</span>};
-<a name="l00123"></a>00123         <span class="keyword">const</span> std::string viewport{<span class="stringliteral">&quot;_viewport&quot;</span>};
-<a name="l00124"></a>00124 
-<a name="l00125"></a>00125         <span class="keyword">const</span> <span class="keyword">static</span> std::string list[] = {
-<a name="l00126"></a>00126                 modelMatrix,
-<a name="l00127"></a>00127                 mv,
-<a name="l00128"></a>00128                 norm,
-<a name="l00129"></a>00129                 v,
-<a name="l00130"></a>00130                 worldCamPos,
-<a name="l00131"></a>00131                 world2object,
-<a name="l00132"></a>00132                 mvProj,
-<a name="l00133"></a>00133                 proj,
-<a name="l00134"></a>00134                 gameObjectUID,
-<a name="l00135"></a>00135                 shadowMapTexture,
-<a name="l00136"></a>00136                 lightMat,
-<a name="l00137"></a>00137                 ambient,
-<a name="l00138"></a>00138                 pointLight,
-<a name="l00139"></a>00139                 directionalLight,
-<a name="l00140"></a>00140                 directionalLightWorld,
-<a name="l00141"></a>00141                 time,
-<a name="l00142"></a>00142                 viewport
-<a name="l00143"></a>00143         };
-<a name="l00144"></a>00144     };
-<a name="l00145"></a>00145 
-<a name="l00146"></a>00146     std::string to_string(AttributeDescriptor attDesc);
-<a name="l00147"></a>00147 
-<a name="l00148"></a>00148     std::string to_string(UniformDescriptor uniformDesc);
-<a name="l00149"></a>00149 }
-<a name="l00150"></a>00150 
-<a name="l00151"></a>00151 
+<a name="l00082"></a><a class="code" href="classkick_1_1_shader_obj.html">00082</a>     <span class="keyword">class </span><a class="code" href="classkick_1_1_shader_obj.html">ShaderObj</a> {
+<a name="l00083"></a>00083     <span class="keyword">public</span>:
+<a name="l00084"></a>00084         <a class="code" href="classkick_1_1_shader_obj.html">ShaderObj</a>() {}
+<a name="l00085"></a>00085         <span class="keyword">explicit</span> <a class="code" href="classkick_1_1_shader_obj.html">ShaderObj</a>(ShaderType type);
+<a name="l00086"></a>00086         ~<a class="code" href="classkick_1_1_shader_obj.html">ShaderObj</a>();
+<a name="l00087"></a>00087         <a class="code" href="classkick_1_1_shader_obj.html">ShaderObj</a>(<a class="code" href="classkick_1_1_shader_obj.html">ShaderObj</a>&amp;&amp;);
+<a name="l00088"></a>00088         <a class="code" href="classkick_1_1_shader_obj.html">ShaderObj</a>(<span class="keyword">const</span> <a class="code" href="classkick_1_1_shader_obj.html">ShaderObj</a>&amp;) = <span class="keyword">delete</span>;
+<a name="l00089"></a>00089         <a class="code" href="classkick_1_1_shader_obj.html">ShaderObj</a>&amp; operator=(<a class="code" href="classkick_1_1_shader_obj.html">ShaderObj</a>&amp;&amp; other);
+<a name="l00090"></a>00090         <span class="keywordtype">void</span> detach(GLuint shaderProgram);
+<a name="l00091"></a>00091         operator GLuint() { <span class="keywordflow">return</span> shader; }
+<a name="l00092"></a>00092     <span class="keyword">private</span>:
+<a name="l00093"></a>00093         GLuint shader = 0;
+<a name="l00094"></a>00094     };
+<a name="l00095"></a>00095 
+<a name="l00096"></a>00096 
+<a name="l00097"></a><a class="code" href="structkick_1_1_shader_build_exception.html">00097</a>     <span class="keyword">struct </span><a class="code" href="structkick_1_1_shader_build_exception.html">ShaderBuildException</a> {
+<a name="l00098"></a>00098         std::string errorMessage;
+<a name="l00099"></a>00099         ShaderErrorType errorType;
+<a name="l00100"></a>00100         std::string codeSnippet;
+<a name="l00101"></a>00101         <span class="keyword">static</span> <span class="keywordtype">void</span> throwCurrentCompileException(GLuint shader, ShaderErrorType type, std::string source);
+<a name="l00102"></a>00102         <span class="keyword">static</span> std::string extractLines(std::string errorMessage, std::string source, <span class="keywordtype">int</span> extraLines = 2);
+<a name="l00103"></a>00103     };
+<a name="l00104"></a>00104 
+<a name="l00105"></a><a class="code" href="structkick_1_1_attribute_descriptor.html">00105</a>     <span class="keyword">struct </span><a class="code" href="structkick_1_1_attribute_descriptor.html">AttributeDescriptor</a>  {
+<a name="l00106"></a>00106         GLuint index;
+<a name="l00107"></a>00107         GLint size;
+<a name="l00108"></a>00108         GLenum type;
+<a name="l00109"></a>00109         std::string name;
+<a name="l00110"></a>00110         VertexAttributeSemantic semantic;
+<a name="l00111"></a>00111     };
+<a name="l00112"></a>00112 
+<a name="l00113"></a><a class="code" href="structkick_1_1_uniform_descriptor.html">00113</a>     <span class="keyword">struct </span><a class="code" href="structkick_1_1_uniform_descriptor.html">UniformDescriptor</a>  {
+<a name="l00114"></a>00114         GLuint index;
+<a name="l00115"></a>00115         GLint size;
+<a name="l00116"></a>00116         GLenum type;
+<a name="l00117"></a>00117         std::string name;
+<a name="l00118"></a>00118     };
+<a name="l00119"></a>00119 
+<a name="l00120"></a>00120     <span class="keyword">namespace </span>UniformNames {
+<a name="l00121"></a>00121         <span class="keyword">const</span> std::string modelMatrix{<span class="stringliteral">&quot;_modelMatrix&quot;</span>};
+<a name="l00122"></a>00122         <span class="keyword">const</span> std::string mv{<span class="stringliteral">&quot;_mv&quot;</span>};
+<a name="l00123"></a>00123         <span class="keyword">const</span> std::string norm{<span class="stringliteral">&quot;_norm&quot;</span>};
+<a name="l00124"></a>00124         <span class="keyword">const</span> std::string v{<span class="stringliteral">&quot;_v&quot;</span>};
+<a name="l00125"></a>00125         <span class="keyword">const</span> std::string worldCamPos{<span class="stringliteral">&quot;_worldCamPos&quot;</span>};
+<a name="l00126"></a>00126         <span class="keyword">const</span> std::string world2object{<span class="stringliteral">&quot;_world2object&quot;</span>};
+<a name="l00127"></a>00127         <span class="keyword">const</span> std::string mvProj{<span class="stringliteral">&quot;_mvProj&quot;</span>};
+<a name="l00128"></a>00128         <span class="keyword">const</span> std::string proj{<span class="stringliteral">&quot;_proj&quot;</span>};
+<a name="l00129"></a>00129         <span class="keyword">const</span> std::string gameObjectUID{<span class="stringliteral">&quot;_gameObjectUID&quot;</span>};
+<a name="l00130"></a>00130         <span class="keyword">const</span> std::string shadowMapTexture{<span class="stringliteral">&quot;_shadowMapTexture&quot;</span>};
+<a name="l00131"></a>00131         <span class="keyword">const</span> std::string lightMat{<span class="stringliteral">&quot;_lightMat&quot;</span>};
+<a name="l00132"></a>00132         <span class="keyword">const</span> std::string ambient{<span class="stringliteral">&quot;_ambient&quot;</span>};
+<a name="l00133"></a>00133         <span class="keyword">const</span> std::string pointLight{<span class="stringliteral">&quot;_pLights[0]&quot;</span>};
+<a name="l00134"></a>00134         <span class="keyword">const</span> std::string directionalLight{<span class="stringliteral">&quot;_dLight&quot;</span>};
+<a name="l00135"></a>00135         <span class="keyword">const</span> std::string directionalLightWorld{<span class="stringliteral">&quot;_dLightWorldDir&quot;</span>};
+<a name="l00136"></a>00136         <span class="keyword">const</span> std::string time{<span class="stringliteral">&quot;_time&quot;</span>};
+<a name="l00137"></a>00137         <span class="keyword">const</span> std::string viewport{<span class="stringliteral">&quot;_viewport&quot;</span>};
+<a name="l00138"></a>00138 
+<a name="l00139"></a>00139         <span class="keyword">const</span> <span class="keyword">static</span> std::string list[] = {
+<a name="l00140"></a>00140                 modelMatrix,
+<a name="l00141"></a>00141                 mv,
+<a name="l00142"></a>00142                 norm,
+<a name="l00143"></a>00143                 v,
+<a name="l00144"></a>00144                 worldCamPos,
+<a name="l00145"></a>00145                 world2object,
+<a name="l00146"></a>00146                 mvProj,
+<a name="l00147"></a>00147                 proj,
+<a name="l00148"></a>00148                 gameObjectUID,
+<a name="l00149"></a>00149                 shadowMapTexture,
+<a name="l00150"></a>00150                 lightMat,
+<a name="l00151"></a>00151                 ambient,
+<a name="l00152"></a>00152                 pointLight,
+<a name="l00153"></a>00153                 directionalLight,
+<a name="l00154"></a>00154                 directionalLightWorld,
+<a name="l00155"></a>00155                 time,
+<a name="l00156"></a>00156                 viewport
+<a name="l00157"></a>00157         };
+<a name="l00158"></a>00158     };
+<a name="l00159"></a>00159 
+<a name="l00160"></a>00160     std::string to_string(AttributeDescriptor attDesc);
+<a name="l00161"></a>00161 
+<a name="l00162"></a>00162     std::string to_string(UniformDescriptor uniformDesc);
+<a name="l00163"></a>00163 }
+<a name="l00164"></a>00164 
+<a name="l00165"></a>00165 
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -225,7 +239,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sun May 18 2014 13:07:33 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Jun 10 2014 21:47:04 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

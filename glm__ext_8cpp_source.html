@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>kick: kick/math/glm_ext.cpp Source File</title>
+<title>kick: /Users/morten/Programmering/cpp/kick/src/kick/math/glm_ext.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
@@ -55,7 +55,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 <div class="header">
   <div class="headertitle">
-<div class="title">kick/math/glm_ext.cpp</div>  </div>
+<div class="title">/Users/morten/Programmering/cpp/kick/src/kick/math/glm_ext.cpp</div>  </div>
 </div>
 <div class="contents">
 <div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">//</span>
@@ -68,140 +68,130 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00008"></a>00008 
 <a name="l00009"></a>00009 <span class="preprocessor">#include &quot;kick/math/glm_ext.h&quot;</span>
 <a name="l00010"></a>00010 
-<a name="l00011"></a>00011 <span class="keyword">using namespace </span>glm;
+<a name="l00011"></a>00011 
 <a name="l00012"></a>00012 
-<a name="l00013"></a>00013 <span class="keyword">namespace </span>kick {
-<a name="l00014"></a>00014     glm::mat4 Math::TRS(glm::vec3 translate, glm::quat rotateQuat, glm::vec3 scale){
-<a name="l00015"></a>00015         glm::mat4 res;
-<a name="l00016"></a>00016         <span class="keywordtype">float</span> *out = &amp;(res[0][0]);
-<a name="l00017"></a>00017         <span class="comment">// Quaternion math</span>
-<a name="l00018"></a>00018         <span class="keywordtype">float</span> scaleX = scale[0], scaleY = scale[1], scaleZ = scale[2],
-<a name="l00019"></a>00019         x = rotateQuat[0], y = rotateQuat[1], z = rotateQuat[2], w = rotateQuat[3],
-<a name="l00020"></a>00020         x2 = x + x,
-<a name="l00021"></a>00021         y2 = y + y,
-<a name="l00022"></a>00022         z2 = z + z,
-<a name="l00023"></a>00023         
-<a name="l00024"></a>00024         xx = x * x2,
-<a name="l00025"></a>00025         xy = x * y2,
-<a name="l00026"></a>00026         xz = x * z2,
-<a name="l00027"></a>00027         yy = y * y2,
-<a name="l00028"></a>00028         yz = y * z2,
-<a name="l00029"></a>00029         zz = z * z2,
-<a name="l00030"></a>00030         wx = w * x2,
-<a name="l00031"></a>00031         wy = w * y2,
-<a name="l00032"></a>00032         wz = w * z2;
-<a name="l00033"></a>00033         
-<a name="l00034"></a>00034         out[0] = (1 - (yy + zz)) * scaleX;
-<a name="l00035"></a>00035         out[1] = (xy + wz) * scaleX;
-<a name="l00036"></a>00036         out[2] = (xz - wy) * scaleX;
-<a name="l00037"></a>00037         out[3] = 0;
-<a name="l00038"></a>00038         out[4] = (xy - wz) * scaleY;
-<a name="l00039"></a>00039         out[5] = (1 - (xx + zz)) * scaleY;
-<a name="l00040"></a>00040         out[6] = (yz + wx) * scaleY;
-<a name="l00041"></a>00041         out[7] = 0;
-<a name="l00042"></a>00042         out[8] = (xz + wy) * scaleZ;
-<a name="l00043"></a>00043         out[9] = (yz - wx) * scaleZ;
-<a name="l00044"></a>00044         out[10] = (1 - (xx + yy)) * scaleZ;
-<a name="l00045"></a>00045         out[11] = 0;
-<a name="l00046"></a>00046         out[12] = translate[0];
-<a name="l00047"></a>00047         out[13] = translate[1];
-<a name="l00048"></a>00048         out[14] = translate[2];
-<a name="l00049"></a>00049         out[15] = 1;
-<a name="l00050"></a>00050         
-<a name="l00051"></a>00051         <span class="keywordflow">return</span> res;
-<a name="l00052"></a>00052     }
-<a name="l00053"></a>00053     
-<a name="l00054"></a>00054     glm::mat4 Math::TRSInverse(glm::vec3 translate, glm::quat rotateQuat, glm::vec3 scale){
-<a name="l00055"></a>00055         <span class="comment">// Quaternion math</span>
-<a name="l00056"></a>00056         <span class="keywordtype">float</span> scaleX = scale.x, scaleY = scale.y, scaleZ = scale.z,
-<a name="l00057"></a>00057         x = rotateQuat.x, y = rotateQuat.y, z = rotateQuat.z, w = rotateQuat.w,
-<a name="l00058"></a>00058         x2 = x + x,
-<a name="l00059"></a>00059         y2 = y + y,
-<a name="l00060"></a>00060         z2 = z + z,
-<a name="l00061"></a>00061         
-<a name="l00062"></a>00062         xx = x * x2,
-<a name="l00063"></a>00063         xy = x * y2,
-<a name="l00064"></a>00064         xz = x * z2,
-<a name="l00065"></a>00065         yy = y * y2,
-<a name="l00066"></a>00066         yz = y * z2,
-<a name="l00067"></a>00067         zz = z * z2,
-<a name="l00068"></a>00068         wx = w * x2,
-<a name="l00069"></a>00069         wy = w * y2,
-<a name="l00070"></a>00070         wz = w * z2,
-<a name="l00071"></a>00071         
-<a name="l00072"></a>00072         <span class="comment">// compute trs</span>
-<a name="l00073"></a>00073         a00 = (1 - (yy + zz)) * scaleX,
-<a name="l00074"></a>00074         a01 = (xy + wz) * scaleX,
-<a name="l00075"></a>00075         a02 = (xz - wy) * scaleX,
-<a name="l00076"></a>00076         a10 = (xy - wz) * scaleY,
-<a name="l00077"></a>00077         a11 = (1 - (xx + zz)) * scaleY,
-<a name="l00078"></a>00078         a12 = (yz + wx) * scaleY,
-<a name="l00079"></a>00079         a20 = (xz + wy) * scaleZ,
-<a name="l00080"></a>00080         a21 = (yz - wx) * scaleZ,
-<a name="l00081"></a>00081         a22 = (1 - (xx + yy)) * scaleZ,
-<a name="l00082"></a>00082         a30 = translate[0],
-<a name="l00083"></a>00083         a31 = translate[1],
-<a name="l00084"></a>00084         a32 = translate[2],
-<a name="l00085"></a>00085         a33 = 1,
-<a name="l00086"></a>00086         <span class="comment">// compute inverse</span>
-<a name="l00087"></a>00087         b00 = a00 * a11 - a01 * a10,
-<a name="l00088"></a>00088         b01 = a00 * a12 - a02 * a10,
-<a name="l00089"></a>00089         b03 = a01 * a12 - a02 * a11,
-<a name="l00090"></a>00090         b06 = a20 * a31 - a21 * a30,
-<a name="l00091"></a>00091         b07 = a20 * a32 - a22 * a30,
-<a name="l00092"></a>00092         b08 = a20 * a33,
-<a name="l00093"></a>00093         b09 = a21 * a32 - a22 * a31,
-<a name="l00094"></a>00094         b10 = a21 * a33,
-<a name="l00095"></a>00095         b11 = a22 * a33,
-<a name="l00096"></a>00096         
-<a name="l00097"></a>00097         d = (b00 * b11 - b01 * b10 + b03 * b08),
-<a name="l00098"></a>00098         invDet;
-<a name="l00099"></a>00099         
-<a name="l00100"></a>00100         mat4 res;
-<a name="l00101"></a>00101         <span class="keywordtype">float</span> *out = &amp;(res[0][0]);
-<a name="l00102"></a>00102         <span class="comment">// Calculate the determinant</span>
-<a name="l00103"></a>00103         <span class="keywordflow">if</span> (!d) { <span class="keywordflow">return</span> res; }
-<a name="l00104"></a>00104         invDet = 1 / d;
-<a name="l00105"></a>00105         
-<a name="l00106"></a>00106         out[0] = (a11 * b11 - a12 * b10) * invDet;
-<a name="l00107"></a>00107         out[1] = (-a01 * b11 + a02 * b10) * invDet;
-<a name="l00108"></a>00108         out[2] = (a33 * b03) * invDet;
-<a name="l00109"></a>00109         out[3] = 0;
-<a name="l00110"></a>00110         out[4] = (-a10 * b11 + a12 * b08) * invDet;
-<a name="l00111"></a>00111         out[5] = (a00 * b11 - a02 * b08) * invDet;
-<a name="l00112"></a>00112         out[6] = (-a33 * b01) * invDet;
-<a name="l00113"></a>00113         out[7] = 0;
-<a name="l00114"></a>00114         out[8] = (a10 * b10 - a11 * b08) * invDet;
-<a name="l00115"></a>00115         out[9] = (-a00 * b10 + a01 * b08) * invDet;
-<a name="l00116"></a>00116         out[10] = (a33 * b00) * invDet;
-<a name="l00117"></a>00117         out[11] = 0;
-<a name="l00118"></a>00118         out[12] = (-a10 * b09 + a11 * b07 - a12 * b06) * invDet;
-<a name="l00119"></a>00119         out[13] = (a00 * b09 - a01 * b07 + a02 * b06) * invDet;
-<a name="l00120"></a>00120         out[14] = (-a30 * b03 + a31 * b01 - a32 * b00) * invDet;
-<a name="l00121"></a>00121         out[15] = (a20 * b03 - a21 * b01 + a22 * b00) * invDet;
-<a name="l00122"></a>00122         
-<a name="l00123"></a>00123         <span class="keywordflow">return</span> res;
-<a name="l00124"></a>00124     }
-<a name="l00125"></a>00125     
-<a name="l00126"></a>00126     
-<a name="l00127"></a>00127     glm::quat Math::lookAt(glm::vec3 position, glm::vec3 lookVector, glm::vec3 up){
-<a name="l00128"></a>00128         assert(lookVector != position);
-<a name="l00129"></a>00129         
-<a name="l00130"></a>00130         glm::vec3 direction = glm::normalize(lookVector-position);
-<a name="l00131"></a>00131         <span class="keywordtype">float</span> dot = glm::dot(glm::vec3(0, 0, 1), direction);
-<a name="l00132"></a>00132         <span class="keywordflow">if</span> (fabs(dot - (-1.0f)) &lt; 0.000001f) {
-<a name="l00133"></a>00133             <span class="keywordflow">return</span> glm::angleAxis((<span class="keywordtype">float</span>)M_PI, glm::vec3(0, 1, 0));
-<a name="l00134"></a>00134         }
-<a name="l00135"></a>00135         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (fabs(dot - (1.0f)) &lt; 0.000001f) {
-<a name="l00136"></a>00136             <span class="keywordflow">return</span> glm::quat();
-<a name="l00137"></a>00137         }
-<a name="l00138"></a>00138         
-<a name="l00139"></a>00139         <span class="keywordtype">float</span> angle = -acosf(dot);
-<a name="l00140"></a>00140         
-<a name="l00141"></a>00141         glm::vec3 cross = glm::normalize(glm::cross(glm::vec3(0, 0, 1), direction));
-<a name="l00142"></a>00142         <span class="keywordflow">return</span> glm::normalize(glm::angleAxis(angle, cross));
-<a name="l00143"></a>00143     }
-<a name="l00144"></a>00144 }
+<a name="l00013"></a>00013 <span class="keyword">using namespace </span>glm;
+<a name="l00014"></a>00014 
+<a name="l00015"></a>00015 <span class="keyword">namespace </span>kick {
+<a name="l00016"></a>00016     glm::mat4 Math::TRS(glm::vec3 translate, glm::quat rotateQuat, glm::vec3 scale){
+<a name="l00017"></a>00017         <span class="keywordflow">return</span> glm::translate(translate) * mat4_cast(rotateQuat) * glm::scale(scale);
+<a name="l00018"></a>00018         <span class="comment">/*glm::mat4 res;</span>
+<a name="l00019"></a>00019 <span class="comment">        float *out = &amp;(res[0][0]);</span>
+<a name="l00020"></a>00020 <span class="comment">        // Quaternion math</span>
+<a name="l00021"></a>00021 <span class="comment">        float scaleX = scale[0], scaleY = scale[1], scaleZ = scale[2],</span>
+<a name="l00022"></a>00022 <span class="comment">        x = rotateQuat[1], y = rotateQuat[2], z = rotateQuat[3], w = rotateQuat[0],</span>
+<a name="l00023"></a>00023 <span class="comment">        x2 = x + x,</span>
+<a name="l00024"></a>00024 <span class="comment">        y2 = y + y,</span>
+<a name="l00025"></a>00025 <span class="comment">        z2 = z + z,</span>
+<a name="l00026"></a>00026 <span class="comment">        </span>
+<a name="l00027"></a>00027 <span class="comment">        xx = x * x2,</span>
+<a name="l00028"></a>00028 <span class="comment">        xy = x * y2,</span>
+<a name="l00029"></a>00029 <span class="comment">        xz = x * z2,</span>
+<a name="l00030"></a>00030 <span class="comment">        yy = y * y2,</span>
+<a name="l00031"></a>00031 <span class="comment">        yz = y * z2,</span>
+<a name="l00032"></a>00032 <span class="comment">        zz = z * z2,</span>
+<a name="l00033"></a>00033 <span class="comment">        wx = w * x2,</span>
+<a name="l00034"></a>00034 <span class="comment">        wy = w * y2,</span>
+<a name="l00035"></a>00035 <span class="comment">        wz = w * z2;</span>
+<a name="l00036"></a>00036 <span class="comment">        </span>
+<a name="l00037"></a>00037 <span class="comment">        out[0] = (1 - (yy + zz)) * scaleX;</span>
+<a name="l00038"></a>00038 <span class="comment">        out[1] = (xy + wz) * scaleX;</span>
+<a name="l00039"></a>00039 <span class="comment">        out[2] = (xz - wy) * scaleX;</span>
+<a name="l00040"></a>00040 <span class="comment">        out[3] = 0;</span>
+<a name="l00041"></a>00041 <span class="comment">        out[4] = (xy - wz) * scaleY;</span>
+<a name="l00042"></a>00042 <span class="comment">        out[5] = (1 - (xx + zz)) * scaleY;</span>
+<a name="l00043"></a>00043 <span class="comment">        out[6] = (yz + wx) * scaleY;</span>
+<a name="l00044"></a>00044 <span class="comment">        out[7] = 0;</span>
+<a name="l00045"></a>00045 <span class="comment">        out[8] = (xz + wy) * scaleZ;</span>
+<a name="l00046"></a>00046 <span class="comment">        out[9] = (yz - wx) * scaleZ;</span>
+<a name="l00047"></a>00047 <span class="comment">        out[10] = (1 - (xx + yy)) * scaleZ;</span>
+<a name="l00048"></a>00048 <span class="comment">        out[11] = 0;</span>
+<a name="l00049"></a>00049 <span class="comment">        out[12] = translate[0];</span>
+<a name="l00050"></a>00050 <span class="comment">        out[13] = translate[1];</span>
+<a name="l00051"></a>00051 <span class="comment">        out[14] = translate[2];</span>
+<a name="l00052"></a>00052 <span class="comment">        out[15] = 1;</span>
+<a name="l00053"></a>00053 <span class="comment">        </span>
+<a name="l00054"></a>00054 <span class="comment">        return res;       */</span>
+<a name="l00055"></a>00055     }
+<a name="l00056"></a>00056     
+<a name="l00057"></a>00057     glm::mat4 Math::TRSInverse(glm::vec3 translate, glm::quat rotateQuat, glm::vec3 scale){
+<a name="l00058"></a>00058         <span class="keywordflow">return</span> inverse(TRS(translate, rotateQuat, scale));
+<a name="l00059"></a>00059         <span class="comment">/*</span>
+<a name="l00060"></a>00060 <span class="comment">        // Quaternion math</span>
+<a name="l00061"></a>00061 <span class="comment">        float scaleX = scale.x, scaleY = scale.y, scaleZ = scale.z,</span>
+<a name="l00062"></a>00062 <span class="comment">        x = rotateQuat.x, y = rotateQuat.y, z = rotateQuat.z, w = rotateQuat.w,</span>
+<a name="l00063"></a>00063 <span class="comment">        x2 = x + x,</span>
+<a name="l00064"></a>00064 <span class="comment">        y2 = y + y,</span>
+<a name="l00065"></a>00065 <span class="comment">        z2 = z + z,</span>
+<a name="l00066"></a>00066 <span class="comment">        </span>
+<a name="l00067"></a>00067 <span class="comment">        xx = x * x2,</span>
+<a name="l00068"></a>00068 <span class="comment">        xy = x * y2,</span>
+<a name="l00069"></a>00069 <span class="comment">        xz = x * z2,</span>
+<a name="l00070"></a>00070 <span class="comment">        yy = y * y2,</span>
+<a name="l00071"></a>00071 <span class="comment">        yz = y * z2,</span>
+<a name="l00072"></a>00072 <span class="comment">        zz = z * z2,</span>
+<a name="l00073"></a>00073 <span class="comment">        wx = w * x2,</span>
+<a name="l00074"></a>00074 <span class="comment">        wy = w * y2,</span>
+<a name="l00075"></a>00075 <span class="comment">        wz = w * z2,</span>
+<a name="l00076"></a>00076 <span class="comment">        </span>
+<a name="l00077"></a>00077 <span class="comment">        // compute trs</span>
+<a name="l00078"></a>00078 <span class="comment">        a00 = (1 - (yy + zz)) * scaleX,</span>
+<a name="l00079"></a>00079 <span class="comment">        a01 = (xy + wz) * scaleX,</span>
+<a name="l00080"></a>00080 <span class="comment">        a02 = (xz - wy) * scaleX,</span>
+<a name="l00081"></a>00081 <span class="comment">        a10 = (xy - wz) * scaleY,</span>
+<a name="l00082"></a>00082 <span class="comment">        a11 = (1 - (xx + zz)) * scaleY,</span>
+<a name="l00083"></a>00083 <span class="comment">        a12 = (yz + wx) * scaleY,</span>
+<a name="l00084"></a>00084 <span class="comment">        a20 = (xz + wy) * scaleZ,</span>
+<a name="l00085"></a>00085 <span class="comment">        a21 = (yz - wx) * scaleZ,</span>
+<a name="l00086"></a>00086 <span class="comment">        a22 = (1 - (xx + yy)) * scaleZ,</span>
+<a name="l00087"></a>00087 <span class="comment">        a30 = translate[0],</span>
+<a name="l00088"></a>00088 <span class="comment">        a31 = translate[1],</span>
+<a name="l00089"></a>00089 <span class="comment">        a32 = translate[2],</span>
+<a name="l00090"></a>00090 <span class="comment">        a33 = 1,</span>
+<a name="l00091"></a>00091 <span class="comment">        // compute inverse</span>
+<a name="l00092"></a>00092 <span class="comment">        b00 = a00 * a11 - a01 * a10,</span>
+<a name="l00093"></a>00093 <span class="comment">        b01 = a00 * a12 - a02 * a10,</span>
+<a name="l00094"></a>00094 <span class="comment">        b03 = a01 * a12 - a02 * a11,</span>
+<a name="l00095"></a>00095 <span class="comment">        b06 = a20 * a31 - a21 * a30,</span>
+<a name="l00096"></a>00096 <span class="comment">        b07 = a20 * a32 - a22 * a30,</span>
+<a name="l00097"></a>00097 <span class="comment">        b08 = a20 * a33,</span>
+<a name="l00098"></a>00098 <span class="comment">        b09 = a21 * a32 - a22 * a31,</span>
+<a name="l00099"></a>00099 <span class="comment">        b10 = a21 * a33,</span>
+<a name="l00100"></a>00100 <span class="comment">        b11 = a22 * a33,</span>
+<a name="l00101"></a>00101 <span class="comment">        </span>
+<a name="l00102"></a>00102 <span class="comment">        d = (b00 * b11 - b01 * b10 + b03 * b08),</span>
+<a name="l00103"></a>00103 <span class="comment">        invDet;</span>
+<a name="l00104"></a>00104 <span class="comment">        </span>
+<a name="l00105"></a>00105 <span class="comment">        mat4 res;</span>
+<a name="l00106"></a>00106 <span class="comment">        float *out = &amp;(res[0][0]);</span>
+<a name="l00107"></a>00107 <span class="comment">        // Calculate the determinant</span>
+<a name="l00108"></a>00108 <span class="comment">        if (!d) { return res; }</span>
+<a name="l00109"></a>00109 <span class="comment">        invDet = 1 / d;</span>
+<a name="l00110"></a>00110 <span class="comment">        </span>
+<a name="l00111"></a>00111 <span class="comment">        out[0] = (a11 * b11 - a12 * b10) * invDet;</span>
+<a name="l00112"></a>00112 <span class="comment">        out[1] = (-a01 * b11 + a02 * b10) * invDet;</span>
+<a name="l00113"></a>00113 <span class="comment">        out[2] = (a33 * b03) * invDet;</span>
+<a name="l00114"></a>00114 <span class="comment">        out[3] = 0;</span>
+<a name="l00115"></a>00115 <span class="comment">        out[4] = (-a10 * b11 + a12 * b08) * invDet;</span>
+<a name="l00116"></a>00116 <span class="comment">        out[5] = (a00 * b11 - a02 * b08) * invDet;</span>
+<a name="l00117"></a>00117 <span class="comment">        out[6] = (-a33 * b01) * invDet;</span>
+<a name="l00118"></a>00118 <span class="comment">        out[7] = 0;</span>
+<a name="l00119"></a>00119 <span class="comment">        out[8] = (a10 * b10 - a11 * b08) * invDet;</span>
+<a name="l00120"></a>00120 <span class="comment">        out[9] = (-a00 * b10 + a01 * b08) * invDet;</span>
+<a name="l00121"></a>00121 <span class="comment">        out[10] = (a33 * b00) * invDet;</span>
+<a name="l00122"></a>00122 <span class="comment">        out[11] = 0;</span>
+<a name="l00123"></a>00123 <span class="comment">        out[12] = (-a10 * b09 + a11 * b07 - a12 * b06) * invDet;</span>
+<a name="l00124"></a>00124 <span class="comment">        out[13] = (a00 * b09 - a01 * b07 + a02 * b06) * invDet;</span>
+<a name="l00125"></a>00125 <span class="comment">        out[14] = (-a30 * b03 + a31 * b01 - a32 * b00) * invDet;</span>
+<a name="l00126"></a>00126 <span class="comment">        out[15] = (a20 * b03 - a21 * b01 + a22 * b00) * invDet;</span>
+<a name="l00127"></a>00127 <span class="comment">        </span>
+<a name="l00128"></a>00128 <span class="comment">        return res;   */</span>
+<a name="l00129"></a>00129     }
+<a name="l00130"></a>00130 
+<a name="l00131"></a>00131     glm::quat Math::lookAt(glm::vec3 eyePosition, glm::vec3 lookAtPos, glm::vec3 up){
+<a name="l00132"></a>00132         <span class="keywordflow">return</span> quat_cast(glm::lookAt(eyePosition, lookAtPos, up));
+<a name="l00133"></a>00133     }
+<a name="l00134"></a>00134 }
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -218,7 +208,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sun May 18 2014 13:07:33 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Jun 10 2014 21:47:04 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

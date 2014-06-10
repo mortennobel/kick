@@ -66,6 +66,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#friends">Friends</a>  </div>
   <div class="headertitle">
 <div class="title">kick::GameObject Class Reference</div>  </div>
@@ -85,8 +86,14 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memTemplParams" colspan="2"><a class="anchor" id="a6b0f0284e5bab379daa692280b9b8413"></a><!-- doxytag: member="kick::GameObject::addComponent" ref="a6b0f0284e5bab379daa692280b9b8413" args="()" -->
 template&lt;typename C &gt; </td></tr>
 <tr><td class="memTemplItemLeft" align="right" valign="top">C *&#160;</td><td class="memTemplItemRight" valign="bottom"><b>addComponent</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a347218cf95e9d052e0db82fb4093e159"></a><!-- doxytag: member="kick::GameObject::removeComponent" ref="a347218cf95e9d052e0db82fb4093e159" args="(Component *component)" -->
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>removeComponent</b> (<a class="el" href="classkick_1_1_component.html">Component</a> *component)</td></tr>
+<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="ab9c55a304818f7d4e59c0b123bb68ac7"></a><!-- doxytag: member="kick::GameObject::getComponent" ref="ab9c55a304818f7d4e59c0b123bb68ac7" args="()" -->
+template&lt;typename C &gt; </td></tr>
+<tr><td class="memTemplItemLeft" align="right" valign="top">C *&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getComponent</b> ()</td></tr>
+<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="a38c51a59c6d30c75c8d17549fb077d7f"></a><!-- doxytag: member="kick::GameObject::getComponents" ref="a38c51a59c6d30c75c8d17549fb077d7f" args="()" -->
+template&lt;typename C &gt; </td></tr>
+<tr><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; C * &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getComponents</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a930661b8ef30b30ad3a72d04a97de796"></a><!-- doxytag: member="kick::GameObject::destroyComponent" ref="a930661b8ef30b30ad3a72d04a97de796" args="(Component *component)" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>destroyComponent</b> (<a class="el" href="classkick_1_1_component.html">Component</a> *component)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeed95c202082d69250aa2c8882a9c58b"></a><!-- doxytag: member="kick::GameObject::begin" ref="aeed95c202082d69250aa2c8882a9c58b" args="() const " -->
 ConstComponentIter&#160;</td><td class="memItemRight" valign="bottom"><b>begin</b> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abbc61f890a9e85391e9fa3c3dba8dda9"></a><!-- doxytag: member="kick::GameObject::end" ref="abbc61f890a9e85391e9fa3c3dba8dda9" args="() const " -->
@@ -95,10 +102,6 @@ ConstComponentIter&#160;</td><td class="memItemRight" valign="bottom"><b>end</b>
 ComponentIter&#160;</td><td class="memItemRight" valign="bottom"><b>begin</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7e1affd9d35ff335eea98d850ad7ba14"></a><!-- doxytag: member="kick::GameObject::end" ref="a7e1affd9d35ff335eea98d850ad7ba14" args="()" -->
 ComponentIter&#160;</td><td class="memItemRight" valign="bottom"><b>end</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7ce1dccbbcc8d590b291d1aadbc63684"></a><!-- doxytag: member="kick::GameObject::addComponentListener" ref="a7ce1dccbbcc8d590b291d1aadbc63684" args="(std::function&lt; void(Component *, ComponentUpdateStatus)&gt; &amp;f)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>addComponentListener</b> (std::function&lt; void(<a class="el" href="classkick_1_1_component.html">Component</a> *, ComponentUpdateStatus)&gt; &amp;f)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac39e563fa0d18b5957688040f64db82f"></a><!-- doxytag: member="kick::GameObject::removeComponentListener" ref="ac39e563fa0d18b5957688040f64db82f" args="(std::function&lt; void(Component *, ComponentUpdateStatus)&gt; &amp;f)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>removeComponentListener</b> (std::function&lt; void(<a class="el" href="classkick_1_1_component.html">Component</a> *, ComponentUpdateStatus)&gt; &amp;f)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3e2e5ec07830bf852761f84e513cdb05"></a><!-- doxytag: member="kick::GameObject::getName" ref="a3e2e5ec07830bf852761f84e513cdb05" args="() const " -->
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getName</b> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8169ca7c2a538dcc2f0baa6194e8a713"></a><!-- doxytag: member="kick::GameObject::setName" ref="a8169ca7c2a538dcc2f0baa6194e8a713" args="(std::string str)" -->
@@ -107,6 +110,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setName</b> (std::str
 <a class="el" href="classkick_1_1_transform.html">Transform</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getTransform</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abd1d4e74253ddb7abd050ad0e9bb52d3"></a><!-- doxytag: member="kick::GameObject::getScene" ref="abd1d4e74253ddb7abd050ad0e9bb52d3" args="()" -->
 <a class="el" href="classkick_1_1_scene.html">Scene</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getScene</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac94637ec8739d60504af087f3a316b06"></a><!-- doxytag: member="kick::GameObject::getLayer" ref="ac94637ec8739d60504af087f3a316b06" args="() const " -->
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getLayer</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a74e710f236049e574ff18b351b098229"></a><!-- doxytag: member="kick::GameObject::setLayer" ref="a74e710f236049e574ff18b351b098229" args="(int layer)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setLayer</b> (int layer)</td></tr>
+<tr><td colspan="2"><h2><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a882280732d76e811355826ebff3b38de"></a><!-- doxytag: member="kick::GameObject::componentEvent" ref="a882280732d76e811355826ebff3b38de" args="" -->
+<a class="el" href="classkick_1_1_event.html">Event</a>&lt; std::pair&lt; <a class="el" href="classkick_1_1_component.html">Component</a> <br class="typebreak"/>
+*, ComponentUpdateStatus &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>componentEvent</b></td></tr>
 <tr><td colspan="2"><h2><a name="friends"></a>
 Friends</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a032858ae1fe02d2d1170981c2af2d67c"></a><!-- doxytag: member="kick::GameObject::Scene" ref="a032858ae1fe02d2d1170981c2af2d67c" args="" -->
@@ -114,11 +126,11 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Scene</b></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="game__object_8h_source.html#l00022">22</a> of file <a class="el" href="game__object_8h_source.html">game_object.h</a>.</p>
+<p>Definition at line <a class="el" href="game__object_8h_source.html#l00024">24</a> of file <a class="el" href="game__object_8h_source.html">game_object.h</a>.</p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
-<li>kick/scene/<a class="el" href="game__object_8h_source.html">game_object.h</a></li>
-<li>kick/scene/<a class="el" href="game__object_8cpp_source.html">game_object.cpp</a></li>
-<li>kick/scene/<a class="el" href="game__object_8inl_source.html">game_object.inl</a></li>
+<li>/Users/morten/Programmering/cpp/kick/src/kick/scene/<a class="el" href="game__object_8h_source.html">game_object.h</a></li>
+<li>/Users/morten/Programmering/cpp/kick/src/kick/scene/<a class="el" href="game__object_8cpp_source.html">game_object.cpp</a></li>
+<li>/Users/morten/Programmering/cpp/kick/src/kick/scene/<a class="el" href="game__object_8inl_source.html">game_object.inl</a></li>
 </ul>
 </div>
 <!-- window showing the filter options -->
@@ -135,7 +147,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Scene</b></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sun May 18 2014 13:07:34 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Jun 10 2014 21:47:05 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

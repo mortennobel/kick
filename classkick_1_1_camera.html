@@ -65,18 +65,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">kick::Camera Class Reference</div>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="kick::Camera" --><!-- doxytag: inherits="kick::Component" --><div class="dynheader">
+<!-- doxytag: class="kick::Camera" --><!-- doxytag: inherits="kick::ComponentRenderable" --><div class="dynheader">
 Inheritance diagram for kick::Camera:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="classkick_1_1_camera.png" usemap="#kick::Camera_map" alt=""/>
   <map id="kick::Camera_map" name="kick::Camera_map">
-<area href="classkick_1_1_component.html" alt="kick::Component" shape="rect" coords="0,0,103,24"/>
+<area href="classkick_1_1_component_renderable.html" alt="kick::ComponentRenderable" shape="rect" coords="89,56,257,80"/>
+<area href="classkick_1_1_component.html" alt="kick::Component" shape="rect" coords="89,0,257,24"/>
+<area href="classkick_1_1_camera_orthographic.html" alt="kick::CameraOrthographic" shape="rect" coords="0,168,168,192"/>
+<area href="classkick_1_1_camera_perspective.html" alt="kick::CameraPerspective" shape="rect" coords="178,168,346,192"/>
 </map>
  </div></div>
 
@@ -86,12 +90,14 @@ Inheritance diagram for kick::Camera:</div>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1de7b0d0c44649bfc31863485b97da40"></a><!-- doxytag: member="kick::Camera::Camera" ref="a1de7b0d0c44649bfc31863485b97da40" args="(GameObject *gameObject)" -->
 &#160;</td><td class="memItemRight" valign="bottom"><b>Camera</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *gameObject)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0629cc4245b016ad5216cd7ff949ca96"></a><!-- doxytag: member="kick::Camera::activated" ref="a0629cc4245b016ad5216cd7ff949ca96" args="()" -->
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a16634c49abf6194f6d53f2c53cc6b4b3"></a><!-- doxytag: member="kick::Camera::activated" ref="a16634c49abf6194f6d53f2c53cc6b4b3" args="()" -->
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>activated</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5ebe6da3b888b6972e03d9a40e5a460c"></a><!-- doxytag: member="kick::Camera::deactivated" ref="a5ebe6da3b888b6972e03d9a40e5a460c" args="()" -->
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaabe617e6584be088d000860baf1e7dc"></a><!-- doxytag: member="kick::Camera::deactivated" ref="aaabe617e6584be088d000860baf1e7dc" args="()" -->
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>deactivated</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa27ba3cced89a32dedf67e3af01626e0"></a><!-- doxytag: member="kick::Camera::render" ref="aa27ba3cced89a32dedf67e3af01626e0" args="(EngineUniforms *engineUniforms)" -->
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a758b37e4984ab44b6b08223aa40dfc55"></a><!-- doxytag: member="kick::Camera::render" ref="a758b37e4984ab44b6b08223aa40dfc55" args="(EngineUniforms *engineUniforms)" -->
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>render</b> (<a class="el" href="structkick_1_1_engine_uniforms.html">EngineUniforms</a> *engineUniforms)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a73f1e6a2e46a3cd8fd6e8c72e8a1a51f"></a><!-- doxytag: member="kick::Camera::resetProjectionMatrix" ref="a73f1e6a2e46a3cd8fd6e8c72e8a1a51f" args="()" -->
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>resetProjectionMatrix</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaa0d01446f0d84e68dc4b1c40189ecc6"></a><!-- doxytag: member="kick::Camera::getClearColor" ref="aaa0d01446f0d84e68dc4b1c40189ecc6" args="()" -->
 glm::vec4&#160;</td><td class="memItemRight" valign="bottom"><b>getClearColor</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac7f5d8d80db3d5aa3fe155acc9a2cb9b"></a><!-- doxytag: member="kick::Camera::setClearColor" ref="ac7f5d8d80db3d5aa3fe155acc9a2cb9b" args="(glm::vec4 clearColor)" -->
@@ -110,47 +116,37 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setClearStencil</b> (
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isClearStencil</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab3dce94a85ebc8a5c71ebbe3c491f82c"></a><!-- doxytag: member="kick::Camera::setupCamera" ref="ab3dce94a85ebc8a5c71ebbe3c491f82c" args="(EngineUniforms *engineUniforms)" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setupCamera</b> (<a class="el" href="structkick_1_1_engine_uniforms.html">EngineUniforms</a> *engineUniforms)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4ed75dd676409d2c3e693d2fbc0e5d61"></a><!-- doxytag: member="kick::Camera::setCameraType" ref="a4ed75dd676409d2c3e693d2fbc0e5d61" args="(CameraType cameraType)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setCameraType</b> (CameraType cameraType)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a690420962816324427a16d1c2a8338a6"></a><!-- doxytag: member="kick::Camera::getCameraType" ref="a690420962816324427a16d1c2a8338a6" args="()" -->
-CameraType&#160;</td><td class="memItemRight" valign="bottom"><b>getCameraType</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af30a8e6c8c222f09c2d04475aadbb5df"></a><!-- doxytag: member="kick::Camera::setNear" ref="af30a8e6c8c222f09c2d04475aadbb5df" args="(float near)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setNear</b> (float near)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac2c9c9e4c1e00fd4cf34037253e52e05"></a><!-- doxytag: member="kick::Camera::getNear" ref="ac2c9c9e4c1e00fd4cf34037253e52e05" args="()" -->
-float&#160;</td><td class="memItemRight" valign="bottom"><b>getNear</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9c2a5bfc7abc808ab8fc9826d17cf7c0"></a><!-- doxytag: member="kick::Camera::setFar" ref="a9c2a5bfc7abc808ab8fc9826d17cf7c0" args="(float far)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setFar</b> (float far)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a79a325d32dddbff100792769b2dde59b"></a><!-- doxytag: member="kick::Camera::getFar" ref="a79a325d32dddbff100792769b2dde59b" args="()" -->
-float&#160;</td><td class="memItemRight" valign="bottom"><b>getFar</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a34b15947f51eac888a1a8e4c38982c41"></a><!-- doxytag: member="kick::Camera::setFieldOfView" ref="a34b15947f51eac888a1a8e4c38982c41" args="(float fov)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkick_1_1_camera.html#a34b15947f51eac888a1a8e4c38982c41">setFieldOfView</a> (float fov)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">set field of view in degrees <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9a941b551b4394a805a6a69019430085"></a><!-- doxytag: member="kick::Camera::getFieldOfView" ref="a9a941b551b4394a805a6a69019430085" args="()" -->
-float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkick_1_1_camera.html#a9a941b551b4394a805a6a69019430085">getFieldOfView</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">set field of view in degrees <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3610c50321383aaa592eb75f73b94698"></a><!-- doxytag: member="kick::Camera::setLeft" ref="a3610c50321383aaa592eb75f73b94698" args="(float left)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setLeft</b> (float left)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abdac217505de5c9aa06e244880019057"></a><!-- doxytag: member="kick::Camera::getLeft" ref="abdac217505de5c9aa06e244880019057" args="()" -->
-float&#160;</td><td class="memItemRight" valign="bottom"><b>getLeft</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a21f0242249b9ee48d4b1fece71091658"></a><!-- doxytag: member="kick::Camera::setRight" ref="a21f0242249b9ee48d4b1fece71091658" args="(float right)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setRight</b> (float right)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab3a9bd9ea2f371dda05b23f06ac89d6c"></a><!-- doxytag: member="kick::Camera::getRight" ref="ab3a9bd9ea2f371dda05b23f06ac89d6c" args="()" -->
-float&#160;</td><td class="memItemRight" valign="bottom"><b>getRight</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afa8e3fb767a0f8862154a450b3445af1"></a><!-- doxytag: member="kick::Camera::setBottom" ref="afa8e3fb767a0f8862154a450b3445af1" args="(float bottom)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setBottom</b> (float bottom)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1c00b71399ed6edc9f3058137ff599e1"></a><!-- doxytag: member="kick::Camera::getBottom" ref="a1c00b71399ed6edc9f3058137ff599e1" args="()" -->
-float&#160;</td><td class="memItemRight" valign="bottom"><b>getBottom</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a77fb2d78d3e6cbb1a2cfa5c0b1ff93aa"></a><!-- doxytag: member="kick::Camera::setTop" ref="a77fb2d78d3e6cbb1a2cfa5c0b1ff93aa" args="(float top)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setTop</b> (float top)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abf4bfd38ed2a7a3f3f9013f88b0b7ab5"></a><!-- doxytag: member="kick::Camera::getTop" ref="abf4bfd38ed2a7a3f3f9013f88b0b7ab5" args="()" -->
-float&#160;</td><td class="memItemRight" valign="bottom"><b>getTop</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a01e5e19db5f703becbadade09783755c"></a><!-- doxytag: member="kick::Camera::getProjectionMatrix" ref="a01e5e19db5f703becbadade09783755c" args="()" -->
+glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><b>getProjectionMatrix</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3c752b86d517be3798273201355b6f24"></a><!-- doxytag: member="kick::Camera::setProjectionMatrix" ref="a3c752b86d517be3798273201355b6f24" args="(glm::mat4 projectionMatrix)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setProjectionMatrix</b> (glm::mat4 projectionMatrix)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab95ec9143f193981a04a7637004ea4a4"></a><!-- doxytag: member="kick::Camera::isShadow" ref="ab95ec9143f193981a04a7637004ea4a4" args="() const " -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>isShadow</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adc7d1db14139d122d3c0a6bfe944b80d"></a><!-- doxytag: member="kick::Camera::setShadow" ref="adc7d1db14139d122d3c0a6bfe944b80d" args="(bool renderShadow)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setShadow</b> (bool renderShadow)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4f36d9b372b2b99790857fa04951f021"></a><!-- doxytag: member="kick::Camera::getCullingMask" ref="a4f36d9b372b2b99790857fa04951f021" args="() const " -->
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getCullingMask</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4752c446235743d042a3b7c2a738001c"></a><!-- doxytag: member="kick::Camera::setCullingMask" ref="a4752c446235743d042a3b7c2a738001c" args="(int cullingMask)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setCullingMask</b> (int cullingMask)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa4c6ed209932417b7e11436df260d68d"></a><!-- doxytag: member="kick::Camera::getTarget" ref="aa4c6ed209932417b7e11436df260d68d" args="() const " -->
+<a class="el" href="classkick_1_1_texture_render_target.html">TextureRenderTarget</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getTarget</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae0c6173c7fc65d6d8029e90831447e71"></a><!-- doxytag: member="kick::Camera::setTarget" ref="ae0c6173c7fc65d6d8029e90831447e71" args="(TextureRenderTarget *target)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setTarget</b> (<a class="el" href="classkick_1_1_texture_render_target.html">TextureRenderTarget</a> *target)</td></tr>
+<tr><td colspan="2"><h2><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae149557686bebc9b9ce381955d4fb9e9"></a><!-- doxytag: member="kick::Camera::projectionMatrix" ref="ae149557686bebc9b9ce381955d4fb9e9" args="" -->
+glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><b>projectionMatrix</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1a86ad270f628a97c5017bf02bd51c1a"></a><!-- doxytag: member="kick::Camera::normalizedViewportOffset" ref="a1a86ad270f628a97c5017bf02bd51c1a" args="" -->
+glm::vec2&#160;</td><td class="memItemRight" valign="bottom"><b>normalizedViewportOffset</b> = glm::vec2(0,0)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a66386918c88d3f338a0e32b7ed75719b"></a><!-- doxytag: member="kick::Camera::normalizedViewportDim" ref="a66386918c88d3f338a0e32b7ed75719b" args="" -->
+glm::vec2&#160;</td><td class="memItemRight" valign="bottom"><b>normalizedViewportDim</b> = glm::vec2(1,1)</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
 <p>Definition at line <a class="el" href="camera_8h_source.html#l00024">24</a> of file <a class="el" href="camera_8h_source.html">camera.h</a>.</p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
-<li>kick/scene/<a class="el" href="camera_8h_source.html">camera.h</a></li>
-<li>kick/scene/<a class="el" href="camera_8cpp_source.html">camera.cpp</a></li>
+<li>/Users/morten/Programmering/cpp/kick/src/kick/scene/<a class="el" href="camera_8h_source.html">camera.h</a></li>
+<li>/Users/morten/Programmering/cpp/kick/src/kick/scene/<a class="el" href="camera_8cpp_source.html">camera.cpp</a></li>
 </ul>
 </div>
 <!-- window showing the filter options -->
@@ -167,7 +163,7 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>getTop</b> ()</td></
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sun May 18 2014 13:07:34 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Jun 10 2014 21:47:05 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

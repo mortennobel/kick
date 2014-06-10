@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>kick: kick/scene/game_object.cpp Source File</title>
+<title>kick: /Users/morten/Programmering/cpp/kick/src/kick/scene/game_object.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
@@ -55,7 +55,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 <div class="header">
   <div class="headertitle">
-<div class="title">kick/scene/game_object.cpp</div>  </div>
+<div class="title">/Users/morten/Programmering/cpp/kick/src/kick/scene/game_object.cpp</div>  </div>
 </div>
 <div class="contents">
 <div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">//</span>
@@ -107,52 +107,55 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00047"></a>00047         <span class="keywordflow">return</span> *<span class="keyword">this</span>;
 <a name="l00048"></a>00048     }
 <a name="l00049"></a>00049     
-<a name="l00050"></a>00050     <span class="keywordtype">bool</span> GameObject::removeComponent(Component* component){
+<a name="l00050"></a>00050     <span class="keywordtype">bool</span> GameObject::destroyComponent(Component *component){
 <a name="l00051"></a>00051         <span class="keyword">auto</span> pos = find(components.begin(), components.end(), component);
 <a name="l00052"></a>00052         <span class="keywordflow">if</span> (pos != components.end()){
 <a name="l00053"></a>00053             component-&gt;deactivated();
-<a name="l00054"></a>00054             components.erase(pos);
-<a name="l00055"></a>00055             <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00056"></a>00056         }
-<a name="l00057"></a>00057         <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00058"></a>00058     }
-<a name="l00059"></a>00059     
-<a name="l00060"></a>00060     ComponentIter GameObject::begin() {
-<a name="l00061"></a>00061         <span class="keywordflow">return</span> components.begin();
-<a name="l00062"></a>00062     }
-<a name="l00063"></a>00063     
-<a name="l00064"></a>00064     ComponentIter GameObject::end() {
-<a name="l00065"></a>00065         <span class="keywordflow">return</span> components.end();
-<a name="l00066"></a>00066     }
-<a name="l00067"></a>00067     
-<a name="l00068"></a>00068     ConstComponentIter GameObject::begin()<span class="keyword"> const</span>{
-<a name="l00069"></a>00069         <span class="keywordflow">return</span> components.begin();
-<a name="l00070"></a>00070     }
-<a name="l00071"></a>00071     
-<a name="l00072"></a>00072     ConstComponentIter GameObject::end()<span class="keyword"> const</span>{
-<a name="l00073"></a>00073         <span class="keywordflow">return</span> components.end();
-<a name="l00074"></a>00074     }
-<a name="l00075"></a>00075     
-<a name="l00076"></a>00076     <span class="keywordtype">void</span> GameObject::addComponentListener(std::function&lt;<span class="keywordtype">void</span> (Component*, ComponentUpdateStatus)&gt; &amp;f){
-<a name="l00077"></a>00077         componentListeners.push_back(f);
-<a name="l00078"></a>00078     }
-<a name="l00079"></a>00079     
-<a name="l00080"></a>00080     <span class="keywordtype">void</span> GameObject::removeComponentListener(std::function&lt;<span class="keywordtype">void</span> (Component*, ComponentUpdateStatus)&gt; &amp;f){
-<a name="l00081"></a>00081     }
-<a name="l00082"></a>00082     
-<a name="l00083"></a>00083     std::string GameObject::getName()<span class="keyword"> const </span>{
-<a name="l00084"></a>00084         <span class="keywordflow">return</span> name;
-<a name="l00085"></a>00085     }
-<a name="l00086"></a>00086     
-<a name="l00087"></a>00087     <span class="keywordtype">void</span> GameObject::setName(std::string str){
-<a name="l00088"></a>00088         name = str;
-<a name="l00089"></a>00089     }
-<a name="l00090"></a>00090     
-<a name="l00091"></a>00091     <span class="keywordtype">void</span> GameObject::fireComponentEvent(Component* component, ComponentUpdateStatus status){
-<a name="l00092"></a>00092         scene-&gt;componentListener(component, status);
-<a name="l00093"></a>00093     }
-<a name="l00094"></a>00094     
-<a name="l00095"></a>00095 };
+<a name="l00054"></a>00054             componentEvent.notifyListeners({component, ComponentUpdateStatus::Destroyed});
+<a name="l00055"></a>00055             components.erase(pos);
+<a name="l00056"></a>00056             <span class="keyword">delete</span> component;
+<a name="l00057"></a>00057             <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00058"></a>00058         }
+<a name="l00059"></a>00059         <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00060"></a>00060     }
+<a name="l00061"></a>00061     
+<a name="l00062"></a>00062     ComponentIter GameObject::begin() {
+<a name="l00063"></a>00063         <span class="keywordflow">return</span> components.begin();
+<a name="l00064"></a>00064     }
+<a name="l00065"></a>00065     
+<a name="l00066"></a>00066     ComponentIter GameObject::end() {
+<a name="l00067"></a>00067         <span class="keywordflow">return</span> components.end();
+<a name="l00068"></a>00068     }
+<a name="l00069"></a>00069     
+<a name="l00070"></a>00070     ConstComponentIter GameObject::begin()<span class="keyword"> const</span>{
+<a name="l00071"></a>00071         <span class="keywordflow">return</span> components.begin();
+<a name="l00072"></a>00072     }
+<a name="l00073"></a>00073     
+<a name="l00074"></a>00074     ConstComponentIter GameObject::end()<span class="keyword"> const</span>{
+<a name="l00075"></a>00075         <span class="keywordflow">return</span> components.end();
+<a name="l00076"></a>00076     }
+<a name="l00077"></a>00077     
+<a name="l00078"></a>00078     std::string GameObject::getName()<span class="keyword"> const </span>{
+<a name="l00079"></a>00079         <span class="keywordflow">return</span> name;
+<a name="l00080"></a>00080     }
+<a name="l00081"></a>00081     
+<a name="l00082"></a>00082     <span class="keywordtype">void</span> GameObject::setName(std::string str){
+<a name="l00083"></a>00083         name = str;
+<a name="l00084"></a>00084     }
+<a name="l00085"></a>00085 
+<a name="l00086"></a>00086     <span class="keywordtype">int</span> GameObject::getLayer()<span class="keyword"> const </span>{
+<a name="l00087"></a>00087         <span class="keywordflow">return</span> layer;
+<a name="l00088"></a>00088     }
+<a name="l00089"></a>00089 
+<a name="l00090"></a>00090     <span class="keywordtype">void</span> GameObject::setLayer(<span class="keywordtype">int</span> layer) {
+<a name="l00091"></a>00091         <span class="keywordflow">if</span> (GameObject::layer != layer){
+<a name="l00092"></a>00092             GameObject::layer = layer;
+<a name="l00093"></a>00093             <span class="keywordflow">for</span> (<span class="keyword">auto</span> c : components){
+<a name="l00094"></a>00094                 componentEvent.notifyListeners({c, ComponentUpdateStatus::Updated});
+<a name="l00095"></a>00095             }
+<a name="l00096"></a>00096         }
+<a name="l00097"></a>00097     }
+<a name="l00098"></a>00098 };
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -169,7 +172,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sun May 18 2014 13:07:33 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Jun 10 2014 21:47:04 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

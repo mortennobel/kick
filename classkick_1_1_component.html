@@ -77,10 +77,14 @@ Inheritance diagram for kick::Component:</div>
  <div class="center">
   <img src="classkick_1_1_component.png" usemap="#kick::Component_map" alt=""/>
   <map id="kick::Component_map" name="kick::Component_map">
-<area href="classkick_1_1_camera.html" alt="kick::Camera" shape="rect" coords="0,56,124,80"/>
-<area href="classkick_1_1_light.html" alt="kick::Light" shape="rect" coords="134,56,258,80"/>
-<area href="classkick_1_1_mesh_renderer.html" alt="kick::MeshRenderer" shape="rect" coords="268,56,392,80"/>
-<area href="classkick_1_1_transform.html" alt="kick::Transform" shape="rect" coords="402,56,526,80"/>
+<area href="classkick_1_1_component_renderable.html" alt="kick::ComponentRenderable" shape="rect" coords="178,56,346,80"/>
+<area href="classkick_1_1_component_updateable.html" alt="kick::ComponentUpdateable" shape="rect" coords="356,56,524,80"/>
+<area href="classkick_1_1_light.html" alt="kick::Light" shape="rect" coords="534,56,702,80"/>
+<area href="classkick_1_1_transform.html" alt="kick::Transform" shape="rect" coords="712,56,880,80"/>
+<area href="classkick_1_1_camera.html" alt="kick::Camera" shape="rect" coords="89,112,257,136"/>
+<area href="classkick_1_1_mesh_renderer.html" alt="kick::MeshRenderer" shape="rect" coords="267,112,435,136"/>
+<area href="classkick_1_1_camera_orthographic.html" alt="kick::CameraOrthographic" shape="rect" coords="0,168,168,192"/>
+<area href="classkick_1_1_camera_perspective.html" alt="kick::CameraPerspective" shape="rect" coords="178,168,346,192"/>
 </map>
  </div></div>
 
@@ -88,8 +92,8 @@ Inheritance diagram for kick::Component:</div>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a83721825d7befb9f866a3abc5e18213e"></a><!-- doxytag: member="kick::Component::Component" ref="a83721825d7befb9f866a3abc5e18213e" args="(GameObject *gameObject, bool renderable, bool updateable)" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>Component</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *gameObject, bool renderable, bool updateable)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae7bb61c9403e9428a6fe05c4bc727d95"></a><!-- doxytag: member="kick::Component::Component" ref="ae7bb61c9403e9428a6fe05c4bc727d95" args="(GameObject *gameObject)" -->
+&#160;</td><td class="memItemRight" valign="bottom"><b>Component</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *gameObject)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4916f279c5a983842dd587c51e89d640"></a><!-- doxytag: member="kick::Component::Component" ref="a4916f279c5a983842dd587c51e89d640" args="(Component &amp;&amp;component)" -->
 &#160;</td><td class="memItemRight" valign="bottom"><b>Component</b> (<a class="el" href="classkick_1_1_component.html">Component</a> &amp;&amp;component)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1af73b5861656b12c790782e13f0a8dd"></a><!-- doxytag: member="kick::Component::operator=" ref="a1af73b5861656b12c790782e13f0a8dd" args="(const Component &amp;other)" -->
@@ -98,14 +102,6 @@ Public Member Functions</h2></td></tr>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>activated</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac5b11994a13480d2323be0b6a516527d"></a><!-- doxytag: member="kick::Component::deactivated" ref="ac5b11994a13480d2323be0b6a516527d" args="()" -->
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>deactivated</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab8ff524e5019d45c97651610a65c01b3"></a><!-- doxytag: member="kick::Component::render" ref="ab8ff524e5019d45c97651610a65c01b3" args="(EngineUniforms *engineUniforms)" -->
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>render</b> (<a class="el" href="structkick_1_1_engine_uniforms.html">EngineUniforms</a> *engineUniforms)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7b9b60f20865b60d08771cd253c8ec75"></a><!-- doxytag: member="kick::Component::update" ref="a7b9b60f20865b60d08771cd253c8ec75" args="()" -->
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>update</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a875f96ff80d22aaae6fbb32ca64060e7"></a><!-- doxytag: member="kick::Component::isRenderable" ref="a875f96ff80d22aaae6fbb32ca64060e7" args="()" -->
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isRenderable</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abf11cd039a53018c064224994d79cd73"></a><!-- doxytag: member="kick::Component::isUpdateable" ref="abf11cd039a53018c064224994d79cd73" args="()" -->
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isUpdateable</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adb36b022490b0bc84da9d3f35700df26"></a><!-- doxytag: member="kick::Component::getTransform" ref="adb36b022490b0bc84da9d3f35700df26" args="()" -->
 <a class="el" href="classkick_1_1_transform.html">Transform</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getTransform</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a923c85119f5991230103cd6ecb2b6e4b"></a><!-- doxytag: member="kick::Component::getGameObject" ref="a923c85119f5991230103cd6ecb2b6e4b" args="()" -->
@@ -117,10 +113,10 @@ Protected Attributes</h2></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="component_8h_source.html#l00027">27</a> of file <a class="el" href="component_8h_source.html">component.h</a>.</p>
+<p>Definition at line <a class="el" href="component_8h_source.html#l00026">26</a> of file <a class="el" href="component_8h_source.html">component.h</a>.</p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
-<li>kick/scene/<a class="el" href="component_8h_source.html">component.h</a></li>
-<li>kick/scene/<a class="el" href="component_8cpp_source.html">component.cpp</a></li>
+<li>/Users/morten/Programmering/cpp/kick/src/kick/scene/<a class="el" href="component_8h_source.html">component.h</a></li>
+<li>/Users/morten/Programmering/cpp/kick/src/kick/scene/<a class="el" href="component_8cpp_source.html">component.cpp</a></li>
 </ul>
 </div>
 <!-- window showing the filter options -->
@@ -137,7 +133,7 @@ Protected Attributes</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sun May 18 2014 13:07:34 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Jun 10 2014 21:47:05 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

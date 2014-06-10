@@ -72,7 +72,7 @@ This is the complete list of members for <a class="el" href="classkick_1_1_trans
   <tr bgcolor="#f0f0f0"><td><b>activated</b>() (defined in <a class="el" href="classkick_1_1_component.html">kick::Component</a>)</td><td><a class="el" href="classkick_1_1_component.html">kick::Component</a></td><td><code> [inline, virtual]</code></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>begin</b>() (defined in <a class="el" href="classkick_1_1_transform.html">kick::Transform</a>)</td><td><a class="el" href="classkick_1_1_transform.html">kick::Transform</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>begin</b>() const  (defined in <a class="el" href="classkick_1_1_transform.html">kick::Transform</a>)</td><td><a class="el" href="classkick_1_1_transform.html">kick::Transform</a></td><td></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>Component</b>(GameObject *gameObject, bool renderable, bool updateable) (defined in <a class="el" href="classkick_1_1_component.html">kick::Component</a>)</td><td><a class="el" href="classkick_1_1_component.html">kick::Component</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>Component</b>(GameObject *gameObject) (defined in <a class="el" href="classkick_1_1_component.html">kick::Component</a>)</td><td><a class="el" href="classkick_1_1_component.html">kick::Component</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>Component</b>(Component &amp;&amp;component) (defined in <a class="el" href="classkick_1_1_component.html">kick::Component</a>)</td><td><a class="el" href="classkick_1_1_component.html">kick::Component</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>deactivated</b>() (defined in <a class="el" href="classkick_1_1_component.html">kick::Component</a>)</td><td><a class="el" href="classkick_1_1_component.html">kick::Component</a></td><td><code> [inline, virtual]</code></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>end</b>() (defined in <a class="el" href="classkick_1_1_transform.html">kick::Transform</a>)</td><td><a class="el" href="classkick_1_1_transform.html">kick::Transform</a></td><td></td></tr>
@@ -96,13 +96,10 @@ This is the complete list of members for <a class="el" href="classkick_1_1_trans
   <tr bgcolor="#f0f0f0"><td><b>globalInv</b> (defined in <a class="el" href="classkick_1_1_transform.html">kick::Transform</a>)</td><td><a class="el" href="classkick_1_1_transform.html">kick::Transform</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>globalPos</b> (defined in <a class="el" href="classkick_1_1_transform.html">kick::Transform</a>)</td><td><a class="el" href="classkick_1_1_transform.html">kick::Transform</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>globalRot</b> (defined in <a class="el" href="classkick_1_1_transform.html">kick::Transform</a>)</td><td><a class="el" href="classkick_1_1_transform.html">kick::Transform</a></td><td></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>isRenderable</b>() (defined in <a class="el" href="classkick_1_1_component.html">kick::Component</a>)</td><td><a class="el" href="classkick_1_1_component.html">kick::Component</a></td><td></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>isUpdateable</b>() (defined in <a class="el" href="classkick_1_1_component.html">kick::Component</a>)</td><td><a class="el" href="classkick_1_1_component.html">kick::Component</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>local</b> (defined in <a class="el" href="classkick_1_1_transform.html">kick::Transform</a>)</td><td><a class="el" href="classkick_1_1_transform.html">kick::Transform</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>localInv</b> (defined in <a class="el" href="classkick_1_1_transform.html">kick::Transform</a>)</td><td><a class="el" href="classkick_1_1_transform.html">kick::Transform</a></td><td></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>lookAt</b>(Transform *transform, glm::vec3 up) (defined in <a class="el" href="classkick_1_1_transform.html">kick::Transform</a>)</td><td><a class="el" href="classkick_1_1_transform.html">kick::Transform</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>lookAt</b>(Transform *target, glm::vec3 up=glm::vec3{0, 1, 0}) (defined in <a class="el" href="classkick_1_1_transform.html">kick::Transform</a>)</td><td><a class="el" href="classkick_1_1_transform.html">kick::Transform</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>operator=</b>(const Component &amp;other) (defined in <a class="el" href="classkick_1_1_component.html">kick::Component</a>)</td><td><a class="el" href="classkick_1_1_component.html">kick::Component</a></td><td></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>render</b>(EngineUniforms *engineUniforms) (defined in <a class="el" href="classkick_1_1_component.html">kick::Component</a>)</td><td><a class="el" href="classkick_1_1_component.html">kick::Component</a></td><td><code> [inline, virtual]</code></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>setLocalPosition</b>(glm::vec3 position) (defined in <a class="el" href="classkick_1_1_transform.html">kick::Transform</a>)</td><td><a class="el" href="classkick_1_1_transform.html">kick::Transform</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>setLocalRotation</b>(glm::quat rot) (defined in <a class="el" href="classkick_1_1_transform.html">kick::Transform</a>)</td><td><a class="el" href="classkick_1_1_transform.html">kick::Transform</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>setLocalRotationEuler</b>(glm::vec3 rot) (defined in <a class="el" href="classkick_1_1_transform.html">kick::Transform</a>)</td><td><a class="el" href="classkick_1_1_transform.html">kick::Transform</a></td><td></td></tr>
@@ -112,7 +109,7 @@ This is the complete list of members for <a class="el" href="classkick_1_1_trans
   <tr bgcolor="#f0f0f0"><td><b>setRotation</b>(glm::quat rot) (defined in <a class="el" href="classkick_1_1_transform.html">kick::Transform</a>)</td><td><a class="el" href="classkick_1_1_transform.html">kick::Transform</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>setRotationEuler</b>(glm::vec3 rot) (defined in <a class="el" href="classkick_1_1_transform.html">kick::Transform</a>)</td><td><a class="el" href="classkick_1_1_transform.html">kick::Transform</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>Transform</b>(GameObject *gameObject) (defined in <a class="el" href="classkick_1_1_transform.html">kick::Transform</a>)</td><td><a class="el" href="classkick_1_1_transform.html">kick::Transform</a></td><td></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>update</b>() (defined in <a class="el" href="classkick_1_1_component.html">kick::Component</a>)</td><td><a class="el" href="classkick_1_1_component.html">kick::Component</a></td><td><code> [inline, virtual]</code></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>~Component</b>() (defined in <a class="el" href="classkick_1_1_component.html">kick::Component</a>)</td><td><a class="el" href="classkick_1_1_component.html">kick::Component</a></td><td><code> [virtual]</code></td></tr>
 </table></div>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -128,7 +125,7 @@ This is the complete list of members for <a class="el" href="classkick_1_1_trans
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sun May 18 2014 13:07:34 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Jun 10 2014 21:47:05 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
