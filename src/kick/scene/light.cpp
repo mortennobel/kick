@@ -11,7 +11,7 @@
 
 namespace kick {
     Light::Light(GameObject *gameObject)
-    :Component(gameObject, false, false)
+    :Component(gameObject)
     {
     }
     

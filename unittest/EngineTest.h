@@ -582,7 +582,7 @@ int TestDeleteComponent(){
     class TrackComponent : public Component {
     public:
         TrackComponent(GameObject *gameObject)
-                : Component(gameObject, false, true) {}
+                : Component(gameObject, false) {}
 
         virtual ~TrackComponent(){
             *destroyed = true;

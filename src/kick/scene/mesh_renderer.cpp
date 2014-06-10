@@ -13,7 +13,7 @@
 
 namespace kick {
     MeshRenderer::MeshRenderer(GameObject *gameObject)
-    :Component{gameObject, true, true} {
+    :ComponentRenderable{gameObject} {
     }
     
     MeshRenderer::~MeshRenderer(){

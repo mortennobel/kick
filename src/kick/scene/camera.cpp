@@ -15,6 +15,7 @@
 #include "kick/scene/game_object.h"
 #include "kick/scene/transform.h"
 #include "kick/scene/scene.h"
+#include "kick/scene/component_renderable.h"
 #include "kick/texture/texture_render_target.h"
 #include "engine.h"
 #include "light.h"
@@ -25,7 +26,7 @@ using namespace glm;
 namespace kick {
     
     Camera::Camera(GameObject *gameObject)
-    :Component(gameObject, false, false), clearFlag(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT),
+    :ComponentRenderable(gameObject), clearFlag(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT),
      projectionMatrix{1}{
 
     }
@@ -38,13 +39,17 @@ namespace kick {
         Scene* scene = gameObject->getScene();
         componentListener = scene->componentEvents.createListener([&](pair<Component*, ComponentUpdateStatus> value){
             if (value.second == ComponentUpdateStatus::Created){
-                if (includeComponent(value.first)){
-                    renderableComponents.push_back(value.first);
+                auto r = includeComponent(value.first);
+                if (r){
+                    renderableComponents.push_back(r);
                 }
             } else if (value.second == ComponentUpdateStatus::Destroyed){
-                auto iter = find(renderableComponents.begin(),renderableComponents.end(), value.first);
-                if (iter != renderableComponents.end()){
-                    renderableComponents.erase(iter);
+                auto r = includeComponent(value.first);
+                if (r) {
+                    auto iter = find(renderableComponents.begin(), renderableComponents.end(), value.first);
+                    if (iter != renderableComponents.end()) {
+                        renderableComponents.erase(iter);
+                    }
                 }
             }
         });
@@ -55,22 +60,24 @@ namespace kick {
         renderableComponents.clear();
         for (auto & gameObject : *gameObject->getScene()) {
             for (auto & component :  *gameObject){
-                if (includeComponent(component)){
-                    renderableComponents.push_back(component);
+                auto r = includeComponent(component);
+                if (r){
+                    renderableComponents.push_back(r);
                 }
             }
         }
     }
     
-    bool Camera::includeComponent(Component* component){
-        if (!component->isRenderable()){
-            return false;
+    ComponentRenderable *Camera::includeComponent(Component* component){
+        auto r = dynamic_cast<ComponentRenderable*>(component);
+        if (!r){
+            return nullptr;
         }
-        if (dynamic_cast<Camera*>(component)){
-            return false;
+        if (dynamic_cast<Camera*>(r)){
+            return nullptr;
         }
         // todo - filter
-        return true;
+        return r;
     }
     
     void Camera::deactivated(){

@@ -10,6 +10,7 @@
 #include <iostream>
 #include "kick/scene/engine_uniforms.h"
 #include "kick/scene/camera.h"
+#include "kick/scene/component_updatable.h"
 #include "kick/scene/camera_orthographic.h"
 #include "kick/scene/camera_perspective.h"
 #include "kick/scene/mesh_renderer.h"
@@ -110,8 +111,9 @@ namespace kick {
                 }, 0);
                 addLight(light);
             }
-            if (component->isUpdateable()){
-                updatable.push_back(component);
+            auto updateable = dynamic_cast<ComponentUpdateable*>(component);
+            if (updateable){
+                updatable.push_back(updateable);
             }
         }
         if (status == ComponentUpdateStatus::Destroyed){
@@ -128,8 +130,9 @@ namespace kick {
                     rebuildSceneLights();
                 }
             }
-            if (component->isUpdateable()){
-                auto pos = find(updatable.begin(), updatable.end(), component);
+            auto updateable = dynamic_cast<ComponentUpdateable*>(component);
+            if (updateable){
+                auto pos = find(updatable.begin(), updatable.end(), updateable);
                 if (pos != updatable.end()){
                     updatable.erase(pos);
                 }

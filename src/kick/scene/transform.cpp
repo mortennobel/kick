@@ -15,7 +15,7 @@ using namespace glm;
 
 namespace kick {
     Transform::Transform(GameObject *gameObject)
-    :Component(gameObject, false, false){
+    :Component(gameObject){
     }
     
     void Transform::markGlobalDirty(){

@@ -12,6 +12,7 @@
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include "kick/core/event_listener.h"
+#include "component_renderable.h"
 #include <utility>
 
 namespace kick {
@@ -20,7 +21,7 @@ namespace kick {
     class Material;
     class TextureRenderTarget;
 
-    class Camera : public Component {
+    class Camera : public ComponentRenderable {
     public:
         Camera(GameObject *gameObject);
         ~Camera();
@@ -56,12 +57,12 @@ namespace kick {
         void destroyShadowMap();
         void renderShadowMap(Light* directionalLight);
         void rebuildComponentList();
-        bool includeComponent(Component* comp);
+        ComponentRenderable *includeComponent(Component* comp);
         Shader* shadowMapShader;
         Material* shadowMapMaterial;
         EventListener<std::pair<Component*, ComponentUpdateStatus>> componentListener;
         void setupViewport(glm::vec2 &offset, glm::vec2 &dim);
-        std::vector<Component*> renderableComponents;
+        std::vector<ComponentRenderable*> renderableComponents;
         glm::vec4 clearColor = glm::vec4(0,0,0,1);
         int cullingMask = 0xffffffff;
         int clearFlag; // default clear color clear depth

@@ -25,6 +25,7 @@ namespace kick {
     class Camera;
     class MeshRenderer;
     class Light;
+    class ComponentUpdateable;
 
     class Scene {
     public:
@@ -69,7 +70,7 @@ namespace kick {
         std::vector<std::unique_ptr<GameObject>> gameObjects;
         std::map<GameObject*,EventListener<std::pair<Component*, ComponentUpdateStatus>>> componentListeners;
         std::vector<Camera*> cameras;
-        std::vector<Component*> updatable;
+        std::vector<ComponentUpdateable*> updatable;
         std::unordered_map<Light*, EventListener<Light*>> lights;
         SceneLights sceneLights;
         std::string name = "";

@@ -10,6 +10,7 @@
 
 #include "component.h"
 #include "kick/material/material.h"
+#include "component_renderable.h"
 #include <vector>
 
 namespace kick {
@@ -17,7 +18,7 @@ namespace kick {
     class Mesh;
     class GameObject;
     
-    class MeshRenderer : public Component {
+    class MeshRenderer : public ComponentRenderable {
     public:
         MeshRenderer(GameObject *gameObject);
         ~MeshRenderer();

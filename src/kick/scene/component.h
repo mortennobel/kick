@@ -15,7 +15,6 @@
 namespace kick {
 
     class GameObject;
-    class EngineUniforms;
     class Transform;
     
     enum class ComponentUpdateStatus {
@@ -26,26 +25,18 @@ namespace kick {
     
     class Component {
     public:
-        Component(GameObject* gameObject, bool renderable, bool updateable);
+        Component(GameObject* gameObject);
         Component(Component&& component);
         Component& operator=(const Component& other);
         virtual ~Component();
         virtual void activated(){}
         virtual void deactivated(){}
-        virtual void render(EngineUniforms *engineUniforms){}
-        virtual void update(){}
-        bool isRenderable();
-        bool isUpdateable();
         Transform* getTransform();
         GameObject* getGameObject();
     protected:
         GameObject* gameObject;
     private:
         Component(const Component& component) = delete;
-        bool renderable;
-        bool updateable;
-        //        int scriptPriority = 0;
-        //        int renderOrder = 0;
     };
     
     typedef std::vector<Component*>::const_iterator ConstComponentIter;
