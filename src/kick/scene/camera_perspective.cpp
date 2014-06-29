@@ -2,8 +2,8 @@
 // Created by morten on 24/05/14.
 //
 
-#include "camera_perspective.h"
-#include "engine.h"
+#include "kick/scene/camera_perspective.h"
+#include "kick/core/engine.h"
 #include "kick/scene/transform.h"
 
 using namespace glm;

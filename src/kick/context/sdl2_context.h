@@ -8,8 +8,16 @@
 
 #pragma once
 #include "context.h"
-#define SDL_MAIN_HANDLED
-#include <SDL2/SDL.h>
+
+
+#if defined(EMSCRIPTEN)
+#   include <emscripten.h>
+#   include <SDL/SDL.h>
+#   include <SDL/SDL_image.h>
+#else
+#   define SDL_MAIN_HANDLED
+#   include <SDL2/SDL.h>
+#endif
 
 namespace kick {
     class SDL2Context : public Context {
@@ -31,6 +39,7 @@ namespace kick {
         virtual std::string getWindowTitle() override;
 
         void step();
+        bool tick();
     private:
         void handleMouseMotion(SDL_MouseMotionEvent event);
         void handleMouseButton(SDL_MouseButtonEvent event, bool buttonDown);

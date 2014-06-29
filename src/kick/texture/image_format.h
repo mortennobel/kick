@@ -25,7 +25,7 @@ namespace kick {
         GLenum format = GL_RGBA;
         GLenum type = GL_UNSIGNED_BYTE;
         int mipmapLevel = 0;
-        Mipmap mipmap;
+        Mipmap mipmap = Mipmap::Enabled;
         bool isValid(std::function<void (std::string)> onError = [](std::string s){});
     };
 }

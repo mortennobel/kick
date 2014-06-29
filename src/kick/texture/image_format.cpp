@@ -13,6 +13,7 @@ using namespace std;
 namespace kick {
     bool ImageFormat::isValid(std::function<void (std::string)> onError){
         bool valid = true;
+#ifndef GL_ES_VERSION_2_0
         // OpenGL 4 glTexImage2D table 1
         if (internalFormat != GL_DEPTH_COMPONENT &&
             internalFormat != GL_DEPTH_STENCIL &&
@@ -148,7 +149,7 @@ namespace kick {
             valid = false;
             onError(string{"type has an invalid value: "}+to_string(type));
         }
-        
+#endif
         return valid;
     }
 };

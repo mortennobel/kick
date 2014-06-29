@@ -12,6 +12,11 @@
 #include <memory>
 #include <unordered_map>
 #include <vector>
+#ifdef EMSCRIPTEN
+#   include <SDL/SDL_image.h>
+#else
+#   include <SDL2_image/SDL_image.h>
+#endif
 #include "kick/core/project_asset.h"
 #include "kick/core/asset_loader.h"
 #include "kick/texture/texture2d.h"
@@ -56,7 +61,7 @@ namespace kick {
             return ptr;
         }*/
         
-        static std::string getResourceURI(std::string uri);
+
         static std::string loadTextResource(std::string uri);
         static std::vector<char> loadBinaryResource(std::string uri);
         static Shader* loadShader(std::string uri);
@@ -80,6 +85,10 @@ namespace kick {
         std::unique_ptr<AssetLoader> assetLoader;
         int mapAssetURIToId(std::string assetURI);
         std::unordered_map<std::string, int> assetIdMap;
+
+        static Texture2D *surfaceToTexture2D( SDL_Surface *image);
+
+        static TextureCube *surfaceToTextureCube(SDL_Surface *image);
     };
     
     template <class E,  typename ... Args>

@@ -18,9 +18,8 @@
 #include "kick/core/key_input.h"
 #include "kick/core/mouse_input.h"
 
-#include "glm_ext.h"
 #include "glm/gtx/string_cast.hpp"
-#include "camera_perspective.h"
+#include "kick/scene/camera_perspective.h"
 
 using namespace kick;
 using namespace std;
@@ -55,7 +54,7 @@ int TestShader() {
 
     // mismatch between out and in parameters
     string vertexShader =
-            R"(#version 150
+            R"(
             uniform vec2 p;
             in vec4 position;
             void main (void)
@@ -66,7 +65,7 @@ int TestShader() {
 
 
     string fragmentShader =
-            R"(#version 150
+            R"(
             in vec4 colorV;
             out vec4 fragColor;
             void main(void)
@@ -84,7 +83,7 @@ int TestShader() {
     }
 
     vertexShader =
-            R"(#version 150
+            R"(
             uniform vec2 p;
             in vec4 position;
             in vec4 color;
@@ -98,7 +97,7 @@ int TestShader() {
 
 
     fragmentShader =
-            R"(#version 150
+            R"(
             in vec4 colorV;
             out vec4 fragColor;
             void main(void)
@@ -116,7 +115,7 @@ int TestShader() {
     }
 
     vertexShader =
-            R"(#version 150
+            R"(
             uniform vec2 p;
             in vec4 position;
             in vec4 color;
@@ -130,7 +129,7 @@ int TestShader() {
 
 
     fragmentShader =
-            R"(#version 150
+            R"(
             in vec4 colorV;
             out vec4 fragColor;
             void main(void)
@@ -145,7 +144,7 @@ int TestShader() {
     auto shaderUniforms = shader->getShaderUniforms();
     TINYTEST_ASSERT(shaderUniforms.size()==1);
     TINYTEST_ASSERT(shaderUniforms[0].name.compare("p") == 0);
-    TINYTEST_ASSERT(shaderUniforms[0].index == 0);
+//    TINYTEST_ASSERT(shaderUniforms[0].index == 0);
     TINYTEST_ASSERT(shaderUniforms[0].size == 1);
     TINYTEST_ASSERT(shaderUniforms[0].type == GL_FLOAT_VEC2);
 
@@ -153,7 +152,7 @@ int TestShader() {
     TINYTEST_ASSERT(shaderAttributes.size() == 2);
     for (auto shaderAttribute:shaderAttributes){
         TINYTEST_ASSERT(shaderAttribute.name.compare("position") == 0 || shaderAttribute.name.compare("color") == 0);
-        TINYTEST_ASSERT(shaderAttribute.index < 2);
+//        TINYTEST_ASSERT(shaderAttribute.index < 2);
         TINYTEST_ASSERT(shaderAttribute.size == 1);
         TINYTEST_ASSERT(shaderAttribute.type == GL_FLOAT_VEC4);
     }
@@ -163,7 +162,7 @@ int TestShader() {
 
 int TestMaterial() {
     std::string vertexShader =
-            R"(#version 150
+            R"(
             uniform vec4 p;
             in vec4 position;
             in vec4 color;
@@ -177,7 +176,7 @@ int TestMaterial() {
 
 
     std::string fragmentShader =
-            R"(#version 150
+            R"(
             in vec4 colorV;
             out vec4 fragColor;
             void main(void)
@@ -192,8 +191,11 @@ int TestMaterial() {
         material->setShader(shader);
         material->setUniform("p", glm::vec4{0,1,0,1});
     } catch (ShaderBuildException sbe){
-        cerr << sbe.errorMessage << endl;
+        cout << sbe.errorMessage << endl;
         throw sbe;
+    } catch (...){
+        cout << "unknown exception" << endl;
+        throw;
     }
 
     return 1;
@@ -283,6 +285,7 @@ int TestLoadTexture(){
 }
 
 int TestLoadTextureTypes(){
+#ifndef EMSCRIPTEN
     GLenum error = glGetError();
     TINYTEST_ASSERT_MSG(error == GL_NO_ERROR, "Init");
     string imgPaths[6] = {
@@ -293,13 +296,14 @@ int TestLoadTextureTypes(){
             "unittest/images/load_0_.png",
             "unittest/images/load_0.png"
     };
+
     int expectedTypes[6] = {GL_RGB,GL_RGB,GL_RGBA,GL_RGBA};
     for (int i=0;i<6;i++){
         Texture2D *img = Project::loadTexture2D(imgPaths[i]);
         error = glGetError();
         TINYTEST_ASSERT_MSG(error == GL_NO_ERROR, imgPaths[i].c_str());
     }
-
+#endif
     return 1;
 
 }
@@ -354,7 +358,7 @@ int TestShaderPreCompiler(){
 test
 //#pragma include "light2.glsl"
 #pragma include "assets/shaders/light.glsl")";
-    string output = Shader::getPrecompiledSource(removeCommentedOutPragmas);
+    string output = Shader::getPrecompiledSource(removeCommentedOutPragmas, ShaderType::FragmentShader);
 
     TINYTEST_ASSERT(output.find("//#pragma") == -1);
     return 1;
@@ -378,12 +382,16 @@ int TestShaderLoading(){
             "__shadowmap",
     };
     for (auto & s : shaders){
-        string shaderURI = string{"assets/shaders/"}+s+".shader";
-        auto shader = Project::loadShader(shaderURI);
-        TINYTEST_ASSERT(shader->getShaderSource(kick::ShaderType::VertexShader).length()>0);
-        TINYTEST_ASSERT(shader->getShaderSource(kick::ShaderType::FragmentShader).length()>0);
-        bool isTransparent = s.substr(0,5) == "trans";
-        TINYTEST_ASSERT(isTransparent == shader->getBlend());
+        try {
+            string shaderURI = string{"assets/shaders/"} + s + ".shader";
+            auto shader = Project::loadShader(shaderURI);
+            TINYTEST_ASSERT(shader->getShaderSource(kick::ShaderType::VertexShader).length() > 0);
+            TINYTEST_ASSERT(shader->getShaderSource(kick::ShaderType::FragmentShader).length() > 0);
+            bool isTransparent = s.substr(0, 5) == "trans";
+            TINYTEST_ASSERT(isTransparent == shader->getBlend());
+        }catch (ShaderBuildException sbe){
+            TINYTEST_ASSERT_MSG(false, (sbe.codeSnippet+" "+sbe.errorMessage).c_str());
+        }
     }
     return 1;
 }
@@ -582,7 +590,7 @@ int TestDeleteComponent(){
     class TrackComponent : public Component {
     public:
         TrackComponent(GameObject *gameObject)
-                : Component(gameObject, false) {}
+                : Component(gameObject) {}
 
         virtual ~TrackComponent(){
             *destroyed = true;
@@ -591,19 +599,24 @@ int TestDeleteComponent(){
         bool * destroyed;
 
     };
-    bool destroyedOnClassDestruction = false;
+    static bool destroyedOnClassDestruction = false;
     auto gameObject = Engine::instance->getActiveScene()->createGameObject("SomeObject");
 
-    bool destroyed = false;
+    static bool destroyed = false;
 
     TrackComponent *tc = gameObject->addComponent<TrackComponent>();
     tc->destroyed= &destroyed;
     TrackComponent *tc2 = gameObject->addComponent<TrackComponent>();
     tc2->destroyed = &destroyedOnClassDestruction;
+    cout << "Pre destroy component"<<endl;
     gameObject->destroyComponent(tc);
+    cout << "Post destroy component"<<endl;
     TINYTEST_ASSERT(destroyed);
+    cout << "Pre destroy gameObject"<<endl;
     Engine::instance->getActiveScene()->destroyGameObject(gameObject);
+    cout << "Post destroy gameObject"<<endl;
     TINYTEST_ASSERT(destroyedOnClassDestruction);
+
     return 1;
 }
 
@@ -698,12 +711,12 @@ int TestTransformLookAt(){
 }
 
 int TestLoadCubemap(){
-    auto img = Project::loadTexture2D("assets/textures/cubemap.png");
+    auto img = Project::loadTextureCube("assets/textures/cubemap.png");
     return 1;
 }
 
 int TestComponentListener(){
-    set<ComponentUpdateStatus> events;
+    static set<ComponentUpdateStatus> events;
     auto listener = Engine::instance->getActiveScene()->componentEvents.createListener([&](std::pair<Component*, ComponentUpdateStatus> e){
         events.insert(e.second);
     });

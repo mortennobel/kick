@@ -24,15 +24,19 @@ namespace kick {
     };
 
     enum class ShaderType {
-        VertexShader = GL_VERTEX_SHADER,
         FragmentShader = GL_FRAGMENT_SHADER,
+        VertexShader = GL_VERTEX_SHADER,
+#ifndef GL_ES_VERSION_2_0
         GeometryShader = GL_GEOMETRY_SHADER
+#endif
     };
 
     enum class ShaderErrorType {
-        VertexShader = GL_VERTEX_SHADER,
         FragmentShader = GL_FRAGMENT_SHADER,
+        VertexShader = GL_VERTEX_SHADER,
+#ifndef GL_ES_VERSION_2_0
         GeometryShader = GL_GEOMETRY_SHADER,
+#endif
         Linker,
         IncompleteShader
     };

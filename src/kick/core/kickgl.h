@@ -8,8 +8,13 @@
 
 #pragma once
 
-#include <OpenGL/gl3.h>
-
+#if defined(KICK_CONTEXT_ES2)
+#include <GLES2/gl2.h>
+#elif defined(EMSCRIPTEN)
+#   include <GLES2/gl2.h>
+#else
+#   include <OpenGL/gl3.h>
+#endif
 #define BUFFER_OFFSET(x)  ((const void*) (x))
 
 namespace kick {

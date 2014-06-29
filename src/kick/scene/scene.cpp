@@ -16,8 +16,8 @@
 #include "kick/scene/mesh_renderer.h"
 #include "kick/mesh/mesh_factory.h"
 #include "kick/mesh/mesh.h"
-#include "engine.h"
-#include "light.h"
+#include "kick/core/engine.h"
+#include "kick/scene/light.h"
 #include "glm/gtx/string_cast.hpp"
 
 using namespace std;
@@ -61,8 +61,8 @@ namespace kick {
     void Scene::destroyGameObject(GameObject *gameObject){
         for (int i=0;i<gameObjects.size();i++){
             if (gameObjects[i].get() == gameObject){
-                gameObjects.erase(gameObjects.begin()+i);
                 componentListeners.erase(gameObject);
+                gameObjects.erase(gameObjects.begin()+i);
                 return;
             }
         }

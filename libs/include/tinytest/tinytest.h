@@ -84,7 +84,7 @@ typedef struct TinyTestRegistryStruct
   {                                                                     \
     printf("%s:%d assertion failed: \"%s\"\n",                          \
            __FILE__, __LINE__, #assertion);                             \
-    if ( msg ) printf(msg);                                             \
+    if ( msg ) cout<<(msg)<<endl;                                             \
     return 0;                                                           \
   }
 
@@ -151,6 +151,7 @@ void Suite##suiteName(TinyTestRegistry* registry)                       \
       TinyTest* t = s->m_headTest;                                      \
       for ( ; t; t = t->m_next )                                        \
       {                                                                 \
+        printf("\n%s", t->m_name);\
         if ( (*t->m_func)() )                                           \
         {                                                               \
           printf(".");                                                  \

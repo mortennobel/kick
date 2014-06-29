@@ -20,6 +20,7 @@
 #include "kick/mesh/mesh_data.h"
 #include "kick/material/shader_enums.h"
 #include "kick/material/material.h"
+
 namespace kick {
     
     class Material;
@@ -77,8 +78,9 @@ namespace kick {
         template <class E>
         void setDefaultUniform(std::string name, E value);
         bool tryGetDefaultUniform(std::string name, MaterialData& value);
-        static std::string getPrecompiledSource(std::string source);
+        static std::string getPrecompiledSource(std::string source, ShaderType type);
     private:
+        static void translateToGLSLES(std::string& s, ShaderType type);
         void updateShaderLocation(std::string name, MaterialData& value);
         void setDefaultUniformData(std::string name, MaterialData&& value);
         void updateDefaultShaderLocation();

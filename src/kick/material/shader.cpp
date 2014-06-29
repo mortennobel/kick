@@ -20,9 +20,10 @@
 #include <cstring>
 #include <algorithm>
 #include <iterator>
+#include <sstream>
 #include "kick/core/cpp_ext.h"
 #include "kick/scene/transform.h"
-#include "light.h"
+#include "kick/scene/light.h"
 
 using namespace std;
 
@@ -38,7 +39,9 @@ break;
         switch (value) {
                 casetype(ShaderType::VertexShader);
                 casetype(ShaderType::FragmentShader);
+#ifndef GL_ES_VERSION_2_0
                 casetype(ShaderType::GeometryShader);
+#endif
             default:
                 return false;
         }
@@ -49,7 +52,9 @@ break;
         switch (value) {
                 casetype(ShaderErrorType::VertexShader);
                 casetype(ShaderErrorType::FragmentShader);
+#ifndef GL_ES_VERSION_2_0
                 casetype(ShaderErrorType::GeometryShader);
+#endif
                 casetype(ShaderErrorType::Linker);
                 casetype(ShaderErrorType::IncompleteShader);
             default:
@@ -170,7 +175,9 @@ break;
     {
         setShaderSource(ShaderType::VertexShader, vertexShader);
         setShaderSource(ShaderType::FragmentShader, fragmentShader);
+#ifndef GL_ES_VERSION_2_0
         setShaderSource(ShaderType::GeometryShader, geometryShader);
+#endif
         if (vertexShader.length()>0 && fragmentShader.length()>0) {
             apply();
         }
@@ -217,7 +224,44 @@ break;
         
         return move(res);
     }
-    
+
+    void Shader::translateToGLSLES(string& source, ShaderType type){
+        // replace textures
+        if (type == ShaderType::VertexShader){
+            static regex regExpSearchShim3 { R"(\n\s*out\b)"};
+            source = regex_replace(source, regExpSearchShim3, "\nvarying");
+            static regex regExpSearchShim4 { R"(\n\s*in\b)"};
+            source = regex_replace(source, regExpSearchShim4, "\nattribute");
+        } else {
+            static regex regExpSearchShim2 { R"(\bfragColor\b)"};
+            source = regex_replace(source, regExpSearchShim2, "gl_FragColor");
+            static regex regExpSearchShim3 { R"(\n\s*out\b)"};
+            source = regex_replace(source, regExpSearchShim3, "\n// out");
+            static regex regExpSearchShim4 { R"(\n\s*in\b)"};
+            source = regex_replace(source, regExpSearchShim4, "\nvarying");
+        }
+
+        static regex regExpSearchShim1 { R"(\s*uniform\s+sampler([\w]*)\s+([\w_]*)\s*;.*)"};
+        istringstream iss(source);
+        map<string,string> textureType;
+        smatch match;
+        for (std::string line; std::getline(iss, line); )
+        {
+            regex_search(line, match, regExpSearchShim1);
+            if (match.size() > 0){
+                string samplerType = match[1].str();
+                string samplerName = match[2].str();
+                textureType[samplerName] = samplerType;
+
+            }
+        }
+
+        for (auto val : textureType){
+            regex regExpSearchShim4 { string{"texture\\s*\\(\\s*"}+val.first+"\\s*," };
+            source = regex_replace(source, regExpSearchShim4, string{"texture"}+val.second+"("+val.first+",");
+        }
+    }
+
     vector<UniformDescriptor > getActiveShaderUniforms(GLuint programid){
         vector<UniformDescriptor > res;
         
@@ -227,7 +271,7 @@ break;
         glGetProgramiv(programid, GL_ACTIVE_UNIFORM_MAX_LENGTH, &bufSize);
         vector<GLchar> buffer(bufSize);
         for (GLuint i=0;i<numberOfActiveUniforms;i++){
-            UniformDescriptor  uni{i};
+            UniformDescriptor uni{i};
             glGetActiveUniform(programid,
                                i,
                                bufSize,
@@ -243,12 +287,18 @@ break;
         return move(res);
     }
     
-    string Shader::getPrecompiledSource(string source){
+    string Shader::getPrecompiledSource(string source, ShaderType type) {
         if (source.find("#version") != 0){
+#ifdef GL_ES_VERSION_2_0
+            string prefix = "#version 100\n";// context.getGLSLPrefix() // todo - get prefix from context
+#else
             string prefix = "#version 150\n";// context.getGLSLPrefix() // todo - get prefix from context
+#endif
             source = prefix + source;
         }
-        
+        string precisionSpecifier = "";
+
+
         // remove commented out usages of #pragma include
         static regex regExpSearch { R"(//\s*#?\s*pragma\s+include[^\n]*)"};
         source = regex_replace(source, regExpSearch, "");
@@ -273,17 +323,27 @@ break;
                 source = regex_replace(source, regExpSearch3, includedSource);
             }
         }
-        
+
+#ifdef GL_ES_VERSION_2_0
+        translateToGLSLES(source, type);
+        if (type == ShaderType::FragmentShader){
+            precisionSpecifier = "precision mediump float;\n";
+        }
+#endif
         // Insert compile
         size_t indexOfNewline = source.find('\n');
         string version = source.substr(0, indexOfNewline); // save version info
-        string sourcecode = source.substr(indexOfNewline + 1); // strip version info
-        
-        return version + "\n" +
-        "#define SHADOWS " + (Engine::instance->config.shadows == true?"true":"false") + "\n" +
+        source = source.substr(indexOfNewline + 1); // strip version info
+
+
+        source = version + "\n" +
+                precisionSpecifier+
+        "#define SHADOWS " + (Engine::instance->config.shadows?"true":"false") + "\n" +
         "#define LIGHTS " + std::to_string((int)Engine::instance->config.maxNumerOfLights) + "\n" +
         "#line " + std::to_string(2) + "\n" +
-            sourcecode;
+                source;
+
+        return source;
     }
     
     void Shader::apply(){
@@ -297,7 +357,7 @@ break;
             auto shaderType = element.first;
             string & source = element.second;
             if (source.length()>0){
-                string precompiledSource = getPrecompiledSource(source);
+                string precompiledSource = getPrecompiledSource(source, shaderType);
                 
                 shaderObjects.push_back(compileShader(precompiledSource, shaderType));
                 // remove element from vector
@@ -329,8 +389,9 @@ break;
     }
     
     void Shader::linkProgram(){
+#ifndef GL_ES_VERSION_2_0
         glBindFragDataLocation(shaderProgram, 0, outputAttributeName.c_str());
-        
+#endif
 		glLinkProgram(shaderProgram);
         
 		GLint  linked;
@@ -409,7 +470,7 @@ break;
 
     std::string Shader::getPrecompiledShaderSource(ShaderType type) const{
         string value = getShaderSource(type);
-        return getPrecompiledSource(value);
+        return getPrecompiledSource(value, type);
     }
 
     const std::vector<AttributeDescriptor >& Shader::getShaderAttributes() const  {

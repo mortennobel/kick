@@ -9,7 +9,7 @@
 #include "kick/core/project.h"
 #include "kick/core/engine.h"
 #include <fstream>
-#include <SDL2_image/SDL_image.h>
+
 #include "kick/texture/image_format.h"
 #include "rapidjson/document.h"
 #define GLM_FORCE_RADIANS
@@ -21,6 +21,7 @@ namespace kick {
     Project::Project()
     :assetLoader{new AssetLoader()}
     {
+#ifndef EMSCRIPTEN
         SDL_version compile_version;
         const SDL_version *link_version=IMG_Linked_Version();
         SDL_IMAGE_VERSION(&compile_version);
@@ -41,7 +42,7 @@ namespace kick {
                     compile_version.minor,
                     compile_version.patch);
         }
-
+#endif
 
         int flags=IMG_INIT_JPG|IMG_INIT_PNG;
         int initted=IMG_Init(flags);
@@ -56,13 +57,10 @@ namespace kick {
         Engine* engine = Engine::instance;
         return &(engine->project);
     }
-    
-    string Project::getResourceURI(string uri){
-        return uri;
-    }
+
     
     string Project::loadTextResource(string uri){
-        ifstream file(getResourceURI(uri));
+        ifstream file(uri);
         if(!file.is_open())
             throw runtime_error(string{"couldn't open file "}+uri);
         
@@ -92,9 +90,9 @@ namespace kick {
     }
     
     Texture2D* Project::loadTexture2D(std::string uri){
-        vector<char> res = loadBinaryResource(uri);
-        if (res.size()>0){
-            return loadTexture2DFromMemory(&(res[0]), res.size());
+        SDL_Surface * surface = IMG_Load(uri.c_str());
+        if (surface){
+            return surfaceToTexture2D(surface);
         } else {
             return nullptr;
         }
@@ -105,8 +103,14 @@ namespace kick {
         SDL_PixelFormat * format = imgRef->format;
         auto pixelFormat = format->format;
         bool isBGR = format->Rshift == 16;
+#ifdef GL_ES_VERSION_2_0
+        GLenum RGB  = GL_RGB;
+        GLenum RGBA = GL_RGBA;
+#else
         GLenum RGB  = isBGR ? GL_BGR : GL_RGB;
         GLenum RGBA = isBGR ? GL_BGRA : GL_RGBA;
+
+#endif
         const bool alpha = SDL_ISPIXELFORMAT_ALPHA(pixelFormat);
         if (alpha){
             imageFormat.format = RGBA;
@@ -164,17 +168,30 @@ namespace kick {
             SDL_Surface *image = nullptr;
             image = IMG_Load_RW(source, 1);
             
-            ImageFormat imageFormat;
             if (image) {
-                texturePtr = createAsset<Texture2D>();
-                convertTextureIfNeeded(imageFormat, &image);
-                invert_image(image->pitch, image->h, image->pixels);
-                texturePtr->setData(image->w, image->h, static_cast<char*>(image->pixels), imageFormat);
-                SDL_FreeSurface(image);
+                texturePtr = surfaceToTexture2D(image);
             } else {
                 SDL_FreeRW(source);
             }
         }
+        return texturePtr;
+    }
+
+    Texture2D *Project::surfaceToTexture2D(SDL_Surface *image) {
+        ImageFormat imageFormat;
+        convertTextureIfNeeded(imageFormat, &image);
+#if EMSCRIPTEN
+        const GLenum GL_UNPACK_FLIP_Y_WEBGL = 37440;
+        glPixelStorei(GL_UNPACK_FLIP_Y_WEBGL, true);
+#else
+        invert_image(image->pitch, image->h, image->pixels);
+#endif
+        Texture2D *texturePtr = createAsset<Texture2D>();
+        texturePtr->setData(image->w, image->h, static_cast<char*>(image->pixels), imageFormat);
+#if EMSCRIPTEN
+        glPixelStorei(GL_UNPACK_FLIP_Y_WEBGL, false);
+#endif
+        SDL_FreeSurface(image);
         return texturePtr;
     }
 
@@ -186,28 +203,31 @@ namespace kick {
             SDL_Surface *image = nullptr;
             image = IMG_Load_RW(source, 1);
 
-            ImageFormat imageFormat;
-
             if (image) {
-                texturePtr = createAsset<TextureCube>();
-                convertTextureIfNeeded(imageFormat, &image);
-                assert(image->h == image->w * 6);
-                for (int i = 0; i < 6; i++) {
-                    texturePtr->setData(image->w, image->h, static_cast<char *>(image->pixels) + image->pitch * image->w * i, i, imageFormat);
-                }
-                SDL_FreeSurface(image);
+                texturePtr = surfaceToTextureCube(image);
             } else {
                 SDL_FreeRW(source);
             }
-
         }
         return texturePtr;
     }
 
+    TextureCube *Project::surfaceToTextureCube( SDL_Surface *image) {
+        ImageFormat imageFormat;
+        TextureCube *texturePtr = createAsset<TextureCube>();
+        convertTextureIfNeeded(imageFormat, &image);
+        assert(image->h == image->w * 6);
+        for (int i = 0; i < 6; i++) {
+            texturePtr->setData(image->w, image->h, static_cast<char *>(image->pixels) + image->pitch * image->w * i, i, imageFormat);
+        }
+        SDL_FreeSurface(image);
+        return texturePtr;
+    }
+
     TextureCube* Project::loadTextureCube(std::string uri){
-        vector<char> res = loadBinaryResource(uri);
-        if (res.size()>0){
-            return loadTextureCubeFromMemory(&(res[0]), res.size());
+        SDL_Surface * surface = IMG_Load(uri.c_str());
+        if (surface){
+            return surfaceToTextureCube(surface);
         } else {
             return nullptr;
         }
@@ -217,6 +237,7 @@ namespace kick {
         using namespace rapidjson;
         using namespace glm;
         string shaderSource = loadTextResource(uri);
+
         Document document;
         Shader* shader = nullptr;
         if (document.Parse<0>( shaderSource.c_str() ).HasParseError() ) {
@@ -273,7 +294,8 @@ namespace kick {
             ZTestType zTest             = getZTestType("zTest", ZTestType::Less);
             string vertexShader         = loadTextResource(vertexShaderURI);
             string fragmentShader       = loadTextResource(fragmentShaderURI);
-            
+
+
             shader->setShaderSource(ShaderType::VertexShader, vertexShader);
             shader->setShaderSource(ShaderType::FragmentShader, fragmentShader);
             shader->setBlend(blend);
@@ -287,6 +309,7 @@ namespace kick {
             shader->setPolygonOffsetFactorAndUnit(vec2{polygonOffsetFactor, polygonOffsetUnit});
             shader->setZTest(zTest);
             shader->apply();
+
             if (document.HasMember("defaultUniform") && document["defaultUniform"].IsObject()){
                 auto & defaultUniformArray = document["defaultUniform"];
                 for (auto memberIter = defaultUniformArray.MemberBegin();memberIter != defaultUniformArray.MemberEnd();memberIter++){
@@ -358,7 +381,6 @@ namespace kick {
         return shader;
     }
 
-    
     int Project::mapAssetURIToId(std::string assetURI){
         // todo implement
         // store assetId in file? Or database? (currently the id assignment can change on program execution)

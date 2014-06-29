@@ -11,7 +11,6 @@
 #include "EngineTest.h"
 #include "math_test.h"
 
-#include "glm_ext.h"
 #include "glm/gtx/transform.hpp"
 #include "glm/gtx/string_cast.hpp"
 #include <string>
@@ -49,10 +48,18 @@ TINYTEST_END_SUITE();
 
 int main(int argc, char* argv[])
 {
-    // Manually launch TinyTest
-    TinyTestRegistry registry;
-    registry.m_headSuite = NULL;
-    initEngine(argc, argv);
+    try {
+        {
+        // Manually launch TinyTest
+        TinyTestRegistry registry;
+        registry.m_headSuite = NULL;
+        initEngine(argc, argv);
 
-TINYTEST_RUN_SUITE(ObjSuite);
+        TINYTEST_RUN_SUITE(ObjSuite);
+
 TINYTEST_END_MAIN();
+}catch (const std::exception& ex) {
+cout << "Exception "<< ex.what()<<endl;
+}catch (...){
+cout << "Exception "<< endl;
+    }}

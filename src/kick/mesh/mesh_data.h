@@ -28,15 +28,22 @@ namespace kick {
     };
     
     enum class MeshUsage {
+
         StreamDraw = GL_STREAM_DRAW,
+#ifndef GL_ES_VERSION_2_0
         StreamRead = GL_STREAM_READ,
         StreamCopy = GL_STREAM_COPY,
+#endif
         StaticDraw = GL_STATIC_DRAW,
+#ifndef GL_ES_VERSION_2_0
         StaticRead = GL_STATIC_READ,
         StaticCopy = GL_STATIC_COPY,
+#endif
         DynamicDraw = GL_DYNAMIC_DRAW,
+#ifndef GL_ES_VERSION_2_0
         DynamicRead = GL_DYNAMIC_READ,
         DynamicCopy = GL_DYNAMIC_COPY
+#endif
     };
     
     enum class VertexAttributeSemantic {

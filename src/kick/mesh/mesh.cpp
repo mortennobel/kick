@@ -26,7 +26,10 @@ namespace kick {
             for (auto keyValue : vertexArrayObject){
                 array.push_back(keyValue.second);
             }
+#ifndef GL_ES_VERSION_2_0
             glDeleteVertexArrays((GLsizei)array.size(), &(array[0]));
+#endif
+
         }
         glDeleteBuffers(1, &vertexBufferId);
         glDeleteBuffers(1, &elementBufferId);
@@ -34,13 +37,17 @@ namespace kick {
     
     void Mesh::bind(Shader * shader){
         shader->bind();
+#ifndef GL_ES_VERSION_2_0
         if (openglUsingVao()){
+
             auto iter = vertexArrayObject.find(shader);
             if (iter == vertexArrayObject.end()){
                 // create and bind object
                 GLuint vertexArrayObjectIdx;
+
                 glGenVertexArrays(1, &vertexArrayObjectIdx);
                 glBindVertexArray(vertexArrayObjectIdx);
+
                 // reassign buffers
                 glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
@@ -51,7 +58,10 @@ namespace kick {
                 GLuint vertexArrayObject = iter->second;
                 glBindVertexArray(vertexArrayObject);
             }
-        } else {
+
+        } else
+#endif
+        {
             updateArrayBufferStructure(shader);
         }
         

@@ -12,23 +12,32 @@ using namespace std;
 namespace kick {
     TextureRenderTarget::TextureRenderTarget(Project *project)
             : ProjectAsset(project) {
+#ifndef GL_ES_VERSION_2_0
         glGenFramebuffers(1, &framebuffer);
+#endif
     }
 
     TextureRenderTarget::~TextureRenderTarget() {
+#ifndef GL_ES_VERSION_2_0
         glDeleteFramebuffers(1, &framebuffer);
+#endif
         framebuffer = 0;
     }
 
     void TextureRenderTarget::bind() {
+#ifndef GL_ES_VERSION_2_0
         glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+#endif
     }
 
     void TextureRenderTarget::unbind() {
+#ifndef GL_ES_VERSION_2_0
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
+#endif
     }
 
     void TextureRenderTarget::apply() {
+#ifndef GL_ES_VERSION_2_0
         if (renderBuffers.size()) {
             glDeleteRenderbuffers(renderBuffers.size(), &(renderBuffers[0]));
             renderBuffers.clear();
@@ -61,9 +70,11 @@ namespace kick {
         checkStatus();
 
         unbind();
+#endif
     }
 
     void TextureRenderTarget::checkStatus() {
+#ifndef GL_ES_VERSION_2_0
         GLenum frameBufferStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
         if (frameBufferStatus != GL_FRAMEBUFFER_COMPLETE) {
             switch (frameBufferStatus) {
@@ -96,6 +107,7 @@ namespace kick {
                     break;
             }
         }
+#endif
     }
 
     void TextureRenderTarget::setSize(glm::ivec2 size) {

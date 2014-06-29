@@ -13,7 +13,9 @@
 namespace kick {
     enum class TextureWrap {
         ClampToEdge = GL_CLAMP_TO_EDGE,
+#ifndef GL_ES_VERSION_2_0
         ClampToBorder = GL_CLAMP_TO_BORDER,
+#endif
         MirroedRepeat = GL_MIRRORED_REPEAT,
         Repeat = GL_REPEAT
     };

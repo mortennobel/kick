@@ -17,8 +17,8 @@
 #include "kick/scene/scene.h"
 #include "kick/scene/component_renderable.h"
 #include "kick/texture/texture_render_target.h"
-#include "engine.h"
-#include "light.h"
+#include "kick/core/engine.h"
+#include "kick/scene/light.h"
 
 using namespace std;
 using namespace glm;

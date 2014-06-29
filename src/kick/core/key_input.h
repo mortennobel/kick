@@ -7,7 +7,11 @@
 //
 #pragma once
 
-#include <SDL2/SDL_keycode.h>
+#ifdef EMSCRIPTEN
+#   include <SDL/SDL_keycode.h>
+#else
+#   include <SDL2/SDL_keycode.h>
+#endif
 #include <set>
 #include <vector>
 #include <initializer_list>
