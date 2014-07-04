@@ -279,6 +279,7 @@ namespace kick {
             createGetX(ZTestType);
             
             string vertexShaderURI      = getString("vertexShaderURI", "");
+            string geometryShaderURI      = getString("geometryShaderURI", "");
             string fragmentShaderURI    = getString("fragmentShaderURI", "");
             //string outputAttributeName  = getString("outputAttributeName", "");
             bool blend                  = getBool("blend", false);
@@ -298,6 +299,10 @@ namespace kick {
 
             shader->setShaderSource(ShaderType::VertexShader, vertexShader);
             shader->setShaderSource(ShaderType::FragmentShader, fragmentShader);
+            if (geometryShaderURI.length()){
+                string geometryShader       = loadTextResource(geometryShaderURI);
+                shader->setShaderSource(ShaderType::GeometryShader, geometryShader);
+            }
             shader->setBlend(blend);
             shader->setBlendDFactorAlpha(blendDFactorAlpha);
             shader->setBlendDFactorRGB(blendDFactorRGB);
