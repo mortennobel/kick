@@ -26,10 +26,10 @@ namespace kick {
         context->setStartFrameCallback([&](){startFrame();});
         context->setUpdateCallback([&](){update();});
         context->setRenderCallback([&](){render();});
-        context->viewPort.registerSyncValue(engineUniforms.viewportDimension);
+        context->contextSurfaceSize.registerSyncValue(engineUniforms.viewportDimension);
         context->setKeyInput(&keyInput);
         context->setMouseInput(&mouseInput);
-        engineUniforms.viewportDimension.setValue(context->getViewportDim());
+        engineUniforms.viewportDimension.setValue(context->getContextSurfaceDim());
         
         instance = this;
     }

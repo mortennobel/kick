@@ -77,7 +77,7 @@ namespace kick {
         int height = config.height;
         int depthSize = config.depthBufferSize;
         
-        viewportDim = glm::vec2(width, height);
+        contextSurfaceDim = glm::vec2(width, height);
 #ifdef EMSCRIPTEN
         SDL_Surface *screen = SDL_SetVideoMode(width, height, 32, SDL_OPENGL);
 #else

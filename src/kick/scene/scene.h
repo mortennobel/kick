@@ -20,12 +20,16 @@
 #include "kick/scene/component.h"
 #include "kick/core/event.h"
 #include "kick/scene/scene_lights.h"
+#include "camera_perspective.h"
+#include "camera_orthographic.h"
 
 namespace kick {
-    class Camera;
+    class CameraPerspective;
+    class CameraOrthographic;
     class MeshRenderer;
     class Light;
     class ComponentUpdateable;
+    class Text;
 
     class Scene {
     public:
@@ -43,9 +47,9 @@ namespace kick {
         Event<std::pair<Component*, ComponentUpdateStatus>> componentEvents;
 
         // helper function, which creates a gameobject and attaches a perspective camera to it
-        Camera* createPerspectiveCamera();
+        CameraPerspective* createPerspectiveCamera();
         // helper function, which creates a gameobject and attaches an orthographic camera to it
-        Camera* createOrthographicCamera();
+        CameraOrthographic* createOrthographicCamera();
         // helper function, which creates a gameobject and attaches a cube with diffuse renderer
         MeshRenderer* createCube();
         // helper function, which creates a gameobject and attaches a sphere with diffuse renderer
@@ -58,7 +62,6 @@ namespace kick {
         Light* createDirectionalLight();
         // helper function, which creates a gameobject and attaches an ambient light
         Light* createAmbientLight(float intensity = 0.3f, glm::vec3 color = glm::vec3(1));
-
 
         friend class Engine;
         friend class GameObject;

@@ -89,10 +89,10 @@ namespace kick {
         const std::vector<glm::vec3>&getPosition();
         void setNormal(const std::vector<glm::vec3> &n);
         const std::vector<glm::vec3>&getNormal();
-        void setUv1(const std::vector<glm::vec2> &u1);
-        const std::vector<glm::vec2>&getUv1();
-        void setUv2(const std::vector<glm::vec2> &u2);
-        const std::vector<glm::vec2>&getUv2();
+        void setTexCoord0(const std::vector<glm::vec2> &u1);
+        const std::vector<glm::vec2>&getTexCoord0();
+        void setTexCoord1(const std::vector<glm::vec2> &u2);
+        const std::vector<glm::vec2>&getTexCoord1();
         void setTangent(const std::vector<glm::vec3> &t);
         const std::vector<glm::vec3>&getTangent();
         void setColor(const std::vector<glm::vec4> &c);
@@ -117,8 +117,8 @@ namespace kick {
         MeshUsage mesh_usage = MeshUsage::StaticDraw;
         std::vector<glm::vec3> position;
         std::vector<glm::vec3> normal;
-        std::vector<glm::vec2> uv1;
-        std::vector<glm::vec2> uv2;
+        std::vector<glm::vec2> texCoord0;
+        std::vector<glm::vec2> texCoord1;
         std::vector<glm::vec3> tangent;
         std::vector<glm::vec4> color;
         
@@ -128,6 +128,6 @@ namespace kick {
         };
         
         std::vector<SubMeshInternal> subMeshes;
-        int computeInterleavedDataSize();
+        size_t computeInterleavedDataSize();
     };
 }

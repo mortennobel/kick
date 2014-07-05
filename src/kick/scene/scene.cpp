@@ -156,7 +156,7 @@ namespace kick {
         }
     }
 
-    Camera* Scene::createPerspectiveCamera(){
+    CameraPerspective* Scene::createPerspectiveCamera(){
         GameObject *cameraObject = createGameObject("PerspectiveCamera");
         CameraPerspective *cam = cameraObject->addComponent<CameraPerspective>();
         cam->setNear(0.1f);
@@ -166,7 +166,7 @@ namespace kick {
         return cam;
     }
 
-    Camera *Scene::createOrthographicCamera() {
+    CameraOrthographic *Scene::createOrthographicCamera() {
         GameObject *cameraObject = createGameObject("OrthographicCamera");
         CameraOrthographic *cam = cameraObject->addComponent<CameraOrthographic>();
         cam->setNear(-10);

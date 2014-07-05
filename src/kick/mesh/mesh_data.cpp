@@ -45,20 +45,20 @@ namespace kick {
         return normal;
     }
     
-    void MeshData::setUv1(const std::vector<glm::vec2> &u1) {
-        uv1 = u1;
+    void MeshData::setTexCoord0(const std::vector<glm::vec2> &u1) {
+        texCoord0 = u1;
     }
     
-    const std::vector<glm::vec2>& MeshData::getUv1() {
-        return uv1;
+    const std::vector<glm::vec2>& MeshData::getTexCoord0() {
+        return texCoord0;
     }
     
-    void MeshData::setUv2(const std::vector<glm::vec2> &u2) {
-        uv2 = u2;
+    void MeshData::setTexCoord1(const std::vector<glm::vec2> &u2) {
+        texCoord1 = u2;
     }
     
-    const std::vector<glm::vec2>& MeshData::getUv2() {
-        return uv2;
+    const std::vector<glm::vec2>& MeshData::getTexCoord1() {
+        return texCoord1;
     }
     
     void MeshData::setTangent(const std::vector<glm::vec3> &t) {
@@ -84,17 +84,17 @@ namespace kick {
     unsigned int MeshData::getSubmeshesCount(){
         return static_cast<unsigned int>(subMeshes.size());
     }
-    
-    int MeshData::computeInterleavedDataSize(){
-        int numberOfElements = static_cast<int>(position.size());
-        int vertexSize = 3;
+
+    size_t MeshData::computeInterleavedDataSize(){
+        size_t numberOfElements = static_cast<int>(position.size());
+        size_t vertexSize = 3;
         if (normal.size() > 0) {
             vertexSize += 3;
         }
-        if (uv1.size() > 0) {
+        if (texCoord0.size() > 0) {
             vertexSize += 2;
         }
-        if (uv2.size() > 0) {
+        if (texCoord1.size() > 0) {
             vertexSize += 2;
         }
         if (tangent.size() > 0) {
@@ -126,13 +126,16 @@ namespace kick {
     }
     
     vector<float> MeshData::getInterleavedData(){
-        const int floatElements = computeInterleavedDataSize();
-        const int stride = floatElements / position.size();
+        const size_t floatElements = computeInterleavedDataSize();
         vector<float> res(floatElements);
+        if (floatElements == 0){
+            return res;
+        }
+        const int stride = floatElements / position.size();
         size_t offset = add_data(position, res, 0, stride);
         offset = add_data(normal, res, offset, stride);
-        offset = add_data(uv1, res, offset, stride);
-        offset = add_data(uv2, res, offset, stride);
+        offset = add_data(texCoord0, res, offset, stride);
+        offset = add_data(texCoord1, res, offset, stride);
         offset = add_data(tangent, res, offset, stride);
         offset = add_data(color, res, offset, stride);
         return res;
@@ -162,8 +165,8 @@ namespace kick {
         vector<InterleavedRecord> res;
         size_t offset = add_interleaved_record(position, res, 0, VertexAttributeSemantic::Position);
         offset = add_interleaved_record(normal, res, offset, VertexAttributeSemantic::Normal);
-        offset = add_interleaved_record(uv1, res, offset, VertexAttributeSemantic::Uv1);
-        offset = add_interleaved_record(uv2, res, offset, VertexAttributeSemantic::Uv2);
+        offset = add_interleaved_record(texCoord0, res, offset, VertexAttributeSemantic::Uv1);
+        offset = add_interleaved_record(texCoord1, res, offset, VertexAttributeSemantic::Uv2);
         offset = add_interleaved_record(tangent, res, offset, VertexAttributeSemantic::Tangent);
         offset = add_interleaved_record(color, res, offset, VertexAttributeSemantic::Color);
         

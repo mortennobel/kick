@@ -398,4 +398,8 @@ namespace kick {
         assetIdMap[assetURI] = tempAssetCounter;
         return tempAssetCounter;
     }
+
+    void Project::destroyAsset(ProjectAsset* asset) {
+
+    }
 }

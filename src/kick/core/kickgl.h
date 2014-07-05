@@ -14,9 +14,17 @@
 #   include <GLES2/gl2.h>
 #else
 #   include <OpenGL/gl3.h>
+#include <stdio.h>
+
 #endif
 #define BUFFER_OFFSET(x)  ((const void*) (x))
 
 namespace kick {
     bool openglUsingVao();
+
+#define printOpenGLError() printOglError(__FILE__, __LINE__)
+
+    const char * GLErrorString(GLenum errorCode);
+
+    int printOglError(char *file, int line);
 }

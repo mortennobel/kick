@@ -30,7 +30,7 @@ namespace kick {
             vec3{-sqrt75,-0.5f,0},
             vec3{sqrt75,-0.5f,0}
         });
-        meshData->setUv1({
+        meshData->setTexCoord0({
             vec2{0.0f,1},
             vec2{0.125f,0.25f},
             vec2{1- 0.125f, 0.25f}
@@ -68,7 +68,7 @@ namespace kick {
             indices[i] = i;
         }
         meshData->setPosition(vertices);
-        meshData->setUv1(uvs);
+        meshData->setTexCoord0(uvs);
         meshData->setNormal(normals);
         meshData->setColor(colors);
         meshData->setSubmesh(0, indices, MeshType::TriangleFan);
@@ -84,7 +84,7 @@ namespace kick {
             vec3{-1, -1, 0},
             vec3{-1, 1, 0}
         });
-        meshData->setUv1({
+        meshData->setTexCoord0({
             vec2{1, 0},
             vec2{1, 1},
             vec2{0, 0},
@@ -153,7 +153,7 @@ namespace kick {
         }
         
         meshData->setPosition(vertices);
-        meshData->setUv1(uvs);
+        meshData->setTexCoord0(uvs);
         meshData->setNormal(normals);
         meshData->setColor(colors);
         meshData->setSubmesh(0, indices, MeshType::TriangleStrip);
@@ -196,7 +196,7 @@ namespace kick {
             vec3{-length, length, -length},
             vec3{length, length, -length}      // v4-v7-v6-v5
         });
-        meshData->setUv1({
+        meshData->setTexCoord0({
             vec2{1, 1},
             vec2{0, 1},
             vec2{0, 0},

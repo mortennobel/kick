@@ -13,13 +13,8 @@
 #include "EngineTest.h"
 #include "tinytest/tinytest.h"
 #include "kick/kick.h"
-#include "kick/mesh/mesh_factory.h"
-#include "kick/core/kickgl.h"
-#include "kick/core/key_input.h"
-#include "kick/core/mouse_input.h"
 
 #include "glm/gtx/string_cast.hpp"
-#include "kick/scene/camera_perspective.h"
 
 using namespace kick;
 using namespace std;
@@ -728,5 +723,22 @@ int TestComponentListener(){
     TINYTEST_EQUAL(2, events.size());
     gameObject->destroyComponent(camera);
     TINYTEST_EQUAL(3, events.size());
+    return 1;
+}
+
+int TestFont(){
+    Font* font = Project::createAsset<Font>();
+    font->loadFntFile("unittest/font/font-export.fnt", "unittest/font/font-export.png");
+
+    TINYTEST_ASSERT(font->height() > 0);
+    TINYTEST_ASSERT(font->width("tt") > font->width("t"));
+
+
+    return 1;
+}
+
+int TestTextureAtlas(){
+    TextureAtlas* textureAtlas = Project::createAsset<TextureAtlas>();
+    textureAtlas->load("unittest/sprites/sprites.txt");
     return 1;
 }

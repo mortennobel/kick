@@ -39,13 +39,13 @@ namespace kick {
          * Return the resource base path
          */
         virtual std::string getBasePath();
-        glm::ivec2 getViewportDim();
-        Event<glm::ivec2> viewPort;
+        glm::ivec2 getContextSurfaceDim();
+        Event<glm::ivec2> contextSurfaceSize;
         std::string getGLSLPrefix();
         void setMouseInput(MouseInput* mouseInput);
         void setKeyInput(KeyInput* keyInput);
     protected:
-        glm::ivec2 viewportDim = glm::ivec2{512, 512};
+        glm::ivec2 contextSurfaceDim = glm::ivec2{512, 512};
         std::function<void ()> startFrameCallback;
         std::function<void ()> renderCallback;
         std::function<void ()> updateCallback;

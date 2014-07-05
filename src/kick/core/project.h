@@ -29,6 +29,8 @@ namespace kick {
     public:
         template <class E,  typename ... Args>
         static E* createAsset(Args ... args);
+
+        static void destroyAsset(ProjectAsset* asset);
         /*
         template <class E>
         E* getAsset(int assetId){
@@ -90,7 +92,7 @@ namespace kick {
 
         static TextureCube *surfaceToTextureCube(SDL_Surface *image);
     };
-    
+
     template <class E,  typename ... Args>
     inline E* Project::createAsset(Args ... args){
         E* res = new E{getProjectRef(), args...};

@@ -29,8 +29,8 @@ namespace kick {
         this->updateCallback = updateCallback;
     };
 
-    glm::ivec2 Context::getViewportDim(){
-        return viewportDim;
+    glm::ivec2 Context::getContextSurfaceDim(){
+        return contextSurfaceDim;
     }
     
     string Context::getGLSLPrefix(){
