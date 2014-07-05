@@ -109,8 +109,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setWindowTitl
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adc5cb06bf9b91ac7bfce847620308da2"></a><!-- doxytag: member="kick::Context::getWindowTitle" ref="adc5cb06bf9b91ac7bfce847620308da2" args="()=0" -->
 virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getWindowTitle</b> ()=0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkick_1_1_context.html#adeddda180513f7ee325512ad45b3cb0e">getBasePath</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afd85f9a3d2129cf4ee301aa253ce7118"></a><!-- doxytag: member="kick::Context::getViewportDim" ref="afd85f9a3d2129cf4ee301aa253ce7118" args="()" -->
-glm::ivec2&#160;</td><td class="memItemRight" valign="bottom"><b>getViewportDim</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a792d614c48420786a4f18eecacc61354"></a><!-- doxytag: member="kick::Context::getContextSurfaceDim" ref="a792d614c48420786a4f18eecacc61354" args="()" -->
+glm::ivec2&#160;</td><td class="memItemRight" valign="bottom"><b>getContextSurfaceDim</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a11a4621abeda0cdb845287930253c4d5"></a><!-- doxytag: member="kick::Context::getGLSLPrefix" ref="a11a4621abeda0cdb845287930253c4d5" args="()" -->
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getGLSLPrefix</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a217f82455d3b53a5a1a682846d6a0919"></a><!-- doxytag: member="kick::Context::setMouseInput" ref="a217f82455d3b53a5a1a682846d6a0919" args="(MouseInput *mouseInput)" -->
@@ -119,12 +119,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setMouseInput</b> (<a
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setKeyInput</b> (<a class="el" href="classkick_1_1_key_input.html">KeyInput</a> *keyInput)</td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7f50380d9570b94349b6aa12ac38a7b8"></a><!-- doxytag: member="kick::Context::viewPort" ref="a7f50380d9570b94349b6aa12ac38a7b8" args="" -->
-<a class="el" href="classkick_1_1_event.html">Event</a>&lt; glm::ivec2 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>viewPort</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8a8a55b88ac6e36761bf256dc8de55b1"></a><!-- doxytag: member="kick::Context::contextSurfaceSize" ref="a8a8a55b88ac6e36761bf256dc8de55b1" args="" -->
+<a class="el" href="classkick_1_1_event.html">Event</a>&lt; glm::ivec2 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>contextSurfaceSize</b></td></tr>
 <tr><td colspan="2"><h2><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a20ced7c8247093c6a6e55f5cdafce588"></a><!-- doxytag: member="kick::Context::viewportDim" ref="a20ced7c8247093c6a6e55f5cdafce588" args="" -->
-glm::ivec2&#160;</td><td class="memItemRight" valign="bottom"><b>viewportDim</b> = glm::ivec2{512, 512}</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac3f692724c7266014ee4215de10365c9"></a><!-- doxytag: member="kick::Context::contextSurfaceDim" ref="ac3f692724c7266014ee4215de10365c9" args="" -->
+glm::ivec2&#160;</td><td class="memItemRight" valign="bottom"><b>contextSurfaceDim</b> = glm::ivec2{512, 512}</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae667f7aa96511612d8bf8f215bf086c1"></a><!-- doxytag: member="kick::Context::startFrameCallback" ref="ae667f7aa96511612d8bf8f215bf086c1" args="" -->
 std::function&lt; void()&gt;&#160;</td><td class="memItemRight" valign="bottom"><b>startFrameCallback</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8bbc2c26f0bd12d97554cad9ff26e70a"></a><!-- doxytag: member="kick::Context::renderCallback" ref="a8bbc2c26f0bd12d97554cad9ff26e70a" args="" -->
@@ -180,7 +180,7 @@ std::function&lt; void()&gt;&#160;</td><td class="memItemRight" valign="bottom">
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue Jun 10 2014 21:56:27 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 5 2014 12:01:02 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

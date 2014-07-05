@@ -70,9 +70,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 This is the complete list of members for <a class="el" href="classkick_1_1_context.html">kick::Context</a>, including all inherited members.<table>
   <tr bgcolor="#f0f0f0"><td><b>Context</b>() (defined in <a class="el" href="classkick_1_1_context.html">kick::Context</a>)</td><td><a class="el" href="classkick_1_1_context.html">kick::Context</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>contextSurfaceDim</b> (defined in <a class="el" href="classkick_1_1_context.html">kick::Context</a>)</td><td><a class="el" href="classkick_1_1_context.html">kick::Context</a></td><td><code> [protected]</code></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>contextSurfaceSize</b> (defined in <a class="el" href="classkick_1_1_context.html">kick::Context</a>)</td><td><a class="el" href="classkick_1_1_context.html">kick::Context</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classkick_1_1_context.html#adeddda180513f7ee325512ad45b3cb0e">getBasePath</a>()</td><td><a class="el" href="classkick_1_1_context.html">kick::Context</a></td><td><code> [virtual]</code></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>getContextSurfaceDim</b>() (defined in <a class="el" href="classkick_1_1_context.html">kick::Context</a>)</td><td><a class="el" href="classkick_1_1_context.html">kick::Context</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>getGLSLPrefix</b>() (defined in <a class="el" href="classkick_1_1_context.html">kick::Context</a>)</td><td><a class="el" href="classkick_1_1_context.html">kick::Context</a></td><td></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>getViewportDim</b>() (defined in <a class="el" href="classkick_1_1_context.html">kick::Context</a>)</td><td><a class="el" href="classkick_1_1_context.html">kick::Context</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>getWindowTitle</b>()=0 (defined in <a class="el" href="classkick_1_1_context.html">kick::Context</a>)</td><td><a class="el" href="classkick_1_1_context.html">kick::Context</a></td><td><code> [pure virtual]</code></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>init</b>(int &amp;argc, char **argv)=0 (defined in <a class="el" href="classkick_1_1_context.html">kick::Context</a>)</td><td><a class="el" href="classkick_1_1_context.html">kick::Context</a></td><td><code> [pure virtual]</code></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>isFullscreen</b>()=0 (defined in <a class="el" href="classkick_1_1_context.html">kick::Context</a>)</td><td><a class="el" href="classkick_1_1_context.html">kick::Context</a></td><td><code> [pure virtual]</code></td></tr>
@@ -91,8 +93,6 @@ This is the complete list of members for <a class="el" href="classkick_1_1_conte
   <tr bgcolor="#f0f0f0"><td><b>startFrameCallback</b> (defined in <a class="el" href="classkick_1_1_context.html">kick::Context</a>)</td><td><a class="el" href="classkick_1_1_context.html">kick::Context</a></td><td><code> [protected]</code></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>swapBuffer</b>()=0 (defined in <a class="el" href="classkick_1_1_context.html">kick::Context</a>)</td><td><a class="el" href="classkick_1_1_context.html">kick::Context</a></td><td><code> [pure virtual]</code></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>updateCallback</b> (defined in <a class="el" href="classkick_1_1_context.html">kick::Context</a>)</td><td><a class="el" href="classkick_1_1_context.html">kick::Context</a></td><td><code> [protected]</code></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>viewPort</b> (defined in <a class="el" href="classkick_1_1_context.html">kick::Context</a>)</td><td><a class="el" href="classkick_1_1_context.html">kick::Context</a></td><td></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>viewportDim</b> (defined in <a class="el" href="classkick_1_1_context.html">kick::Context</a>)</td><td><a class="el" href="classkick_1_1_context.html">kick::Context</a></td><td><code> [protected]</code></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>~Context</b>() (defined in <a class="el" href="classkick_1_1_context.html">kick::Context</a>)</td><td><a class="el" href="classkick_1_1_context.html">kick::Context</a></td><td><code> [inline, virtual]</code></td></tr>
 </table></div>
 <!-- window showing the filter options -->
@@ -109,7 +109,7 @@ This is the complete list of members for <a class="el" href="classkick_1_1_conte
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue Jun 10 2014 21:56:27 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 5 2014 12:01:02 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

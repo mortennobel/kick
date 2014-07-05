@@ -90,7 +90,8 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> (int
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>showWindow</b> (const <a class="el" href="structkick_1_1_window_config.html">WindowConfig</a> &amp;config=WindowConfig::plain)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0155b38725004198998b54a92aa57896"></a><!-- doxytag: member="kick::SDL2Context::swapBuffer" ref="a0155b38725004198998b54a92aa57896" args="()" -->
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>swapBuffer</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkick_1_1_s_d_l2_context.html#af8ec823686a8288650cba5039397d396">mainLoop</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af8ec823686a8288650cba5039397d396"></a><!-- doxytag: member="kick::SDL2Context::mainLoop" ref="af8ec823686a8288650cba5039397d396" args="()" -->
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>mainLoop</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkick_1_1_s_d_l2_context.html#a5f81f77f0214855115f546cb816d38a7">getBasePath</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a733ec97e69799dfa949ff7a77bc0bb15"></a><!-- doxytag: member="kick::SDL2Context::isFullscreen" ref="a733ec97e69799dfa949ff7a77bc0bb15" args="()" -->
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>isFullscreen</b> ()</td></tr>
@@ -102,10 +103,11 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setWindowTitl
 virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getWindowTitle</b> () override</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7db899588f221103fa05b1b73ce2024e"></a><!-- doxytag: member="kick::SDL2Context::step" ref="a7db899588f221103fa05b1b73ce2024e" args="()" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>step</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkick_1_1_s_d_l2_context.html#a7581521b579c5015f9f32e75c4ff2777">tick</a> ()</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="sdl2__context_8h_source.html#l00015">15</a> of file <a class="el" href="sdl2__context_8h_source.html">sdl2_context.h</a>.</p>
+<p>Definition at line <a class="el" href="sdl2__context_8h_source.html#l00023">23</a> of file <a class="el" href="sdl2__context_8h_source.html">sdl2_context.h</a>.</p>
 </div><hr/><h2>Member Function Documentation</h2>
 <a class="anchor" id="a5f81f77f0214855115f546cb816d38a7"></a><!-- doxytag: member="kick::SDL2Context::getBasePath" ref="a5f81f77f0214855115f546cb816d38a7" args="()" -->
 <div class="memitem">
@@ -124,19 +126,19 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>step</b> ()</td></tr>
 
 <p>Reimplemented from <a class="el" href="classkick_1_1_context.html#adeddda180513f7ee325512ad45b3cb0e">kick::Context</a>.</p>
 
-<p>Definition at line <a class="el" href="sdl2__context_8cpp_source.html#l00242">242</a> of file <a class="el" href="sdl2__context_8cpp_source.html">sdl2_context.cpp</a>.</p>
+<p>Definition at line <a class="el" href="sdl2__context_8cpp_source.html#l00280">280</a> of file <a class="el" href="sdl2__context_8cpp_source.html">sdl2_context.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="af8ec823686a8288650cba5039397d396"></a><!-- doxytag: member="kick::SDL2Context::mainLoop" ref="af8ec823686a8288650cba5039397d396" args="()" -->
+<a class="anchor" id="a7581521b579c5015f9f32e75c4ff2777"></a><!-- doxytag: member="kick::SDL2Context::tick" ref="a7581521b579c5015f9f32e75c4ff2777" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void kick::SDL2Context::mainLoop </td>
+          <td class="memname">bool kick::SDL2Context::tick </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td><code> [virtual]</code></td>
+          <td></td>
         </tr>
       </table>
 </div>
@@ -154,9 +156,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>step</b> ()</td></tr>
 <p>&lt; The system requests a file open </p>
 </p>
 
-<p>Implements <a class="el" href="classkick_1_1_context.html">kick::Context</a>.</p>
-
-<p>Definition at line <a class="el" href="sdl2__context_8cpp_source.html#l00107">107</a> of file <a class="el" href="sdl2__context_8cpp_source.html">sdl2_context.cpp</a>.</p>
+<p>Definition at line <a class="el" href="sdl2__context_8cpp_source.html#l00127">127</a> of file <a class="el" href="sdl2__context_8cpp_source.html">sdl2_context.cpp</a>.</p>
 
 </div>
 </div>
@@ -179,7 +179,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>step</b> ()</td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue Jun 10 2014 21:56:27 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 5 2014 12:01:02 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

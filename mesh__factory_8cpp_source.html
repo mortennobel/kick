@@ -90,7 +90,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00030"></a>00030             vec3{-sqrt75,-0.5f,0},
 <a name="l00031"></a>00031             vec3{sqrt75,-0.5f,0}
 <a name="l00032"></a>00032         });
-<a name="l00033"></a>00033         meshData-&gt;setUv1({
+<a name="l00033"></a>00033         meshData-&gt;setTexCoord0({
 <a name="l00034"></a>00034             vec2{0.0f,1},
 <a name="l00035"></a>00035             vec2{0.125f,0.25f},
 <a name="l00036"></a>00036             vec2{1- 0.125f, 0.25f}
@@ -128,7 +128,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00068"></a>00068             indices[i] = i;
 <a name="l00069"></a>00069         }
 <a name="l00070"></a>00070         meshData-&gt;setPosition(vertices);
-<a name="l00071"></a>00071         meshData-&gt;setUv1(uvs);
+<a name="l00071"></a>00071         meshData-&gt;setTexCoord0(uvs);
 <a name="l00072"></a>00072         meshData-&gt;setNormal(normals);
 <a name="l00073"></a>00073         meshData-&gt;setColor(colors);
 <a name="l00074"></a>00074         meshData-&gt;setSubmesh(0, indices, MeshType::TriangleFan);
@@ -144,7 +144,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00084"></a>00084             vec3{-1, -1, 0},
 <a name="l00085"></a>00085             vec3{-1, 1, 0}
 <a name="l00086"></a>00086         });
-<a name="l00087"></a>00087         meshData-&gt;setUv1({
+<a name="l00087"></a>00087         meshData-&gt;setTexCoord0({
 <a name="l00088"></a>00088             vec2{1, 0},
 <a name="l00089"></a>00089             vec2{1, 1},
 <a name="l00090"></a>00090             vec2{0, 0},
@@ -213,7 +213,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00153"></a>00153         }
 <a name="l00154"></a>00154         
 <a name="l00155"></a>00155         meshData-&gt;setPosition(vertices);
-<a name="l00156"></a>00156         meshData-&gt;setUv1(uvs);
+<a name="l00156"></a>00156         meshData-&gt;setTexCoord0(uvs);
 <a name="l00157"></a>00157         meshData-&gt;setNormal(normals);
 <a name="l00158"></a>00158         meshData-&gt;setColor(colors);
 <a name="l00159"></a>00159         meshData-&gt;setSubmesh(0, indices, MeshType::TriangleStrip);
@@ -256,7 +256,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00196"></a>00196             vec3{-length, length, -length},
 <a name="l00197"></a>00197             vec3{length, length, -length}      <span class="comment">// v4-v7-v6-v5</span>
 <a name="l00198"></a>00198         });
-<a name="l00199"></a>00199         meshData-&gt;setUv1({
+<a name="l00199"></a>00199         meshData-&gt;setTexCoord0({
 <a name="l00200"></a>00200             vec2{1, 1},
 <a name="l00201"></a>00201             vec2{0, 1},
 <a name="l00202"></a>00202             vec2{0, 0},
@@ -367,7 +367,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue Jun 10 2014 21:56:27 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 5 2014 12:01:01 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
