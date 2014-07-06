@@ -120,9 +120,9 @@ namespace kick {
         glBufferData(GL_ARRAY_BUFFER, vertexDataSize, dataPtr, mesh_data->getMeshUsageVal());
         
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
-        vector<GLuint> indices = mesh_data->getIndices();
+        vector<GLushort> indices = mesh_data->getIndices();
         const GLvoid *dataPtrIndex = &(indices[0]);
-        GLsizeiptr indicesSize = indices.size()*sizeof(GLuint);
+        GLsizeiptr indicesSize = indices.size()*sizeof(GLushort);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, dataPtrIndex, mesh_data->getMeshUsageVal());
     }
 };

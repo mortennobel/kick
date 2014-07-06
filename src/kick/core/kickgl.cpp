@@ -8,6 +8,12 @@
 
 #include "kick/core/kickgl.h"
 
+#include <iostream>
+
+#ifndef  GLM_FORCE_RADIANS
+#error "The preprocessor symbol GLM_FORCE_RADIANS must be defined"
+#endif
+
 namespace kick {
     bool openglUsingVao(){
         return true;
@@ -27,20 +33,20 @@ namespace kick {
                         //        {GL_STACK_OVERFLOW, "stack overflow"},
                         //        {GL_STACK_UNDERFLOW, "stack underflow"},
                         {GL_OUT_OF_MEMORY, "out of memory"},
-                        {0, NULL }
+                        {0, ""}
                 };
         int i;
-        for (i=0; errors[i].string; i++)
+        for (i=0; errors[i].code; i++)
         {
             if (errors[i].code == errorCode)
             {
                 return errors[i].string;
             }
         }
-        return NULL;
+        return nullptr;
     }
 
-    int printOglError(char *file, int line) {
+    int printOglError(const char *file, int line) {
 
         GLenum glErr;
         int    retCode = 0;

@@ -8,8 +8,6 @@
 
 #pragma once
 
-#define GLM_FORCE_RADIANS
-
 #include "EngineTest.h"
 #include "tinytest/tinytest.h"
 #include "kick/kick.h"

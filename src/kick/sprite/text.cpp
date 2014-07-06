@@ -11,7 +11,9 @@ using namespace glm;
 
 namespace kick {
 
-    Text::Text(GameObject *gameObject) : ComponentRenderable(gameObject) {
+    Text::Text(GameObject *gameObject)
+            : ComponentRenderable(gameObject),
+              bounds{vec2{0,0},vec2{0,0}}{
         mesh = Project::createAsset<Mesh>();
         meshData = Project::createAsset<MeshData>();
         mesh->setMeshData(meshData);
@@ -58,20 +60,24 @@ namespace kick {
         }
         vector<vec3> position;
         vector<vec2> textureCoords;
-        vector<GLuint> indices;
+        vector<GLushort> indices;
         vec2 carent{0,0};
-        int halfLineHeight = font->height()/2;
-        for (unsigned int i=0;i<text.length();i++){
+        bounds.max = vec2{-FLT_MAX};
+        bounds.min = vec2{FLT_MAX};
+        for (unsigned short i=0;i<text.length();i++){
             FontChar fc = font->getChar(text[i]);
             if (fc.width  == -1){
                 continue;
             }
-            vec2 basePoint = carent+vec2{fc.xoffset,halfLineHeight-fc.height-fc.yoffset};
+            vec2 basePoint = carent+vec2{fc.xoffset,font->height()-fc.height-fc.yoffset};
 
             position.push_back(vec3{basePoint,0});
             position.push_back(vec3{basePoint+vec2{fc.width,0},0});
             position.push_back(vec3{basePoint+vec2{fc.width,fc.height},0});
             position.push_back(vec3{basePoint+vec2{0,fc.height},0});
+
+            bounds.min = glm::min(bounds.min, basePoint);
+            bounds.max = glm::max(bounds.max, (vec2)position[position.size()-2]);
 
             vec2 scale{1.0f/font->getScaleW(), 1.0f/font->getScaleH()};
 
@@ -94,5 +100,9 @@ namespace kick {
         meshData->setTexCoord0(textureCoords);
         meshData->setSubmesh(0,indices, MeshType::Triangles);
         mesh->setMeshData(meshData);
+    }
+
+    Bounds2D Text::getBounds() {
+        return bounds;
     }
 }

@@ -9,7 +9,7 @@
 #pragma once
 #include "component.h"
 #include <vector>
-#define GLM_FORCE_RADIANS
+
 #include <glm/glm.hpp>
 #include "kick/core/event_listener.h"
 #include "component_renderable.h"

@@ -56,8 +56,8 @@ namespace kick {
         vector<vec2> uvs{vertexCount};
         vector<vec3> normals{vertexCount};
         vector<vec4> colors{vertexCount};
-        vector<GLuint> indices(vertexCount);
-        for (unsigned int i = 0; i <= slices; i++) {
+        vector<GLushort> indices(vertexCount);
+        for (unsigned short i = 0; i <= slices; i++) {
             auto fraction = 2 * M_PI * i / slices;
             vertices[i] = vec3{sin(fraction),
                                 -cos(fraction),
@@ -114,11 +114,11 @@ namespace kick {
         vector<vec2> uvs{vertexCount};
         vector<vec3> normals{vertexCount};
         vector<vec4> colors{vertexCount};
-        vector<GLuint> indices;
+        vector<GLushort> indices;
 
         int index = 0;
         // create vertices
-        for (int j = 0; j <= stacks; j++) {
+        for (unsigned short j = 0; j <= stacks; j++) {
             float latitude1 = (M_PI / stacks) * j - (M_PI / 2);
             float sinLat1 = sin(latitude1);
             float cosLat1 = cos(latitude1);

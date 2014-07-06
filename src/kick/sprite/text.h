@@ -7,8 +7,8 @@
 
 #include "kick/scene/component_renderable.h"
 #include "kick/scene/game_object.h"
-#include "font.h"
-
+#include "kick/sprite/font.h"
+#include "kick/math/bounds2d.h"
 
 
 namespace kick {
@@ -28,7 +28,10 @@ namespace kick {
         std::string const & getText() const;
 
         void setText(std::string const &text);
+
+        Bounds2D getBounds();
     private:
+        Bounds2D bounds;
         void updateVertexBuffer();
         Font *font = nullptr;
         Mesh *mesh = nullptr;

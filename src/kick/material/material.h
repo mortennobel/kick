@@ -9,7 +9,7 @@
 #pragma once
 
 #include <iostream>
-#define GLM_FORCE_RADIANS
+
 #include <glm/glm.hpp>
 #include <vector>
 #include <map>

@@ -177,8 +177,8 @@ namespace kick {
         return res;
     }
     
-    vector<GLuint> MeshData::getIndices(){
-        vector<GLuint> res;
+    vector<GLushort> MeshData::getIndices(){
+        vector<GLushort> res;
         for (auto & v : subMeshes){
             res.insert(res.end(), v.indices.begin(), v.indices.end());
         }
@@ -193,7 +193,7 @@ namespace kick {
                 static_cast<GLsizei>(v.indices.size()),
                 BUFFER_OFFSET(offset),
                 static_cast<GLenum>(v.meshType),
-                GL_UNSIGNED_INT
+                GL_UNSIGNED_SHORT
             };
             
             res.push_back(record);
@@ -202,7 +202,7 @@ namespace kick {
         return res;
     }
     
-    void MeshData::setSubmesh(unsigned int index, const std::vector<GLuint> &indices, MeshType meshType){
+    void MeshData::setSubmesh(unsigned int index, const std::vector<GLushort> &indices, MeshType meshType){
         while (subMeshes.size() <= index){
             subMeshes.push_back({{}, MeshType::Triangles});
         }
@@ -210,7 +210,7 @@ namespace kick {
         subMeshes[index].meshType = meshType;
     }
     
-    const vector<GLuint>& MeshData::getSubmeshIndices(unsigned int index) const {
+    const vector<GLushort>& MeshData::getSubmeshIndices(unsigned int index) const {
         return subMeshes.at(index).indices;
     }
     
@@ -247,8 +247,8 @@ namespace kick {
                 float weight1 = acos(std::max(-1.0f, std::min(1.0f, dot(v1v2, v1v3))));
                 
                 vec3 v2v3 = normalize(v3 - v2);
-                float weight2 = M_PI - acos(std::max(-1.0f, std::min(1.0f, dot(v1v2, v2v3))));
-                float weight3 = M_PI - weight1 - weight2;
+                float weight2 = (float) (M_PI - acos(std::max(-1.0f, std::min(1.0f, dot(v1v2, v2v3)))));
+                float weight3 = (float) (M_PI - weight1 - weight2);
                 normal[i1] += weight1 * faceNormal;
                 normal[i2] += weight2 * faceNormal;
                 normal[i3] += weight3 * faceNormal;

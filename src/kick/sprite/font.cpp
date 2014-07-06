@@ -2,8 +2,8 @@
 // Created by morten on 30/06/14.
 //
 
-#include "font.h"
-#include "project.h"
+#include "kick/sprite/font.h"
+#include "kick/core/project.h"
 #include <string>
 #include <sstream>
 #include <iostream>

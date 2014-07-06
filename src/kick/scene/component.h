@@ -10,7 +10,7 @@
 
 #include <iostream>
 #include <vector>
-#include "engine_uniforms.h"
+#include "kick/scene/engine_uniforms.h"
 
 namespace kick {
 

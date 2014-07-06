@@ -14,7 +14,7 @@
 #include <vector>
 #include <unordered_map>
 #include <string>
-#define GLM_FORCE_RADIANS
+
 #include <glm/glm.hpp>
 #include <exception>
 
@@ -98,8 +98,8 @@ namespace kick {
         void setColor(const std::vector<glm::vec4> &c);
         const std::vector<glm::vec4>&getColor();
         
-        void setSubmesh(unsigned int index, const std::vector<GLuint> &indices, MeshType meshType);
-        const std::vector<GLuint>&getSubmeshIndices(unsigned int index) const;
+        void setSubmesh(unsigned int index, const std::vector<GLushort> &indices, MeshType meshType);
+        const std::vector<GLushort>&getSubmeshIndices(unsigned int index) const;
         const MeshType getSubmeshType(unsigned int index) const;
         
         unsigned int getSubmeshesCount();
@@ -107,7 +107,7 @@ namespace kick {
         
         std::vector<float> getInterleavedData();
         std::vector<InterleavedRecord> getInterleavedFormat();
-        std::vector<GLuint> getIndices();
+        std::vector<GLushort> getIndices();
         std::vector<SubMeshData> getIndicesFormat();
         
         // recomputing normals (using angle weighted normals)
@@ -123,7 +123,7 @@ namespace kick {
         std::vector<glm::vec4> color;
         
         struct SubMeshInternal {
-            std::vector<GLuint> indices;
+            std::vector<GLushort> indices;
             MeshType meshType;
         };
         

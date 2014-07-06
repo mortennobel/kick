@@ -12,7 +12,7 @@
 
 #include "kick/texture/image_format.h"
 #include "rapidjson/document.h"
-#define GLM_FORCE_RADIANS
+
 #include <glm/gtc/type_ptr.hpp>
 
 using namespace std;
@@ -299,10 +299,16 @@ namespace kick {
 
             shader->setShaderSource(ShaderType::VertexShader, vertexShader);
             shader->setShaderSource(ShaderType::FragmentShader, fragmentShader);
+
             if (geometryShaderURI.length()){
+#ifdef GL_ES_VERSION_2_0
+                assert(false);
+#else
                 string geometryShader       = loadTextResource(geometryShaderURI);
                 shader->setShaderSource(ShaderType::GeometryShader, geometryShader);
+#endif
             }
+
             shader->setBlend(blend);
             shader->setBlendDFactorAlpha(blendDFactorAlpha);
             shader->setBlendDFactorRGB(blendDFactorRGB);
@@ -400,6 +406,6 @@ namespace kick {
     }
 
     void Project::destroyAsset(ProjectAsset* asset) {
-
+        // todo implement
     }
 }

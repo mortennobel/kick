@@ -194,7 +194,7 @@ var BuildEM = function(project){
                 command += "--embed-file "+files[j]+" ";
             }
         }
-        command += " -o " + objectfiledir+pathSep + project.target;
+        command += " -o " + target;
         queueExecs([command], clean);
     };
 

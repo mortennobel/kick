@@ -26,5 +26,5 @@ namespace kick {
 
     const char * GLErrorString(GLenum errorCode);
 
-    int printOglError(char *file, int line);
+    int printOglError(const char *file, int line);
 }
