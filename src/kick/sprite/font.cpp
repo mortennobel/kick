@@ -12,12 +12,10 @@ using namespace std;
 
 namespace kick{
     Font::Font(Project *project) : ProjectAsset(project) {
-        material = project->createAsset<Material>();
-        material->setShader(project->loadShader("assets/shaders/transparent_unlit.shader"));
+        shader = project->loadShader("assets/shaders/font.shader");
     }
 
     Font::~Font() {
-        project->destroyAsset(material);
     }
 
     std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
@@ -121,8 +119,8 @@ namespace kick{
     }
 
     void Font::setTexture(Texture2D *texture) {
-        material->setUniform("mainTexture", texture);
         Font::texture = texture;
+        fontListener.notifyListeners(this);
     }
 
     const FontChar Font::getChar(char r) {
@@ -147,10 +145,15 @@ namespace kick{
     }
 
     void Font::setShader(Shader* shader) {
-        material->setShader(shader);
+        this->shader = shader;
+        fontListener.notifyListeners(this);
     }
 
     Shader *Font::getShader() {
-        return material->getShader();
+        return shader;
+    }
+
+    bool Font::IsInitialized() const {
+        return texture != nullptr;
     }
 }

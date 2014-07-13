@@ -7,11 +7,11 @@
 #include <string>
 #include "kick/core/project_asset.h"
 #include "kick/core/project.h"
+#include "kick/core/event.h"
 
 
 namespace kick {
     class Texture2D;
-    class Material;
     class Shader;
     class Text;
 
@@ -33,7 +33,7 @@ class Font : public ProjectAsset {
 public:
     Font(Project *project);
     ~Font();
-    void loadFntFile(std::string filename, std::string texturename);
+    void loadFntFile(std::string filename = "assets/font/font-default.fnt", std::string texturename = "assets/font/font-default.png");
     int width(std::string text);
     int height();
 
@@ -54,14 +54,18 @@ public:
     int getBase() const;
 
     friend class Text;
+
+    bool IsInitialized() const;
+
+    Event<Font*> fontListener;
 private:
-    Texture2D* texture;
+    Texture2D* texture = nullptr;
     int lineHeight = 0;
     int base = 0;
     int scaleW = 0;
     int scaleH = 0;
     int pages = 1;
     std::map<int, FontChar> fontMap;
-    Material *material = nullptr;
+    Shader* shader = nullptr;
 };
 }

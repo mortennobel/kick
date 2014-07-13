@@ -13,10 +13,11 @@ namespace kick {
 
     Text::Text(GameObject *gameObject)
             : ComponentRenderable(gameObject),
-              bounds{vec2{0,0},vec2{0,0}}{
+              bounds{vec2{0,0},vec2{0,0}} {
         mesh = Project::createAsset<Mesh>();
         meshData = Project::createAsset<MeshData>();
         mesh->setMeshData(meshData);
+        material = Project::createAsset<Material>();
     }
 
     std::string const &Text::getText() const {
@@ -26,14 +27,13 @@ namespace kick {
     void Text::setText(std::string const &text) {
         Text::text = text;
         updateVertexBuffer();
-
     }
 
     void Text::render(EngineUniforms *engineUniforms) {
         printOpenGLError();
         if (!font) return;
-        auto material = font->material;
         auto shader = material->getShader();
+        assert(shader);
         printOpenGLError();
         mesh->bind(shader);
         printOpenGLError();
@@ -44,7 +44,16 @@ namespace kick {
     }
 
     void Text::setFont(Font *font) {
+        if (!font->IsInitialized()){
+            font->loadFntFile();
+        }
         Text::font = font;
+        material->setShader(font->getShader());
+        material->setUniform("mainTexture", font->getTexture());
+        eventListener = font->fontListener.createListener([&](Font* f){
+            material->setShader(f->getShader());
+            material->setUniform("mainTexture", f->getTexture());
+        });
         updateVertexBuffer();
     }
 
@@ -104,5 +113,15 @@ namespace kick {
 
     Bounds2D Text::getBounds() {
         return bounds;
+    }
+
+    Material *Text::getMaterial() const {
+        return material;
+    }
+
+    void Text::setMaterial(Material *material) {
+        Text::material = material;
+        material->setShader(font->getShader());
+        material->setUniform("mainTexture", font->getTexture());
     }
 }

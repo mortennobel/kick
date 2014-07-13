@@ -42,7 +42,6 @@ namespace kick {
     }
     
     Material::~Material(){
-        cout << endl;
     }
     
     void Material::setShader(Shader *shader){

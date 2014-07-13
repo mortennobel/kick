@@ -312,6 +312,7 @@ int TestDefaultShaders(){
             "transparent_unlit",
             "unlit",
             "unlit_vertex_color",
+            "font",
             "__error",
             "__pick",
             "__pick_normal",
@@ -726,7 +727,7 @@ int TestComponentListener(){
 
 int TestFont(){
     Font* font = Project::createAsset<Font>();
-    font->loadFntFile("unittest/font/font-export.fnt", "unittest/font/font-export.png");
+    font->loadFntFile();
 
     TINYTEST_ASSERT(font->height() > 0);
     TINYTEST_ASSERT(font->width("tt") > font->width("t"));
