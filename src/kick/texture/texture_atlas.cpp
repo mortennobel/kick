@@ -16,12 +16,14 @@ namespace kick {
     TextureAtlas::TextureAtlas(Project *project) : ProjectAsset(project) {
     }
 
-    ivec2 whToVec2(rapidjson::Value &val){
-        return {val["w"].GetInt(), val["h"].GetInt()};
-    }
+    namespace {
+        ivec2 whToVec2(rapidjson::Value &val) {
+            return {val["w"].GetInt(), val["h"].GetInt()};
+        }
 
-    ivec4 xywhToVec4(rapidjson::Value &val){
-        return {val["x"].GetInt(), val["y"].GetInt(),val["w"].GetInt(), val["h"].GetInt()};
+        ivec4 xywhToVec4(rapidjson::Value &val) {
+            return {val["x"].GetInt(), val["y"].GetInt(), val["w"].GetInt(), val["h"].GetInt()};
+        }
     }
 
     void TextureAtlas::load(std::string filename) {

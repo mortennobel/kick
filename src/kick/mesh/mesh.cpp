@@ -27,7 +27,7 @@ namespace kick {
                 array.push_back(keyValue.second);
             }
 #ifndef GL_ES_VERSION_2_0
-            glDeleteVertexArrays((GLsizei)array.size(), &(array[0]));
+            glDeleteVertexArrays((GLsizei)array.size(), array.data());
 #endif
 
         }
@@ -115,14 +115,12 @@ namespace kick {
     void Mesh::updateMeshData(){
         glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
         vector<float> data = mesh_data->getInterleavedData();
-        const GLvoid *dataPtr = &(data[0]);
         GLsizeiptr vertexDataSize =data.size()*sizeof(float);
-        glBufferData(GL_ARRAY_BUFFER, vertexDataSize, dataPtr, mesh_data->getMeshUsageVal());
+        glBufferData(GL_ARRAY_BUFFER, vertexDataSize, data.data(), mesh_data->getMeshUsageVal());
         
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
         vector<GLushort> indices = mesh_data->getIndices();
-        const GLvoid *dataPtrIndex = &(indices[0]);
         GLsizeiptr indicesSize = indices.size()*sizeof(GLushort);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, dataPtrIndex, mesh_data->getMeshUsageVal());
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices.data(), mesh_data->getMeshUsageVal());
     }
 };

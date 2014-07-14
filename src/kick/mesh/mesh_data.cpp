@@ -16,6 +16,38 @@ using namespace glm;
 
 
 namespace kick {
+
+    namespace { // helper functions
+        // helper function that returns lowercase of string
+        string to_lower(string s){
+            std::locale loc;
+            for (int i=0;i<s.size();i++){
+                s[i] = std::tolower(s[i],loc);
+            }
+            return s;
+        }
+
+        /**
+        * Add data to interleaved data and return the new offset (in float elements)
+        */
+        template<typename T>
+        size_t add_interleaved_record(const std::vector<T>& data, vector<InterleavedRecord>& interleaved, size_t offset, VertexAttributeSemantic semantic){
+            if (data.size() == 0){
+                return offset;
+            }
+            int vectorLength = (int)data[0].length();
+
+            InterleavedRecord record{
+                    semantic,
+                    BUFFER_OFFSET(offset),
+                    vectorLength,
+                    false,
+                    GL_FLOAT};
+            interleaved.push_back(record);
+            return offset + sizeof(T);
+        }
+    }
+
     MeshData::MeshData(Project *p)
     :ProjectAsset{p}
     {
@@ -140,27 +172,7 @@ namespace kick {
         offset = add_data(color, res, offset, stride);
         return res;
     }
-    
-    /**
-     * Add data to interleaved data and return the new offset (in float elements)
-     */
-    template<typename T>
-    size_t add_interleaved_record(const std::vector<T>& data, vector<InterleavedRecord>& interleaved, size_t offset, VertexAttributeSemantic semantic){
-        if (data.size() == 0){
-            return offset;
-        }
-        int vectorLength = (int)data[0].length();
 
-        InterleavedRecord record{
-            semantic,
-            BUFFER_OFFSET(offset),
-            vectorLength,
-            false,
-            GL_FLOAT};
-        interleaved.push_back(record);
-        return offset + sizeof(T);
-    }
-    
     vector<InterleavedRecord> MeshData::getInterleavedFormat() {
         vector<InterleavedRecord> res;
         size_t offset = add_interleaved_record(position, res, 0, VertexAttributeSemantic::Position);
@@ -260,16 +272,12 @@ namespace kick {
             }
         }
     }
-    
-    // helper function that returns lowercase of string
-    string to_lower(string s){
-        std::locale loc;
-        for (int i=0;i<s.size();i++){
-            s[i] = std::tolower(s[i],loc);
-        }
-        return s;
-    }
-    
+
+    const AABB &MeshData::getAabb() { return aabb; }
+
+    GLenum MeshData::getMeshUsageVal() { return static_cast<GLenum>(mesh_usage); }
+
+
 #define RETURN_IF_EQUAL(X) if (to_lower(name) == to_lower(#X)) return VertexAttributeSemantic::X;
     VertexAttributeSemantic to_semantic(std::string name){
         RETURN_IF_EQUAL(Position);
@@ -280,7 +288,7 @@ namespace kick {
         RETURN_IF_EQUAL(Color);
         return VertexAttributeSemantic::Unknown;
     }
-    
+
     std::string to_string(VertexAttributeSemantic semantic){
         switch (semantic) {
             case VertexAttributeSemantic::Position:
@@ -301,9 +309,5 @@ namespace kick {
                 throw invalid_argument("Unknown semantic");
         }
     }
-
-    const AABB &MeshData::getAabb() { return aabb; }
-
-    GLenum MeshData::getMeshUsageVal() { return static_cast<GLenum>(mesh_usage); }
 }
 

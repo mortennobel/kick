@@ -10,7 +10,6 @@
 #pragma once
 
 namespace kick {
-
     struct TextureAtlasEntry {
         bool rotated;
         bool trimmed;

@@ -39,7 +39,7 @@ namespace kick {
     void TextureRenderTarget::apply() {
 #ifndef GL_ES_VERSION_2_0
         if (renderBuffers.size()) {
-            glDeleteRenderbuffers(renderBuffers.size(), &(renderBuffers[0]));
+            glDeleteRenderbuffers(renderBuffers.size(), renderBuffers.data());
             renderBuffers.clear();
         }
         bind();

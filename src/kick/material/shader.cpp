@@ -213,8 +213,8 @@ break;
                               nullptr,
                               &att.size,
                               &att.type,
-                              &buffer[0]);
-            att.name = &buffer[0];
+                              buffer.data());
+            att.name = buffer.data();
             att.semantic = to_semantic(att.name);
             if (att.semantic == VertexAttributeSemantic::Unknown){
                 throw invalid_argument(string{"Invalid vertex attribute in shader source: "}+att.name);
@@ -278,9 +278,9 @@ break;
                                nullptr,
                                &uni.size,
                                &uni.type,
-                               &buffer[0]);
-            uni.name = &buffer[0];
-            uni.index = glGetUniformLocation(programid, &buffer[0]);
+                               buffer.data());
+            uni.name = buffer.data();
+            uni.index = glGetUniformLocation(programid, buffer.data());
             res.push_back(uni);
         }
 
@@ -400,8 +400,8 @@ break;
 			GLint  logSize;
 			glGetProgramiv( shaderProgram, GL_INFO_LOG_LENGTH, &logSize);
             vector<char> errorLog((size_t) logSize);
-			glGetProgramInfoLog( shaderProgram, logSize, NULL, &errorLog[0] );
-            throw ShaderBuildException{&errorLog[0], ShaderErrorType::Linker};
+			glGetProgramInfoLog( shaderProgram, logSize, NULL, errorLog.data() );
+            throw ShaderBuildException{errorLog.data(), ShaderErrorType::Linker};
 		}
     }
     
@@ -501,9 +501,9 @@ break;
             array<char, buffer_size> lineBuffer;
             istringstream inbuf(source);
             string res;
-            for (int i=1;i<=line+extraLines && inbuf.getline(&lineBuffer[0],buffer_size);i++){
-                if (strncmp(&lineBuffer[0], "#line ", 6)==0){
-                    string s{&lineBuffer[0]};
+            for (int i=1;i<=line+extraLines && inbuf.getline(lineBuffer.data(),buffer_size);i++){
+                if (strncmp(lineBuffer.data(), "#line ", 6)==0){
+                    string s{lineBuffer.data()};
                     static regex regExpSearchLine { R"((\d+))"};
                     auto iterLine = std::sregex_token_iterator(s.begin(), s.end(), regExpSearchLine, 1);
                     if (iterLine != endIter){
@@ -512,7 +512,7 @@ break;
                     }
                 }
                 if (i >= line-extraLines){
-                    res += std::to_string(i)+"\t"+string{&lineBuffer[0]}+"\n";
+                    res += std::to_string(i)+"\t"+string{lineBuffer.data()}+"\n";
                 }
             }
             return res;
@@ -526,9 +526,9 @@ break;
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logSize);
         
         vector<char> errorLog((unsigned long) logSize);
-        glGetShaderInfoLog(shader, logSize, &logSize, &errorLog[0]);
-        string errorLines = extractLines(&errorLog[0], source);
-        throw ShaderBuildException{&errorLog[0], type, errorLines};
+        glGetShaderInfoLog(shader, logSize, &logSize, errorLog.data());
+        string errorLines = extractLines(errorLog.data(), source);
+        throw ShaderBuildException{errorLog.data(), type, errorLines};
     }
     
     void Shader::setBlend(bool b){ blend = b; }
