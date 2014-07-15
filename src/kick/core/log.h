@@ -5,6 +5,7 @@
 #pragma once
 
 #include <string>
+#include <functional>
 
 #define logInfo(x) (kick::Log::info(x, __func__, __FILE__, __LINE__))
 #define logWarning(x) (kick::Log::warning(x, __func__, __FILE__, __LINE__))
@@ -13,9 +14,14 @@
 namespace kick {
     class Log {
     public:
-        static void info(std::string message, std::string func, std::string file, int line);
-        static void warning(std::string message, std::string func, std::string file, int line);
-        static void error(std::string message, std::string func, std::string file, int line);
+        static std::function<void (std::string message, std::string func, std::string file, int line)> info;
+        static std::function<void (std::string message, std::string func, std::string file, int line)> warning;
+        static std::function<void (std::string message, std::string func, std::string file, int line)> error;
+
+        /// Disable logging
+        static void disable();
+        /// Set logging to std out and err out streams
+        static void reset();
     };
 };
 

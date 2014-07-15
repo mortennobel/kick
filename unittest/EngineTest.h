@@ -14,6 +14,7 @@
 
 #include "glm/gtx/string_cast.hpp"
 
+
 using namespace kick;
 using namespace std;
 using namespace glm;
@@ -25,6 +26,7 @@ void initEngine(int& argc, char** argv){
     //GLUTContext cont;
 
     ::engine = new Engine (argc, argv);
+    kick::Log::disable();
 }
 
 int TestShader() {
