@@ -50,7 +50,7 @@ TINYTEST_END_SUITE();
 
 int main(int argc, char* argv[])
 {
-    try {
+
         {
         // Manually launch TinyTest
         TinyTestRegistry registry;
@@ -60,8 +60,4 @@ int main(int argc, char* argv[])
         TINYTEST_RUN_SUITE(ObjSuite);
 
 TINYTEST_END_MAIN();
-}catch (const std::exception& ex) {
-cout << "Exception "<< ex.what()<<endl;
-}catch (...){
-cout << "Exception "<< endl;
-    }}
+}

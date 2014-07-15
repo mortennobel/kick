@@ -102,7 +102,7 @@ namespace kick {
         std::string errorMessage;
         ShaderErrorType errorType;
         std::string codeSnippet;
-        static void throwCurrentCompileException(GLuint shader, ShaderErrorType type, std::string source);
+        static void logCurrentCompileException(GLuint shader, ShaderErrorType type, std::string source);
         static std::string extractLines(std::string errorMessage, std::string source, int extraLines = 2);
     };
 

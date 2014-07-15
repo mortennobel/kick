@@ -9,6 +9,7 @@
 #include "obj_data.h"
 #include <stdexcept>
 #include <string>
+#include "kick/core/log.h"
 
 using namespace std;
 
@@ -16,29 +17,34 @@ namespace kick {
     bool ObjData::verifyFaces() {
         for (auto & face : faces) {
             if (face.size()<3){
-                throw length_error("Faces must be at least 3 vertices");
+//                throw length_error();
+                logError("Faces must be at least 3 vertices");
+                return false;
             }
             
             for (auto & vertex : face) {
                 if (vertex.vertexPositionIdx > vertexPositions.size()){
-                    throw length_error(string{"Invalid vertex position index. Index was "} +
-                                       std::to_string(vertex.vertexPositionIdx) +
-                                       " number of vertex positions is "+
-                                       std::to_string(vertexPositions.size()));
+                    logError(string{"Invalid vertex position index. Index was "} +
+                            std::to_string(vertex.vertexPositionIdx) +
+                            " number of vertex positions is "+
+                            std::to_string(vertexPositions.size()));
+                    return false;
                 }
                 
                 if (vertex.textureIdx > textureCoords.size()){
-                    throw length_error(string{"Invalid texture index. Index was "} +
-                                       std::to_string(vertex.textureIdx) +
-                                       " number of texture indices is "+
-                                       std::to_string(textureCoords.size()));
+                    logError(string{"Invalid texture index. Index was "} +
+                            std::to_string(vertex.textureIdx) +
+                            " number of texture indices is "+
+                            std::to_string(textureCoords.size()));
+                    return false;
                 }
                 
                 if (vertex.normalIdx > normals.size()){
-                    throw length_error(string{"Invalid normal index. Index was "} +
-                                       std::to_string(vertex.normalIdx) +
-                                       " number of normals is "+
-                                       std::to_string(normals.size()));
+                    logError(string{"Invalid normal index. Index was "} +
+                            std::to_string(vertex.normalIdx) +
+                            " number of normals is "+
+                            std::to_string(normals.size()));
+                    return false;
                 }
             }
         }

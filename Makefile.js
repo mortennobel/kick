@@ -17,7 +17,7 @@ for (var i=2;i<process.argv.length;i++){
 
 var project = {
     "options": [(target=="debug"?"-O0":"-O3"), "-Werror"/*, "-s STB_IMAGE=1"*/],
-    "buildoptions": ["-std=c++11", "-stdlib=libc++"],
+    "buildoptions": ["-std=c++11", "-stdlib=libc++", "-fno-exceptions"],
     "defines": ["GLM_FORCE_RADIANS",(target=="debug"?"DEBUG":"NDEBUG")],
     "targetdir": "../build-emscripten",
     "target": "kickcpp.html",
@@ -46,7 +46,7 @@ var project = {
             // default is "."
             "root":".",
             // matcher pattern
-            "filter":"unittest/font/.*\\.fnt"
+            "filter":"assets/font/.*\\.fnt"
         },
         {
             // default is "."
@@ -71,7 +71,7 @@ var project = {
             // default is "."
             "root":".",
             // matcher pattern
-            "filter":"unittest/font/.*\\.png"
+            "filter":"assets/font/.*\\.png"
         },
         {
             // default is "."

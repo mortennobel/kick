@@ -20,8 +20,8 @@
 #include "kick/scene/component.h"
 #include "kick/core/event.h"
 #include "kick/scene/scene_lights.h"
-#include "camera_perspective.h"
-#include "camera_orthographic.h"
+#include "kick/scene/camera_perspective.h"
+#include "kick/scene/camera_orthographic.h"
 
 namespace kick {
     class CameraPerspective;
@@ -30,6 +30,8 @@ namespace kick {
     class Light;
     class ComponentUpdateable;
     class Text;
+    class Sprite;
+    class TextureAtlas;
 
     class Scene {
     public:
@@ -62,6 +64,10 @@ namespace kick {
         Light* createDirectionalLight();
         // helper function, which creates a gameobject and attaches an ambient light
         Light* createAmbientLight(float intensity = 0.3f, glm::vec3 color = glm::vec3(1));
+
+        // helper function, which creates a gameobject and attaches an sprite object
+        Sprite* createSprite(TextureAtlas* textureAtlas, std::string spriteName, glm::vec2 pos = glm::vec2{0});
+
 
         friend class Engine;
         friend class GameObject;

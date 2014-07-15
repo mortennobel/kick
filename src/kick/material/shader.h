@@ -44,7 +44,7 @@ namespace kick {
         std::string getShaderSource(ShaderType type) const;
         std::string getPrecompiledShaderSource(ShaderType type) const;
         /// throws ShaderBuildException if unsuccessfull
-        void apply();
+        bool apply();
         void bind();
         const std::vector<AttributeDescriptor >& getShaderAttributes() const;
         const std::vector<UniformDescriptor >& getShaderUniforms() const;
@@ -85,7 +85,7 @@ namespace kick {
         void setDefaultUniformData(std::string name, MaterialData&& value);
         void updateDefaultShaderLocation();
         /// throws ShaderBuildException if unsuccessfull
-        void linkProgram();
+        bool linkProgram();
         /// throws ShaderBuildException if unsuccessfull
         ShaderObj compileShader(std::string source, ShaderType type);
         GLuint shaderProgram = 0;

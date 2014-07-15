@@ -28,10 +28,16 @@ namespace kick{
         return elems;
     }
 
-    void Font::loadFntFile(std::string filename, std::string texturename) {
+    bool Font::loadFntFile(std::string filename, std::string texturename) {
         fontMap.clear();
         setTexture(Project::loadTexture2D(texturename));
-        string fntFile = Project::loadTextResource(filename);
+        if (!texture){
+            return false;
+        }
+        string fntFile;
+        if (!Project::loadTextResource(filename,fntFile)){
+            return false;
+        }
         std::istringstream f{fntFile};
         std::string line;
         std::vector<string> elems;
@@ -95,6 +101,7 @@ namespace kick{
             }
             elems.clear();
         }
+        return true;
     }
 
     int Font::width(std::string text) {

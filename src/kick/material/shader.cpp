@@ -24,7 +24,7 @@
 #include "kick/core/cpp_ext.h"
 #include "kick/scene/transform.h"
 #include "kick/scene/light.h"
-
+#include "kick/core/log.h"
 using namespace std;
 
 namespace kick {
@@ -217,7 +217,7 @@ break;
             att.name = buffer.data();
             att.semantic = to_semantic(att.name);
             if (att.semantic == VertexAttributeSemantic::Unknown){
-                throw invalid_argument(string{"Invalid vertex attribute in shader source: "}+att.name);
+                logWarning(string{"Invalid vertex attribute in shader source: "}+att.name);
             }
             res.push_back(att);
         }
@@ -315,12 +315,14 @@ break;
         
         // replace source
         for (auto includeName : includeNames){
-            string includedSource = Project::loadTextResource(includeName);
-            if (includedSource.size() == 0){
-                cout << "Could not load source "<<includeName<<endl;
-            } else {
-                regex regExpSearch3 { string{"[ ]*#\\s*pragma\\s+include\\s+\""}+includeName+"\"[^\\n]*"};
-                source = regex_replace(source, regExpSearch3, includedSource);
+            string includedSource;
+            if (Project::loadTextResource(includeName, includedSource)) {
+                if (includedSource.size() == 0) {
+                    cout << "Could not load source " << includeName << endl;
+                } else {
+                    regex regExpSearch3{string{"[ ]*#\\s*pragma\\s+include\\s+\""} + includeName + "\"[^\\n]*"};
+                    source = regex_replace(source, regExpSearch3, includedSource);
+                }
             }
         }
 
@@ -346,7 +348,7 @@ break;
         return source;
     }
     
-    void Shader::apply(){
+    bool Shader::apply(){
         if (shaderProgram){
             glDeleteShader(shaderProgram);
         }
@@ -366,10 +368,14 @@ break;
             }
         }
         if (requiredTypes.size()>0){
-            throw ShaderBuildException{"Both vertex and fragment shader required.", ShaderErrorType::IncompleteShader};
+            logError("Both vertex and fragment shader required.");
+            return false;
         }
         
-        linkProgram();
+        bool linked = linkProgram();
+        if (!linked){
+            return false;
+        }
         // shaderObjects deleted when goes out of scope (which is ok as long as program is not deleted)
         glUseProgram(shaderProgram);
 
@@ -385,10 +391,10 @@ break;
         updateDefaultShaderLocation();
 
         shaderChanged.notifyListeners({this, ShaderEventType::shader });
-
+        return true;
     }
     
-    void Shader::linkProgram(){
+    bool Shader::linkProgram(){
 #ifndef GL_ES_VERSION_2_0
         glBindFragDataLocation(shaderProgram, 0, outputAttributeName.c_str());
 #endif
@@ -401,8 +407,11 @@ break;
 			glGetProgramiv( shaderProgram, GL_INFO_LOG_LENGTH, &logSize);
             vector<char> errorLog((size_t) logSize);
 			glGetProgramInfoLog( shaderProgram, logSize, NULL, errorLog.data() );
-            throw ShaderBuildException{errorLog.data(), ShaderErrorType::Linker};
+//            throw ShaderBuildException{, ShaderErrorType::Linker};
+            logError(errorLog.data());
+            return false;
 		}
+        return true;
     }
     
     void updateFaceCulling(FaceCullingType faceCulling){
@@ -455,7 +464,7 @@ break;
         GLint success = 0;
         glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
         if (success == GL_FALSE){
-            ShaderBuildException::throwCurrentCompileException(shader, (ShaderErrorType)type, source);
+            ShaderBuildException::logCurrentCompileException(shader, (ShaderErrorType) type, source);
         }
         return move(shader);
     }
@@ -521,14 +530,35 @@ break;
     }
     
     
-    void ShaderBuildException::throwCurrentCompileException(GLuint shader, ShaderErrorType type, string source){
+    void ShaderBuildException::logCurrentCompileException(GLuint shader, ShaderErrorType type, string source){
         GLint logSize = 0;
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logSize);
         
         vector<char> errorLog((unsigned long) logSize);
         glGetShaderInfoLog(shader, logSize, &logSize, errorLog.data());
         string errorLines = extractLines(errorLog.data(), source);
-        throw ShaderBuildException{errorLog.data(), type, errorLines};
+        string typeStr;
+        switch (type){
+            case ShaderErrorType::FragmentShader:
+                typeStr = "Fragment shader";
+                break;
+#ifndef GL_ES_VERSION_2_0
+            case ShaderErrorType::GeometryShader:
+                typeStr = "Geometry shader";
+                break;
+#endif
+            case ShaderErrorType::IncompleteShader:
+                typeStr = "Incomplete shader";
+                break;
+            case ShaderErrorType::Linker:
+                typeStr = "Linker";
+                break;
+            case ShaderErrorType::VertexShader :
+                typeStr = "Vertex shader";
+                break;
+
+        }
+        logError(string{errorLog.data()}+"\n"+ typeStr +" error\n"+ errorLines);
     }
     
     void Shader::setBlend(bool b){ blend = b; }
@@ -581,10 +611,12 @@ break;
                 auto mvProj = engineUniforms->viewProjectionMatrix * transform->getGlobalMatrix();
                 glUniformMatrix4fv(uniform.index, 1, GL_FALSE, glm::value_ptr(mvProj));
             } else if (uniform.name == UniformNames::gameObjectUID){
-                throw invalid_argument("gameObjectUID not yet implemented"); // todo
+//                throw invalid_argument("gameObjectUID not yet implemented"); // todo
+                logWarning("\"gameObjectUID not yet implemented");
             } else if (uniform.name == UniformNames::shadowMapTexture) {
                 //throw invalid_argument("shadowMapTexture not yet implemented"); // todo
                 cout <<"shadowMapTexture not yet implemented\n"; // todo
+                logWarning("\"shadowMapTexture not yet implemented");
             } else if (uniform.name == UniformNames::lightMat){
                 auto lightMatrix = engineUniforms->lightMatrix * transform->getGlobalMatrix();
                 glUniformMatrix4fv(uniform.index, 1, GL_FALSE, glm::value_ptr(lightMatrix));

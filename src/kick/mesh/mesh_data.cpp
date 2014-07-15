@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <iostream>
 #include <locale> 
-
+#include "kick/core/log.h"
 using namespace std;
 using namespace glm;
 
@@ -240,7 +240,9 @@ namespace kick {
         for (auto & v : subMeshes){
             auto & submesh = v.indices;
             if (v.meshType != MeshType::Triangles){
-                throw std::invalid_argument("Recalcualte normals only valid for triangles");
+//                throw std::invalid_argument();
+                logError("Recalcualte normals only valid for triangles");
+                return;
             }
             size_t triangleCount = submesh.size()/3;
             for (int a = 0; a < triangleCount; a++) {
@@ -306,7 +308,9 @@ namespace kick {
             case VertexAttributeSemantic::Unknown:
                 return "Unknown";
             default:
-                throw invalid_argument("Unknown semantic");
+                //throw invalid_argument("Unknown semantic");
+                logWarning("Unknown semantic");
+                return "Unknown";
         }
     }
 }

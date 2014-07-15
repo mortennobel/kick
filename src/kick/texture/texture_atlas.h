@@ -10,6 +10,8 @@
 #pragma once
 
 namespace kick {
+    class Texture2D;
+
     struct TextureAtlasEntry {
         bool rotated;
         bool trimmed;
@@ -22,10 +24,15 @@ class TextureAtlas : public ProjectAsset  {
 public:
     TextureAtlas(Project *project);
 
-    void load(std::string filename);
+    bool load(std::string filename, std::string texture);
+
+
+    Texture2D * getTexture() const;
+
 private:
     glm::ivec2 textureSize;
     std::map<std::string, TextureAtlasEntry> atlas;
+    Texture2D* texture = nullptr;
 };
 }
 

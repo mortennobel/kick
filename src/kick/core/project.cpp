@@ -8,6 +8,7 @@
 
 #include "kick/core/project.h"
 #include "kick/core/engine.h"
+#include "kick/core/log.h"
 #include <fstream>
 
 #include "kick/texture/image_format.h"
@@ -58,14 +59,16 @@ namespace kick {
         return &(engine->project);
     }
 
-    
-    string Project::loadTextResource(string uri){
+
+    bool Project::loadTextResource(std::string uri, std::string &res){
         ifstream file(uri);
-        if(!file.is_open())
-            throw runtime_error(string{"couldn't open file "}+uri);
-        
+        if(!file.is_open()) {
+            logError(string{"couldn't open file "} + uri);
+            return false;
+        }
+
         string str;
-        string res = "";
+        res = "";
         while (std::getline(file, str))
         {
             if (res.length()>0){
@@ -73,20 +76,23 @@ namespace kick {
             }
             res = res + str;
         }
-        return res;
+        return true;
     }
     
-    vector<char> Project::loadBinaryResource(string uri){
+    bool Project::loadBinaryResource(string uri, vector<char>& fileContents){
         ifstream file(uri, ios::in | ios::binary | ios::ate);
-        if(!file.is_open())
-            throw runtime_error(string{"couldn't open "}+uri);
-        vector<char> fileContents((unsigned long) file.tellg());
+        if(!file.is_open()){
+            logError(string{"couldn't open "}+uri);
+            return false;
+        }
+        fileContents.resize((unsigned long) file.tellg());
 
-        
         file.seekg(0, ios::beg);
-        if(!file.read(&fileContents[ 0 ], fileContents.size()))
-            throw runtime_error(string{"failed to read from "}+uri);
-        return move(fileContents);
+        if(!file.read(&fileContents[ 0 ], fileContents.size())){
+            logError(string{"failed to read from "}+uri);
+            return false;
+        }
+        return true;
     }
     
     Texture2D* Project::loadTexture2D(std::string uri){
@@ -236,12 +242,16 @@ namespace kick {
     Shader* Project::loadShader(std::string uri){
         using namespace rapidjson;
         using namespace glm;
-        string shaderSource = loadTextResource(uri);
+        string shaderSource;
+        bool success = loadTextResource(uri, shaderSource);
+        if (!success){
+            return nullptr;
+        }
 
         Document document;
         Shader* shader = nullptr;
         if (document.Parse<0>( shaderSource.c_str() ).HasParseError() ) {
-            std::cout << "Error parsing" << std::endl;
+            logError("Error parsing .shader file");
         } else {
             shader = createAsset<Shader>();
             auto getString = [&](string name, string defaultValue){
@@ -293,8 +303,14 @@ namespace kick {
             float polygonOffsetFactor   = getFloat("polygonOffsetFactor", 1);
             float polygonOffsetUnit     = getFloat("polygonOffsetUnit", 0);
             ZTestType zTest             = getZTestType("zTest", ZTestType::Less);
-            string vertexShader         = loadTextResource(vertexShaderURI);
-            string fragmentShader       = loadTextResource(fragmentShaderURI);
+            string vertexShader;
+            if (!loadTextResource(vertexShaderURI, vertexShader)){
+                return nullptr;
+            }
+            string fragmentShader;
+            if (!loadTextResource(fragmentShaderURI,fragmentShader)){
+                return nullptr;
+            }
 
 
             shader->setShaderSource(ShaderType::VertexShader, vertexShader);
@@ -304,7 +320,10 @@ namespace kick {
 #ifdef GL_ES_VERSION_2_0
                 assert(false);
 #else
-                string geometryShader       = loadTextResource(geometryShaderURI);
+                string geometryShader;
+                if (!loadTextResource(geometryShaderURI, geometryShader)){
+                    return nullptr;
+                }
                 shader->setShaderSource(ShaderType::GeometryShader, geometryShader);
 #endif
             }

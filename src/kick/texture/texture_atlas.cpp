@@ -26,8 +26,12 @@ namespace kick {
         }
     }
 
-    void TextureAtlas::load(std::string filename) {
-        string textureAtlas = Project::loadTextResource(filename);
+    bool TextureAtlas::load(std::string filename, std::string texture) {
+        this->texture = Project::loadTexture2D(texture);
+        string textureAtlas;
+        if (!Project::loadTextResource(filename, textureAtlas)){
+            return false;
+        }
 
         atlas.clear();
 
@@ -46,6 +50,10 @@ namespace kick {
         }
         auto &meta = d["meta"];
         textureSize = whToVec2(meta["size"]);
+        return true;
+    }
 
+    Texture2D *TextureAtlas::getTexture() const {
+        return texture;
     }
 }

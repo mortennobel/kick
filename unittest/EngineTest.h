@@ -29,21 +29,15 @@ void initEngine(int& argc, char** argv){
 
 int TestShader() {
     Shader *shader;
-    try {
-        shader = Project::createAsset<Shader>("foo", "foo");
-        shader->apply();
-        TINYTEST_ASSERT(false);
-    } catch (ShaderBuildException sbe) {
-        TINYTEST_ASSERT(sbe.errorType == ShaderErrorType::VertexShader || sbe.errorType == ShaderErrorType::FragmentShader);
-    }
+
+    shader = Project::createAsset<Shader>("foo", "foo");
+
+    TINYTEST_ASSERT(shader->apply() == false);
+
 
     shader = Project::createAsset<Shader>();
-    try {
-        shader->apply();
-        TINYTEST_ASSERT(false);
-    } catch (ShaderBuildException sbe) {
-        TINYTEST_ASSERT(sbe.errorType == ShaderErrorType::IncompleteShader);
-    }
+    TINYTEST_ASSERT(shader->apply() == false);
+
 
     // mismatch between out and in parameters
     string vertexShader =
@@ -67,13 +61,9 @@ int TestShader() {
             }
             )";
 
+    shader = Project::createAsset<Shader>(vertexShader, fragmentShader);
 
-    try {
-        shader = Project::createAsset<Shader>(vertexShader, fragmentShader);
-        TINYTEST_ASSERT_MSG(false, "Warn linker error not found.");
-    } catch (ShaderBuildException sbe) {
-        TINYTEST_ASSERT(sbe.errorType == ShaderErrorType::Linker);
-    }
+    TINYTEST_ASSERT_MSG(shader == nullptr || !shader->apply(), "Warn linker error not found.");
 
     vertexShader =
             R"(
@@ -99,13 +89,8 @@ int TestShader() {
             }
             )";
 
-
-    try {
-        shader = Project::createAsset<Shader>(vertexShader, fragmentShader);
-        TINYTEST_ASSERT_MSG(false, "Vertex Shader Compiler error not found.");
-    } catch (ShaderBuildException sbe) {
-        TINYTEST_ASSERT(sbe.errorType == ShaderErrorType::VertexShader);
-    }
+    shader = Project::createAsset<Shader>(vertexShader, fragmentShader);
+    TINYTEST_ASSERT_MSG(shader  == nullptr || !shader->apply(), "Vertex Shader Compiler error not found.");
 
     vertexShader =
             R"(
@@ -178,18 +163,11 @@ int TestMaterial() {
             }
             )";
     Shader *shader = Project::createAsset<Shader>(vertexShader, fragmentShader);
-    try{
-        shader->apply();
-        Material* material = Project::createAsset<Material>();
-        material->setShader(shader);
-        material->setUniform("p", glm::vec4{0,1,0,1});
-    } catch (ShaderBuildException sbe){
-        cout << sbe.errorMessage << endl;
-        throw sbe;
-    } catch (...){
-        cout << "unknown exception" << endl;
-        throw;
-    }
+
+    shader->apply();
+    Material* material = Project::createAsset<Material>();
+    material->setShader(shader);
+    material->setUniform("p", glm::vec4{0,1,0,1});
 
     return 1;
 }
@@ -256,13 +234,17 @@ int TestMeshFactory(){
 }
 
 int TestLoadTextFile(){
-    string test = Project::loadTextResource("unittest/testasset/txt.txt");
+    string test;
+    bool res = Project::loadTextResource("unittest/testasset/txt.txt", test);
+    TINYTEST_ASSERT(res);
     TINYTEST_ASSERT(test == "hello world");
     return 1;
 }
 
 int TestLoadBinaryFile(){
-    vector<char> res = Project::loadBinaryResource("unittest/testasset/txt.txt");
+    vector<char> res;
+    bool success = Project::loadBinaryResource("unittest/testasset/txt.txt", res);
+    TINYTEST_ASSERT(success);
     string helloWorld = "hello world";
     TINYTEST_ASSERT(10 == res[res.size()-1]);
     for (int i=0;i<res.size()-1;i++){
@@ -324,22 +306,20 @@ int TestDefaultShaders(){
     for (auto & s : shaders){
         string vertexShaderURI = string{"assets/shaders/"}+s+"_vs.glsl";
         string fragmentShaderURI = string{"assets/shaders/"}+s+"_fs.glsl";
-        string vertexShader = Project::loadTextResource(vertexShaderURI);
-        string fragmentShader = Project::loadTextResource(fragmentShaderURI);
+        string vertexShader;
+        bool success = Project::loadTextResource(vertexShaderURI, vertexShader);
+        TINYTEST_ASSERT(success);
+        string fragmentShader;
+        success = Project::loadTextResource(fragmentShaderURI, fragmentShader);
+        TINYTEST_ASSERT(success);
 
         Shader* shader = Project::createAsset<Shader>(vertexShader, fragmentShader);
-        try{
-            shader->apply();
-        }
-        catch (std::invalid_argument ia){
-            cerr << endl<<"Shader:"<<s << endl << ia.what() << endl;
+
+        success = shader->apply();
+        if (!success){
             errors++;
         }
-        catch (ShaderBuildException sbe){
-            cerr << endl<<"Shader:"<<s << endl << sbe.errorMessage << endl;
-            cerr << "Error snippet:"<< endl << sbe.codeSnippet << endl;
-            errors++;
-        }
+
         GLenum error = glGetError();
         TINYTEST_ASSERT_MSG(error == GL_NO_ERROR, s.c_str());
     }
@@ -376,16 +356,14 @@ int TestShaderLoading(){
             "__shadowmap",
     };
     for (auto & s : shaders){
-        try {
-            string shaderURI = string{"assets/shaders/"} + s + ".shader";
-            auto shader = Project::loadShader(shaderURI);
-            TINYTEST_ASSERT(shader->getShaderSource(kick::ShaderType::VertexShader).length() > 0);
-            TINYTEST_ASSERT(shader->getShaderSource(kick::ShaderType::FragmentShader).length() > 0);
-            bool isTransparent = s.substr(0, 5) == "trans";
-            TINYTEST_ASSERT(isTransparent == shader->getBlend());
-        }catch (ShaderBuildException sbe){
-            TINYTEST_ASSERT_MSG(false, (sbe.codeSnippet+" "+sbe.errorMessage).c_str());
-        }
+        string shaderURI = string{"assets/shaders/"} + s + ".shader";
+        auto shader = Project::loadShader(shaderURI);
+        TINYTEST_ASSERT(shader != nullptr);
+        TINYTEST_ASSERT(shader->getShaderSource(kick::ShaderType::VertexShader).length() > 0);
+        TINYTEST_ASSERT(shader->getShaderSource(kick::ShaderType::FragmentShader).length() > 0);
+        bool isTransparent = s.substr(0, 5) == "trans";
+        TINYTEST_ASSERT(isTransparent == shader->getBlend());
+
     }
     return 1;
 }
@@ -738,6 +716,6 @@ int TestFont(){
 
 int TestTextureAtlas(){
     TextureAtlas* textureAtlas = Project::createAsset<TextureAtlas>();
-    textureAtlas->load("unittest/sprites/sprites.txt");
+    textureAtlas->load("unittest/sprites/sprites.txt", "unittest/sprites/sprites.png");
     return 1;
 }

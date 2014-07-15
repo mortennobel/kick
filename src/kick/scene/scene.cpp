@@ -18,7 +18,9 @@
 #include "kick/mesh/mesh.h"
 #include "kick/core/engine.h"
 #include "kick/scene/light.h"
+#include "kick/sprite/sprite.h"
 #include "glm/gtx/string_cast.hpp"
+#include "kick/texture/texture_atlas.h"
 
 using namespace std;
 
@@ -250,5 +252,13 @@ namespace kick {
         for (auto & l : lights){
             addLight(l.first);
         }
+    }
+
+    Sprite *Scene::createSprite(TextureAtlas *textureAtlas, std::string spriteName, glm::vec2 pos) {
+        GameObject *gameObject = createGameObject("Sprite");
+        Sprite* sprite = gameObject->addComponent<Sprite>();
+        sprite->setTextureAtlas(textureAtlas);
+        sprite->setSpriteName(spriteName);
+        return sprite;
     }
 }

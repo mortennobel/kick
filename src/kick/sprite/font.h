@@ -33,7 +33,7 @@ class Font : public ProjectAsset {
 public:
     Font(Project *project);
     ~Font();
-    void loadFntFile(std::string filename = "assets/font/font-default.fnt", std::string texturename = "assets/font/font-default.png");
+    bool loadFntFile(std::string filename = "assets/font/font-default.fnt", std::string texturename = "assets/font/font-default.png");
     int width(std::string text);
     int height();
 

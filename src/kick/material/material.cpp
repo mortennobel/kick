@@ -14,6 +14,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include "kick/material/shader.h"
+#include "kick/core/log.h"
 
 using namespace std;
 
@@ -121,7 +122,8 @@ namespace kick {
                     break;
                 case GL_FLOAT_MAT2:
                     //glUniformMatrix2fv(location, false, value.mat2Value);
-                    throw invalid_argument("GL_FLOAT_MAT2 is currently unsupported");
+//                    throw invalid_argument();
+                    logError("GL_FLOAT_MAT2 is currently unsupported");
                     break;
                 case GL_FLOAT_MAT3:
                     glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(value.mat3Value));
@@ -131,10 +133,12 @@ namespace kick {
                     break;
                 case GL_FLOAT_VEC2:
                     //glUniform2fv(location, value.vec4Value);
-                    throw invalid_argument("GL_FLOAT_VEC2 is currently unsupported");
+//                    throw invalid_argument("GL_FLOAT_VEC2 is currently unsupported");
+                    logError("GL_FLOAT_VEC2 is currently unsupported");
                     break;
                 case GL_FLOAT_VEC3:
-                    throw invalid_argument("GL_FLOAT_VEC3 is currently unsupported");
+//                    throw invalid_argument("GL_FLOAT_VEC3 is currently unsupported");
+                    logError("GL_FLOAT_VEC3 is currently unsupported");
                     break;
                 case GL_FLOAT_VEC4:
                     glUniform4fv(location, 1, glm::value_ptr(value.vec4Value));
@@ -143,13 +147,16 @@ namespace kick {
                     glUniform1i(location, value.intValue);
                     break;
                 case GL_INT_VEC2:
-                    throw invalid_argument("GL_INT_VEC2 is currently unsupported");
+//                    throw invalid_argument("GL_INT_VEC2 is currently unsupported");
+                    logError("GL_INT_VEC2 is currently unsupported");
                     break;
                 case GL_INT_VEC3:
-                    throw invalid_argument("GL_INT_VEC3 is currently unsupported");
+//                    throw invalid_argument("GL_INT_VEC3 is currently unsupported");
+                    logError("GL_INT_VEC3 is currently unsupported");
                     break;
                 case GL_INT_VEC4:
-                    throw invalid_argument("GL_INT_VEC4 is currently unsupported");
+//                    throw invalid_argument("GL_INT_VEC4 is currently unsupported");
+                    logError("GL_INT_VEC4 is currently unsupported");
                     break;
                 case GL_SAMPLER_CUBE:
                     value.textureCube->bind(currentTexture);
@@ -162,7 +169,8 @@ namespace kick {
                     currentTexture++;
                     break;
                 default:
-                    throw invalid_argument("Unhandled type");
+//                    throw invalid_argument("Unhandled type");
+                    logError("Unhandled type");
             }
         }
         return currentTexture;

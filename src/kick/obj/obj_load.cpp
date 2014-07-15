@@ -12,7 +12,8 @@
 #include <cstring>
 #include <sstream>
 #include <cerrno>
-#include "glm/ext.hpp" 
+#include "glm/ext.hpp"
+#include "kick/core/log.h"
 
 using namespace std;
 using namespace glm;
@@ -32,7 +33,8 @@ namespace kick {
             in.close();
             return contents;
         }
-        throw(errno);
+        logError(string{"Error loading file "}+filename+" error "+std::to_string(errno));
+        return "";
     }
     
     vec4 toVec4(vector<string> &tokens){
