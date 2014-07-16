@@ -628,7 +628,10 @@ int TestTransformComponent(){
     return 1;
 }
 
-bool isEqual_(glm::quat q1, glm::quat q2, float epsilon = 1e-7){
+bool isEqual_(glm::quat q1, glm::quat q2, float epsilon = 1e-4){
+    if (q1==q2){
+        return true;
+    }
     quat q3 = inverse(q1) * q2;
     if (q3.x == 0 && q3.y == 0 && q3.z == 0){
         return true;
@@ -679,7 +682,9 @@ int TestTransformLookAt(){
     // different up axis
     transform1->lookAt(transform2, vec3(0,0,-1));
     expected = quat_cast(yawPitchRoll(radians(-90.0f),0.0f,radians(90.0f)));
-    TINYTEST_ASSERT_MSG(isEqual_(expected,transform1->getRotation()), (glm::to_string(eulerAngles(expected))+" was "+glm::to_string(transform1->getLocalRotationEuler())+" "+glm::to_string(transform1->getRotationEuler())).c_str());
+    quat q3 = inverse(transform1->getRotation()) * expected;
+    float a = angle(q3);
+    TINYTEST_ASSERT_MSG(isEqual_(expected,transform1->getRotation()), (glm::to_string(eulerAngles(expected))+" was "+glm::to_string(transform1->getLocalRotationEuler())+" "+glm::to_string(transform1->getRotationEuler())+" error "+std::to_string(a)).c_str());
 
     return 1;
 }
@@ -719,5 +724,15 @@ int TestFont(){
 int TestTextureAtlas(){
     TextureAtlas* textureAtlas = Project::createAsset<TextureAtlas>();
     textureAtlas->load("unittest/sprites/sprites.txt", "unittest/sprites/sprites.png");
+    return 1;
+}
+
+int TestSprite(){
+    TextureAtlas* textureAtlas = Project::createAsset<TextureAtlas>();
+    textureAtlas->load("unittest/sprites/sprites.txt", "unittest/sprites/sprites.png");
+
+    auto scene = Engine::instance->getActiveScene();
+    auto res = scene->createSprite(textureAtlas, "Character Boy.png");
+
     return 1;
 }

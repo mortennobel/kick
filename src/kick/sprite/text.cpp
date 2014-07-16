@@ -16,8 +16,8 @@ namespace kick {
               bounds{vec2{0,0},vec2{0,0}} {
         mesh = Project::createAsset<Mesh>();
         meshData = Project::createAsset<MeshData>();
-        mesh->setMeshData(meshData);
         material = Project::createAsset<Material>();
+        mesh->setMeshData(meshData);
     }
 
     std::string const &Text::getText() const {
@@ -30,17 +30,12 @@ namespace kick {
     }
 
     void Text::render(EngineUniforms *engineUniforms) {
-        printOpenGLError();
         if (!font) return;
         auto shader = material->getShader();
         assert(shader);
-        printOpenGLError();
         mesh->bind(shader);
-        printOpenGLError();
         shader->bind_uniforms(material, engineUniforms, getTransform());
-        printOpenGLError();
         mesh->render(0);
-        printOpenGLError();
     }
 
     void Text::setFont(Font *font) {

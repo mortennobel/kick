@@ -100,6 +100,7 @@ namespace kick {
         
         void setSubmesh(unsigned int index, const std::vector<GLushort> &indices, MeshType meshType);
         const std::vector<GLushort>&getSubmeshIndices(unsigned int index) const;
+
         const MeshType getSubmeshType(unsigned int index) const;
         
         unsigned int getSubmeshesCount();

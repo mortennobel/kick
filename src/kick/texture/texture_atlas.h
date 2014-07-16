@@ -13,27 +13,27 @@ namespace kick {
     class Texture2D;
 
     struct TextureAtlasEntry {
-        bool rotated;
-        bool trimmed;
-        glm::ivec4 frame;
-        glm::ivec4 spriteSourceSize;
-        glm::ivec2 sourceSize;
+        bool rotated = false;
+        bool trimmed = false;
+        glm::ivec4 frame = glm::ivec4{0};
+        glm::ivec4 spriteSourceSize = glm::ivec4{0};
+        glm::ivec2 sourceSize = glm::ivec2{0};
     };
 
-class TextureAtlas : public ProjectAsset  {
-public:
-    TextureAtlas(Project *project);
+    class TextureAtlas : public ProjectAsset  {
+    public:
+        TextureAtlas(Project *project);
 
-    bool load(std::string filename, std::string texture);
+        bool load(std::string filename, std::string texture);
 
+        Texture2D * getTexture() const;
 
-    Texture2D * getTexture() const;
+        TextureAtlasEntry get(std::string name);
 
-private:
-    glm::ivec2 textureSize;
-    std::map<std::string, TextureAtlasEntry> atlas;
-    Texture2D* texture = nullptr;
-};
+        glm::ivec2 getTextureSize() const;
+    private:
+        glm::ivec2 textureSize;
+        std::map<std::string, TextureAtlasEntry> atlas;
+        Texture2D* texture = nullptr;
+    };
 }
-
-

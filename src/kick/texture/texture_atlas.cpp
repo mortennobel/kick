@@ -56,4 +56,12 @@ namespace kick {
     Texture2D *TextureAtlas::getTexture() const {
         return texture;
     }
+
+    TextureAtlasEntry TextureAtlas::get(std::string name) {
+        return atlas[name];
+    }
+
+    glm::ivec2 TextureAtlas::getTextureSize() const {
+        return textureSize;
+    }
 }

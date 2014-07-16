@@ -7,16 +7,21 @@
 #include "kick/scene/game_object.h"
 #include "kick/texture/texture_atlas.h"
 #include <string>
-
+#include "kick/core/event.h"
 #pragma once
 
 namespace kick {
     class TextureAtlas;
+    class SpriteManager;
 
-    class Sprite : public Component{
+    class Sprite : public Component {
     public:
         Sprite(GameObject *gameObject) : Component(gameObject) {
         }
+
+        virtual void activated() override;
+
+        virtual void deactivated() override;
 
         TextureAtlas * getTextureAtlas() const;
 
@@ -26,10 +31,15 @@ namespace kick {
 
         void setSpriteName(std::string const &spriteName);
 
+        Event<Sprite*> spriteUpdated;
+
+        TextureAtlasEntry getEntry() const;
+
     private:
+        SpriteManager * spriteManager;
         TextureAtlas * textureAtlas = nullptr;
         std::string spriteName;
-
+        TextureAtlasEntry entry;
     };
 }
 

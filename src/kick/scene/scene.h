@@ -68,7 +68,6 @@ namespace kick {
         // helper function, which creates a gameobject and attaches an sprite object
         Sprite* createSprite(TextureAtlas* textureAtlas, std::string spriteName, glm::vec2 pos = glm::vec2{0});
 
-
         friend class Engine;
         friend class GameObject;
     private:
