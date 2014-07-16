@@ -85,6 +85,7 @@ namespace kick {
         const AABB & getAabb();
 
         GLenum getMeshUsageVal();
+
         void setPosition(const std::vector<glm::vec3> &p);
         const std::vector<glm::vec3>&getPosition();
         void setNormal(const std::vector<glm::vec3> &n);
@@ -113,9 +114,13 @@ namespace kick {
         
         // recomputing normals (using angle weighted normals)
         void recomputeNormals();
+
+
+        MeshUsage getMeshUsage() const;
+        void setMeshUsage(MeshUsage meshUsage);
     private:
         AABB aabb;
-        MeshUsage mesh_usage = MeshUsage::StaticDraw;
+        MeshUsage meshUsage = MeshUsage::StaticDraw;
         std::vector<glm::vec3> position;
         std::vector<glm::vec3> normal;
         std::vector<glm::vec2> texCoord0;

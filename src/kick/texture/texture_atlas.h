@@ -27,13 +27,15 @@ namespace kick {
         bool load(std::string filename, std::string texture);
 
         Texture2D * getTexture() const;
-
         TextureAtlasEntry get(std::string name);
-
         glm::ivec2 getTextureSize() const;
+
+        Shader * getShader() const;
+        void setShader(Shader *shader);
     private:
         glm::ivec2 textureSize;
         std::map<std::string, TextureAtlasEntry> atlas;
         Texture2D* texture = nullptr;
+        Shader *shader;
     };
 }

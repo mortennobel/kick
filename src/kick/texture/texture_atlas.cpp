@@ -13,9 +13,6 @@ using namespace glm;
 
 namespace kick {
 
-    TextureAtlas::TextureAtlas(Project *project) : ProjectAsset(project) {
-    }
-
     namespace {
         ivec2 whToVec2(rapidjson::Value &val) {
             return {val["w"].GetInt(), val["h"].GetInt()};
@@ -24,6 +21,10 @@ namespace kick {
         ivec4 xywhToVec4(rapidjson::Value &val) {
             return {val["x"].GetInt(), val["y"].GetInt(), val["w"].GetInt(), val["h"].GetInt()};
         }
+    }
+
+    TextureAtlas::TextureAtlas(Project *project) : ProjectAsset(project) {
+        shader = Project::loadShader("assets/shaders/sprite.shader");
     }
 
     bool TextureAtlas::load(std::string filename, std::string texture) {
@@ -63,5 +64,13 @@ namespace kick {
 
     glm::ivec2 TextureAtlas::getTextureSize() const {
         return textureSize;
+    }
+
+    Shader *TextureAtlas::getShader() const {
+        return shader;
+    }
+
+    void TextureAtlas::setShader(Shader *shader) {
+        TextureAtlas::shader = shader;
     }
 }

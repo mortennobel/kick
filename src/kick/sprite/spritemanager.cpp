@@ -16,17 +16,19 @@ namespace kick {
     SpriteManager::SpriteManager(GameObject *gameObject) : ComponentRenderable(gameObject) {
         mesh = Project::createAsset<Mesh>();
         meshData = Project::createAsset<MeshData>();
+        meshData->setMeshUsage(MeshUsage::DynamicDraw);
         mesh->setMeshData(meshData);
         material = Project::createAsset<Material>();
-        material->setShader(Project::loadShader("assets/shaders/transparent_unlit.shader"));
     }
 
     void SpriteManager::render(EngineUniforms *engineUniforms) {
         updateVertexBuffer();
-        auto shader = material->getShader();
-        assert(shader);
-        mesh->bind(shader);
         if (meshData->getSubmeshesCount()){
+            material->setShader(sprites[0]->getTextureAtlas()->getShader());
+            auto shader = material->getShader();
+            assert(shader);
+            mesh->bind(shader);
+
             material->setUniform("mainTexture", sprites[0]->getTextureAtlas()->getTexture());
             shader->bind_uniforms(material, engineUniforms, getTransform());
 

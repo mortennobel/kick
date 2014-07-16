@@ -277,7 +277,7 @@ namespace kick {
 
     const AABB &MeshData::getAabb() { return aabb; }
 
-    GLenum MeshData::getMeshUsageVal() { return static_cast<GLenum>(mesh_usage); }
+    GLenum MeshData::getMeshUsageVal() { return static_cast<GLenum>(meshUsage); }
 
 
 #define RETURN_IF_EQUAL(X) if (to_lower(name) == to_lower(#X)) return VertexAttributeSemantic::X;
@@ -312,6 +312,14 @@ namespace kick {
                 logWarning("Unknown semantic");
                 return "Unknown";
         }
+    }
+
+    MeshUsage MeshData::getMeshUsage() const {
+        return meshUsage;
+    }
+
+    void MeshData::setMeshUsage(MeshUsage meshUsage) {
+        MeshData::meshUsage = meshUsage;
     }
 }
 
