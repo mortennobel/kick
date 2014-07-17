@@ -48,6 +48,33 @@ namespace kick {
         void render(EngineUniforms* engineUniforms);
         Event<std::pair<Component*, ComponentUpdateStatus>> componentEvents;
 
+        template <typename T>
+        std::vector<T*> findComponents(){
+            std::vector<T*> res;
+            for (auto & gameObject : *this){
+                for (auto & comp : *gameObject){
+                    T* component = dynamic_cast<T*>(comp);
+                    if (component){
+                        res.push_back(component);
+                    }
+                }
+            }
+            return res;
+        }
+
+        template <typename T>
+        T* findComponent(){
+            for (auto & gameObject : *this){
+                for (auto & comp : *gameObject){
+                    T* component = dynamic_cast<T*>(comp);
+                    if (component){
+                        return component;
+                    }
+                }
+            }
+            return nullptr;
+        }
+
         // helper function, which creates a gameobject and attaches a perspective camera to it
         CameraPerspective* createPerspectiveCamera();
         // helper function, which creates a gameobject and attaches an orthographic camera to it

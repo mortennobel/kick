@@ -37,13 +37,14 @@ namespace kick {
     }
 
     SpriteManager *SpriteManager::getInstance(Scene *scene) {
-        SpriteManager * lastUsed = nullptr;
-        if (lastUsed && lastUsed->scene == scene){
-            return lastUsed;
+        for (auto & spriteManager : scene->findComponents<SpriteManager>()){
+            if (spriteManager->scene == scene){
+                return spriteManager;
+            }
         }
-        // todo search scene for instance
         auto go = scene->createGameObject("SpriteManager");
-        lastUsed = go->addComponent<SpriteManager>();
+        SpriteManager * lastUsed = go->addComponent<SpriteManager>();
+        lastUsed->scene = scene;
         return lastUsed;
     }
 
@@ -51,6 +52,9 @@ namespace kick {
         vector<vec3> position;
         vector<vec2> textureCoords;
         vector<GLushort> indices;
+        sort(sprites.begin(), sprites.end(), [](Sprite* s1, Sprite* s2){
+            return s1->getOrder() < s2->getOrder();
+        });
         for (unsigned short i=0;i<sprites.size();i++){
             Sprite * sprite = sprites[i];
             Transform* transform = sprite->getTransform();

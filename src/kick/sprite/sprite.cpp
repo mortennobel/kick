@@ -44,4 +44,12 @@ namespace kick {
     TextureAtlasEntry Sprite::getEntry() const {
         return entry;
     }
+
+    int Sprite::getOrder() const {
+        return order;
+    }
+
+    void Sprite::setOrder(int order) {
+        Sprite::order = order;
+    }
 }

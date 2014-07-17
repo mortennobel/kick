@@ -35,11 +35,14 @@ namespace kick {
 
         TextureAtlasEntry getEntry() const;
 
+        int getOrder() const;
+        void setOrder(int order);
     private:
         SpriteManager * spriteManager;
         TextureAtlas * textureAtlas = nullptr;
         std::string spriteName;
         TextureAtlasEntry entry;
+        int order = 0;
     };
 }
 
