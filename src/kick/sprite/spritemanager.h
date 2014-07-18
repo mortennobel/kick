@@ -32,7 +32,6 @@ private:
     void deregisterSprite(Sprite* sprite);
     Scene* scene;
     std::vector<Sprite*> sprites;
-    //std::map<Texture2D*,std::vector<Sprite*>> spritesGrouped;
 
     Mesh *mesh = nullptr;
     MeshData *meshData = nullptr;

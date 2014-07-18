@@ -134,13 +134,6 @@ namespace kick {
 
     void SpriteManager::registerSprite(Sprite *sprite) {
         sprites.push_back(sprite);
-//        auto tex = sprite->getTextureAtlas()->getTexture();
-//        auto spritesForTex = spritesGrouped.find(tex);
-//        if (spritesForTex == spritesGrouped.end()){
-//            spritesGrouped[tex] = {};
-//            spritesForTex = spritesGrouped.find(tex);
-//        }
-//        spritesForTex->second.push_back(sprite);
     }
 
     void SpriteManager::deregisterSprite(Sprite *sprite) {
@@ -148,14 +141,6 @@ namespace kick {
         if (pos != sprites.end()){
             sprites.erase(pos);
         }
-
-        // todo improve this
-//        for (auto i : spritesGrouped){
-//            auto pos = find(i.second.begin(),i.second.end(), sprite);
-//            if (pos != i.second.end()){
-//                i.second.erase(pos);
-//            }
-//        }
     }
 
     Shader *SpriteManager::getShader() const {
