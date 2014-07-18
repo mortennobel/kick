@@ -55,35 +55,76 @@ namespace kick {
         sort(sprites.begin(), sprites.end(), [](Sprite* s1, Sprite* s2){
             return s1->getOrder() < s2->getOrder();
         });
+        unsigned short index = 0;
         for (unsigned short i=0;i<sprites.size();i++){
             Sprite * sprite = sprites[i];
             Transform* transform = sprite->getTransform();
-            TextureAtlasEntry entry = sprite->getEntry();
+
             vec2 size = (vec2)sprite->getTextureAtlas()->getTextureSize();
             mat4 toWorld = transform->getGlobalMatrix();
+            vec2 scale = sprite->getScale();
 
-            vec2 basePoint = vec2{0,0};
-            float w = entry.frame.z;
-            float h = entry.frame.w;
-            position.push_back((vec3)(toWorld * vec4{basePoint,0,1}));
-            position.push_back((vec3)(toWorld * vec4{basePoint+vec2{w,0},0,1}));
-            position.push_back((vec3)(toWorld * vec4{basePoint+vec2{w,h},0,1}));
-            position.push_back((vec3)(toWorld * vec4{basePoint+vec2{0,h},0,1}));
 
-            vec2 min{entry.frame.x / size.x,1.0 - (entry.frame.y+entry.frame.w) / size.y};
-            vec2 max{(entry.frame.x+entry.frame.z) / size.x,1.0 - entry.frame.y / size.y};
-            textureCoords.push_back(vec2{min.x,min.y});
-            textureCoords.push_back(vec2{max.x,min.y});
-            textureCoords.push_back(vec2{max.x,max.y});
-            textureCoords.push_back(vec2{min.x,max.y});
+            TextureAtlasEntry entry = sprite->getEntry();
+            float w = entry.frame.z * scale.x;
+            float h = entry.frame.w * scale.y;
+            Bounds2D bounds = sprite->getTrimmedBounds();
 
-            // push two triangles
-            indices.push_back(i*4);
-            indices.push_back(i*4+1);
-            indices.push_back(i*4+2);
-            indices.push_back(i*4+2);
-            indices.push_back(i*4+3);
-            indices.push_back(i*4);
+            if (sprite->getType() == SpriteType::Simple) {
+                position.push_back((vec3) (toWorld * vec4{bounds.lowLeft(), 0, 1}));
+                position.push_back((vec3) (toWorld * vec4{bounds.lowRight(), 0, 1}));
+                position.push_back((vec3) (toWorld * vec4{bounds.upperRight(), 0, 1}));
+                position.push_back((vec3) (toWorld * vec4{bounds.upperLeft(), 0, 1}));
+
+                vec2 min{entry.frame.x / size.x, 1.0 - (entry.frame.y + entry.frame.w) / size.y};
+                vec2 max{(entry.frame.x + entry.frame.z) / size.x, 1.0 - entry.frame.y / size.y};
+                textureCoords.push_back(vec2{min.x, min.y});
+                textureCoords.push_back(vec2{max.x, min.y});
+                textureCoords.push_back(vec2{max.x, max.y});
+                textureCoords.push_back(vec2{min.x, max.y});
+
+                // push two triangles
+                indices.push_back(index);
+                indices.push_back(index + 1);
+                indices.push_back(index + 2);
+                indices.push_back(index + 2);
+                indices.push_back(index + 3);
+                indices.push_back(index);
+                index+=4;
+            }
+            else if (sprite->getType() == SpriteType::Sliced) {
+                vec2 dim {entry.frame.z,entry.frame.w};
+                vec4 sliceX = vec4{bounds.min.x, bounds.min.x + dim.x * sprite->getSliceX()[0],bounds.max.x - dim.x * (1.0-sprite->getSliceX()[1]), bounds.max.x};
+                vec4 sliceY = vec4{bounds.min.y, bounds.min.y + dim.y * sprite->getSliceY()[0],bounds.max.y - dim.y * (1.0-sprite->getSliceY()[1]), bounds.max.y};
+
+                vec2 min{entry.frame.x / size.x, 1.0 - (entry.frame.y + entry.frame.w) / size.y};
+                vec2 max{(entry.frame.x + entry.frame.z) / size.x, 1.0 - entry.frame.y / size.y};
+                vec4 uvX{min.x, lerp(min.x, max.x, sprite->getSliceX()[0]),lerp(min.x, max.x, sprite->getSliceX()[1]),max.x};
+                vec4 uvY{min.y, lerp(min.y, max.y, sprite->getSliceY()[0]),lerp(min.y, max.y, sprite->getSliceY()[1]),max.y};
+
+                for (int x=0;x<3;x++){
+                    for (int y=0;y<3;y++){
+                        position.push_back((vec3) (toWorld * vec4{sliceX[x], sliceY[y], 0, 1}));
+                        position.push_back((vec3) (toWorld * vec4{sliceX[x+1], sliceY[y], 0, 1}));
+                        position.push_back((vec3) (toWorld * vec4{sliceX[x+1], sliceY[y+1], 0, 1}));
+                        position.push_back((vec3) (toWorld * vec4{sliceX[x], sliceY[y+1], 0, 1}));
+
+                        textureCoords.push_back(vec2{uvX[x], uvY[y]});
+                        textureCoords.push_back(vec2{uvX[x+1], uvY[y]});
+                        textureCoords.push_back(vec2{uvX[x+1], uvY[y+1]});
+                        textureCoords.push_back(vec2{uvX[x], uvY[y+1]});
+
+                        // push two triangles
+                        indices.push_back(index);
+                        indices.push_back(index + 1);
+                        indices.push_back(index + 2);
+                        indices.push_back(index + 2);
+                        indices.push_back(index + 3);
+                        indices.push_back(index);
+                        index+=4;
+                    }
+                }
+            }
         }
         meshData->setPosition(position);
         meshData->setTexCoord0(textureCoords);
