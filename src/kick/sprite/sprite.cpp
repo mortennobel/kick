@@ -125,4 +125,12 @@ namespace kick {
         bounds.max = bounds.min + glm::vec2{w,h};
         return bounds;
     }
+
+    glm::vec4 Sprite::getColor() const {
+        return color;
+    }
+
+    void Sprite::setColor(glm::vec4 color) {
+        Sprite::color = color;
+    }
 }

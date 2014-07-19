@@ -115,7 +115,6 @@ namespace kick {
         // recomputing normals (using angle weighted normals)
         void recomputeNormals();
 
-
         MeshUsage getMeshUsage() const;
         void setMeshUsage(MeshUsage meshUsage);
     private:

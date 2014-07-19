@@ -58,6 +58,9 @@ namespace kick {
         void setScale(glm::vec2 scale);
         SpriteType getType() const;
         void setType(SpriteType type);
+
+        glm::vec4 getColor() const;
+        void setColor(glm::vec4 color);
     private:
         SpriteManager * spriteManager;
         TextureAtlas * textureAtlas = nullptr;
@@ -68,9 +71,8 @@ namespace kick {
         glm::vec2 sliceY{0.333f, 0.667f};
         glm::vec2 anchor{0,0};
         glm::vec2 scale{1,1};
+        glm::vec4 color{1,1,1,1};
         SpriteType type = SpriteType::Simple;
-
-
     };
 }
 

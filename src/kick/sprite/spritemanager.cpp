@@ -51,6 +51,7 @@ namespace kick {
     void SpriteManager::updateVertexBuffer() {
         vector<vec3> position;
         vector<vec2> textureCoords;
+        vector<vec4> colors;
         vector<GLushort> indices;
         sort(sprites.begin(), sprites.end(), [](Sprite* s1, Sprite* s2){
             return s1->getOrder() < s2->getOrder();
@@ -66,9 +67,8 @@ namespace kick {
 
 
             TextureAtlasEntry entry = sprite->getEntry();
-            float w = entry.frame.z * scale.x;
-            float h = entry.frame.w * scale.y;
             Bounds2D bounds = sprite->getTrimmedBounds();
+            vec4 color = sprite->getColor();
 
             if (sprite->getType() == SpriteType::Simple) {
                 position.push_back((vec3) (toWorld * vec4{bounds.lowLeft(), 0, 1}));
@@ -82,6 +82,11 @@ namespace kick {
                 textureCoords.push_back(vec2{max.x, min.y});
                 textureCoords.push_back(vec2{max.x, max.y});
                 textureCoords.push_back(vec2{min.x, max.y});
+
+                colors.push_back(color);
+                colors.push_back(color);
+                colors.push_back(color);
+                colors.push_back(color);
 
                 // push two triangles
                 indices.push_back(index);
@@ -114,6 +119,11 @@ namespace kick {
                         textureCoords.push_back(vec2{uvX[x+1], uvY[y+1]});
                         textureCoords.push_back(vec2{uvX[x], uvY[y+1]});
 
+                        colors.push_back(color);
+                        colors.push_back(color);
+                        colors.push_back(color);
+                        colors.push_back(color);
+
                         // push two triangles
                         indices.push_back(index);
                         indices.push_back(index + 1);
@@ -127,6 +137,7 @@ namespace kick {
             }
         }
         meshData->setPosition(position);
+        meshData->setColor(colors);
         meshData->setTexCoord0(textureCoords);
         meshData->setSubmesh(0,indices, MeshType::Triangles);
         mesh->setMeshData(meshData);
