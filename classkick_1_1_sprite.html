@@ -65,7 +65,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">kick::Sprite Class Reference</div>  </div>
 </div>
@@ -86,24 +87,63 @@ Inheritance diagram for kick::Sprite:</div>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac28dbe8f136d7954781fc6106455fa34"></a><!-- doxytag: member="kick::Sprite::Sprite" ref="ac28dbe8f136d7954781fc6106455fa34" args="(GameObject *gameObject)" -->
 &#160;</td><td class="memItemRight" valign="bottom"><b>Sprite</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *gameObject)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aff6c0e9a25d3fd4f3962768fa269d467"></a><!-- doxytag: member="kick::Sprite::getPos" ref="aff6c0e9a25d3fd4f3962768fa269d467" args="() const " -->
-glm::vec3 const &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getPos</b> () const </td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a16678a57f8dda82b3538f8d07a20c057"></a><!-- doxytag: member="kick::Sprite::setPos" ref="a16678a57f8dda82b3538f8d07a20c057" args="(glm::vec3 const &amp;pos)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setPos</b> (glm::vec3 const &amp;pos)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af262fd25aa634612193c6ef0ffb4a73a"></a><!-- doxytag: member="kick::Sprite::getWidth" ref="af262fd25aa634612193c6ef0ffb4a73a" args="() const " -->
-float&#160;</td><td class="memItemRight" valign="bottom"><b>getWidth</b> () const </td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a56458355690ca0eb8c1e2a74ae145b54"></a><!-- doxytag: member="kick::Sprite::setWidth" ref="a56458355690ca0eb8c1e2a74ae145b54" args="(float width)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setWidth</b> (float width)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8e41d91d108126f94257833724a13a03"></a><!-- doxytag: member="kick::Sprite::getHeight" ref="a8e41d91d108126f94257833724a13a03" args="() const " -->
-float&#160;</td><td class="memItemRight" valign="bottom"><b>getHeight</b> () const </td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a372e3d8462b95d07dce9836cef80bbeb"></a><!-- doxytag: member="kick::Sprite::setHeight" ref="a372e3d8462b95d07dce9836cef80bbeb" args="(float height)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setHeight</b> (float height)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac2278ee4c85d7ebc490d9d870b2e9221"></a><!-- doxytag: member="kick::Sprite::activated" ref="ac2278ee4c85d7ebc490d9d870b2e9221" args="() override" -->
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>activated</b> () override</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a10d794e695a9c08caad300510ecfb6ee"></a><!-- doxytag: member="kick::Sprite::deactivated" ref="a10d794e695a9c08caad300510ecfb6ee" args="() override" -->
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>deactivated</b> () override</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a55da3c21e8e51401632fc4ac73b02d96"></a><!-- doxytag: member="kick::Sprite::getTextureAtlas" ref="a55da3c21e8e51401632fc4ac73b02d96" args="() const " -->
+<a class="el" href="classkick_1_1_texture_atlas.html">TextureAtlas</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getTextureAtlas</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a53d5800d8daffd5813e4ea931277620b"></a><!-- doxytag: member="kick::Sprite::setTextureAtlas" ref="a53d5800d8daffd5813e4ea931277620b" args="(TextureAtlas *textureAtlas)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setTextureAtlas</b> (<a class="el" href="classkick_1_1_texture_atlas.html">TextureAtlas</a> *textureAtlas)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a87ebab3b6f770cbaf9d5473282f1ec05"></a><!-- doxytag: member="kick::Sprite::getSpriteName" ref="a87ebab3b6f770cbaf9d5473282f1ec05" args="() const " -->
+std::string const &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getSpriteName</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a179ac68378161852a96ea9c38271d2b7"></a><!-- doxytag: member="kick::Sprite::setSpriteName" ref="a179ac68378161852a96ea9c38271d2b7" args="(std::string const &amp;spriteName)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setSpriteName</b> (std::string const &amp;spriteName)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6a855324927b4b646b7b4a2f4a5d096d"></a><!-- doxytag: member="kick::Sprite::getEntry" ref="a6a855324927b4b646b7b4a2f4a5d096d" args="() const " -->
+<a class="el" href="structkick_1_1_texture_atlas_entry.html">TextureAtlasEntry</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getEntry</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a56f19712735b07ccf829dac2517d8ad7"></a><!-- doxytag: member="kick::Sprite::getOrder" ref="a56f19712735b07ccf829dac2517d8ad7" args="() const " -->
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getOrder</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aad1282ad978c042caf25a9edb4e5621b"></a><!-- doxytag: member="kick::Sprite::setOrder" ref="aad1282ad978c042caf25a9edb4e5621b" args="(int order)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setOrder</b> (int order)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3f6b05b0f696ce5ffe1549ae649dce58"></a><!-- doxytag: member="kick::Sprite::getTrimmedBounds" ref="a3f6b05b0f696ce5ffe1549ae649dce58" args="() const " -->
+<a class="el" href="structkick_1_1_bounds2_d.html">Bounds2D</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getTrimmedBounds</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4f506d11538f37e67e884cabbedf90f3"></a><!-- doxytag: member="kick::Sprite::getBounds" ref="a4f506d11538f37e67e884cabbedf90f3" args="() const " -->
+<a class="el" href="structkick_1_1_bounds2_d.html">Bounds2D</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getBounds</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a81527fb3940741aa1b0aa6736a655245"></a><!-- doxytag: member="kick::Sprite::getSliceX" ref="a81527fb3940741aa1b0aa6736a655245" args="() const " -->
+glm::vec2&#160;</td><td class="memItemRight" valign="bottom"><b>getSliceX</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a207132b6fa069079980fc1747b5d5ecb"></a><!-- doxytag: member="kick::Sprite::setSliceX" ref="a207132b6fa069079980fc1747b5d5ecb" args="(glm::vec2 sliceX)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setSliceX</b> (glm::vec2 sliceX)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a782682588df6a7e8183216f339aa999e"></a><!-- doxytag: member="kick::Sprite::getSliceY" ref="a782682588df6a7e8183216f339aa999e" args="() const " -->
+glm::vec2&#160;</td><td class="memItemRight" valign="bottom"><b>getSliceY</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a00de06e508cb83dbe5d6bf6751e238f4"></a><!-- doxytag: member="kick::Sprite::setSliceY" ref="a00de06e508cb83dbe5d6bf6751e238f4" args="(glm::vec2 sliceY)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setSliceY</b> (glm::vec2 sliceY)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab9ff83662973fc78fd72d295f97342f9"></a><!-- doxytag: member="kick::Sprite::getAnchor" ref="ab9ff83662973fc78fd72d295f97342f9" args="() const " -->
+glm::vec2&#160;</td><td class="memItemRight" valign="bottom"><b>getAnchor</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a997f0532c2de0c6260bf1024927e79fb"></a><!-- doxytag: member="kick::Sprite::setAnchor" ref="a997f0532c2de0c6260bf1024927e79fb" args="(glm::vec2 anchor)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setAnchor</b> (glm::vec2 anchor)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6e747dfb4aa92a4978b31edb3129f4c9"></a><!-- doxytag: member="kick::Sprite::getScale" ref="a6e747dfb4aa92a4978b31edb3129f4c9" args="() const " -->
+glm::vec2&#160;</td><td class="memItemRight" valign="bottom"><b>getScale</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a833ea6f4783da2f6588eefb7e1f99f14"></a><!-- doxytag: member="kick::Sprite::setScale" ref="a833ea6f4783da2f6588eefb7e1f99f14" args="(glm::vec2 scale)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setScale</b> (glm::vec2 scale)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af81ab3741ca9599f6c2e6a6044aec605"></a><!-- doxytag: member="kick::Sprite::getType" ref="af81ab3741ca9599f6c2e6a6044aec605" args="() const " -->
+SpriteType&#160;</td><td class="memItemRight" valign="bottom"><b>getType</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0dab234702f369a1173dd07886d95513"></a><!-- doxytag: member="kick::Sprite::setType" ref="a0dab234702f369a1173dd07886d95513" args="(SpriteType type)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setType</b> (SpriteType type)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a799958ea2b6c4cebd14000a67158f024"></a><!-- doxytag: member="kick::Sprite::getColor" ref="a799958ea2b6c4cebd14000a67158f024" args="() const " -->
+glm::vec4&#160;</td><td class="memItemRight" valign="bottom"><b>getColor</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac3de0f3b9a59dec65bb9d65e22f399b8"></a><!-- doxytag: member="kick::Sprite::setColor" ref="ac3de0f3b9a59dec65bb9d65e22f399b8" args="(glm::vec4 color)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setColor</b> (glm::vec4 color)</td></tr>
+<tr><td colspan="2"><h2><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad2b4c2fb16077b5ba6aee6efe636f0dc"></a><!-- doxytag: member="kick::Sprite::spriteUpdated" ref="ad2b4c2fb16077b5ba6aee6efe636f0dc" args="" -->
+<a class="el" href="classkick_1_1_event.html">Event</a>&lt; <a class="el" href="classkick_1_1_sprite.html">Sprite</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>spriteUpdated</b></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="sprite_8h_source.html#l00013">13</a> of file <a class="el" href="sprite_8h_source.html">sprite.h</a>.</p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+<p>Definition at line <a class="el" href="sprite_8h_source.html#l00024">24</a> of file <a class="el" href="sprite_8h_source.html">sprite.h</a>.</p>
+</div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>/Users/morten/Programmering/cpp/kick/src/kick/sprite/<a class="el" href="sprite_8h_source.html">sprite.h</a></li>
+<li>/Users/morten/Programmering/cpp/kick/src/kick/sprite/<a class="el" href="sprite_8cpp_source.html">sprite.cpp</a></li>
 </ul>
 </div>
 <!-- window showing the filter options -->
@@ -120,7 +160,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setHeight</b> (float 
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 5 2014 12:01:02 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:44 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

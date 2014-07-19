@@ -86,12 +86,22 @@ Inheritance diagram for kick::TextureAtlas:</div>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab64f15f06a377257ee0b970eda232ab5"></a><!-- doxytag: member="kick::TextureAtlas::TextureAtlas" ref="ab64f15f06a377257ee0b970eda232ab5" args="(Project *project)" -->
 &#160;</td><td class="memItemRight" valign="bottom"><b>TextureAtlas</b> (<a class="el" href="classkick_1_1_project.html">Project</a> *project)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ee87ddc7fe750d4451827cf679e0183"></a><!-- doxytag: member="kick::TextureAtlas::load" ref="a9ee87ddc7fe750d4451827cf679e0183" args="(std::string filename)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>load</b> (std::string filename)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a28a3fce8a91e95151ddb4ca26ec86d34"></a><!-- doxytag: member="kick::TextureAtlas::load" ref="a28a3fce8a91e95151ddb4ca26ec86d34" args="(std::string filename, std::string texture)" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>load</b> (std::string filename, std::string texture)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abac8b39f3affcdd736054e13de646ddc"></a><!-- doxytag: member="kick::TextureAtlas::getTexture" ref="abac8b39f3affcdd736054e13de646ddc" args="() const " -->
+<a class="el" href="classkick_1_1_texture2_d.html">Texture2D</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getTexture</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae9908c92d3640d1812e86669eebcdd76"></a><!-- doxytag: member="kick::TextureAtlas::get" ref="ae9908c92d3640d1812e86669eebcdd76" args="(std::string name)" -->
+<a class="el" href="structkick_1_1_texture_atlas_entry.html">TextureAtlasEntry</a>&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (std::string name)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae2eb2cd3de7402d4d588e9c601b1a9e6"></a><!-- doxytag: member="kick::TextureAtlas::getTextureSize" ref="ae2eb2cd3de7402d4d588e9c601b1a9e6" args="() const " -->
+glm::ivec2&#160;</td><td class="memItemRight" valign="bottom"><b>getTextureSize</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a64c0aa3ffcdee9eb89137b5b94f320d0"></a><!-- doxytag: member="kick::TextureAtlas::getShader" ref="a64c0aa3ffcdee9eb89137b5b94f320d0" args="() const " -->
+<a class="el" href="classkick_1_1_shader.html">Shader</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getShader</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a081068c6069cd6131b0f9eb599f1dea4"></a><!-- doxytag: member="kick::TextureAtlas::setShader" ref="a081068c6069cd6131b0f9eb599f1dea4" args="(Shader *shader)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setShader</b> (<a class="el" href="classkick_1_1_shader.html">Shader</a> *shader)</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="texture__atlas_8h_source.html#l00022">22</a> of file <a class="el" href="texture__atlas_8h_source.html">texture_atlas.h</a>.</p>
+<p>Definition at line <a class="el" href="texture__atlas_8h_source.html#l00023">23</a> of file <a class="el" href="texture__atlas_8h_source.html">texture_atlas.h</a>.</p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>/Users/morten/Programmering/cpp/kick/src/kick/texture/<a class="el" href="texture__atlas_8h_source.html">texture_atlas.h</a></li>
 <li>/Users/morten/Programmering/cpp/kick/src/kick/texture/<a class="el" href="texture__atlas_8cpp_source.html">texture_atlas.cpp</a></li>
@@ -111,7 +121,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>load</b> (std::string
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 5 2014 12:01:02 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:44 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

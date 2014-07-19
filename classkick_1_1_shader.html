@@ -101,8 +101,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setShaderSource</b> (
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getShaderSource</b> (ShaderType type) const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1b76f82cca0eb9f9a6e68587eead4666"></a><!-- doxytag: member="kick::Shader::getPrecompiledShaderSource" ref="a1b76f82cca0eb9f9a6e68587eead4666" args="(ShaderType type) const " -->
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getPrecompiledShaderSource</b> (ShaderType type) const </td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac72e3161f0db4f0de84a14ddef5d14a1"></a><!-- doxytag: member="kick::Shader::apply" ref="ac72e3161f0db4f0de84a14ddef5d14a1" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkick_1_1_shader.html#ac72e3161f0db4f0de84a14ddef5d14a1">apply</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adac200f31875bae0b36a890fc18299b9"></a><!-- doxytag: member="kick::Shader::apply" ref="adac200f31875bae0b36a890fc18299b9" args="()" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkick_1_1_shader.html#adac200f31875bae0b36a890fc18299b9">apply</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">throws <a class="el" href="structkick_1_1_shader_build_exception.html">ShaderBuildException</a> if unsuccessfull <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a215541cd5851ebd6d2fdc0aa43c6b0bb"></a><!-- doxytag: member="kick::Shader::bind" ref="a215541cd5851ebd6d2fdc0aa43c6b0bb" args="()" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>bind</b> ()</td></tr>
@@ -168,6 +168,10 @@ template&lt;class E &gt; </td></tr>
 <tr><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setDefaultUniform</b> (std::string name, E value)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5a9625a8733394d7169c00e4f857c570"></a><!-- doxytag: member="kick::Shader::tryGetDefaultUniform" ref="a5a9625a8733394d7169c00e4f857c570" args="(std::string name, MaterialData &amp;value)" -->
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>tryGetDefaultUniform</b> (std::string name, <a class="el" href="structkick_1_1_material_data.html">MaterialData</a> &amp;value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a50dd2ff5718d29625cd309f445964530"></a><!-- doxytag: member="kick::Shader::getRenderOrder" ref="a50dd2ff5718d29625cd309f445964530" args="() const " -->
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getRenderOrder</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6f6277fb1353611fe9dec6004f5263f2"></a><!-- doxytag: member="kick::Shader::setRenderOrder" ref="a6f6277fb1353611fe9dec6004f5263f2" args="(int renderOrder)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setRenderOrder</b> (int renderOrder)</td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae6dc0a244fcb123911939555cf6a5cbf"></a><!-- doxytag: member="kick::Shader::getPrecompiledSource" ref="ae6dc0a244fcb123911939555cf6a5cbf" args="(std::string source, ShaderType type)" -->
@@ -199,7 +203,7 @@ Public Attributes</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 5 2014 12:01:02 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

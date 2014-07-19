@@ -81,10 +81,10 @@ template&lt;class E , typename... Args&gt; </td></tr>
 <tr><td class="memTemplItemLeft" align="right" valign="top">static E *&#160;</td><td class="memTemplItemRight" valign="bottom"><b>createAsset</b> (Args...args)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a52567e9f8c08e5e3be30c8660acc32df"></a><!-- doxytag: member="kick::Project::destroyAsset" ref="a52567e9f8c08e5e3be30c8660acc32df" args="(ProjectAsset *asset)" -->
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>destroyAsset</b> (<a class="el" href="classkick_1_1_project_asset.html">ProjectAsset</a> *asset)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3244b658b83f6a113da18e6be6868e7c"></a><!-- doxytag: member="kick::Project::loadTextResource" ref="a3244b658b83f6a113da18e6be6868e7c" args="(std::string uri)" -->
-static std::string&#160;</td><td class="memItemRight" valign="bottom"><b>loadTextResource</b> (std::string uri)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3dc35dbf29281067d8e2e41cbcfbffab"></a><!-- doxytag: member="kick::Project::loadBinaryResource" ref="a3dc35dbf29281067d8e2e41cbcfbffab" args="(std::string uri)" -->
-static std::vector&lt; char &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>loadBinaryResource</b> (std::string uri)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5c98c34d755b53b833b442bd8f1fe230"></a><!-- doxytag: member="kick::Project::loadTextResource" ref="a5c98c34d755b53b833b442bd8f1fe230" args="(std::string uri, std::string &amp;outText)" -->
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>loadTextResource</b> (std::string uri, std::string &amp;outText)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae75f2bb634615ce219fa526715202aaa"></a><!-- doxytag: member="kick::Project::loadBinaryResource" ref="ae75f2bb634615ce219fa526715202aaa" args="(std::string uri, std::vector&lt; char &gt; &amp;outResource)" -->
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>loadBinaryResource</b> (std::string uri, std::vector&lt; char &gt; &amp;outResource)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a31db5b2d8a17b12aa5ba374e6a1c543b"></a><!-- doxytag: member="kick::Project::loadShader" ref="a31db5b2d8a17b12aa5ba374e6a1c543b" args="(std::string uri)" -->
 static <a class="el" href="classkick_1_1_shader.html">Shader</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>loadShader</b> (std::string uri)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a34764aeadcccfff8be1974cdc713c9b6"></a><!-- doxytag: member="kick::Project::loadTexture2D" ref="a34764aeadcccfff8be1974cdc713c9b6" args="(std::string uri)" -->
@@ -124,7 +124,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Engine</b></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 5 2014 12:01:02 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

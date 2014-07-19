@@ -73,40 +73,67 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00013"></a>00013 
 <a name="l00014"></a>00014 <span class="keyword">namespace </span>kick {
 <a name="l00015"></a>00015 
-<a name="l00016"></a>00016     TextureAtlas::TextureAtlas(Project *project) : ProjectAsset(project) {
-<a name="l00017"></a>00017     }
-<a name="l00018"></a>00018 
-<a name="l00019"></a>00019     ivec2 whToVec2(rapidjson::Value &amp;val){
-<a name="l00020"></a>00020         <span class="keywordflow">return</span> {val[<span class="stringliteral">&quot;w&quot;</span>].GetInt(), val[<span class="stringliteral">&quot;h&quot;</span>].GetInt()};
-<a name="l00021"></a>00021     }
-<a name="l00022"></a>00022 
-<a name="l00023"></a>00023     ivec4 xywhToVec4(rapidjson::Value &amp;val){
-<a name="l00024"></a>00024         <span class="keywordflow">return</span> {val[<span class="stringliteral">&quot;x&quot;</span>].GetInt(), val[<span class="stringliteral">&quot;y&quot;</span>].GetInt(),val[<span class="stringliteral">&quot;w&quot;</span>].GetInt(), val[<span class="stringliteral">&quot;h&quot;</span>].GetInt()};
-<a name="l00025"></a>00025     }
-<a name="l00026"></a>00026 
-<a name="l00027"></a>00027     <span class="keywordtype">void</span> TextureAtlas::load(std::string filename) {
-<a name="l00028"></a>00028         <span class="keywordtype">string</span> textureAtlas = Project::loadTextResource(filename);
+<a name="l00016"></a>00016     <span class="keyword">namespace </span>{
+<a name="l00017"></a>00017         ivec2 whToVec2(rapidjson::Value &amp;val) {
+<a name="l00018"></a>00018             <span class="keywordflow">return</span> {val[<span class="stringliteral">&quot;w&quot;</span>].GetInt(), val[<span class="stringliteral">&quot;h&quot;</span>].GetInt()};
+<a name="l00019"></a>00019         }
+<a name="l00020"></a>00020 
+<a name="l00021"></a>00021         ivec4 xywhToVec4(rapidjson::Value &amp;val) {
+<a name="l00022"></a>00022             <span class="keywordflow">return</span> {val[<span class="stringliteral">&quot;x&quot;</span>].GetInt(), val[<span class="stringliteral">&quot;y&quot;</span>].GetInt(), val[<span class="stringliteral">&quot;w&quot;</span>].GetInt(), val[<span class="stringliteral">&quot;h&quot;</span>].GetInt()};
+<a name="l00023"></a>00023         }
+<a name="l00024"></a>00024     }
+<a name="l00025"></a>00025 
+<a name="l00026"></a>00026     TextureAtlas::TextureAtlas(Project *project) : ProjectAsset(project) {
+<a name="l00027"></a>00027         shader = Project::loadShader(<span class="stringliteral">&quot;assets/shaders/sprite.shader&quot;</span>);
+<a name="l00028"></a>00028     }
 <a name="l00029"></a>00029 
-<a name="l00030"></a>00030         atlas.clear();
-<a name="l00031"></a>00031 
-<a name="l00032"></a>00032         rapidjson::Document d;
-<a name="l00033"></a>00033         d.Parse&lt;0&gt;(textureAtlas.c_str());
-<a name="l00034"></a>00034         <span class="keyword">auto</span> &amp;frames = d[<span class="stringliteral">&quot;frames&quot;</span>];
-<a name="l00035"></a>00035         <span class="keywordflow">for</span> (<span class="keyword">auto</span> itr = frames.MemberBegin(); itr != frames.MemberEnd(); ++itr){
-<a name="l00036"></a>00036             TextureAtlasEntry entry;
-<a name="l00037"></a>00037             <span class="keyword">auto</span>&amp; val = itr-&gt;value;
-<a name="l00038"></a>00038             entry.rotated = val[<span class="stringliteral">&quot;rotated&quot;</span>].GetBool();
-<a name="l00039"></a>00039             entry.trimmed = val[<span class="stringliteral">&quot;trimmed&quot;</span>].GetBool();
-<a name="l00040"></a>00040             entry.frame = xywhToVec4(val[<span class="stringliteral">&quot;frame&quot;</span>]);
-<a name="l00041"></a>00041             entry.spriteSourceSize = xywhToVec4(val[<span class="stringliteral">&quot;spriteSourceSize&quot;</span>]);
-<a name="l00042"></a>00042             entry.sourceSize = whToVec2(val[<span class="stringliteral">&quot;sourceSize&quot;</span>]);
-<a name="l00043"></a>00043             atlas[itr-&gt;name.GetString()] = entry;
-<a name="l00044"></a>00044         }
-<a name="l00045"></a>00045         <span class="keyword">auto</span> &amp;meta = d[<span class="stringliteral">&quot;meta&quot;</span>];
-<a name="l00046"></a>00046         textureSize = whToVec2(meta[<span class="stringliteral">&quot;size&quot;</span>]);
-<a name="l00047"></a>00047 
-<a name="l00048"></a>00048     }
-<a name="l00049"></a>00049 }
+<a name="l00030"></a>00030     <span class="keywordtype">bool</span> TextureAtlas::load(std::string filename, std::string texture) {
+<a name="l00031"></a>00031         this-&gt;texture = Project::loadTexture2D(texture);
+<a name="l00032"></a>00032         <span class="keywordtype">string</span> textureAtlas;
+<a name="l00033"></a>00033         <span class="keywordflow">if</span> (!Project::loadTextResource(filename, textureAtlas)){
+<a name="l00034"></a>00034             <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00035"></a>00035         }
+<a name="l00036"></a>00036 
+<a name="l00037"></a>00037         atlas.clear();
+<a name="l00038"></a>00038 
+<a name="l00039"></a>00039         rapidjson::Document d;
+<a name="l00040"></a>00040         d.Parse&lt;0&gt;(textureAtlas.c_str());
+<a name="l00041"></a>00041         <span class="keyword">auto</span> &amp;frames = d[<span class="stringliteral">&quot;frames&quot;</span>];
+<a name="l00042"></a>00042         <span class="keywordflow">for</span> (<span class="keyword">auto</span> itr = frames.MemberBegin(); itr != frames.MemberEnd(); ++itr){
+<a name="l00043"></a>00043             TextureAtlasEntry entry;
+<a name="l00044"></a>00044             <span class="keyword">auto</span>&amp; val = itr-&gt;value;
+<a name="l00045"></a>00045             entry.rotated = val[<span class="stringliteral">&quot;rotated&quot;</span>].GetBool();
+<a name="l00046"></a>00046             entry.trimmed = val[<span class="stringliteral">&quot;trimmed&quot;</span>].GetBool();
+<a name="l00047"></a>00047             entry.frame = xywhToVec4(val[<span class="stringliteral">&quot;frame&quot;</span>]);
+<a name="l00048"></a>00048             entry.spriteSourceSize = xywhToVec4(val[<span class="stringliteral">&quot;spriteSourceSize&quot;</span>]);
+<a name="l00049"></a>00049             entry.sourceSize = whToVec2(val[<span class="stringliteral">&quot;sourceSize&quot;</span>]);
+<a name="l00050"></a>00050             atlas[itr-&gt;name.GetString()] = entry;
+<a name="l00051"></a>00051         }
+<a name="l00052"></a>00052         <span class="keyword">auto</span> &amp;meta = d[<span class="stringliteral">&quot;meta&quot;</span>];
+<a name="l00053"></a>00053         textureSize = whToVec2(meta[<span class="stringliteral">&quot;size&quot;</span>]);
+<a name="l00054"></a>00054         <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00055"></a>00055     }
+<a name="l00056"></a>00056 
+<a name="l00057"></a>00057     Texture2D *TextureAtlas::getTexture()<span class="keyword"> const </span>{
+<a name="l00058"></a>00058         <span class="keywordflow">return</span> texture;
+<a name="l00059"></a>00059     }
+<a name="l00060"></a>00060 
+<a name="l00061"></a>00061     TextureAtlasEntry TextureAtlas::get(std::string name) {
+<a name="l00062"></a>00062         <span class="keywordflow">return</span> atlas[name];
+<a name="l00063"></a>00063     }
+<a name="l00064"></a>00064 
+<a name="l00065"></a>00065     glm::ivec2 TextureAtlas::getTextureSize()<span class="keyword"> const </span>{
+<a name="l00066"></a>00066         <span class="keywordflow">return</span> textureSize;
+<a name="l00067"></a>00067     }
+<a name="l00068"></a>00068 
+<a name="l00069"></a>00069     Shader *TextureAtlas::getShader()<span class="keyword"> const </span>{
+<a name="l00070"></a>00070         <span class="keywordflow">return</span> shader;
+<a name="l00071"></a>00071     }
+<a name="l00072"></a>00072 
+<a name="l00073"></a>00073     <span class="keywordtype">void</span> TextureAtlas::setShader(Shader *shader) {
+<a name="l00074"></a>00074         TextureAtlas::shader = shader;
+<a name="l00075"></a>00075     }
+<a name="l00076"></a>00076 }
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -123,7 +150,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 5 2014 12:01:02 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

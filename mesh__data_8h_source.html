@@ -74,8 +74,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00014"></a>00014 <span class="preprocessor">#include &lt;vector&gt;</span>
 <a name="l00015"></a>00015 <span class="preprocessor">#include &lt;unordered_map&gt;</span>
 <a name="l00016"></a>00016 <span class="preprocessor">#include &lt;string&gt;</span>
-<a name="l00017"></a>00017 <span class="preprocessor">#define GLM_FORCE_RADIANS</span>
-<a name="l00018"></a>00018 <span class="preprocessor"></span><span class="preprocessor">#include &lt;glm/glm.hpp&gt;</span>
+<a name="l00017"></a>00017 
+<a name="l00018"></a>00018 <span class="preprocessor">#include &lt;glm/glm.hpp&gt;</span>
 <a name="l00019"></a>00019 <span class="preprocessor">#include &lt;exception&gt;</span>
 <a name="l00020"></a>00020 
 <a name="l00021"></a>00021 <span class="keyword">namespace </span>kick {
@@ -142,52 +142,57 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00085"></a>00085         <span class="keyword">const</span> <a class="code" href="structkick_1_1_a_a_b_b.html">AABB</a> &amp; getAabb();
 <a name="l00086"></a>00086 
 <a name="l00087"></a>00087         GLenum getMeshUsageVal();
-<a name="l00088"></a>00088         <span class="keywordtype">void</span> setPosition(<span class="keyword">const</span> std::vector&lt;glm::vec3&gt; &amp;p);
-<a name="l00089"></a>00089         <span class="keyword">const</span> std::vector&lt;glm::vec3&gt;&amp;getPosition();
-<a name="l00090"></a>00090         <span class="keywordtype">void</span> setNormal(<span class="keyword">const</span> std::vector&lt;glm::vec3&gt; &amp;n);
-<a name="l00091"></a>00091         <span class="keyword">const</span> std::vector&lt;glm::vec3&gt;&amp;getNormal();
-<a name="l00092"></a>00092         <span class="keywordtype">void</span> setTexCoord0(<span class="keyword">const</span> std::vector&lt;glm::vec2&gt; &amp;u1);
-<a name="l00093"></a>00093         <span class="keyword">const</span> std::vector&lt;glm::vec2&gt;&amp;getTexCoord0();
-<a name="l00094"></a>00094         <span class="keywordtype">void</span> setTexCoord1(<span class="keyword">const</span> std::vector&lt;glm::vec2&gt; &amp;u2);
-<a name="l00095"></a>00095         <span class="keyword">const</span> std::vector&lt;glm::vec2&gt;&amp;getTexCoord1();
-<a name="l00096"></a>00096         <span class="keywordtype">void</span> setTangent(<span class="keyword">const</span> std::vector&lt;glm::vec3&gt; &amp;t);
-<a name="l00097"></a>00097         <span class="keyword">const</span> std::vector&lt;glm::vec3&gt;&amp;getTangent();
-<a name="l00098"></a>00098         <span class="keywordtype">void</span> setColor(<span class="keyword">const</span> std::vector&lt;glm::vec4&gt; &amp;c);
-<a name="l00099"></a>00099         <span class="keyword">const</span> std::vector&lt;glm::vec4&gt;&amp;getColor();
-<a name="l00100"></a>00100         
-<a name="l00101"></a>00101         <span class="keywordtype">void</span> setSubmesh(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> index, <span class="keyword">const</span> std::vector&lt;GLuint&gt; &amp;indices, MeshType meshType);
-<a name="l00102"></a>00102         <span class="keyword">const</span> std::vector&lt;GLuint&gt;&amp;getSubmeshIndices(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> index) <span class="keyword">const</span>;
-<a name="l00103"></a>00103         <span class="keyword">const</span> MeshType getSubmeshType(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> index) <span class="keyword">const</span>;
-<a name="l00104"></a>00104         
-<a name="l00105"></a>00105         <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> getSubmeshesCount();
-<a name="l00106"></a>00106         GLsizei getSubmeshSize(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> index);
-<a name="l00107"></a>00107         
-<a name="l00108"></a>00108         std::vector&lt;float&gt; getInterleavedData();
-<a name="l00109"></a>00109         std::vector&lt;InterleavedRecord&gt; getInterleavedFormat();
-<a name="l00110"></a>00110         std::vector&lt;GLuint&gt; getIndices();
-<a name="l00111"></a>00111         std::vector&lt;SubMeshData&gt; getIndicesFormat();
-<a name="l00112"></a>00112         
-<a name="l00113"></a>00113         <span class="comment">// recomputing normals (using angle weighted normals)</span>
-<a name="l00114"></a>00114         <span class="keywordtype">void</span> recomputeNormals();
-<a name="l00115"></a>00115     <span class="keyword">private</span>:
-<a name="l00116"></a>00116         <a class="code" href="structkick_1_1_a_a_b_b.html">AABB</a> aabb;
-<a name="l00117"></a>00117         MeshUsage mesh_usage = MeshUsage::StaticDraw;
-<a name="l00118"></a>00118         std::vector&lt;glm::vec3&gt; position;
-<a name="l00119"></a>00119         std::vector&lt;glm::vec3&gt; normal;
-<a name="l00120"></a>00120         std::vector&lt;glm::vec2&gt; texCoord0;
-<a name="l00121"></a>00121         std::vector&lt;glm::vec2&gt; texCoord1;
-<a name="l00122"></a>00122         std::vector&lt;glm::vec3&gt; tangent;
-<a name="l00123"></a>00123         std::vector&lt;glm::vec4&gt; color;
-<a name="l00124"></a>00124         
-<a name="l00125"></a>00125         <span class="keyword">struct </span>SubMeshInternal {
-<a name="l00126"></a>00126             std::vector&lt;GLuint&gt; indices;
-<a name="l00127"></a>00127             MeshType meshType;
-<a name="l00128"></a>00128         };
+<a name="l00088"></a>00088 
+<a name="l00089"></a>00089         <span class="keywordtype">void</span> setPosition(<span class="keyword">const</span> std::vector&lt;glm::vec3&gt; &amp;p);
+<a name="l00090"></a>00090         <span class="keyword">const</span> std::vector&lt;glm::vec3&gt;&amp;getPosition();
+<a name="l00091"></a>00091         <span class="keywordtype">void</span> setNormal(<span class="keyword">const</span> std::vector&lt;glm::vec3&gt; &amp;n);
+<a name="l00092"></a>00092         <span class="keyword">const</span> std::vector&lt;glm::vec3&gt;&amp;getNormal();
+<a name="l00093"></a>00093         <span class="keywordtype">void</span> setTexCoord0(<span class="keyword">const</span> std::vector&lt;glm::vec2&gt; &amp;u1);
+<a name="l00094"></a>00094         <span class="keyword">const</span> std::vector&lt;glm::vec2&gt;&amp;getTexCoord0();
+<a name="l00095"></a>00095         <span class="keywordtype">void</span> setTexCoord1(<span class="keyword">const</span> std::vector&lt;glm::vec2&gt; &amp;u2);
+<a name="l00096"></a>00096         <span class="keyword">const</span> std::vector&lt;glm::vec2&gt;&amp;getTexCoord1();
+<a name="l00097"></a>00097         <span class="keywordtype">void</span> setTangent(<span class="keyword">const</span> std::vector&lt;glm::vec3&gt; &amp;t);
+<a name="l00098"></a>00098         <span class="keyword">const</span> std::vector&lt;glm::vec3&gt;&amp;getTangent();
+<a name="l00099"></a>00099         <span class="keywordtype">void</span> setColor(<span class="keyword">const</span> std::vector&lt;glm::vec4&gt; &amp;c);
+<a name="l00100"></a>00100         <span class="keyword">const</span> std::vector&lt;glm::vec4&gt;&amp;getColor();
+<a name="l00101"></a>00101         
+<a name="l00102"></a>00102         <span class="keywordtype">void</span> setSubmesh(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> index, <span class="keyword">const</span> std::vector&lt;GLushort&gt; &amp;indices, MeshType meshType);
+<a name="l00103"></a>00103         <span class="keyword">const</span> std::vector&lt;GLushort&gt;&amp;getSubmeshIndices(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> index) <span class="keyword">const</span>;
+<a name="l00104"></a>00104 
+<a name="l00105"></a>00105         <span class="keyword">const</span> MeshType getSubmeshType(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> index) <span class="keyword">const</span>;
+<a name="l00106"></a>00106         
+<a name="l00107"></a>00107         <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> getSubmeshesCount();
+<a name="l00108"></a>00108         GLsizei getSubmeshSize(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> index);
+<a name="l00109"></a>00109         
+<a name="l00110"></a>00110         std::vector&lt;float&gt; getInterleavedData();
+<a name="l00111"></a>00111         std::vector&lt;InterleavedRecord&gt; getInterleavedFormat();
+<a name="l00112"></a>00112         std::vector&lt;GLushort&gt; getIndices();
+<a name="l00113"></a>00113         std::vector&lt;SubMeshData&gt; getIndicesFormat();
+<a name="l00114"></a>00114         
+<a name="l00115"></a>00115         <span class="comment">// recomputing normals (using angle weighted normals)</span>
+<a name="l00116"></a>00116         <span class="keywordtype">void</span> recomputeNormals();
+<a name="l00117"></a>00117 
+<a name="l00118"></a>00118         MeshUsage getMeshUsage() <span class="keyword">const</span>;
+<a name="l00119"></a>00119         <span class="keywordtype">void</span> setMeshUsage(MeshUsage meshUsage);
+<a name="l00120"></a>00120     <span class="keyword">private</span>:
+<a name="l00121"></a>00121         <a class="code" href="structkick_1_1_a_a_b_b.html">AABB</a> aabb;
+<a name="l00122"></a>00122         MeshUsage meshUsage = MeshUsage::StaticDraw;
+<a name="l00123"></a>00123         std::vector&lt;glm::vec3&gt; position;
+<a name="l00124"></a>00124         std::vector&lt;glm::vec3&gt; normal;
+<a name="l00125"></a>00125         std::vector&lt;glm::vec2&gt; texCoord0;
+<a name="l00126"></a>00126         std::vector&lt;glm::vec2&gt; texCoord1;
+<a name="l00127"></a>00127         std::vector&lt;glm::vec3&gt; tangent;
+<a name="l00128"></a>00128         std::vector&lt;glm::vec4&gt; color;
 <a name="l00129"></a>00129         
-<a name="l00130"></a>00130         std::vector&lt;SubMeshInternal&gt; subMeshes;
-<a name="l00131"></a>00131         <span class="keywordtype">size_t</span> computeInterleavedDataSize();
-<a name="l00132"></a>00132     };
-<a name="l00133"></a>00133 }
+<a name="l00130"></a>00130         <span class="keyword">struct </span>SubMeshInternal {
+<a name="l00131"></a>00131             std::vector&lt;GLushort&gt; indices;
+<a name="l00132"></a>00132             MeshType meshType;
+<a name="l00133"></a>00133         };
+<a name="l00134"></a>00134         
+<a name="l00135"></a>00135         std::vector&lt;SubMeshInternal&gt; subMeshes;
+<a name="l00136"></a>00136         <span class="keywordtype">size_t</span> computeInterleavedDataSize();
+<a name="l00137"></a>00137     };
+<a name="l00138"></a>00138 }
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -204,7 +209,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 5 2014 12:01:01 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

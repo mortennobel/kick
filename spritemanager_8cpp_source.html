@@ -62,14 +62,173 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00002"></a>00002 <span class="comment">// Created by morten on 30/06/14.</span>
 <a name="l00003"></a>00003 <span class="comment">//</span>
 <a name="l00004"></a>00004 
-<a name="l00005"></a>00005 <span class="preprocessor">#include &quot;spritemanager.h&quot;</span>
-<a name="l00006"></a>00006 
-<a name="l00007"></a>00007 <span class="keyword">namespace </span>kick {
-<a name="l00008"></a>00008 
-<a name="l00009"></a>00009     <span class="keywordtype">void</span> SpriteManager::render(EngineUniforms *engineUniforms) {
-<a name="l00010"></a>00010 
-<a name="l00011"></a>00011     }
-<a name="l00012"></a>00012 }
+<a name="l00005"></a>00005 <span class="preprocessor">#include &quot;kick/sprite/spritemanager.h&quot;</span>
+<a name="l00006"></a>00006 <span class="preprocessor">#include &quot;kick/sprite/sprite.h&quot;</span>
+<a name="l00007"></a>00007 <span class="preprocessor">#include &quot;kick/core/log.h&quot;</span>
+<a name="l00008"></a>00008 <span class="preprocessor">#include &quot;font.h&quot;</span>
+<a name="l00009"></a>00009 <span class="preprocessor">#include &quot;transform.h&quot;</span>
+<a name="l00010"></a>00010 <span class="preprocessor">#include &lt;vector&gt;</span>
+<a name="l00011"></a>00011 
+<a name="l00012"></a>00012 <span class="keyword">using namespace </span>std;
+<a name="l00013"></a>00013 <span class="keyword">using namespace </span>glm;
+<a name="l00014"></a>00014 
+<a name="l00015"></a>00015 <span class="keyword">namespace </span>kick {
+<a name="l00016"></a>00016     SpriteManager::SpriteManager(GameObject *gameObject) : ComponentRenderable(gameObject) {
+<a name="l00017"></a>00017         mesh = Project::createAsset&lt;Mesh&gt;();
+<a name="l00018"></a>00018         meshData = Project::createAsset&lt;MeshData&gt;();
+<a name="l00019"></a>00019         meshData-&gt;setMeshUsage(MeshUsage::DynamicDraw);
+<a name="l00020"></a>00020         mesh-&gt;setMeshData(meshData);
+<a name="l00021"></a>00021         material = Project::createAsset&lt;Material&gt;();
+<a name="l00022"></a>00022     }
+<a name="l00023"></a>00023 
+<a name="l00024"></a>00024     <span class="keywordtype">void</span> SpriteManager::render(EngineUniforms *engineUniforms) {
+<a name="l00025"></a>00025         updateVertexBuffer();
+<a name="l00026"></a>00026         <span class="keywordflow">if</span> (meshData-&gt;getSubmeshesCount()){
+<a name="l00027"></a>00027             material-&gt;setShader(sprites[0]-&gt;getTextureAtlas()-&gt;getShader());
+<a name="l00028"></a>00028             <span class="keyword">auto</span> shader = material-&gt;getShader();
+<a name="l00029"></a>00029             assert(shader);
+<a name="l00030"></a>00030             mesh-&gt;bind(shader);
+<a name="l00031"></a>00031 
+<a name="l00032"></a>00032             material-&gt;setUniform(<span class="stringliteral">&quot;mainTexture&quot;</span>, sprites[0]-&gt;getTextureAtlas()-&gt;getTexture());
+<a name="l00033"></a>00033             shader-&gt;bind_uniforms(material, engineUniforms, getTransform());
+<a name="l00034"></a>00034 
+<a name="l00035"></a>00035             mesh-&gt;render(0);
+<a name="l00036"></a>00036         }
+<a name="l00037"></a>00037     }
+<a name="l00038"></a>00038 
+<a name="l00039"></a>00039     SpriteManager *SpriteManager::getInstance(Scene *scene) {
+<a name="l00040"></a>00040         <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp; spriteManager : scene-&gt;findComponents&lt;SpriteManager&gt;()){
+<a name="l00041"></a>00041             <span class="keywordflow">if</span> (spriteManager-&gt;scene == scene){
+<a name="l00042"></a>00042                 <span class="keywordflow">return</span> spriteManager;
+<a name="l00043"></a>00043             }
+<a name="l00044"></a>00044         }
+<a name="l00045"></a>00045         <span class="keyword">auto</span> go = scene-&gt;createGameObject(<span class="stringliteral">&quot;SpriteManager&quot;</span>);
+<a name="l00046"></a>00046         SpriteManager * lastUsed = go-&gt;addComponent&lt;SpriteManager&gt;();
+<a name="l00047"></a>00047         lastUsed-&gt;scene = scene;
+<a name="l00048"></a>00048         <span class="keywordflow">return</span> lastUsed;
+<a name="l00049"></a>00049     }
+<a name="l00050"></a>00050 
+<a name="l00051"></a>00051     <span class="keywordtype">void</span> SpriteManager::updateVertexBuffer() {
+<a name="l00052"></a>00052         vector&lt;vec3&gt; position;
+<a name="l00053"></a>00053         vector&lt;vec2&gt; textureCoords;
+<a name="l00054"></a>00054         vector&lt;vec4&gt; colors;
+<a name="l00055"></a>00055         vector&lt;GLushort&gt; indices;
+<a name="l00056"></a>00056         sort(sprites.begin(), sprites.end(), [](Sprite* s1, Sprite* s2){
+<a name="l00057"></a>00057             <span class="keywordflow">return</span> s1-&gt;getOrder() &lt; s2-&gt;getOrder();
+<a name="l00058"></a>00058         });
+<a name="l00059"></a>00059         <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> index = 0;
+<a name="l00060"></a>00060         <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> i=0;i&lt;sprites.size();i++){
+<a name="l00061"></a>00061             Sprite * sprite = sprites[i];
+<a name="l00062"></a>00062             Transform* transform = sprite-&gt;getTransform();
+<a name="l00063"></a>00063 
+<a name="l00064"></a>00064             vec2 size = (vec2)sprite-&gt;getTextureAtlas()-&gt;getTextureSize();
+<a name="l00065"></a>00065             mat4 toWorld = transform-&gt;getGlobalMatrix();
+<a name="l00066"></a>00066             vec2 scale = sprite-&gt;getScale();
+<a name="l00067"></a>00067 
+<a name="l00068"></a>00068 
+<a name="l00069"></a>00069             TextureAtlasEntry entry = sprite-&gt;getEntry();
+<a name="l00070"></a>00070             Bounds2D bounds = sprite-&gt;getTrimmedBounds();
+<a name="l00071"></a>00071             vec4 color = sprite-&gt;getColor();
+<a name="l00072"></a>00072 
+<a name="l00073"></a>00073             <span class="keywordflow">if</span> (sprite-&gt;getType() == SpriteType::Simple) {
+<a name="l00074"></a>00074                 position.push_back((vec3) (toWorld * vec4{bounds.lowLeft(), 0, 1}));
+<a name="l00075"></a>00075                 position.push_back((vec3) (toWorld * vec4{bounds.lowRight(), 0, 1}));
+<a name="l00076"></a>00076                 position.push_back((vec3) (toWorld * vec4{bounds.upperRight(), 0, 1}));
+<a name="l00077"></a>00077                 position.push_back((vec3) (toWorld * vec4{bounds.upperLeft(), 0, 1}));
+<a name="l00078"></a>00078 
+<a name="l00079"></a>00079                 vec2 min{entry.frame.x / size.x, 1.0 - (entry.frame.y + entry.frame.w) / size.y};
+<a name="l00080"></a>00080                 vec2 max{(entry.frame.x + entry.frame.z) / size.x, 1.0 - entry.frame.y / size.y};
+<a name="l00081"></a>00081                 textureCoords.push_back(vec2{min.x, min.y});
+<a name="l00082"></a>00082                 textureCoords.push_back(vec2{max.x, min.y});
+<a name="l00083"></a>00083                 textureCoords.push_back(vec2{max.x, max.y});
+<a name="l00084"></a>00084                 textureCoords.push_back(vec2{min.x, max.y});
+<a name="l00085"></a>00085 
+<a name="l00086"></a>00086                 colors.push_back(color);
+<a name="l00087"></a>00087                 colors.push_back(color);
+<a name="l00088"></a>00088                 colors.push_back(color);
+<a name="l00089"></a>00089                 colors.push_back(color);
+<a name="l00090"></a>00090 
+<a name="l00091"></a>00091                 <span class="comment">// push two triangles</span>
+<a name="l00092"></a>00092                 indices.push_back(index);
+<a name="l00093"></a>00093                 indices.push_back(index + 1);
+<a name="l00094"></a>00094                 indices.push_back(index + 2);
+<a name="l00095"></a>00095                 indices.push_back(index + 2);
+<a name="l00096"></a>00096                 indices.push_back(index + 3);
+<a name="l00097"></a>00097                 indices.push_back(index);
+<a name="l00098"></a>00098                 index+=4;
+<a name="l00099"></a>00099             }
+<a name="l00100"></a>00100             <span class="keywordflow">else</span> <span class="keywordflow">if</span> (sprite-&gt;getType() == SpriteType::Sliced) {
+<a name="l00101"></a>00101                 vec2 dim {entry.frame.z,entry.frame.w};
+<a name="l00102"></a>00102                 vec4 sliceX = vec4{bounds.min.x, bounds.min.x + dim.x * sprite-&gt;getSliceX()[0],bounds.max.x - dim.x * (1.0-sprite-&gt;getSliceX()[1]), bounds.max.x};
+<a name="l00103"></a>00103                 vec4 sliceY = vec4{bounds.min.y, bounds.min.y + dim.y * sprite-&gt;getSliceY()[0],bounds.max.y - dim.y * (1.0-sprite-&gt;getSliceY()[1]), bounds.max.y};
+<a name="l00104"></a>00104 
+<a name="l00105"></a>00105                 vec2 min{entry.frame.x / size.x, 1.0 - (entry.frame.y + entry.frame.w) / size.y};
+<a name="l00106"></a>00106                 vec2 max{(entry.frame.x + entry.frame.z) / size.x, 1.0 - entry.frame.y / size.y};
+<a name="l00107"></a>00107                 vec4 uvX{min.x, lerp(min.x, max.x, sprite-&gt;getSliceX()[0]),lerp(min.x, max.x, sprite-&gt;getSliceX()[1]),max.x};
+<a name="l00108"></a>00108                 vec4 uvY{min.y, lerp(min.y, max.y, sprite-&gt;getSliceY()[0]),lerp(min.y, max.y, sprite-&gt;getSliceY()[1]),max.y};
+<a name="l00109"></a>00109 
+<a name="l00110"></a>00110                 <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x=0;x&lt;3;x++){
+<a name="l00111"></a>00111                     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y=0;y&lt;3;y++){
+<a name="l00112"></a>00112                         position.push_back((vec3) (toWorld * vec4{sliceX[x], sliceY[y], 0, 1}));
+<a name="l00113"></a>00113                         position.push_back((vec3) (toWorld * vec4{sliceX[x+1], sliceY[y], 0, 1}));
+<a name="l00114"></a>00114                         position.push_back((vec3) (toWorld * vec4{sliceX[x+1], sliceY[y+1], 0, 1}));
+<a name="l00115"></a>00115                         position.push_back((vec3) (toWorld * vec4{sliceX[x], sliceY[y+1], 0, 1}));
+<a name="l00116"></a>00116 
+<a name="l00117"></a>00117                         textureCoords.push_back(vec2{uvX[x], uvY[y]});
+<a name="l00118"></a>00118                         textureCoords.push_back(vec2{uvX[x+1], uvY[y]});
+<a name="l00119"></a>00119                         textureCoords.push_back(vec2{uvX[x+1], uvY[y+1]});
+<a name="l00120"></a>00120                         textureCoords.push_back(vec2{uvX[x], uvY[y+1]});
+<a name="l00121"></a>00121 
+<a name="l00122"></a>00122                         colors.push_back(color);
+<a name="l00123"></a>00123                         colors.push_back(color);
+<a name="l00124"></a>00124                         colors.push_back(color);
+<a name="l00125"></a>00125                         colors.push_back(color);
+<a name="l00126"></a>00126 
+<a name="l00127"></a>00127                         <span class="comment">// push two triangles</span>
+<a name="l00128"></a>00128                         indices.push_back(index);
+<a name="l00129"></a>00129                         indices.push_back(index + 1);
+<a name="l00130"></a>00130                         indices.push_back(index + 2);
+<a name="l00131"></a>00131                         indices.push_back(index + 2);
+<a name="l00132"></a>00132                         indices.push_back(index + 3);
+<a name="l00133"></a>00133                         indices.push_back(index);
+<a name="l00134"></a>00134                         index+=4;
+<a name="l00135"></a>00135                     }
+<a name="l00136"></a>00136                 }
+<a name="l00137"></a>00137             }
+<a name="l00138"></a>00138         }
+<a name="l00139"></a>00139         meshData-&gt;setPosition(position);
+<a name="l00140"></a>00140         meshData-&gt;setColor(colors);
+<a name="l00141"></a>00141         meshData-&gt;setTexCoord0(textureCoords);
+<a name="l00142"></a>00142         meshData-&gt;setSubmesh(0,indices, MeshType::Triangles);
+<a name="l00143"></a>00143         mesh-&gt;setMeshData(meshData);
+<a name="l00144"></a>00144     }
+<a name="l00145"></a>00145 
+<a name="l00146"></a>00146     <span class="keywordtype">void</span> SpriteManager::registerSprite(Sprite *sprite) {
+<a name="l00147"></a>00147         sprites.push_back(sprite);
+<a name="l00148"></a>00148     }
+<a name="l00149"></a>00149 
+<a name="l00150"></a>00150     <span class="keywordtype">void</span> SpriteManager::deregisterSprite(Sprite *sprite) {
+<a name="l00151"></a>00151         <span class="keyword">auto</span> pos = find(sprites.begin(),sprites.end(), sprite);
+<a name="l00152"></a>00152         <span class="keywordflow">if</span> (pos != sprites.end()){
+<a name="l00153"></a>00153             sprites.erase(pos);
+<a name="l00154"></a>00154         }
+<a name="l00155"></a>00155     }
+<a name="l00156"></a>00156 
+<a name="l00157"></a>00157     Shader *SpriteManager::getShader()<span class="keyword"> const </span>{
+<a name="l00158"></a>00158         <span class="keywordflow">return</span> material-&gt;getShader();
+<a name="l00159"></a>00159     }
+<a name="l00160"></a>00160 
+<a name="l00161"></a>00161     <span class="keywordtype">void</span> SpriteManager::setShader(Shader *shader) {
+<a name="l00162"></a>00162         material-&gt;setShader(shader);
+<a name="l00163"></a>00163     }
+<a name="l00164"></a>00164 
+<a name="l00165"></a>00165     <span class="keywordtype">int</span> SpriteManager::getRenderOrder() {
+<a name="l00166"></a>00166         <span class="keywordflow">if</span> (material == <span class="keyword">nullptr</span>){
+<a name="l00167"></a>00167             <span class="keywordflow">return</span> 0;
+<a name="l00168"></a>00168         }
+<a name="l00169"></a>00169         <span class="keywordflow">return</span> material-&gt;getRenderOrder();
+<a name="l00170"></a>00170     }
+<a name="l00171"></a>00171 }
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -86,7 +245,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 5 2014 12:01:02 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

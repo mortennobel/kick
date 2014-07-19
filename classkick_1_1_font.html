@@ -66,6 +66,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#friends">Friends</a>  </div>
   <div class="headertitle">
 <div class="title">kick::Font Class Reference</div>  </div>
@@ -87,8 +88,8 @@ Inheritance diagram for kick::Font:</div>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5a2d49256827b18b7b10daa35419a4e8"></a><!-- doxytag: member="kick::Font::Font" ref="a5a2d49256827b18b7b10daa35419a4e8" args="(Project *project)" -->
 &#160;</td><td class="memItemRight" valign="bottom"><b>Font</b> (<a class="el" href="classkick_1_1_project.html">Project</a> *project)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae67568a861a4ec3c0104c8579246e2a4"></a><!-- doxytag: member="kick::Font::loadFntFile" ref="ae67568a861a4ec3c0104c8579246e2a4" args="(std::string filename, std::string texturename)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>loadFntFile</b> (std::string filename, std::string texturename)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ae8c26c3ec79fd335886e86ef6e2823"></a><!-- doxytag: member="kick::Font::loadFntFile" ref="a9ae8c26c3ec79fd335886e86ef6e2823" args="(std::string filename=&quot;assets/font/font&#45;default.fnt&quot;, std::string texturename=&quot;assets/font/font&#45;default.png&quot;)" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>loadFntFile</b> (std::string filename=&quot;assets/font/font-default.fnt&quot;, std::string texturename=&quot;assets/font/font-default.png&quot;)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab3724f4bea28d00c68d320adc0c78fd5"></a><!-- doxytag: member="kick::Font::width" ref="ab3724f4bea28d00c68d320adc0c78fd5" args="(std::string text)" -->
 int&#160;</td><td class="memItemRight" valign="bottom"><b>width</b> (std::string text)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a76cfef084d9129197961420f96cc5a95"></a><!-- doxytag: member="kick::Font::height" ref="a76cfef084d9129197961420f96cc5a95" args="()" -->
@@ -109,6 +110,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>getScaleH</b> () const
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setShader</b> (<a class="el" href="classkick_1_1_shader.html">Shader</a> *shader)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acdd818e5ce1308d06d4ae27c65121cd3"></a><!-- doxytag: member="kick::Font::getBase" ref="acdd818e5ce1308d06d4ae27c65121cd3" args="() const " -->
 int&#160;</td><td class="memItemRight" valign="bottom"><b>getBase</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a238e57fdd2c01de3d9216c74f35f9211"></a><!-- doxytag: member="kick::Font::IsInitialized" ref="a238e57fdd2c01de3d9216c74f35f9211" args="() const " -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsInitialized</b> () const </td></tr>
+<tr><td colspan="2"><h2><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7cd613a0f54e71dec874a7103b768e64"></a><!-- doxytag: member="kick::Font::fontListener" ref="a7cd613a0f54e71dec874a7103b768e64" args="" -->
+<a class="el" href="classkick_1_1_event.html">Event</a>&lt; <a class="el" href="classkick_1_1_font.html">Font</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>fontListener</b></td></tr>
 <tr><td colspan="2"><h2><a name="friends"></a>
 Friends</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aee0ad1dafe471596e6d25530d9fbaf0c"></a><!-- doxytag: member="kick::Font::Text" ref="aee0ad1dafe471596e6d25530d9fbaf0c" args="" -->
@@ -136,7 +143,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Text</b></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 5 2014 12:01:02 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:44 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -116,8 +116,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00056"></a>00056         vector&lt;vec2&gt; uvs{vertexCount};
 <a name="l00057"></a>00057         vector&lt;vec3&gt; normals{vertexCount};
 <a name="l00058"></a>00058         vector&lt;vec4&gt; colors{vertexCount};
-<a name="l00059"></a>00059         vector&lt;GLuint&gt; indices(vertexCount);
-<a name="l00060"></a>00060         <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt;= slices; i++) {
+<a name="l00059"></a>00059         vector&lt;GLushort&gt; indices(vertexCount);
+<a name="l00060"></a>00060         <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> i = 0; i &lt;= slices; i++) {
 <a name="l00061"></a>00061             <span class="keyword">auto</span> fraction = 2 * M_PI * i / slices;
 <a name="l00062"></a>00062             vertices[i] = vec3{sin(fraction),
 <a name="l00063"></a>00063                                 -cos(fraction),
@@ -174,11 +174,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00114"></a>00114         vector&lt;vec2&gt; uvs{vertexCount};
 <a name="l00115"></a>00115         vector&lt;vec3&gt; normals{vertexCount};
 <a name="l00116"></a>00116         vector&lt;vec4&gt; colors{vertexCount};
-<a name="l00117"></a>00117         vector&lt;GLuint&gt; indices;
+<a name="l00117"></a>00117         vector&lt;GLushort&gt; indices;
 <a name="l00118"></a>00118 
 <a name="l00119"></a>00119         <span class="keywordtype">int</span> index = 0;
 <a name="l00120"></a>00120         <span class="comment">// create vertices</span>
-<a name="l00121"></a>00121         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt;= stacks; j++) {
+<a name="l00121"></a>00121         <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> j = 0; j &lt;= stacks; j++) {
 <a name="l00122"></a>00122             <span class="keywordtype">float</span> latitude1 = (M_PI / stacks) * j - (M_PI / 2);
 <a name="l00123"></a>00123             <span class="keywordtype">float</span> sinLat1 = sin(latitude1);
 <a name="l00124"></a>00124             <span class="keywordtype">float</span> cosLat1 = cos(latitude1);
@@ -367,7 +367,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 5 2014 12:01:01 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

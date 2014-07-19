@@ -68,22 +68,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00008"></a>00008 
 <a name="l00009"></a>00009 <span class="preprocessor">#pragma once</span>
 <a name="l00010"></a>00010 <span class="preprocessor"></span>
-<a name="l00011"></a>00011 <span class="preprocessor">#define GLM_FORCE_RADIANS</span>
-<a name="l00012"></a>00012 <span class="preprocessor"></span><span class="preprocessor">#include &quot;glm/glm.hpp&quot;</span>
-<a name="l00013"></a>00013 
-<a name="l00014"></a>00014 <span class="keyword">namespace </span>kick {
-<a name="l00015"></a><a class="code" href="structkick_1_1_ray.html">00015</a>     <span class="keyword">struct </span><a class="code" href="structkick_1_1_ray.html">Ray</a> {
-<a name="l00016"></a>00016         <a class="code" href="structkick_1_1_ray.html">Ray</a>();
-<a name="l00017"></a>00017         <a class="code" href="structkick_1_1_ray.html">Ray</a>(glm::vec3 origin, glm::vec3 direction);
-<a name="l00018"></a>00018         
-<a name="l00019"></a>00019         <span class="keywordtype">bool</span> ClosestPoints(<a class="code" href="structkick_1_1_ray.html">Ray</a> otherRay, glm::vec3&amp; outPoint1, glm::vec3&amp; outPoint2);
-<a name="l00020"></a>00020         
-<a name="l00021"></a>00021         <span class="keyword">static</span> <span class="keywordtype">bool</span> ClosestPoints(glm::vec3 rayOrigin, glm::vec3 rayDirection, glm::vec3 otherRayOrigin, glm::vec3 otherRayDirection, glm::vec3&amp; outPoint1, glm::vec3&amp; outPoint2);
-<a name="l00022"></a>00022         
-<a name="l00023"></a>00023         glm::vec3 origin;
-<a name="l00024"></a>00024         glm::vec3 direction;
-<a name="l00025"></a>00025     };
-<a name="l00026"></a>00026 }
+<a name="l00011"></a>00011 <span class="preprocessor">#include &quot;glm/glm.hpp&quot;</span>
+<a name="l00012"></a>00012 
+<a name="l00013"></a>00013 <span class="keyword">namespace </span>kick {
+<a name="l00014"></a><a class="code" href="structkick_1_1_ray.html">00014</a>     <span class="keyword">struct </span><a class="code" href="structkick_1_1_ray.html">Ray</a> {
+<a name="l00015"></a>00015         <a class="code" href="structkick_1_1_ray.html">Ray</a>();
+<a name="l00016"></a>00016         <a class="code" href="structkick_1_1_ray.html">Ray</a>(glm::vec3 origin, glm::vec3 direction);
+<a name="l00017"></a>00017         
+<a name="l00018"></a>00018         <span class="keywordtype">bool</span> ClosestPoints(<a class="code" href="structkick_1_1_ray.html">Ray</a> otherRay, glm::vec3&amp; outPoint1, glm::vec3&amp; outPoint2);
+<a name="l00019"></a>00019         
+<a name="l00020"></a>00020         <span class="keyword">static</span> <span class="keywordtype">bool</span> ClosestPoints(glm::vec3 rayOrigin, glm::vec3 rayDirection, glm::vec3 otherRayOrigin, glm::vec3 otherRayDirection, glm::vec3&amp; outPoint1, glm::vec3&amp; outPoint2);
+<a name="l00021"></a>00021         
+<a name="l00022"></a>00022         glm::vec3 origin;
+<a name="l00023"></a>00023         glm::vec3 direction;
+<a name="l00024"></a>00024     };
+<a name="l00025"></a>00025 }
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -100,7 +99,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 5 2014 12:01:01 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

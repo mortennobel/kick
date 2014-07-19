@@ -69,8 +69,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00009"></a>00009 <span class="preprocessor">#pragma once</span>
 <a name="l00010"></a>00010 <span class="preprocessor"></span><span class="preprocessor">#include &quot;component.h&quot;</span>
 <a name="l00011"></a>00011 <span class="preprocessor">#include &lt;vector&gt;</span>
-<a name="l00012"></a>00012 <span class="preprocessor">#define GLM_FORCE_RADIANS</span>
-<a name="l00013"></a>00013 <span class="preprocessor"></span><span class="preprocessor">#include &lt;glm/glm.hpp&gt;</span>
+<a name="l00012"></a>00012 
+<a name="l00013"></a>00013 <span class="preprocessor">#include &lt;glm/glm.hpp&gt;</span>
 <a name="l00014"></a>00014 <span class="preprocessor">#include &quot;kick/core/event_listener.h&quot;</span>
 <a name="l00015"></a>00015 <span class="preprocessor">#include &quot;component_renderable.h&quot;</span>
 <a name="l00016"></a>00016 <span class="preprocessor">#include &lt;utility&gt;</span>
@@ -81,55 +81,59 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00021"></a>00021     <span class="keyword">class </span>Material;
 <a name="l00022"></a>00022     <span class="keyword">class </span>TextureRenderTarget;
 <a name="l00023"></a>00023 
-<a name="l00024"></a><a class="code" href="classkick_1_1_camera.html">00024</a>     <span class="keyword">class </span><a class="code" href="classkick_1_1_camera.html">Camera</a> : <span class="keyword">public</span> <a class="code" href="classkick_1_1_component_renderable.html">ComponentRenderable</a> {
+<a name="l00024"></a><a class="code" href="classkick_1_1_camera.html">00024</a>     <span class="keyword">class </span><a class="code" href="classkick_1_1_camera.html">Camera</a> : <span class="keyword">public</span> <a class="code" href="classkick_1_1_component.html">Component</a> {
 <a name="l00025"></a>00025     <span class="keyword">public</span>:
 <a name="l00026"></a>00026         <a class="code" href="classkick_1_1_camera.html">Camera</a>(<a class="code" href="classkick_1_1_game_object.html">GameObject</a> *gameObject);
 <a name="l00027"></a>00027         ~<a class="code" href="classkick_1_1_camera.html">Camera</a>();
 <a name="l00028"></a>00028         <span class="keyword">virtual</span> <span class="keywordtype">void</span> activated();
 <a name="l00029"></a>00029         <span class="keyword">virtual</span> <span class="keywordtype">void</span> deactivated();
 <a name="l00030"></a>00030         <span class="keyword">virtual</span> <span class="keywordtype">void</span> render(<a class="code" href="structkick_1_1_engine_uniforms.html">EngineUniforms</a> *engineUniforms);
-<a name="l00031"></a>00031         <span class="comment">// reset matrix if used parameters (if any)</span>
-<a name="l00032"></a>00032         <span class="keyword">virtual</span> <span class="keywordtype">void</span> resetProjectionMatrix();
-<a name="l00033"></a>00033         glm::vec4 getClearColor();
-<a name="l00034"></a>00034         <span class="keywordtype">void</span> setClearColor(glm::vec4 clearColor);
-<a name="l00035"></a>00035         <span class="keywordtype">void</span> setClearColor(<span class="keywordtype">bool</span> clear);
-<a name="l00036"></a>00036         <span class="keywordtype">bool</span> isClearColor();
-<a name="l00037"></a>00037         <span class="keywordtype">void</span> setClearDepth(<span class="keywordtype">bool</span> clear);
-<a name="l00038"></a>00038         <span class="keywordtype">bool</span> isClearDepth();
-<a name="l00039"></a>00039         <span class="keywordtype">void</span> setClearStencil(<span class="keywordtype">bool</span> clear);
-<a name="l00040"></a>00040         <span class="keywordtype">bool</span> isClearStencil();
-<a name="l00041"></a>00041         <span class="keywordtype">void</span> setupCamera(<a class="code" href="structkick_1_1_engine_uniforms.html">EngineUniforms</a> *engineUniforms);
-<a name="l00042"></a>00042         glm::mat4 getProjectionMatrix();
-<a name="l00043"></a>00043         <span class="comment">// override projection matrix</span>
-<a name="l00044"></a>00044         <span class="keywordtype">void</span> setProjectionMatrix(glm::mat4 projectionMatrix);
-<a name="l00045"></a>00045         <span class="keywordtype">bool</span> isShadow() <span class="keyword">const</span>;
-<a name="l00046"></a>00046         <span class="keywordtype">void</span> setShadow(<span class="keywordtype">bool</span> renderShadow);
-<a name="l00047"></a>00047         <span class="keywordtype">int</span> getCullingMask() <span class="keyword">const</span>;
-<a name="l00048"></a>00048         <span class="keywordtype">void</span> setCullingMask(<span class="keywordtype">int</span> cullingMask);
-<a name="l00049"></a>00049         <a class="code" href="classkick_1_1_texture_render_target.html">TextureRenderTarget</a> * getTarget() <span class="keyword">const</span>;
-<a name="l00050"></a>00050         <span class="keywordtype">void</span> setTarget(<a class="code" href="classkick_1_1_texture_render_target.html">TextureRenderTarget</a> *target);
-<a name="l00051"></a>00051     <span class="keyword">protected</span>:
-<a name="l00052"></a>00052         glm::mat4 projectionMatrix;
-<a name="l00053"></a>00053         glm::vec2 normalizedViewportOffset = glm::vec2(0,0);
-<a name="l00054"></a>00054         glm::vec2 normalizedViewportDim = glm::vec2(1,1);
-<a name="l00055"></a>00055     <span class="keyword">private</span>:
-<a name="l00056"></a>00056         <span class="keywordtype">void</span> initShadowMap();
-<a name="l00057"></a>00057         <span class="keywordtype">void</span> destroyShadowMap();
-<a name="l00058"></a>00058         <span class="keywordtype">void</span> renderShadowMap(<a class="code" href="classkick_1_1_light.html">Light</a>* directionalLight);
-<a name="l00059"></a>00059         <span class="keywordtype">void</span> rebuildComponentList();
-<a name="l00060"></a>00060         <a class="code" href="classkick_1_1_component_renderable.html">ComponentRenderable</a> *includeComponent(<a class="code" href="classkick_1_1_component.html">Component</a>* comp);
-<a name="l00061"></a>00061         <a class="code" href="classkick_1_1_shader.html">Shader</a>* shadowMapShader;
-<a name="l00062"></a>00062         <a class="code" href="classkick_1_1_material.html">Material</a>* shadowMapMaterial;
-<a name="l00063"></a>00063         <a class="code" href="classkick_1_1_event_listener.html">EventListener&lt;std::pair&lt;Component*, ComponentUpdateStatus&gt;</a>&gt; componentListener;
-<a name="l00064"></a>00064         <span class="keywordtype">void</span> setupViewport(glm::vec2 &amp;offset, glm::vec2 &amp;dim);
-<a name="l00065"></a>00065         std::vector&lt;ComponentRenderable*&gt; renderableComponents;
-<a name="l00066"></a>00066         glm::vec4 clearColor = glm::vec4(0,0,0,1);
-<a name="l00067"></a>00067         <span class="keywordtype">int</span> cullingMask = 0xffffffff;
-<a name="l00068"></a>00068         <span class="keywordtype">int</span> clearFlag; <span class="comment">// default clear color clear depth</span>
-<a name="l00069"></a>00069         <span class="keywordtype">bool</span> shadow = <span class="keyword">false</span>;
-<a name="l00070"></a>00070         <a class="code" href="classkick_1_1_texture_render_target.html">TextureRenderTarget</a>* target = <span class="keyword">nullptr</span>;
-<a name="l00071"></a>00071     };
-<a name="l00072"></a>00072 }
+<a name="l00031"></a>00031 
+<a name="l00032"></a>00032 
+<a name="l00033"></a>00033 
+<a name="l00034"></a>00034 
+<a name="l00035"></a>00035 <span class="comment">// reset matrix if used parameters (if any)</span>
+<a name="l00036"></a>00036         <span class="keyword">virtual</span> <span class="keywordtype">void</span> resetProjectionMatrix();
+<a name="l00037"></a>00037         glm::vec4 getClearColor();
+<a name="l00038"></a>00038         <span class="keywordtype">void</span> setClearColor(glm::vec4 clearColor);
+<a name="l00039"></a>00039         <span class="keywordtype">void</span> setClearColor(<span class="keywordtype">bool</span> clear);
+<a name="l00040"></a>00040         <span class="keywordtype">bool</span> isClearColor();
+<a name="l00041"></a>00041         <span class="keywordtype">void</span> setClearDepth(<span class="keywordtype">bool</span> clear);
+<a name="l00042"></a>00042         <span class="keywordtype">bool</span> isClearDepth();
+<a name="l00043"></a>00043         <span class="keywordtype">void</span> setClearStencil(<span class="keywordtype">bool</span> clear);
+<a name="l00044"></a>00044         <span class="keywordtype">bool</span> isClearStencil();
+<a name="l00045"></a>00045         <span class="keywordtype">void</span> setupCamera(<a class="code" href="structkick_1_1_engine_uniforms.html">EngineUniforms</a> *engineUniforms);
+<a name="l00046"></a>00046         glm::mat4 getProjectionMatrix();
+<a name="l00047"></a>00047         <span class="comment">// override projection matrix</span>
+<a name="l00048"></a>00048         <span class="keywordtype">void</span> setProjectionMatrix(glm::mat4 projectionMatrix);
+<a name="l00049"></a>00049         <span class="keywordtype">bool</span> isShadow() <span class="keyword">const</span>;
+<a name="l00050"></a>00050         <span class="keywordtype">void</span> setShadow(<span class="keywordtype">bool</span> renderShadow);
+<a name="l00051"></a>00051         <span class="keywordtype">int</span> getCullingMask() <span class="keyword">const</span>;
+<a name="l00052"></a>00052         <span class="keywordtype">void</span> setCullingMask(<span class="keywordtype">int</span> cullingMask);
+<a name="l00053"></a>00053         <a class="code" href="classkick_1_1_texture_render_target.html">TextureRenderTarget</a> * getTarget() <span class="keyword">const</span>;
+<a name="l00054"></a>00054         <span class="keywordtype">void</span> setTarget(<a class="code" href="classkick_1_1_texture_render_target.html">TextureRenderTarget</a> *target);
+<a name="l00055"></a>00055     <span class="keyword">protected</span>:
+<a name="l00056"></a>00056         glm::mat4 projectionMatrix;
+<a name="l00057"></a>00057         glm::vec2 normalizedViewportOffset = glm::vec2(0,0);
+<a name="l00058"></a>00058         glm::vec2 normalizedViewportDim = glm::vec2(1,1);
+<a name="l00059"></a>00059     <span class="keyword">private</span>:
+<a name="l00060"></a>00060         <span class="keywordtype">void</span> initShadowMap();
+<a name="l00061"></a>00061         <span class="keywordtype">void</span> destroyShadowMap();
+<a name="l00062"></a>00062         <span class="keywordtype">void</span> renderShadowMap(<a class="code" href="classkick_1_1_light.html">Light</a>* directionalLight);
+<a name="l00063"></a>00063         <span class="keywordtype">void</span> rebuildComponentList();
+<a name="l00064"></a>00064         <a class="code" href="classkick_1_1_component_renderable.html">ComponentRenderable</a> *includeComponent(<a class="code" href="classkick_1_1_component.html">Component</a>* comp);
+<a name="l00065"></a>00065         <a class="code" href="classkick_1_1_shader.html">Shader</a>* shadowMapShader;
+<a name="l00066"></a>00066         <a class="code" href="classkick_1_1_material.html">Material</a>* shadowMapMaterial;
+<a name="l00067"></a>00067         <a class="code" href="classkick_1_1_event_listener.html">EventListener&lt;std::pair&lt;Component*, ComponentUpdateStatus&gt;</a>&gt; componentListener;
+<a name="l00068"></a>00068         <span class="keywordtype">void</span> setupViewport(glm::vec2 &amp;offset, glm::vec2 &amp;dim);
+<a name="l00069"></a>00069         std::vector&lt;ComponentRenderable*&gt; renderableComponents;
+<a name="l00070"></a>00070         glm::vec4 clearColor = glm::vec4(0,0,0,1);
+<a name="l00071"></a>00071         <span class="keywordtype">int</span> cullingMask = 0xffffffff;
+<a name="l00072"></a>00072         <span class="keywordtype">int</span> clearFlag; <span class="comment">// default clear color clear depth</span>
+<a name="l00073"></a>00073         <span class="keywordtype">bool</span> shadow = <span class="keyword">false</span>;
+<a name="l00074"></a>00074         <a class="code" href="classkick_1_1_texture_render_target.html">TextureRenderTarget</a>* target = <span class="keyword">nullptr</span>;
+<a name="l00075"></a>00075     };
+<a name="l00076"></a>00076 }
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -146,7 +150,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 5 2014 12:01:02 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

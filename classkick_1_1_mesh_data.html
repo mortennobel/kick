@@ -122,10 +122,10 @@ const std::vector&lt; glm::vec3 &gt; &amp;&#160;</td><td class="memItemRight" va
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setColor</b> (const std::vector&lt; glm::vec4 &gt; &amp;c)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0fb65aa8c27851d2233f5dd71fbc1e59"></a><!-- doxytag: member="kick::MeshData::getColor" ref="a0fb65aa8c27851d2233f5dd71fbc1e59" args="()" -->
 const std::vector&lt; glm::vec4 &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getColor</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af98b830bb3a877160407520edaff3130"></a><!-- doxytag: member="kick::MeshData::setSubmesh" ref="af98b830bb3a877160407520edaff3130" args="(unsigned int index, const std::vector&lt; GLuint &gt; &amp;indices, MeshType meshType)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setSubmesh</b> (unsigned int index, const std::vector&lt; GLuint &gt; &amp;indices, MeshType meshType)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7a39b4613e2b9764d1893bd071345ba8"></a><!-- doxytag: member="kick::MeshData::getSubmeshIndices" ref="a7a39b4613e2b9764d1893bd071345ba8" args="(unsigned int index) const " -->
-const std::vector&lt; GLuint &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getSubmeshIndices</b> (unsigned int index) const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a22f54723fef33e709150ce739754879b"></a><!-- doxytag: member="kick::MeshData::setSubmesh" ref="a22f54723fef33e709150ce739754879b" args="(unsigned int index, const std::vector&lt; GLushort &gt; &amp;indices, MeshType meshType)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setSubmesh</b> (unsigned int index, const std::vector&lt; GLushort &gt; &amp;indices, MeshType meshType)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1166dcce32fac6e39f9d3c3530c5624c"></a><!-- doxytag: member="kick::MeshData::getSubmeshIndices" ref="a1166dcce32fac6e39f9d3c3530c5624c" args="(unsigned int index) const " -->
+const std::vector&lt; GLushort &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getSubmeshIndices</b> (unsigned int index) const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a074f31856e0c9513f3791d1a00b60700"></a><!-- doxytag: member="kick::MeshData::getSubmeshType" ref="a074f31856e0c9513f3791d1a00b60700" args="(unsigned int index) const " -->
 const MeshType&#160;</td><td class="memItemRight" valign="bottom"><b>getSubmeshType</b> (unsigned int index) const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a83108894a7e5dbba261692f541a74018"></a><!-- doxytag: member="kick::MeshData::getSubmeshesCount" ref="a83108894a7e5dbba261692f541a74018" args="()" -->
@@ -136,12 +136,16 @@ GLsizei&#160;</td><td class="memItemRight" valign="bottom"><b>getSubmeshSize</b>
 std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getInterleavedData</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7444b189f2651a4343d94b36a8a80849"></a><!-- doxytag: member="kick::MeshData::getInterleavedFormat" ref="a7444b189f2651a4343d94b36a8a80849" args="()" -->
 std::vector&lt; <a class="el" href="structkick_1_1_interleaved_record.html">InterleavedRecord</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getInterleavedFormat</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a62ddb4e3b27970f8ae85ba1b4945ed2f"></a><!-- doxytag: member="kick::MeshData::getIndices" ref="a62ddb4e3b27970f8ae85ba1b4945ed2f" args="()" -->
-std::vector&lt; GLuint &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getIndices</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad1982d6901497eeb19855330ae436e68"></a><!-- doxytag: member="kick::MeshData::getIndices" ref="ad1982d6901497eeb19855330ae436e68" args="()" -->
+std::vector&lt; GLushort &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getIndices</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a334a9bfb85f9afbab9b19394f6f0a4ae"></a><!-- doxytag: member="kick::MeshData::getIndicesFormat" ref="a334a9bfb85f9afbab9b19394f6f0a4ae" args="()" -->
 std::vector&lt; <a class="el" href="structkick_1_1_sub_mesh_data.html">SubMeshData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getIndicesFormat</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a98d585678df3ae1bc3e0503a1425c683"></a><!-- doxytag: member="kick::MeshData::recomputeNormals" ref="a98d585678df3ae1bc3e0503a1425c683" args="()" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>recomputeNormals</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9d98fd080226346f98defee6c4c972dc"></a><!-- doxytag: member="kick::MeshData::getMeshUsage" ref="a9d98fd080226346f98defee6c4c972dc" args="() const " -->
+MeshUsage&#160;</td><td class="memItemRight" valign="bottom"><b>getMeshUsage</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0d21356d7c90bd2872e28ea086f45809"></a><!-- doxytag: member="kick::MeshData::setMeshUsage" ref="a0d21356d7c90bd2872e28ea086f45809" args="(MeshUsage meshUsage)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setMeshUsage</b> (MeshUsage meshUsage)</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classkick_1_1_mesh_data.html">MeshData</a> represent data on the CPU side. </p>
@@ -166,7 +170,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>recomputeNormals</b> 
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 5 2014 12:01:02 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
