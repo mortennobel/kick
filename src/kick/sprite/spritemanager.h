@@ -25,6 +25,9 @@ public:
 
     Shader * getShader() const;
     void setShader(Shader *shader);
+
+
+    virtual int getRenderOrder();
 private:
     void updateVertexBuffer();
     friend class Sprite;

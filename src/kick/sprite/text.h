@@ -27,6 +27,9 @@ namespace kick {
         Bounds2D getBounds();
         Material * getMaterial() const;
         void setMaterial(Material *material);
+
+        virtual int getRenderOrder();
+
     private:
         EventListener<Font*> eventListener;
         Bounds2D bounds;

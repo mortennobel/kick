@@ -68,11 +68,11 @@ namespace kick {
             for (auto &pair : currentUniformData) {
                 updateShaderLocation(pair.first, pair.second);
             }
+            renderOrder = shader ? shader->getRenderOrder() : 0;
         }
         if (se.eventType == ShaderEventType::all || se.eventType == ShaderEventType::defaultUniform) {
             setDefaultUniforms();
         }
-
     }
     
     void Material::updateShaderLocation(std::string name, MaterialData& value){
@@ -220,5 +220,9 @@ namespace kick {
                 setUniformData(name, move(mat));
             }
         }
+    }
+
+    int Material::getRenderOrder() {
+        return renderOrder;
     }
 }

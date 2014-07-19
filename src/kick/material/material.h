@@ -69,6 +69,7 @@ namespace kick {
         template <class E>
         void setUniform(std::string name, E value);
         int bind();
+        int getRenderOrder();
     private:
         void shaderChanged(ShaderEvent se);
         void setDefaultUniforms();
@@ -78,6 +79,7 @@ namespace kick {
         std::map<std::string, MaterialData> currentUniformData;
         Shader* shader = nullptr;
         EventListener<ShaderEvent> shaderChangedListener;
+        int renderOrder = 1000;
     };
     
     std::string to_string(MaterialData & data);

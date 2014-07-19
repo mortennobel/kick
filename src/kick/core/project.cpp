@@ -274,6 +274,13 @@ namespace kick {
                 }
                 return (float)document[name.c_str()].GetDouble();
             };
+
+            auto getInt = [&](string name, int defaultValue){
+                if (!document.HasMember(name.c_str())){
+                    return defaultValue;
+                }
+                return document[name.c_str()].GetInt();
+            };
             
 #define createGetX(X) auto get##X = [&](string name, X defaultValue){ \
                 if (!document.HasMember(name.c_str())){ \
@@ -303,6 +310,7 @@ namespace kick {
             float polygonOffsetFactor   = getFloat("polygonOffsetFactor", 1);
             float polygonOffsetUnit     = getFloat("polygonOffsetUnit", 0);
             ZTestType zTest             = getZTestType("zTest", ZTestType::Less);
+            int renderOrder             = getInt("renderOrder", 1000);
             string vertexShader;
             if (!loadTextResource(vertexShaderURI, vertexShader)){
                 return nullptr;
@@ -338,6 +346,7 @@ namespace kick {
             shader->setPolygonOffsetEnabled(polygonOffsetEnabled);
             shader->setPolygonOffsetFactorAndUnit(vec2{polygonOffsetFactor, polygonOffsetUnit});
             shader->setZTest(zTest);
+            shader->setRenderOrder(renderOrder);
             shader->apply();
 
             if (document.HasMember("defaultUniform") && document["defaultUniform"].IsObject()){

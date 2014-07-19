@@ -79,6 +79,9 @@ namespace kick {
         void setDefaultUniform(std::string name, E value);
         bool tryGetDefaultUniform(std::string name, MaterialData& value);
         static std::string getPrecompiledSource(std::string source, ShaderType type);
+
+        int getRenderOrder() const;
+        void setRenderOrder(int renderOrder);
     private:
         static void translateToGLSLES(std::string& s, ShaderType type);
         void updateShaderLocation(std::string name, MaterialData& value);
@@ -104,6 +107,7 @@ namespace kick {
         glm::vec2 polygonOffsetFactorAndUnit {2.5, 10};
         ZTestType zTest {ZTestType::Less};
         std::map<std::string, MaterialData> defaultUniformData;
+        int renderOrder = 1000;
     };
 
 

@@ -26,7 +26,7 @@ using namespace glm;
 namespace kick {
     
     Camera::Camera(GameObject *gameObject)
-    :ComponentRenderable(gameObject), clearFlag(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT),
+    :Component(gameObject), clearFlag(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT),
      projectionMatrix{1}{
 
     }
@@ -136,6 +136,9 @@ namespace kick {
         }
         setupCamera(engineUniforms);
         engineUniforms->sceneLights->recomputeLight(engineUniforms->viewMatrix);
+        sort(renderableComponents.begin(), renderableComponents.end(), [](ComponentRenderable* r1, ComponentRenderable* r2){
+            return r1->getRenderOrder() < r2->getRenderOrder();
+        });
         for (auto c : renderableComponents){
             if (c->getGameObject()->getLayer() & cullingMask) {
                 c->render(engineUniforms);

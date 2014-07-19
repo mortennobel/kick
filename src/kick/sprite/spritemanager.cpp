@@ -161,4 +161,11 @@ namespace kick {
     void SpriteManager::setShader(Shader *shader) {
         material->setShader(shader);
     }
+
+    int SpriteManager::getRenderOrder() {
+        if (material == nullptr){
+            return 0;
+        }
+        return material->getRenderOrder();
+    }
 }

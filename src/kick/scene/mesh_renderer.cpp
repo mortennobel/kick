@@ -63,4 +63,11 @@ namespace kick {
         }
         return materials[0];
     }
+
+    int MeshRenderer::getRenderOrder() {
+        if (materials.size() == 0){
+            return 0;
+        }
+        return materials[0]->getRenderOrder();
+    }
 }

@@ -688,4 +688,15 @@ break;
         }
         return false;
     }
+
+    int Shader::getRenderOrder() const {
+        return renderOrder;
+    }
+
+    void Shader::setRenderOrder(int renderOrder) {
+        if (renderOrder != Shader::renderOrder){
+            Shader::renderOrder = renderOrder;
+            shaderChanged.notifyListeners({this, ShaderEventType::shader });
+        }
+    }
 }

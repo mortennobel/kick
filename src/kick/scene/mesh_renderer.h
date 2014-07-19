@@ -32,6 +32,9 @@ namespace kick {
         Material*getMaterial();
         void setMaterials(const std::vector<Material *> &mats);
         const std::vector<Material*> &getMaterials();
+
+        virtual int getRenderOrder();
+
     private:
         Mesh* mesh;
         Transform* transform;

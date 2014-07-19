@@ -115,8 +115,13 @@ namespace kick {
     }
 
     void Text::setMaterial(Material *material) {
+        assert(material);
         Text::material = material;
         material->setShader(font->getShader());
         material->setUniform("mainTexture", font->getTexture());
+    }
+
+    int Text::getRenderOrder() {
+        return material->getRenderOrder();
     }
 }
