@@ -1,0 +1,61 @@
+{"frames": {
+	"button-hover.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":27,"w":64,"h":25},
+		"spriteSourceSize": {"x":1,"y":1,"w":66,"h":27},
+		"sourceSize": {"w":66,"h":27}
+	},
+	"button-normal.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":0,"w":64,"h":25},
+		"spriteSourceSize": {"x":1,"y":1,"w":66,"h":27},
+		"sourceSize": {"w":66,"h":27}
+	},
+	"button-pressed.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":54,"w":64,"h":25},
+		"spriteSourceSize": {"x":1,"y":1,"w":66,"h":27},
+		"sourceSize": {"w":66,"h":27}
+	},
+	"checkbox-checked.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":43,"y":93,"w":15,"h":16},
+		"spriteSourceSize": {"x":1,"y":1,"w":17,"h":18},
+		"sourceSize": {"w":17,"h":18}
+	},
+	"checkbox-normal.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":60,"y":81,"w":15,"h":16},
+		"spriteSourceSize": {"x":1,"y":1,"w":17,"h":18},
+		"sourceSize": {"w":17,"h":18}
+	},
+	"radiobutton-checked.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":16,"y":111,"w":14,"h":15},
+		"spriteSourceSize": {"x":1,"y":1,"w":16,"h":17},
+		"sourceSize": {"w":16,"h":17}
+	},
+	"radiobutton-normal.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":111,"w":14,"h":15},
+		"spriteSourceSize": {"x":1,"y":1,"w":16,"h":17},
+		"sourceSize": {"w":16,"h":17}
+	},
+	"slider-base.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":81,"w":58,"h":10},
+		"spriteSourceSize": {"x":1,"y":4,"w":60,"h":18},
+		"sourceSize": {"w":60,"h":18}
+	},
+	"slider-knot.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":93,"w":41,"h":16},
+		"spriteSourceSize": {"x":9,"y":1,"w":60,"h":18},
+		"sourceSize": {"w":60,"h":18}
+	}
+},
+"meta": {
+	"app": "ShoeBox",
+	"size": {"w":128,"h":128}
+}
+}

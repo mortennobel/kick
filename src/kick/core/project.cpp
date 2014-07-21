@@ -15,6 +15,7 @@
 #include "rapidjson/document.h"
 
 #include <glm/gtc/type_ptr.hpp>
+#include "kick/texture/texture_atlas.h"
 
 using namespace std;
 
@@ -435,5 +436,11 @@ namespace kick {
 
     void Project::destroyAsset(ProjectAsset* asset) {
         // todo implement
+    }
+
+    std::shared_ptr<TextureAtlas> Project::loadTextureAtlas(std::string filename, std::string texture) {
+        TextureAtlas* textureAtlas = Project::createAsset<TextureAtlas>();
+        textureAtlas->load(filename, texture);
+        return std::shared_ptr<TextureAtlas>{textureAtlas};
     }
 }

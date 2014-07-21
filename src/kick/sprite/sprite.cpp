@@ -13,11 +13,11 @@ using namespace glm;
 
 namespace kick {
 
-    TextureAtlas *Sprite::getTextureAtlas() const {
+    std::shared_ptr<TextureAtlas> Sprite::getTextureAtlas() const {
         return textureAtlas;
     }
 
-    void Sprite::setTextureAtlas(TextureAtlas *textureAtlas) {
+    void Sprite::setTextureAtlas(std::shared_ptr<TextureAtlas> textureAtlas) {
         Sprite::textureAtlas = textureAtlas;
         if (textureAtlas && spriteName.length()>0){
             entry = textureAtlas->get(spriteName);
@@ -32,7 +32,7 @@ namespace kick {
 
     void Sprite::setSpriteName(std::string const &spriteName) {
         Sprite::spriteName = spriteName;
-        if (textureAtlas){
+        if (textureAtlas && spriteName != ""){
             entry = textureAtlas->get(spriteName);
             spriteUpdated.notifyListeners(this);
         }

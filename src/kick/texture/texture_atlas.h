@@ -2,15 +2,17 @@
 // Created by morten on 30/06/14.
 //
 
-
-#include "kick/core/project_asset.h"
-#include "kick/core/project.h"
-#include "glm/glm.hpp"
-
 #pragma once
+#include "kick/core/project_asset.h"
+#include "glm/glm.hpp"
+#include <map>
 
 namespace kick {
     class Texture2D;
+    class TextureAtlas;
+    class Project;
+    class Shader;
+
 
     struct TextureAtlasEntry {
         bool rotated = false;

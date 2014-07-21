@@ -22,6 +22,7 @@
 #include "kick/scene/scene_lights.h"
 #include "kick/scene/camera_perspective.h"
 #include "kick/scene/camera_orthographic.h"
+#include "kick/sprite/text.h"
 
 namespace kick {
     class CameraPerspective;
@@ -32,6 +33,7 @@ namespace kick {
     class Text;
     class Sprite;
     class TextureAtlas;
+    class Button;
 
     class Scene {
     public:
@@ -75,28 +77,32 @@ namespace kick {
             return nullptr;
         }
 
-        // helper function, which creates a gameobject and attaches a perspective camera to it
+        // Creates a gameobject and attaches a perspective camera to it
         CameraPerspective* createPerspectiveCamera();
-        // helper function, which creates a gameobject and attaches an orthographic camera to it
+        // Creates a gameobject and attaches an orthographic camera to it
         CameraOrthographic* createOrthographicCamera();
-        // helper function, which creates a gameobject and attaches a cube with diffuse renderer
+        // Creates a gameobject and attaches a cube with diffuse renderer
         MeshRenderer* createCube();
-        // helper function, which creates a gameobject and attaches a sphere with diffuse renderer
+        // Creates a gameobject and attaches a sphere with diffuse renderer
         MeshRenderer* createSphere();
-        // helper function, which creates a gameobject and attaches a plane with diffuse renderer
+        // Creates a gameobject and attaches a plane with diffuse renderer
         MeshRenderer* createPlane();
-        // helper function, which creates a gameobject and attaches a point light
+        // Creates a gameobject and attaches a point light
         Light* createPointLight();
-        // helper function, which creates a gameobject and attaches a directional light
+        // Creates a gameobject and attaches a directional light
         Light* createDirectionalLight();
-        // helper function, which creates a gameobject and attaches an ambient light
+        // Creates a gameobject and attaches an ambient light
         Light* createAmbientLight(float intensity = 0.3f, glm::vec3 color = glm::vec3(1));
-
+        //
+        Button* createButton();
         // helper function, which creates a gameobject and attaches an sprite object
-        Sprite* createSprite(TextureAtlas* textureAtlas, std::string spriteName, glm::vec2 pos = glm::vec2{0});
+        Sprite* createSprite(std::shared_ptr<TextureAtlas> textureAtlas, std::string spriteName, glm::vec2 pos = glm::vec2{0});
 
         friend class Engine;
         friend class GameObject;
+
+        Text *createText(std::string text);
+
     private:
         Scene(const char* name);
         Scene(const Scene& scene) = delete;

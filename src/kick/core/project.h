@@ -21,10 +21,13 @@
 #include "kick/core/asset_loader.h"
 #include "kick/texture/texture2d.h"
 #include "kick/material/shader.h"
+#include "kick/texture/texture_atlas.h"
+
 
 namespace kick {
     class Engine;
-    
+    class TextureAtlas;
+
     class Project {
     public:
         template <class E,  typename ... Args>
@@ -73,7 +76,7 @@ namespace kick {
         static TextureCube* loadTextureCube(std::string uri);
         static TextureCube* loadTextureCubeFromMemory(const char *data, int size);
 
-
+        static std::shared_ptr<TextureAtlas> loadTextureAtlas(std::string filename, std::string texture);
 
         friend class ProjectAsset;
         friend class Engine;

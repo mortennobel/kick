@@ -18,6 +18,7 @@ namespace kick {
 
     enum class SpriteType {
         Simple,
+        // sliced in 9-patch
         Sliced
     };
 
@@ -30,9 +31,9 @@ namespace kick {
 
         virtual void deactivated() override;
 
-        TextureAtlas * getTextureAtlas() const;
+        std::shared_ptr<TextureAtlas> getTextureAtlas() const;
 
-        void setTextureAtlas(TextureAtlas *textureAtlas);
+        void setTextureAtlas(std::shared_ptr<TextureAtlas> textureAtlas);
 
         std::string const & getSpriteName() const;
 
@@ -48,13 +49,19 @@ namespace kick {
         Bounds2D getTrimmedBounds() const;
         Bounds2D getBounds() const;
 
+        // when sprite is sliced slice x is two relative slice positions (between 0.0 and 1.0)
         glm::vec2 getSliceX() const;
+        // when sprite is sliced slice x is two relative slice positions (between 0.0 and 1.0)
         void setSliceX(glm::vec2 sliceX);
+        // when sprite is sliced slice y is two relative slice positions (between 0.0 and 1.0)
         glm::vec2 getSliceY() const;
+        // when sprite is sliced slice y is two relative slice positions (between 0.0 and 1.0)
         void setSliceY(glm::vec2 sliceY);
+        // anchor (or pivot point). Default is (0.0) which is the lower left corner.
         glm::vec2 getAnchor() const;
         void setAnchor(glm::vec2 anchor);
         glm::vec2 getScale() const;
+        // scale is useful when type is sliced
         void setScale(glm::vec2 scale);
         SpriteType getType() const;
         void setType(SpriteType type);
@@ -63,7 +70,7 @@ namespace kick {
         void setColor(glm::vec4 color);
     private:
         SpriteManager * spriteManager;
-        TextureAtlas * textureAtlas = nullptr;
+        std::shared_ptr<TextureAtlas> textureAtlas = nullptr;
         std::string spriteName;
         TextureAtlasEntry entry;
         int order = 0;

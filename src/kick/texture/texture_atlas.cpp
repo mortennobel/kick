@@ -5,6 +5,8 @@
 
 #include "kick/texture/texture_atlas.h"
 #include <rapidjson/document.h>
+#include "kick/core/project.h"
+#include "kick/material/shader.h"
 
 
 
