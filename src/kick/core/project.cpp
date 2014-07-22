@@ -20,6 +20,12 @@
 using namespace std;
 
 namespace kick {
+
+    std::map<std::string, std::weak_ptr<TextureAtlas>> Project::textureAtlasRef;
+    std::map<std::string, std::weak_ptr<Shader>> Project::shaderRef;
+    std::map<std::string, std::weak_ptr<Texture2D>> Project::texture2DRef;
+    std::map<std::string, std::weak_ptr<TextureCube>> Project::textureCubeRef;
+
     Project::Project()
     :assetLoader{new AssetLoader()}
     {
@@ -96,12 +102,12 @@ namespace kick {
         return true;
     }
     
-    Texture2D* Project::loadTexture2D(std::string uri){
+    shared_ptr<Texture2D> Project::loadTexture2D(std::string uri){
         SDL_Surface * surface = IMG_Load(uri.c_str());
         if (surface){
-            return surfaceToTexture2D(surface);
+            return shared_ptr<Texture2D>{surfaceToTexture2D(surface)};
         } else {
-            return nullptr;
+            return shared_ptr<Texture2D>{};
         }
     }
     
@@ -231,16 +237,32 @@ namespace kick {
         return texturePtr;
     }
 
-    TextureCube* Project::loadTextureCube(std::string uri){
+    shared_ptr<TextureCube> Project::loadTextureCube(std::string uri){
+        auto iter = textureCubeRef.find(uri);
+        if (iter != textureCubeRef.end()){
+            if (!iter->second.expired()){
+                return iter->second.lock();
+            }
+        }
+
         SDL_Surface * surface = IMG_Load(uri.c_str());
         if (surface){
-            return surfaceToTextureCube(surface);
+            auto res = shared_ptr<TextureCube>{surfaceToTextureCube(surface)};
+            textureCubeRef[uri] = std::weak_ptr<TextureCube>{res};
+            return res;
         } else {
-            return nullptr;
+            return shared_ptr<TextureCube>{nullptr};
         }
     }
 
-    Shader* Project::loadShader(std::string uri){
+    shared_ptr<Shader> Project::loadShader(std::string uri){
+        auto iter = shaderRef.find(uri);
+        if (iter != shaderRef.end()){
+            if (!iter->second.expired()){
+                return iter->second.lock();
+            }
+        }
+
         using namespace rapidjson;
         using namespace glm;
         string shaderSource;
@@ -402,14 +424,14 @@ namespace kick {
                             case GL_SAMPLER_2D:
                             {
                                 string texName = memberIter->value.GetString();
-                                Texture2D* value = loadTexture2D(texName);
+                                auto value = loadTexture2D(texName);
                                 shader->setDefaultUniform(name, value);
                             }
                                 break;
                             case GL_SAMPLER_CUBE:
                             {
                                 string texName = memberIter->value.GetString();
-                                TextureCube* value = loadTextureCube(texName);
+                                auto value = loadTextureCube(texName);
                                 shader->setDefaultUniform(name, value);
                             }
                                 break;
@@ -418,7 +440,9 @@ namespace kick {
                 }
             }
         }
-        return shader;
+        auto ref = std::shared_ptr<Shader>{shader};
+        shaderRef[uri] = weak_ptr<Shader>{ref};
+        return ref;
     }
 
     int Project::mapAssetURIToId(std::string assetURI){
@@ -439,8 +463,17 @@ namespace kick {
     }
 
     std::shared_ptr<TextureAtlas> Project::loadTextureAtlas(std::string filename, std::string texture) {
+        string key = filename +"\n" +texture;
+        auto iter = textureAtlasRef.find(key);
+        if (iter != textureAtlasRef.end()){
+            if (!iter->second.expired()){
+                return iter->second.lock();
+            }
+        }
         TextureAtlas* textureAtlas = Project::createAsset<TextureAtlas>();
         textureAtlas->load(filename, texture);
-        return std::shared_ptr<TextureAtlas>{textureAtlas};
+        auto ref = std::shared_ptr<TextureAtlas>{textureAtlas};
+        textureAtlasRef[key] = weak_ptr<TextureAtlas>{ref};
+        return ref;
     }
 }

@@ -27,7 +27,7 @@ namespace kick {
         for (int i=0;i<materials.size();i++){
             auto material = materials[i];
             auto shader = material->getShader();
-            mesh->bind(shader);
+            mesh->bind(shader.get());
             shader->bind_uniforms(material, engineUniforms, transform);
             mesh->render(i);
         }

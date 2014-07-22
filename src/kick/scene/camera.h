@@ -62,7 +62,7 @@ namespace kick {
         void renderShadowMap(Light* directionalLight);
         void rebuildComponentList();
         ComponentRenderable *includeComponent(Component* comp);
-        Shader* shadowMapShader;
+        std::shared_ptr<Shader> shadowMapShader;
         Material* shadowMapMaterial;
         EventListener<std::pair<Component*, ComponentUpdateStatus>> componentListener;
         void setupViewport(glm::vec2 &offset, glm::vec2 &dim);

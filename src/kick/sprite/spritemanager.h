@@ -23,8 +23,8 @@ public:
 
     static SpriteManager *getInstance(Scene * scene);
 
-    Shader * getShader() const;
-    void setShader(Shader *shader);
+    std::shared_ptr<Shader> getShader() const;
+    void setShader(std::shared_ptr<Shader> shader);
 
 
     virtual int getRenderOrder();

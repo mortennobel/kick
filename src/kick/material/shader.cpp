@@ -699,4 +699,24 @@ break;
             shaderChanged.notifyListeners({this, ShaderEventType::shader });
         }
     }
+
+    void Shader::setDefaultUniform(std::string name, int value) { setDefaultUniformInternal(name, value); }
+
+    void Shader::setDefaultUniform(std::string name, float value) { setDefaultUniformInternal(name, value); }
+
+    void Shader::setDefaultUniform(std::string name, glm::vec4 value) { setDefaultUniformInternal(name, value); }
+
+    void Shader::setDefaultUniform(std::string name, glm::mat3 value) { setDefaultUniformInternal(name, value); }
+
+    void Shader::setDefaultUniform(std::string name, glm::mat4 value) { setDefaultUniformInternal(name, value); }
+
+    void Shader::setDefaultUniform(std::string name, std::shared_ptr<Texture2D> value) {
+        texture2DRef[name] = value;
+        setDefaultUniformInternal(name, value.get());
+    }
+
+    void Shader::setDefaultUniform(std::string name, std::shared_ptr<TextureCube> value) {
+        textureCubeRef[name] = value;
+        setDefaultUniformInternal(name, value.get());
+    }
 }

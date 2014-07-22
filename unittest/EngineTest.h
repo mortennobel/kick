@@ -164,7 +164,7 @@ int TestMaterial() {
                 fragColor = colorV;
             }
             )";
-    Shader *shader = Project::createAsset<Shader>(vertexShader, fragmentShader);
+    auto shader = std::shared_ptr<Shader>{Project::createAsset<Shader>(vertexShader, fragmentShader)};
 
     shader->apply();
     Material* material = Project::createAsset<Material>();
@@ -276,7 +276,7 @@ int TestLoadTextureTypes(){
 
     int expectedTypes[6] = {GL_RGB,GL_RGB,GL_RGBA,GL_RGBA};
     for (int i=0;i<6;i++){
-        Texture2D *img = Project::loadTexture2D(imgPaths[i]);
+        auto img = Project::loadTexture2D(imgPaths[i]);
         error = glGetError();
         TINYTEST_ASSERT_MSG(error == GL_NO_ERROR, imgPaths[i].c_str());
     }
@@ -728,7 +728,7 @@ int TestTextureAtlas(){
 }
 
 int TestSprite(){
-    TextureAtlas* textureAtlas = Project::createAsset<TextureAtlas>();
+    auto textureAtlas = std::shared_ptr<TextureAtlas>{Project::createAsset<TextureAtlas>()};
     textureAtlas->load("unittest/sprites/sprites.txt", "unittest/sprites/sprites.png");
 
     auto scene = Engine::instance->getActiveScene();

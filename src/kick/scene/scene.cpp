@@ -189,7 +189,7 @@ namespace kick {
         mesh->setMeshData(MeshFactory::createCubeData());
         meshRenderer->setMesh(mesh);
 
-        Shader * shader = Project::loadShader("assets/shaders/diffuse.shader");
+        auto shader = Project::loadShader("assets/shaders/diffuse.shader");
         Material* mat = Project::createAsset<Material>();
         mat->setShader(shader);
         meshRenderer->setMaterial(mat);
@@ -203,7 +203,7 @@ namespace kick {
         mesh->setMeshData(MeshFactory::createUVSphereData());
         meshRenderer->setMesh(mesh);
 
-        Shader * shader = Project::loadShader("assets/shaders/diffuse.shader");
+        auto shader = Project::loadShader("assets/shaders/diffuse.shader");
         Material* mat = Project::createAsset<Material>();
         mat->setShader(shader);
         meshRenderer->setMaterial(mat);
@@ -217,7 +217,7 @@ namespace kick {
         mesh->setMeshData(MeshFactory::createPlaneData());
         meshRenderer->setMesh(mesh);
 
-        Shader * shader = Project::loadShader("assets/shaders/diffuse.shader");
+        auto shader = Project::loadShader("assets/shaders/diffuse.shader");
         Material* mat = Project::createAsset<Material>();
         mat->setShader(shader);
         meshRenderer->setMaterial(mat);

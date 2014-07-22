@@ -30,8 +30,6 @@ namespace kick {
     class Project;
     class Shader;
 
-
-
     class Shader : public ProjectAsset {
     public:
         /// If vertexShader and fragmentShader is specified then apply is called
@@ -74,15 +72,24 @@ namespace kick {
         const std::vector<AttributeDescriptor>& getShaderAttributes() { return shaderAttributes; }
         void bind_uniforms(Material *material, EngineUniforms *engineUniforms, Transform* transform);
         GLuint getShaderProgram(){ return shaderProgram; }
-        // Default uniform are assigned to materials where uniforms are not mapped
-        template <class E>
-        void setDefaultUniform(std::string name, E value);
+
+        void setDefaultUniform(std::string name, int value);
+        void setDefaultUniform(std::string name, float value);
+        void setDefaultUniform(std::string name, glm::vec4 value);
+        void setDefaultUniform(std::string name, glm::mat3 value);
+        void setDefaultUniform(std::string name, glm::mat4 value);
+        void setDefaultUniform(std::string name, std::shared_ptr<Texture2D> value);
+        void setDefaultUniform(std::string name, std::shared_ptr<TextureCube> value);
+
         bool tryGetDefaultUniform(std::string name, MaterialData& value);
         static std::string getPrecompiledSource(std::string source, ShaderType type);
 
         int getRenderOrder() const;
         void setRenderOrder(int renderOrder);
     private:
+        // Default uniform are assigned to materials where uniforms are not mapped
+        template <class E>
+        void setDefaultUniformInternal(std::string name, E value);
         static void translateToGLSLES(std::string& s, ShaderType type);
         void updateShaderLocation(std::string name, MaterialData& value);
         void setDefaultUniformData(std::string name, MaterialData&& value);
@@ -108,11 +115,12 @@ namespace kick {
         ZTestType zTest {ZTestType::Less};
         std::map<std::string, MaterialData> defaultUniformData;
         int renderOrder = 1000;
+        std::map<std::string, std::shared_ptr<Texture2D>> texture2DRef;
+        std::map<std::string, std::shared_ptr<TextureCube>> textureCubeRef;
     };
 
-
     template <class E>
-    void Shader::setDefaultUniform(std::string name, E value){
+    void Shader::setDefaultUniformInternal(std::string name, E value){
         MaterialData data{value};
         setDefaultUniformData(name, std::move(data));
     }

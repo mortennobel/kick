@@ -27,7 +27,7 @@ namespace kick {
             material->setShader(sprites[0]->getTextureAtlas()->getShader());
             auto shader = material->getShader();
             assert(shader);
-            mesh->bind(shader);
+            mesh->bind(shader.get());
 
             material->setUniform("mainTexture", sprites[0]->getTextureAtlas()->getTexture());
             shader->bind_uniforms(material, engineUniforms, getTransform());
@@ -154,11 +154,11 @@ namespace kick {
         }
     }
 
-    Shader *SpriteManager::getShader() const {
+    std::shared_ptr<Shader> SpriteManager::getShader() const {
         return material->getShader();
     }
 
-    void SpriteManager::setShader(Shader *shader) {
+    void SpriteManager::setShader(std::shared_ptr<Shader> shader) {
         material->setShader(shader);
     }
 

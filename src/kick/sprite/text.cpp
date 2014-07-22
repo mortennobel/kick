@@ -33,7 +33,7 @@ namespace kick {
         if (!font) return;
         auto shader = material->getShader();
         assert(shader);
-        mesh->bind(shader);
+        mesh->bind(shader.get());
         shader->bind_uniforms(material, engineUniforms, getTransform());
         mesh->render(0);
     }

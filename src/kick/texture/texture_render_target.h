@@ -21,15 +21,15 @@ namespace kick {
         void unbind();
         glm::ivec2 getSize() const;
         void setSize(glm::ivec2 size);
-        void setColorTexture(size_t channel, Texture2D *texture);
-        Texture2D *getColorTexture(size_t channel);
+        void setColorTexture(size_t channel, std::shared_ptr<Texture2D> texture);
+        std::shared_ptr<Texture2D> getColorTexture(size_t channel);
         bool deleteColorTexture(size_t channel);
         void apply();
     private:
         GLuint framebuffer = 0;
         glm::ivec2 size = glm::ivec2{512,512};
-        std::vector<Texture2D *> colorTextures;
-        Texture2D *depthTexture = nullptr;
+        std::vector<std::shared_ptr<Texture2D>> colorTextures;
+        std::shared_ptr<Texture2D>  depthTexture;
         std::vector<GLuint> renderBuffers;
         void checkStatus();
     };

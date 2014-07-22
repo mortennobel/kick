@@ -47,7 +47,7 @@ namespace kick {
         // bind color attachment
         if (colorTextures.size() > 0){
             for (int i=0;i<colorTextures.size();i++) {
-                Texture2D* colorTexture = colorTextures[i];
+                Texture2D* colorTexture = colorTextures[i].get();
                 glFramebufferTexture(GL_FRAMEBUFFER, (GLenum) (GL_COLOR_ATTACHMENT0+i), colorTexture->textureid, 0);
             }
         } else {
@@ -118,14 +118,14 @@ namespace kick {
         return size;
     }
 
-    void TextureRenderTarget::setColorTexture(size_t channel, Texture2D *texture) {
+    void TextureRenderTarget::setColorTexture(size_t channel, std::shared_ptr<Texture2D> texture) {
         if (colorTextures.size() <= channel){
             colorTextures.resize(channel+1, nullptr);
         }
         colorTextures[channel] = texture;
     }
 
-    Texture2D *TextureRenderTarget::getColorTexture(size_t channel) {
+    std::shared_ptr<Texture2D> TextureRenderTarget::getColorTexture(size_t channel) {
         if (colorTextures.size() <= channel){
             return nullptr;
         }
@@ -136,7 +136,7 @@ namespace kick {
         if (colorTextures.size() <= channel){
             return false;
         }
-        delete colorTextures[channel];
+        colorTextures[channel].reset();
         colorTextures.erase(colorTextures.begin() + channel);
         return true;
     }

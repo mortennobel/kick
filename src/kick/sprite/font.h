@@ -38,18 +38,18 @@ public:
     int height();
 
 
-    Texture2D * getTexture() const;
+    std::shared_ptr<Texture2D> getTexture() const;
 
-    void setTexture(Texture2D *texture);
+    void setTexture(std::shared_ptr<Texture2D> texture);
 
     const FontChar getChar(char r);
 
     int getScaleW() const;
     int getScaleH() const;
 
-    Shader * getShader();
+    std::shared_ptr<Shader> getShader();
 
-    void setShader(Shader* shader);
+    void setShader(std::shared_ptr<Shader> shader);
 
     int getBase() const;
 
@@ -59,13 +59,13 @@ public:
 
     Event<Font*> fontListener;
 private:
-    Texture2D* texture = nullptr;
+    std::shared_ptr<Texture2D> texture;
     int lineHeight = 0;
     int base = 0;
     int scaleW = 0;
     int scaleH = 0;
     int pages = 1;
     std::map<int, FontChar> fontMap;
-    Shader* shader = nullptr;
+    std::shared_ptr<Shader> shader;
 };
 }

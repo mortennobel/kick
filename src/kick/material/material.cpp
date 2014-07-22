@@ -36,7 +36,7 @@ namespace kick {
         return *this;
     }
     
-    Material::Material(Project *p, Shader* s)
+    Material::Material(Project *p, std::shared_ptr<Shader> s)
     :ProjectAsset{p}
     {
         setShader(s);
@@ -45,21 +45,21 @@ namespace kick {
     Material::~Material(){
     }
     
-    void Material::setShader(Shader *shader){
+    void Material::setShader(std::shared_ptr<Shader> shader){
         if (this->shader == shader) return;
         this->shader = shader;
         if (shader){
             using namespace std::placeholders;
             auto f = std::bind(&Material::shaderChanged, this, _1);
             shaderChangedListener = shader->shaderChanged.createListener(f);
-            shaderChanged({shader, ShaderEventType::all });
+            shaderChanged({shader.get(), ShaderEventType::all });
             setDefaultUniforms();
         } else {
             shaderChangedListener = EventListener<ShaderEvent>();
         }
     }
-    
-    Shader* Material::getShader(){
+
+    std::shared_ptr<Shader> Material::getShader(){
         return shader;
     }
         
@@ -224,5 +224,35 @@ namespace kick {
 
     int Material::getRenderOrder() {
         return renderOrder;
+    }
+
+    void Material::setUniform(std::string name, int value) {
+        setUniformInternal(name, value);
+    }
+
+    void Material::setUniform(std::string name, float value) {
+        setUniformInternal(name, value);
+    }
+
+    void Material::setUniform(std::string name, glm::vec4 value) {
+        setUniformInternal(name, value);
+    }
+
+    void Material::setUniform(std::string name, glm::mat3 value) {
+        setUniformInternal(name, value);
+    }
+
+    void Material::setUniform(std::string name, glm::mat4 value) {
+        setUniformInternal(name, value);
+    }
+
+    void Material::setUniform(std::string name, std::shared_ptr<Texture2D> value) {
+        texture2DRef[name] = value;
+        setUniformInternal(name, value.get());
+    }
+
+    void Material::setUniform(std::string name, std::shared_ptr<TextureCube> value) {
+        textureCubeRef[name] = value;
+        setUniformInternal(name, value.get());
     }
 }

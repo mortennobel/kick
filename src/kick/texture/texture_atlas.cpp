@@ -56,7 +56,7 @@ namespace kick {
         return true;
     }
 
-    Texture2D *TextureAtlas::getTexture() const {
+    shared_ptr<Texture2D> TextureAtlas::getTexture() const {
         return texture;
     }
 
@@ -68,11 +68,11 @@ namespace kick {
         return textureSize;
     }
 
-    Shader *TextureAtlas::getShader() const {
+    std::shared_ptr<Shader> TextureAtlas::getShader() const {
         return shader;
     }
 
-    void TextureAtlas::setShader(Shader *shader) {
+    void TextureAtlas::setShader(std::shared_ptr<Shader> shader) {
         TextureAtlas::shader = shader;
     }
 }

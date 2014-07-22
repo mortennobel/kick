@@ -69,11 +69,11 @@ namespace kick {
 
         static bool loadTextResource(std::string uri, std::string &outText);
         static bool loadBinaryResource(std::string uri, std::vector<char> &outResource);
-        static Shader* loadShader(std::string uri);
-        static Texture2D* loadTexture2D(std::string uri);
+        static std::shared_ptr<Shader> loadShader(std::string uri);
+        static std::shared_ptr<Texture2D> loadTexture2D(std::string uri);
         static Texture2D* loadTexture2DFromMemory(const char *data, int size);
 
-        static TextureCube* loadTextureCube(std::string uri);
+        static std::shared_ptr<TextureCube> loadTextureCube(std::string uri);
         static TextureCube* loadTextureCubeFromMemory(const char *data, int size);
 
         static std::shared_ptr<TextureAtlas> loadTextureAtlas(std::string filename, std::string texture);
@@ -94,6 +94,11 @@ namespace kick {
         static Texture2D *surfaceToTexture2D( SDL_Surface *image);
 
         static TextureCube *surfaceToTextureCube(SDL_Surface *image);
+
+        static std::map<std::string, std::weak_ptr<TextureAtlas>> textureAtlasRef;
+        static std::map<std::string, std::weak_ptr<Shader>> shaderRef;
+        static std::map<std::string, std::weak_ptr<Texture2D>> texture2DRef;
+        static std::map<std::string, std::weak_ptr<TextureCube>> textureCubeRef;
     };
 
     template <class E,  typename ... Args>

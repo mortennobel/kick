@@ -61,31 +61,40 @@ namespace kick {
     
     class Material : public ProjectAsset {
     public:
-        explicit Material(Project *p, Shader* shader = nullptr);
+        explicit Material(Project *p, std::shared_ptr<Shader> shader = {});
         ~Material();
-        void setShader(Shader *shader);
-        Shader* getShader();
+        void setShader(std::shared_ptr<Shader> shader);
+        std::shared_ptr<Shader> getShader();
+        void setUniform(std::string name, int value);
+        void setUniform(std::string name, float value);
+        void setUniform(std::string name, glm::vec4 value);
+        void setUniform(std::string name, glm::mat3 value);
+        void setUniform(std::string name, glm::mat4 value);
+        void setUniform(std::string name, std::shared_ptr<Texture2D> value);
+        void setUniform(std::string name, std::shared_ptr<TextureCube> value);
 
-        template <class E>
-        void setUniform(std::string name, E value);
         int bind();
         int getRenderOrder();
     private:
+        template <class E>
+        void setUniformInternal(std::string name, E value);
         void shaderChanged(ShaderEvent se);
         void setDefaultUniforms();
         void updateShaderLocation(std::string name, MaterialData& value);
         void setUniformData(std::string name, MaterialData&& value);
         // current data (may misfit with current shader)
         std::map<std::string, MaterialData> currentUniformData;
-        Shader* shader = nullptr;
+        std::shared_ptr<Shader> shader;
         EventListener<ShaderEvent> shaderChangedListener;
         int renderOrder = 1000;
+        std::map<std::string, std::shared_ptr<Texture2D>> texture2DRef;
+        std::map<std::string, std::shared_ptr<TextureCube>> textureCubeRef;
     };
     
     std::string to_string(MaterialData & data);
-    
+
     template <class E>
-    void Material::setUniform(std::string name, E value){
+    void Material::setUniformInternal(std::string name, E value){
         MaterialData data{value};
         setUniformData(name, std::move(data));
     }

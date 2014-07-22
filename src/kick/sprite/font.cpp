@@ -121,11 +121,11 @@ namespace kick{
         return lineHeight;
     }
 
-    Texture2D *Font::getTexture() const {
+    shared_ptr<Texture2D> Font::getTexture() const {
         return texture;
     }
 
-    void Font::setTexture(Texture2D *texture) {
+    void Font::setTexture(shared_ptr<Texture2D> texture) {
         Font::texture = texture;
         fontListener.notifyListeners(this);
     }
@@ -151,12 +151,12 @@ namespace kick{
         return base;
     }
 
-    void Font::setShader(Shader* shader) {
+    void Font::setShader(std::shared_ptr<Shader> shader) {
         this->shader = shader;
         fontListener.notifyListeners(this);
     }
 
-    Shader *Font::getShader() {
+    std::shared_ptr<Shader> Font::getShader() {
         return shader;
     }
 
