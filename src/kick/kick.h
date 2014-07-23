@@ -39,3 +39,4 @@
 #include "kick/sprite/spritemanager.h"
 #include "kick/sprite/text.h"
 #include "kick/sprite/font.h"
+#include "kick/ui/button.h"

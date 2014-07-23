@@ -30,6 +30,8 @@ namespace kick {
 
         virtual int getRenderOrder();
 
+        glm::vec2 getAnchor() const;
+        void setAnchor(glm::vec2 anchor);
     private:
         EventListener<Font*> eventListener;
         Bounds2D bounds;
@@ -38,6 +40,7 @@ namespace kick {
         Mesh *mesh = nullptr;
         MeshData *meshData = nullptr;
         std::string text;
+        glm::vec2 anchor{0,0};
         Material* material = nullptr;
     };
 }

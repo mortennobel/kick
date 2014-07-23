@@ -65,7 +65,7 @@ namespace kick {
         vector<vec3> position;
         vector<vec2> textureCoords;
         vector<GLushort> indices;
-        vec2 carent{0,0};
+        vec2 carent{-font->width(text) * anchor.x, -font->height() * anchor.y};
         bounds.max = vec2{-FLT_MAX};
         bounds.min = vec2{FLT_MAX};
         for (unsigned short i=0;i<text.length();i++){
@@ -83,7 +83,7 @@ namespace kick {
             bounds.min = glm::min(bounds.min, basePoint);
             bounds.max = glm::max(bounds.max, (vec2)position[position.size()-2]);
 
-            vec2 scale{1.0f/font->getScaleW(), 1.0f/font->getScaleH()};
+            vec2 scale{1.0f / font->getScaleW(), 1.0f / font->getScaleH()};
 
             textureCoords.push_back(vec2{fc.x,font->getScaleH()-fc.y-fc.height}*scale);
             textureCoords.push_back(vec2{fc.x+fc.width,font->getScaleH()-fc.y-fc.height}*scale);
@@ -123,5 +123,16 @@ namespace kick {
 
     int Text::getRenderOrder() {
         return material->getRenderOrder();
+    }
+
+    void Text::setAnchor(glm::vec2 anchor) {
+        if (anchor != Text::anchor){
+            Text::anchor = anchor;
+            updateVertexBuffer();
+        }
+    }
+
+    glm::vec2 Text::getAnchor() const {
+        return anchor;
     }
 }

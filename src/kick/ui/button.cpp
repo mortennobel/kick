@@ -9,6 +9,9 @@
 namespace kick {
     void Button::setText(std::string const &text) {
         Button::text = text;
+        if (textComponent){
+            textComponent->setText(text);
+        }
     }
 
     std::string Button::getText() const {
@@ -64,7 +67,6 @@ namespace kick {
             case ButtonState::pressed:
                 sprite->setSpriteName(pressed);
                 break;
-
         }
     }
 
@@ -73,6 +75,8 @@ namespace kick {
         sprite->setAnchor({0.5f,0.5f});
         textComponent = getGameObject()->getScene()->createText(text);
         textComponent->getTransform()->setParent(getTransform());
+        textComponent->setText(text);
+        textComponent->setAnchor({0.5f,0.5f});
         if (textureAtlas){
             sprite->setTextureAtlas(textureAtlas);
         }
@@ -85,7 +89,6 @@ namespace kick {
     }
 
     void Button::update() {
-
     }
 
     void Button::setTextureAtlas(std::shared_ptr<TextureAtlas> textureAtlas) {

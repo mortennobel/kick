@@ -109,7 +109,7 @@ namespace kick{
         for (auto f : text){
             auto found = fontMap.find((int)f);
             if (found != fontMap.end()){
-                sum += found->second.width;
+                sum += found->second.xadvance;
             } else {
                 return -1;
             }
