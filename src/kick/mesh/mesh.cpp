@@ -57,6 +57,7 @@ namespace kick {
             } else {
                 GLuint vertexArrayObject = iter->second;
                 glBindVertexArray(vertexArrayObject);
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
             }
 
         } else
