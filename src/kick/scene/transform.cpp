@@ -134,6 +134,9 @@ namespace kick {
     }
     
     void Transform::setParent(Transform *parent){
+        if (parent == this){
+            return;
+        }
         if (this->parent){
             auto pos = find(this->parent->children.begin(),this->parent->children.end(), this);
             this->parent->children.erase(pos);
@@ -141,6 +144,14 @@ namespace kick {
         this->parent = parent;
         if (parent){
             parent->children.push_back(this);
+
+            // search for circularity
+            while (parent != nullptr){
+                if (parent->parent == this){ // circularity found - break
+                    parent->setParent(nullptr);
+                }
+                parent = parent->parent;
+            }
         }
     }
     

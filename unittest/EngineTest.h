@@ -768,7 +768,6 @@ int TestComponentHierachy(){
     TINYTEST_ASSERT(gameObject->getComponentInChildren<Camera>()==camera2);
     TINYTEST_ASSERT(gameObject->getComponentsInChildren<Camera>().size()==1);
 
-    gameObject->getTransform()->setParent(nullptr);
     gameObject3->getTransform()->setParent(gameObject2->getTransform());
 
     TINYTEST_ASSERT(gameObject->getComponentsInChildren<Camera>().size()==2);
