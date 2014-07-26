@@ -29,7 +29,6 @@ namespace kick {
 #ifndef GL_ES_VERSION_2_0
             glDeleteVertexArrays((GLsizei)array.size(), array.data());
 #endif
-
         }
         glDeleteBuffers(1, &vertexBufferId);
         glDeleteBuffers(1, &elementBufferId);

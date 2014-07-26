@@ -2,7 +2,7 @@
 // Created by morten on 30/06/14.
 //
 
-#include "kick/sprite/font.h"
+#include "kick/2d/font.h"
 #include "kick/core/project.h"
 #include <string>
 #include <sstream>

@@ -22,7 +22,7 @@
 #include "kick/scene/scene_lights.h"
 #include "kick/scene/camera_perspective.h"
 #include "kick/scene/camera_orthographic.h"
-#include "kick/sprite/text.h"
+#include "kick/2d/text.h"
 
 namespace kick {
     class CameraPerspective;

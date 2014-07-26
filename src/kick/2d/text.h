@@ -7,7 +7,7 @@
 
 #include "kick/scene/component_renderable.h"
 #include "kick/scene/game_object.h"
-#include "kick/sprite/font.h"
+#include "kick/2d/font.h"
 #include "kick/math/bounds2d.h"
 #include "kick/core/event_listener.h"
 

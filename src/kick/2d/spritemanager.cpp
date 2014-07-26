@@ -2,8 +2,8 @@
 // Created by morten on 30/06/14.
 //
 
-#include "kick/sprite/spritemanager.h"
-#include "kick/sprite/sprite.h"
+#include "kick/2d/spritemanager.h"
+#include "sprite.h"
 #include "kick/core/log.h"
 #include "font.h"
 #include "transform.h"

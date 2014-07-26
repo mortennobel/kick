@@ -6,6 +6,7 @@
 #include <iostream>
 #include "kick/mesh/mesh.h"
 #include "glm/gtx/string_cast.hpp"
+
 using namespace std;
 using namespace glm;
 

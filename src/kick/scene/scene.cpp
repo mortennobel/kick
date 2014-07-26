@@ -18,7 +18,7 @@
 #include "kick/mesh/mesh.h"
 #include "kick/core/engine.h"
 #include "kick/scene/light.h"
-#include "kick/sprite/sprite.h"
+#include "sprite.h"
 #include "glm/gtx/string_cast.hpp"
 #include "kick/texture/texture_atlas.h"
 #include "button.h"

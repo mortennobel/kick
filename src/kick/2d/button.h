@@ -5,10 +5,11 @@
 
 #pragma once
 #include "kick/scene/component_updatable.h"
-#include "kick/sprite/sprite.h"
-#include "kick/sprite/text.h"
+#include "sprite.h"
+#include "kick/2d/text.h"
 #include <string>
 #include <functional>
+
 namespace kick {
     class TextureAtlas;
 
