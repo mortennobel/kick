@@ -47,6 +47,7 @@ TINYTEST_ADD_TEST(TestComponentListener);
 TINYTEST_ADD_TEST(TestFont);
 TINYTEST_ADD_TEST(TestTextureAtlas);
 TINYTEST_ADD_TEST(TestSprite);
+TINYTEST_ADD_TEST(TestComponentHierachy);
 TINYTEST_END_SUITE();
 
 int main(int argc, char* argv[])

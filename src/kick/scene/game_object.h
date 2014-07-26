@@ -14,11 +14,11 @@
 #include <functional>
 #include <memory>
 #include "kick/scene/component.h"
+#include "kick/scene/transform.h"
 #include "kick/core/event.h"
 
 
 namespace kick {
-    class Transform;
     class Scene;
     
     class GameObject {
@@ -33,6 +33,14 @@ namespace kick {
         C* getComponent();
         template <typename C>
         std::vector<C*> getComponents();
+        template <typename C>
+        C* getComponentInParent();
+        template <typename C>
+        std::vector<C*> getComponentsInParent();
+        template <typename C>
+        C* getComponentInChildren();
+        template <typename C>
+        std::vector<C*> getComponentsInChildren();
         bool destroyComponent(Component *component);
         ConstComponentIter begin() const;
         ConstComponentIter end() const;
@@ -41,7 +49,7 @@ namespace kick {
         Event<std::pair<Component*, ComponentUpdateStatus>> componentEvent;
         std::string getName() const;
         void setName(std::string str);
-        
+
         Transform *getTransform(){ return transform; }
         
         Scene* getScene(){ return scene; }

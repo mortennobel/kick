@@ -736,3 +736,43 @@ int TestSprite(){
 
     return 1;
 }
+
+
+int TestComponentHierachy(){
+    auto gameObject = Engine::instance->getActiveScene()->createGameObject("SomeObject");
+
+    auto gameObject2 = Engine::instance->getActiveScene()->createGameObject("SomeObject2");
+    auto camera2 = gameObject2->addComponent<Camera>();
+
+    auto gameObject3 = Engine::instance->getActiveScene()->createGameObject("SomeObject3");
+    auto camera3 = gameObject3->addComponent<Camera>();
+
+    TINYTEST_ASSERT(gameObject->getComponent<Camera>()==nullptr);
+    TINYTEST_ASSERT(gameObject->getComponents<Camera>().size()==0);
+
+    TINYTEST_ASSERT(gameObject->getComponentInParent<Camera>()==nullptr);
+    TINYTEST_ASSERT(gameObject->getComponentsInParent<Camera>().size()==0);
+
+    TINYTEST_ASSERT(gameObject->getComponentInChildren<Camera>()==nullptr);
+    TINYTEST_ASSERT(gameObject->getComponentsInChildren<Camera>().size()==0);
+
+    gameObject->getTransform()->setParent(gameObject3->getTransform());
+    gameObject2->getTransform()->setParent(gameObject->getTransform());
+
+    TINYTEST_ASSERT(gameObject->getComponent<Camera>()==nullptr);
+    TINYTEST_ASSERT(gameObject->getComponents<Camera>().size()==0);
+
+    TINYTEST_ASSERT(gameObject->getComponentInParent<Camera>()==camera3);
+    TINYTEST_ASSERT(gameObject->getComponentsInParent<Camera>().size()==1);
+
+    TINYTEST_ASSERT(gameObject->getComponentInChildren<Camera>()==camera2);
+    TINYTEST_ASSERT(gameObject->getComponentsInChildren<Camera>().size()==1);
+
+    gameObject->getTransform()->setParent(nullptr);
+    gameObject3->getTransform()->setParent(gameObject2->getTransform());
+
+    TINYTEST_ASSERT(gameObject->getComponentsInChildren<Camera>().size()==2);
+
+    return 1;
+}
+
