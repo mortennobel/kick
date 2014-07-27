@@ -13,7 +13,7 @@ using namespace glm;
 namespace kick {
 
     Text::Text(GameObject *gameObject)
-            : ComponentRenderable(gameObject),
+            : Component2D(gameObject),
               bounds{vec2{0,0},vec2{0,0}} {
         mesh = Project::createAsset<Mesh>();
         meshData = Project::createAsset<MeshData>();
@@ -135,5 +135,12 @@ namespace kick {
 
     glm::vec2 Text::getAnchor() const {
         return anchor;
+    }
+
+    Shader *Text::getShader() const {
+        if (material){
+            return material->getShader().get();
+        }
+        return nullptr;
     }
 }

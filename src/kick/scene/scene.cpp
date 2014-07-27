@@ -22,6 +22,7 @@
 #include "glm/gtx/string_cast.hpp"
 #include "kick/texture/texture_atlas.h"
 #include "button.h"
+#include "panel.h"
 
 using namespace std;
 
@@ -255,35 +256,14 @@ namespace kick {
         }
     }
 
-    Sprite *Scene::createSprite(std::shared_ptr<TextureAtlas> textureAtlas, std::string spriteName, glm::vec2 pos) {
-        GameObject *gameObject = createGameObject("Sprite");
-        Sprite* sprite = gameObject->addComponent<Sprite>();
-        sprite->setTextureAtlas(textureAtlas);
-        sprite->setSpriteName(spriteName);
-        return sprite;
-    }
-
-    Button *Scene::createButton() {
-        std::shared_ptr<TextureAtlas> textureAtlas = Project::loadTextureAtlas("assets/ui/ui.txt", "assets/ui/ui.png");
-
-        GameObject *gameObject = createGameObject("Button");
-        Button* button = gameObject->addComponent<Button>();
-        button->setText("Button");
-        button->setTextureAtlas(textureAtlas);
-        button->setNormal("button-normal.png");
-        button->setHover("button-hover.png");
-        button->setPressed("button-pressed.png");
-        return button;
-    }
-
-    Text *Scene::createText(string text) {
-        auto go = createGameObject("Font");
-        Text* textComponent = go->addComponent<Text>();
-
-        Font* font = Project::createAsset<Font>();
-        textComponent->setFont(font);
-        textComponent->setText(text);
-
-        return textComponent;
+    Panel *Scene::createPanel(bool includeUICamera) {
+        GameObject *gameObject = createGameObject("Panel");
+        Panel* panel = gameObject->addComponent<Panel>();
+        if (includeUICamera){
+            Camera* camera = gameObject->addComponent<Camera>();
+            camera->setCullingMask(256);
+            panel->setCamera(camera);
+        }
+        return panel;
     }
 }

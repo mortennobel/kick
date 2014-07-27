@@ -5,6 +5,9 @@
 #include "button.h"
 #include "kick/scene/scene.h"
 #include "kick/scene/transform.h"
+#include <iostream>
+
+using namespace std;
 
 namespace kick {
     void Button::setText(std::string const &text) {
@@ -73,14 +76,15 @@ namespace kick {
     void Button::activated() {
         sprite = getGameObject()->addComponent<Sprite>();
         sprite->setAnchor({0.5f,0.5f});
-        textComponent = getGameObject()->getScene()->createText(text);
-        textComponent->getTransform()->setParent(getTransform());
-        textComponent->setText(text);
-        textComponent->setAnchor({0.5f,0.5f});
-        if (textureAtlas){
-            sprite->setTextureAtlas(textureAtlas);
-        }
-        updateTexture();
+        cout << "todo implement"<< endl; // todo implement
+//        textComponent = getGameObject()->getScene()->createText(text);
+//        textComponent->getTransform()->setParent(getTransform());
+//        textComponent->setText(text);
+//        textComponent->setAnchor({0.5f,0.5f});
+//        if (textureAtlas){
+//            sprite->setTextureAtlas(textureAtlas);
+//        }
+//        updateTexture();
     }
 
     void Button::deactivated() {

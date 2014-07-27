@@ -36,7 +36,7 @@
 #include "kick/texture/image_format.h"
 #include "kick/texture/texture_atlas.h"
 #include "kick/2d/sprite.h"
-#include "kick/2d/spritemanager.h"
 #include "kick/2d/text.h"
 #include "kick/2d/font.h"
 #include "kick/2d/button.h"
+#include "kick/2d/panel.h"

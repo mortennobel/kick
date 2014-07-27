@@ -1,19 +1,26 @@
 //
-// Created by morten on 30/06/14.
+// Created by morten on 26/07/14.
 //
 
-#include "kick/2d/spritemanager.h"
-#include "sprite.h"
-#include "kick/core/log.h"
-#include "font.h"
-#include "transform.h"
-#include <vector>
+#include "panel.h"
+#include "kick/2d/text.h"
+#include "kick/2d/sprite.h"
+#include "kick/2d/button.h"
+#include "kick/scene/scene.h"
+#include "kick/material/material.h"
+#include "kick/mesh/mesh.h"
+#include "kick/mesh/mesh_data.h"
+#include "glm/glm.hpp"
+#include <algorithm>
+#include <iostream>
 
+using namespace kick;
 using namespace std;
 using namespace glm;
 
-namespace kick {
-    SpriteManager::SpriteManager(GameObject *gameObject) : ComponentRenderable(gameObject) {
+namespace kick{
+
+    Panel::Panel(GameObject *gameObject) : ComponentRenderable(gameObject) {
         mesh = Project::createAsset<Mesh>();
         meshData = Project::createAsset<MeshData>();
         meshData->setMeshUsage(MeshUsage::DynamicDraw);
@@ -21,34 +28,41 @@ namespace kick {
         material = Project::createAsset<Material>();
     }
 
-    void SpriteManager::render(EngineUniforms *engineUniforms) {
-        updateVertexBuffer();
-        if (meshData->getSubmeshesCount()){
-            material->setShader(sprites[0]->getTextureAtlas()->getShader());
-            auto shader = material->getShader();
-            assert(shader);
-            mesh->bind(shader.get());
+    Panel::~Panel() {
 
-            material->setUniform("mainTexture", sprites[0]->getTextureAtlas()->getTexture());
-            shader->bind_uniforms(material, engineUniforms, getTransform());
-
-            mesh->render(0);
-        }
     }
 
-    SpriteManager *SpriteManager::getInstance(Scene *scene) {
-        for (auto & spriteManager : scene->findComponents<SpriteManager>()){
-            if (spriteManager->scene == scene){
-                return spriteManager;
+    void Panel::render(kick::EngineUniforms *engineUniforms) {
+        sort(components.begin(), components.end(), [](Component2D *c1, Component2D *c2){
+            int order = c1->getOrder() - c2->getOrder();
+            bool res = order < 0 || (order==0 &&
+                    (c1->getShader() < c2->getShader()));
+            return res;
+        });
+
+        vector<Sprite*> sprites;
+        TextureAtlas* textureAtlas = nullptr;
+        auto rangeStart = components.begin();
+        for (auto iter = components.begin();iter != components.end(); iter++){
+            auto text = dynamic_cast<Text*>(*iter);
+            if (text){
+                renderSprites(sprites, engineUniforms);
+                text->render(engineUniforms);
+            } else {
+                auto sprite = dynamic_cast<Sprite*>(*iter);
+                if (textureAtlas != sprite->getTextureAtlas().get()){
+                    renderSprites(sprites, engineUniforms);
+                    textureAtlas = sprite->getTextureAtlas().get();
+                }
+                if (sprite){
+                    sprites.push_back(sprite);
+                }
             }
         }
-        auto go = scene->createGameObject("SpriteManager");
-        SpriteManager * lastUsed = go->addComponent<SpriteManager>();
-        lastUsed->scene = scene;
-        return lastUsed;
+        renderSprites(sprites, engineUniforms);
     }
 
-    void SpriteManager::updateVertexBuffer() {
+    void Panel::updateVertexBuffer(std::vector<Sprite *> &sprites) {
         vector<vec3> position;
         vector<vec2> textureCoords;
         vector<vec4> colors;
@@ -143,29 +157,103 @@ namespace kick {
         mesh->setMeshData(meshData);
     }
 
-    void SpriteManager::registerSprite(Sprite *sprite) {
-        sprites.push_back(sprite);
+    void Panel::renderSprites(std::vector<Sprite *> &sprites, kick::EngineUniforms *engineUniforms) {
+        if (sprites.size()==0){
+            return;
+        }
+        updateVertexBuffer(sprites);
+
+        material->setShader(sprites[0]->getTextureAtlas()->getShader());
+        auto shader = material->getShader();
+        assert(shader);
+        mesh->bind(shader.get());
+
+        material->setUniform("mainTexture", sprites[0]->getTextureAtlas()->getTexture());
+        shader->bind_uniforms(material, engineUniforms, getTransform());
+
+        mesh->render(0);
+
+        sprites.clear();
     }
 
-    void SpriteManager::deregisterSprite(Sprite *sprite) {
-        auto pos = find(sprites.begin(),sprites.end(), sprite);
-        if (pos != sprites.end()){
-            sprites.erase(pos);
+    int Panel::getRenderOrder() {
+        return 0;
+    }
+
+    Camera *Panel::getCamera() const {
+        return camera;
+    }
+
+    void Panel::setCamera(Camera *camera) {
+        Panel::camera = camera;
+        int cullingMask = camera->getCullingMask();
+        gameObject->setLayer((int)round(log2((float)cullingMask))+1); // set to largest value
+    }
+
+    void Panel::activated() {
+        for (auto c : gameObject->getComponentsInChildren<Component2D>()){
+            registerComponent2D(c);
         }
     }
 
-    std::shared_ptr<Shader> SpriteManager::getShader() const {
-        return material->getShader();
-    }
-
-    void SpriteManager::setShader(std::shared_ptr<Shader> shader) {
-        material->setShader(shader);
-    }
-
-    int SpriteManager::getRenderOrder() {
-        if (material == nullptr){
-            return 0;
+    void Panel::deactivated() {
+        for (auto c : components){
+            deregisterComponent2D(c);
         }
-        return material->getRenderOrder();
     }
+
+    void Panel::registerComponent2D(Component2D *comp) {
+        components.push_back(comp);
+        comp->panel = this;
+    }
+
+    void Panel::deregisterComponent2D(Component2D *comp) {
+        auto pos = find(components.begin(), components.end(), comp);
+        if (pos != components.end()){
+            (*pos)->panel = nullptr;
+            components.erase(pos);
+        }
+    }
+
+    Sprite *Panel::createSprite(std::shared_ptr<TextureAtlas> textureAtlas, std::string spriteName, glm::vec2 pos) {
+
+        GameObject *gameObject = getGameObject()->getScene()->createGameObject("Sprite");
+        gameObject->getTransform()->setParent(getTransform());
+        Sprite* sprite = gameObject->addComponent<Sprite>();
+        sprite->setTextureAtlas(textureAtlas);
+        sprite->setSpriteName(spriteName);
+        return sprite;
+    }
+
+    Button *Panel::createButton() {
+        std::shared_ptr<TextureAtlas> textureAtlas = Project::loadTextureAtlas("assets/ui/ui.txt", "assets/ui/ui.png");
+
+        GameObject *gameObject = getGameObject()->getScene()->createGameObject("Button");
+        gameObject->getTransform()->setParent(getTransform());
+        Button* button = gameObject->addComponent<Button>();
+        button->setText("Button");
+        button->setTextureAtlas(textureAtlas);
+        button->setNormal("button-normal.png");
+        button->setHover("button-hover.png");
+        button->setPressed("button-pressed.png");
+        return button;
+    }
+
+    Text *Panel::createText(std::string text) {
+        auto go = getGameObject()->getScene()->createGameObject("Font");
+        go->getTransform()->setParent(getTransform());
+        Text* textComponent = go->addComponent<Text>();
+
+        Font* font = Project::createAsset<Font>();
+        textComponent->setFont(font);
+        textComponent->setText(text);
+
+        return textComponent;
+    }
+
+    void Panel::updateRenderOrder(Component2D *comp) {
+        // todo
+    }
+
+
 }

@@ -732,7 +732,7 @@ int TestSprite(){
     textureAtlas->load("unittest/sprites/sprites.txt", "unittest/sprites/sprites.png");
 
     auto scene = Engine::instance->getActiveScene();
-    auto res = scene->createSprite(textureAtlas, "Character Boy.png");
+    auto res = scene->createPanel()->createSprite(textureAtlas, "Character Boy.png");
 
     return 1;
 }

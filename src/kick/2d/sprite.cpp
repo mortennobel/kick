@@ -3,7 +3,6 @@
 //
 
 #include "sprite.h"
-#include "spritemanager.h"
 
 #include <iostream>
 #include <glm/gtx/string_cast.hpp>
@@ -38,25 +37,8 @@ namespace kick {
         }
     }
 
-    void Sprite::activated() {
-        spriteManager = SpriteManager::getInstance(gameObject->getScene());
-        spriteManager->registerSprite(this);
-    }
-
-    void Sprite::deactivated() {
-        spriteManager->deregisterSprite(this);
-    }
-
     TextureAtlasEntry Sprite::getEntry() const {
         return entry;
-    }
-
-    int Sprite::getOrder() const {
-        return order;
-    }
-
-    void Sprite::setOrder(int order) {
-        Sprite::order = order;
     }
 
     glm::vec2 Sprite::getSliceX() const {
@@ -132,5 +114,12 @@ namespace kick {
 
     void Sprite::setColor(glm::vec4 color) {
         Sprite::color = color;
+    }
+
+    Shader *Sprite::getShader() const {
+        if (textureAtlas){
+            return textureAtlas->getShader().get();
+        }
+        return nullptr;
     }
 }

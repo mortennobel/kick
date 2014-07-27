@@ -34,6 +34,7 @@ namespace kick {
     class Sprite;
     class TextureAtlas;
     class Button;
+    class Panel;
 
     class Scene {
     public:
@@ -93,15 +94,11 @@ namespace kick {
         Light* createDirectionalLight();
         // Creates a gameobject and attaches an ambient light
         Light* createAmbientLight(float intensity = 0.3f, glm::vec3 color = glm::vec3(1));
-        //
-        Button* createButton();
-        // helper function, which creates a gameobject and attaches an sprite object
-        Sprite* createSprite(std::shared_ptr<TextureAtlas> textureAtlas, std::string spriteName, glm::vec2 pos = glm::vec2{0});
+        // create a Panel
+        Panel* createPanel(bool includeUICamera = true);
 
         friend class Engine;
         friend class GameObject;
-
-        Text *createText(std::string text);
 
     private:
         Scene(const char* name);

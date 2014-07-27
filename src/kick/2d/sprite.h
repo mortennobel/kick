@@ -3,7 +3,7 @@
 //
 
 #include "glm/glm.hpp"
-#include "kick/scene/component.h"
+#include "kick/2d/component2d.h"
 #include "kick/scene/game_object.h"
 #include "kick/texture/texture_atlas.h"
 #include <string>
@@ -22,14 +22,10 @@ namespace kick {
         Sliced
     };
 
-    class Sprite : public Component {
+    class Sprite : public Component2D {
     public:
-        Sprite(GameObject *gameObject) : Component(gameObject) {
+        Sprite(GameObject *gameObject) : Component2D(gameObject) {
         }
-
-        virtual void activated() override;
-
-        virtual void deactivated() override;
 
         std::shared_ptr<TextureAtlas> getTextureAtlas() const;
 
@@ -43,13 +39,13 @@ namespace kick {
 
         TextureAtlasEntry getEntry() const;
 
-        int getOrder() const;
-        void setOrder(int order);
-
         Bounds2D getTrimmedBounds() const;
         Bounds2D getBounds() const;
 
-        // when sprite is sliced slice x is two relative slice positions (between 0.0 and 1.0)
+
+        virtual Shader *getShader() const;
+
+// when sprite is sliced slice x is two relative slice positions (between 0.0 and 1.0)
         glm::vec2 getSliceX() const;
         // when sprite is sliced slice x is two relative slice positions (between 0.0 and 1.0)
         void setSliceX(glm::vec2 sliceX);
@@ -69,11 +65,9 @@ namespace kick {
         glm::vec4 getColor() const;
         void setColor(glm::vec4 color);
     private:
-        SpriteManager * spriteManager;
         std::shared_ptr<TextureAtlas> textureAtlas = nullptr;
         std::string spriteName;
         TextureAtlasEntry entry;
-        int order = 0;
         glm::vec2 sliceX{0.333f, 0.667f};
         glm::vec2 sliceY{0.333f, 0.667f};
         glm::vec2 anchor{0,0};

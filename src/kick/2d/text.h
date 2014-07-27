@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "kick/scene/component_renderable.h"
+#include "kick/2d/component2d.h"
 #include "kick/scene/game_object.h"
 #include "kick/2d/font.h"
 #include "kick/math/bounds2d.h"
@@ -16,15 +16,16 @@ namespace kick {
     class Font;
     class Mesh;
 
-    class Text : public ComponentRenderable {
+    class Text : public Component2D {
     public:
         Text(GameObject *gameObject);
         Font * getFont() const;
         void setFont(Font *font);
-        virtual void render(EngineUniforms *engineUniforms) override;
+        virtual void render(EngineUniforms *engineUniforms);
         std::string const & getText() const;
         void setText(std::string const &text);
         Bounds2D getBounds();
+        Shader* getShader() const override;
         Material * getMaterial() const;
         void setMaterial(Material *material);
 
