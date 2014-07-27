@@ -10,7 +10,7 @@
 #include <iostream>
 #include "kick/scene/engine_uniforms.h"
 #include "kick/scene/camera.h"
-#include "kick/scene/component_updatable.h"
+#include "updatable.h"
 #include "kick/scene/camera_orthographic.h"
 #include "kick/scene/camera_perspective.h"
 #include "kick/scene/mesh_renderer.h"
@@ -115,7 +115,7 @@ namespace kick {
                 }, 0);
                 addLight(light);
             }
-            auto updateable = dynamic_cast<ComponentUpdateable*>(component);
+            auto updateable = dynamic_cast<Updateable*>(component);
             if (updateable){
                 updatable.push_back(updateable);
             }
@@ -134,7 +134,7 @@ namespace kick {
                     rebuildSceneLights();
                 }
             }
-            auto updateable = dynamic_cast<ComponentUpdateable*>(component);
+            auto updateable = dynamic_cast<Updateable*>(component);
             if (updateable){
                 auto pos = find(updatable.begin(), updatable.end(), updateable);
                 if (pos != updatable.end()){

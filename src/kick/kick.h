@@ -22,7 +22,7 @@
 #include "kick/scene/camera_perspective.h"
 #include "kick/scene/camera_orthographic.h"
 #include "kick/scene/component.h"
-#include "kick/scene/component_updatable.h"
+#include "kick/scene/updatable.h"
 #include "kick/scene/component_renderable.h"
 #include "kick/scene/engine_uniforms.h"
 #include "kick/scene/game_object.h"

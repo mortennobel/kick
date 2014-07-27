@@ -42,7 +42,6 @@ namespace kick {
         Bounds2D getTrimmedBounds() const;
         Bounds2D getBounds() const;
 
-
         virtual Shader *getShader() const;
 
 // when sprite is sliced slice x is two relative slice positions (between 0.0 and 1.0)

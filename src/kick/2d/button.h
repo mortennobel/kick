@@ -4,8 +4,9 @@
 
 
 #pragma once
-#include "kick/scene/component_updatable.h"
-#include "sprite.h"
+#include "kick/scene/updatable.h"
+#include "kick/scene/component.h"
+#include "kick/2d/sprite.h"
 #include "kick/2d/text.h"
 #include <string>
 #include <functional>
@@ -17,9 +18,9 @@ namespace kick {
         normal, hover, pressed
     };
 
-    class Button : public ComponentUpdateable {
+    class Button : public Component, public Updateable {
     public:
-        Button(GameObject *gameObject) : ComponentUpdateable(gameObject) {
+        Button(GameObject *gameObject) : Component(gameObject) {
         }
 
         std::string getNormal() const;
