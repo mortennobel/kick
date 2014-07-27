@@ -115,7 +115,7 @@ namespace kick {
                 }, 0);
                 addLight(light);
             }
-            auto updateable = dynamic_cast<Updateable*>(component);
+            auto updateable = dynamic_cast<Updatable *>(component);
             if (updateable){
                 updatable.push_back(updateable);
             }
@@ -134,7 +134,7 @@ namespace kick {
                     rebuildSceneLights();
                 }
             }
-            auto updateable = dynamic_cast<Updateable*>(component);
+            auto updateable = dynamic_cast<Updatable *>(component);
             if (updateable){
                 auto pos = find(updatable.begin(), updatable.end(), updateable);
                 if (pos != updatable.end()){

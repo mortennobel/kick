@@ -6,6 +6,8 @@
 #pragma once
 
 #include "glm/glm.hpp"
+#include <iostream>
+#include "glm/gtx/string_cast.hpp"
 
 namespace kick {
     struct Bounds2D {
@@ -30,7 +32,16 @@ namespace kick {
         glm::vec2 upperRight(){
             return {max.x, max.y};
         }
+
+        bool contains(glm::vec2 point){
+            return min.x <= point.x && min.y <= point.y &&
+                max.x >= point.x && max.y >= point.y;
+        }
     };
+
+    inline std::ostream& operator<<(std::ostream& out, const Bounds2D& f){
+        return out << "bounds{"<<glm::to_string(f.min) << ',' << glm::to_string(f.max) <<"}";
+    }
 }
 
 

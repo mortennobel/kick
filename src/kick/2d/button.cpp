@@ -5,11 +5,16 @@
 #include "button.h"
 #include "kick/scene/scene.h"
 #include "kick/scene/transform.h"
+#include "panel.h"
 #include <iostream>
 
 using namespace std;
 
 namespace kick {
+    Button::Button(GameObject *gameObject) : Sprite(gameObject) {
+        setAnchor({0.5f,0.5f});
+    }
+
     void Button::setText(std::string const &text) {
         Button::text = text;
         if (textComponent){
@@ -22,30 +27,30 @@ namespace kick {
     }
 
     void Button::setPressed(std::string const &pressed) {
-        Button::pressed = pressed;
+        Button::pressedName = pressed;
         updateTexture();
     }
 
     std::string Button::getPressed() const {
-        return pressed;
+        return pressedName;
     }
 
     void Button::setHover(std::string const &hover) {
-        Button::hover = hover;
+        Button::hoverName = hover;
         updateTexture();
     }
 
     std::string Button::getHover() const {
-        return hover;
+        return hoverName;
     }
 
     void Button::setNormal(std::string const &normal) {
-        Button::normal = normal;
+        Button::normalName = normal;
         updateTexture();
     }
 
     std::string Button::getNormal() const {
-        return normal;
+        return normalName;
     }
 
     void Button::setOnClick(std::function<void(Button*)> const &onClick) {
@@ -57,52 +62,59 @@ namespace kick {
     }
 
     void Button::updateTexture() {
-        if (!sprite){
-            return;
-        }
+        setSpriteName(currentSpriteName());
+    }
+
+    std::string Button::currentSpriteName() {
         switch (state){
             case ButtonState::normal:
-                sprite->setSpriteName(normal);
-                break;
+                return normalName;
             case ButtonState::hover:
-                sprite->setSpriteName(hover);
-                break;
-            case ButtonState::pressed:
-                sprite->setSpriteName(pressed);
-                break;
+                return hoverName;
+            default: ////case ButtonState::pressed:
+                return pressedName;
         }
     }
 
     void Button::activated() {
-        sprite = getGameObject()->addComponent<Sprite>();
-        sprite->setAnchor({0.5f,0.5f});
-        cout << "todo implement"<< endl; // todo implement
-//        textComponent = getGameObject()->getScene()->createText(text);
-//        textComponent->getTransform()->setParent(getTransform());
-//        textComponent->setText(text);
-//        textComponent->setAnchor({0.5f,0.5f});
-//        if (textureAtlas){
-//            sprite->setTextureAtlas(textureAtlas);
-//        }
-//        updateTexture();
+        Sprite::activated();
+        textComponent = panel->createText(text);
+        textComponent->getTransform()->setParent(getTransform());
+        textComponent->setText(text);
+        textComponent->setAnchor({0.5f,0.5f});
+        textComponent->setOrder(getOrder()+1);
+        updateTexture();
     }
 
     void Button::deactivated() {
-        getGameObject()->destroyComponent(sprite);
+        Sprite::deactivated();
         getGameObject()->getScene()->destroyGameObject(textComponent->getGameObject());
     }
 
-    void Button::update() {
+    void Button::down(int button) {
+        cout << "Down"<<endl;
     }
 
-    void Button::setTextureAtlas(std::shared_ptr<TextureAtlas> textureAtlas) {
-        Button::textureAtlas = textureAtlas;
-        if (sprite){
-            sprite->setTextureAtlas(textureAtlas);
+    void Button::pressed(int button) {
+        cout << "Pressed"<<endl;
+    }
+
+    void Button::up(int button) {
+        cout << "Up"<<endl;
+    }
+
+    void Button::over() {
+        cout << "over"<<endl;
+    }
+
+    void Button::out() {
+        cout << "out"<<endl;
+    }
+
+    void Button::setOrder(int order) {
+        Component2D::setOrder(order);
+        if (textComponent){
+            textComponent->setOrder(order+1);
         }
-    }
-
-    std::shared_ptr<TextureAtlas> Button::getTextureAtlas() const {
-        return textureAtlas;
     }
 }

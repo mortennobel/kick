@@ -11,6 +11,7 @@
 #include "kick/mesh/mesh.h"
 #include "kick/mesh/mesh_data.h"
 #include "glm/glm.hpp"
+#include "engine.h"
 #include <algorithm>
 #include <iostream>
 
@@ -26,6 +27,7 @@ namespace kick{
         meshData->setMeshUsage(MeshUsage::DynamicDraw);
         mesh->setMeshData(meshData);
         material = Project::createAsset<Material>();
+        mouseInput = &Engine::instance->getMouseInput();
     }
 
     Panel::~Panel() {
@@ -35,14 +37,12 @@ namespace kick{
     void Panel::render(kick::EngineUniforms *engineUniforms) {
         sort(components.begin(), components.end(), [](Component2D *c1, Component2D *c2){
             int order = c1->getOrder() - c2->getOrder();
-            bool res = order < 0 || (order==0 &&
+            return order < 0 || (order==0 &&
                     (c1->getShader() < c2->getShader()));
-            return res;
         });
 
         vector<Sprite*> sprites;
         TextureAtlas* textureAtlas = nullptr;
-        auto rangeStart = components.begin();
         for (auto iter = components.begin();iter != components.end(); iter++){
             auto text = dynamic_cast<Text*>(*iter);
             if (text){
@@ -205,6 +205,11 @@ namespace kick{
     void Panel::registerComponent2D(Component2D *comp) {
         components.push_back(comp);
         comp->panel = this;
+
+        SpriteMouseListener *sml = dynamic_cast<SpriteMouseListener*>(comp);
+        if (sml){
+            mouseListeners.push_back(sml);
+        }
     }
 
     void Panel::deregisterComponent2D(Component2D *comp) {
@@ -212,6 +217,12 @@ namespace kick{
         if (pos != components.end()){
             (*pos)->panel = nullptr;
             components.erase(pos);
+
+            SpriteMouseListener *sml = dynamic_cast<SpriteMouseListener*>(comp);
+            auto pos2 = find(mouseListeners.begin(), mouseListeners.end(), sml);
+            if (pos2 != mouseListeners.end()){
+                mouseListeners.erase(pos2);
+            }
         }
     }
 
@@ -227,7 +238,6 @@ namespace kick{
 
     Button *Panel::createButton() {
         std::shared_ptr<TextureAtlas> textureAtlas = Project::loadTextureAtlas("assets/ui/ui.txt", "assets/ui/ui.png");
-
         GameObject *gameObject = getGameObject()->getScene()->createGameObject("Button");
         gameObject->getTransform()->setParent(getTransform());
         Button* button = gameObject->addComponent<Button>();
@@ -256,4 +266,28 @@ namespace kick{
     }
 
 
+    void Panel::update() {
+        if (camera==nullptr) {
+            return;
+        }
+        vec2 mousePosition = (vec2)mouseInput->getPosition();
+        vec2 screensize = (vec2)Engine::instance->getContext()->getContextSurfaceDim();
+        vec2 mouseClipCoord = ((mousePosition / screensize)*2.0f-vec2{1.0})*vec2{1,-1};
+
+        mat4 viewProjection = camera->getProjectionMatrix() * camera->getViewMatrix();
+        vec2 viewportFactor{2/screensize.x,2/screensize.y};
+        for (auto ml:mouseListeners){
+            Sprite* sprite = dynamic_cast<Sprite*>(ml);
+            Bounds2D bounds = sprite->getTrimmedBounds();
+            bounds.min *= viewportFactor;
+            bounds.max *= viewportFactor;
+            vec2 mouseLocalCoord = (vec2)(sprite->getTransform()->getGlobalTRSInverse() * vec4{mouseClipCoord, 0,1});
+            if (bounds.contains(mouseLocalCoord)){
+
+            } else {
+
+            }
+
+        }
+    }
 }

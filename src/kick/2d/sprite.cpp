@@ -3,6 +3,7 @@
 //
 
 #include "sprite.h"
+#include "kick/core/log.h"
 
 #include <iostream>
 #include <glm/gtx/string_cast.hpp>
@@ -11,6 +12,9 @@ using namespace std;
 using namespace glm;
 
 namespace kick {
+
+    Sprite::Sprite(GameObject *gameObject) : Component2D(gameObject) {
+    }
 
     std::shared_ptr<TextureAtlas> Sprite::getTextureAtlas() const {
         return textureAtlas;
@@ -122,4 +126,5 @@ namespace kick {
         }
         return nullptr;
     }
+
 }

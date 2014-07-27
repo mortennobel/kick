@@ -6,6 +6,7 @@
 #pragma once
 #include "kick/scene/updatable.h"
 #include "kick/scene/component.h"
+#include "kick/2d/sprite_mouse_listener.h"
 #include "kick/2d/sprite.h"
 #include "kick/2d/text.h"
 #include <string>
@@ -18,10 +19,9 @@ namespace kick {
         normal, hover, pressed
     };
 
-    class Button : public Component, public Updateable {
+    class Button : public Sprite, public SpriteMouseListener {
     public:
-        Button(GameObject *gameObject) : Component(gameObject) {
-        }
+        Button(GameObject *gameObject);
 
         std::string getNormal() const;
         void setNormal(std::string const &normal);
@@ -37,22 +37,23 @@ namespace kick {
         virtual void activated() override;
 
         virtual void deactivated() override;
-
-        virtual void update();
-
-        std::shared_ptr<TextureAtlas> getTextureAtlas() const;
-        void setTextureAtlas(std::shared_ptr<TextureAtlas> textureAtlas);
-
+        virtual void setOrder(int order) override;
     private:
+        std::string currentSpriteName();
+        virtual void down(int button) override;
+        virtual void pressed(int button) override;
+        virtual void up(int button) override;
+        virtual void over() override;
+        virtual void out() override;
+
         std::shared_ptr<TextureAtlas> textureAtlas;
         void updateTexture();
         ButtonState state = ButtonState::normal;
-        std::string normal;
-        std::string hover;
-        std::string pressed;
+        std::string normalName;
+        std::string hoverName;
+        std::string pressedName;
         std::string text;
         std::function<void(Button*)> onClick;
-        Sprite *sprite = nullptr;
         Text *textComponent = nullptr;
     };
 }

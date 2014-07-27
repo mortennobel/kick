@@ -4,6 +4,11 @@
 
 #include "log.h"
 #include <iostream>
+#ifdef __APPLE__
+#include <execinfo.h>
+#endif
+
+#include "glm/glm.hpp"
 
 using namespace std;
 
@@ -42,5 +47,36 @@ namespace kick {
         error = [](std::string message, std::string func, std::string file, int line){
             print("error", message, func, file, line, cerr);
         };
+    }
+
+    // based on http://oroboro.com/stack-trace-on-crash/
+    void Log::printStacktrace(){
+#ifdef __APPLE__
+        FILE *out = stderr;
+        unsigned int max_frames = 63;
+        fprintf(out, "stack trace:\n");
+
+        // storage array for stack trace address data
+        void* addrlist[max_frames+1];
+
+        // retrieve current stack addresses
+        glm::u32 addrlen = backtrace( addrlist, sizeof( addrlist ) / sizeof( void* ));
+
+        if ( addrlen == 0 )
+        {
+            fprintf( out, "  \n" );
+            return;
+        }
+
+        // create readable strings to each frame.
+        char** symbollist = backtrace_symbols( addrlist, addrlen );
+
+        // print the stack trace.
+        for ( glm::u32 i = 4; i < addrlen; i++ )
+            fprintf( out, "%s\n", symbollist[i]);
+
+        free(symbollist);
+
+#endif
     }
 }

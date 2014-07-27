@@ -6,9 +6,11 @@
 #pragma once
 
 #include "kick/scene/component_renderable.h"
+#include "kick/scene/updatable.h"
 #include "kick/scene/camera.h"
 #include "kick/2d/component2d.h"
 #include "kick/texture/texture_atlas.h"
+#include "kick/core/mouse_input.h"
 #include <vector>
 
 namespace kick {
@@ -18,8 +20,10 @@ namespace kick {
     class Text;
     class Mesh;
     class MeshData;
+    class SpriteMouseListener;
 
-    class Panel : public ComponentRenderable {
+    class Panel : public ComponentRenderable, public Updatable {
+
     public:
         Panel(GameObject *gameObject);
         virtual ~Panel();
@@ -28,6 +32,9 @@ namespace kick {
         virtual void deactivated() override;
 
         virtual void render(EngineUniforms *engineUniforms);
+
+
+        virtual void update() override;
 
         virtual int getRenderOrder();
 
@@ -50,8 +57,10 @@ namespace kick {
         void deregisterComponent2D(Component2D* comp);
         Camera* camera = nullptr;
         std::vector<Component2D*> components;
+        std::vector<SpriteMouseListener*> mouseListeners;
         Mesh *mesh = nullptr;
         MeshData* meshData = nullptr;
         Material* material = nullptr;
+        const MouseInput* mouseInput;
     };
 }

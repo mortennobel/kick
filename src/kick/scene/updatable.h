@@ -11,10 +11,10 @@
 namespace kick {
     // "Mixin" must be added to a Component to enable update events
     // Example:
-    // class RotatorComponent : public Component, public Updateable {
+    // class RotatorComponent : public Component, public Updatable {
     // //...
     // }
-    class Updateable  {
+    class Updatable {
     public:
         virtual void update() = 0;
     };

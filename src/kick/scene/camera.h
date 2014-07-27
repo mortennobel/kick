@@ -44,6 +44,7 @@ namespace kick {
         bool isClearStencil();
         void setupCamera(EngineUniforms *engineUniforms);
         glm::mat4 getProjectionMatrix();
+        glm::mat4 getViewMatrix();
         // override projection matrix
         void setProjectionMatrix(glm::mat4 projectionMatrix);
         bool isShadow() const;

@@ -116,14 +116,20 @@ namespace kick {
             glClear(clearFlag);
         }
 
-        engineUniforms->viewMatrix = gameObject->getTransform()->getGlobalTRSInverse();
+        engineUniforms->viewMatrix = getViewMatrix();
         engineUniforms->viewProjectionMatrix = projectionMatrix * engineUniforms->viewMatrix;
         engineUniforms->projectionMatrix = projectionMatrix;
+    }
+
+    glm::mat4 Camera::getViewMatrix(){
+        return gameObject->getTransform()->getGlobalTRSInverse();
     }
 
     void Camera::renderShadowMap(Light* directionalLight){
 
     }
+
+
     
     void Camera::render(EngineUniforms *engineUniforms){
         auto sceneLights = engineUniforms->sceneLights;

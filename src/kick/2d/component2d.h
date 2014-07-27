@@ -17,7 +17,7 @@ namespace kick {
         }
 
         int getOrder() const;
-        void setOrder(int order);
+        virtual void setOrder(int order);
         virtual Shader* getShader() const = 0;
 
         virtual void activated() override;

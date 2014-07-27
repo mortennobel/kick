@@ -22,6 +22,8 @@ namespace kick {
         static void disable();
         /// Set logging to std out and err out streams
         static void reset();
+
+        static void printStacktrace();
     };
 };
 
