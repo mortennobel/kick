@@ -58,6 +58,8 @@ namespace kick {
         Camera* camera = nullptr;
         std::vector<Component2D*> components;
         std::vector<SpriteMouseListener*> mouseListeners;
+        std::vector<SpriteMouseListener*> mouseOver;
+        std::vector<std::pair<SpriteMouseListener*, int>> mousePressed;
         Mesh *mesh = nullptr;
         MeshData* meshData = nullptr;
         Material* material = nullptr;

@@ -272,22 +272,45 @@ namespace kick{
         }
         vec2 mousePosition = (vec2)mouseInput->getPosition();
         vec2 screensize = (vec2)Engine::instance->getContext()->getContextSurfaceDim();
-        vec2 mouseClipCoord = ((mousePosition / screensize)*2.0f-vec2{1.0})*vec2{1,-1};
+        vec2 mouseClipCoord = ((mousePosition / screensize)*2.0f-vec2{1.0})*vec2{1,-1}; // correct
 
-        mat4 viewProjection = camera->getProjectionMatrix() * camera->getViewMatrix();
-        vec2 viewportFactor{2/screensize.x,2/screensize.y};
-        for (auto ml:mouseListeners){
+        mat4 viewProjection = inverse(camera->getProjectionMatrix() * camera->getViewMatrix());
+        vec2 mouseWorldCoord = (vec2)(viewProjection * vec4(mouseClipCoord, 0, 1));
+        int index = 0;
+        for (auto ml : mouseListeners){
             Sprite* sprite = dynamic_cast<Sprite*>(ml);
             Bounds2D bounds = sprite->getTrimmedBounds();
-            bounds.min *= viewportFactor;
-            bounds.max *= viewportFactor;
-            vec2 mouseLocalCoord = (vec2)(sprite->getTransform()->getGlobalTRSInverse() * vec4{mouseClipCoord, 0,1});
+            vec2 mouseLocalCoord = (vec2)(sprite->getTransform()->getGlobalTRSInverse() * vec4{mouseWorldCoord, 0, 1});
+
+            auto mouseOverIter = find(mouseOver.begin(), mouseOver.end(), ml);
+            bool wasMouseOver = mouseOverIter != mouseOver.end();
             if (bounds.contains(mouseLocalCoord)){
+                if (!wasMouseOver){
+                    ml->over();
+                    mouseOver.push_back(ml);
+                }
+                for (int i=0;i<3;i++){
+                    if (mouseInput->down(i)){
+                        ml->down(i);
+                        mousePressed.push_back({ml, i});
+                    }
+                }
 
             } else {
-
+                if (wasMouseOver){
+                    ml->out();
+                    mouseOver.erase(mouseOverIter);
+                }
             }
-
+        }
+        for (int i=mousePressed.size()-1;i>=0;i--){
+            int button = mousePressed[i].second;
+            if (mouseInput->pressed(button)){
+                mousePressed[i].first->pressed(button);
+            } else {
+                mousePressed[i].first->up(button);
+                mousePressed.erase(mousePressed.begin()+i);
+            }
         }
     }
 }

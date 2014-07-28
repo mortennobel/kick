@@ -66,6 +66,9 @@ namespace kick {
     }
 
     std::string Button::currentSpriteName() {
+        if (pressedButtons.size()>0){
+            return pressedName;
+        }
         switch (state){
             case ButtonState::normal:
                 return normalName;
@@ -92,23 +95,28 @@ namespace kick {
     }
 
     void Button::down(int button) {
-        cout << "Down"<<endl;
+        pressedButtons.insert(button);
+        updateTexture();
+        onClick(this);
     }
 
     void Button::pressed(int button) {
-        cout << "Pressed"<<endl;
+
     }
 
     void Button::up(int button) {
-        cout << "Up"<<endl;
+        pressedButtons.erase(button);
+        updateTexture();
     }
 
     void Button::over() {
-        cout << "over"<<endl;
+        state = ButtonState::hover;
+        updateTexture();
     }
 
     void Button::out() {
-        cout << "out"<<endl;
+        state = ButtonState::normal;
+        updateTexture();
     }
 
     void Button::setOrder(int order) {

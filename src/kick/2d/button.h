@@ -11,12 +11,13 @@
 #include "kick/2d/text.h"
 #include <string>
 #include <functional>
+#include <set>
 
 namespace kick {
     class TextureAtlas;
 
     enum class ButtonState {
-        normal, hover, pressed
+        normal, hover
     };
 
     class Button : public Sprite, public SpriteMouseListener {
@@ -55,6 +56,7 @@ namespace kick {
         std::string text;
         std::function<void(Button*)> onClick;
         Text *textComponent = nullptr;
+        std::set<int> pressedButtons;
     };
 }
 

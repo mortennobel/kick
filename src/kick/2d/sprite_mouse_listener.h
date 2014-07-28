@@ -7,6 +7,7 @@
 
 namespace kick{
     class SpriteMouseListener {
+    public:
         virtual void down(int button) {}
 
         virtual void pressed(int button) {}
