@@ -28,7 +28,7 @@ namespace kick {
 
     void Button::setPressed(std::string const &pressed) {
         Button::pressedName = pressed;
-        updateTexture();
+        updateTextureAndTxtColor();
     }
 
     std::string Button::getPressed() const {
@@ -37,7 +37,7 @@ namespace kick {
 
     void Button::setHover(std::string const &hover) {
         Button::hoverName = hover;
-        updateTexture();
+        updateTextureAndTxtColor();
     }
 
     std::string Button::getHover() const {
@@ -46,7 +46,7 @@ namespace kick {
 
     void Button::setNormal(std::string const &normal) {
         Button::normalName = normal;
-        updateTexture();
+        updateTextureAndTxtColor();
     }
 
     std::string Button::getNormal() const {
@@ -61,8 +61,17 @@ namespace kick {
         return onClick;
     }
 
-    void Button::updateTexture() {
+    void Button::updateTextureAndTxtColor() {
         setSpriteName(currentSpriteName());
+        if (pressedButtons.size()>0){
+            textComponent->getMaterial()->setUniform("mainColor", pressedColor);
+        } else {
+            if (state == ButtonState::normal){
+                textComponent->getMaterial()->setUniform("mainColor", normalColor);
+            } else {
+                textComponent->getMaterial()->setUniform("mainColor", hoverColor);
+            }
+        }
     }
 
     std::string Button::currentSpriteName() {
@@ -86,7 +95,7 @@ namespace kick {
         textComponent->setText(text);
         textComponent->setAnchor({0.5f,0.5f});
         textComponent->setOrder(getOrder()+1);
-        updateTexture();
+        updateTextureAndTxtColor();
     }
 
     void Button::deactivated() {
@@ -96,7 +105,7 @@ namespace kick {
 
     void Button::down(int button) {
         pressedButtons.insert(button);
-        updateTexture();
+        updateTextureAndTxtColor();
         onClick(this);
     }
 
@@ -106,17 +115,17 @@ namespace kick {
 
     void Button::up(int button) {
         pressedButtons.erase(button);
-        updateTexture();
+        updateTextureAndTxtColor();
     }
 
     void Button::over() {
         state = ButtonState::hover;
-        updateTexture();
+        updateTextureAndTxtColor();
     }
 
     void Button::out() {
         state = ButtonState::normal;
-        updateTexture();
+        updateTextureAndTxtColor();
     }
 
     void Button::setOrder(int order) {
@@ -124,5 +133,29 @@ namespace kick {
         if (textComponent){
             textComponent->setOrder(order+1);
         }
+    }
+
+    void Button::setPressedColor(glm::vec4 const &pressedColor) {
+        Button::pressedColor = pressedColor;
+    }
+
+    glm::vec4 const &Button::getPressedColor() const {
+        return pressedColor;
+    }
+
+    void Button::setHoverColor(glm::vec4 const &hoverColor) {
+        Button::hoverColor = hoverColor;
+    }
+
+    glm::vec4 const &Button::getHoverColor() const {
+        return hoverColor;
+    }
+
+    void Button::setNormalColor(glm::vec4 const &normalColor) {
+        Button::normalColor = normalColor;
+    }
+
+    glm::vec4 const &Button::getNormalColor() const {
+        return normalColor;
     }
 }

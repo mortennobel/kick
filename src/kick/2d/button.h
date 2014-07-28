@@ -39,6 +39,14 @@ namespace kick {
 
         virtual void deactivated() override;
         virtual void setOrder(int order) override;
+
+
+        glm::vec4 const & getNormalColor() const;
+        void setNormalColor(glm::vec4 const &normalColor);
+        glm::vec4 const & getHoverColor() const;
+        void setHoverColor(glm::vec4 const &hoverColor);
+        glm::vec4 const & getPressedColor() const;
+        void setPressedColor(glm::vec4 const &pressedColor);
     private:
         std::string currentSpriteName();
         virtual void down(int button) override;
@@ -48,11 +56,14 @@ namespace kick {
         virtual void out() override;
 
         std::shared_ptr<TextureAtlas> textureAtlas;
-        void updateTexture();
+        void updateTextureAndTxtColor();
         ButtonState state = ButtonState::normal;
         std::string normalName;
         std::string hoverName;
         std::string pressedName;
+        glm::vec4 normalColor = glm::vec4{1,1,1,1};
+        glm::vec4 hoverColor = glm::vec4{1,1,1,1};
+        glm::vec4 pressedColor = glm::vec4{0,0,0,1};
         std::string text;
         std::function<void(Button*)> onClick;
         Text *textComponent = nullptr;

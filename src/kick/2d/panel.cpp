@@ -246,6 +246,8 @@ namespace kick{
         button->setNormal("button-normal.png");
         button->setHover("button-hover.png");
         button->setPressed("button-pressed.png");
+        button->setScale({2,2});
+
         return button;
     }
 
