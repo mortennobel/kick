@@ -101,7 +101,7 @@ namespace kick {
         friend class GameObject;
 
     private:
-        Scene(const char* name);
+        Scene(const std::string & name);
         Scene(const Scene& scene) = delete;
         void componentListener(Component* component, ComponentUpdateStatus status);
         void addLight(Light *light);

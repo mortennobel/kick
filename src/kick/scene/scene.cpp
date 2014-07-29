@@ -18,18 +18,18 @@
 #include "kick/mesh/mesh.h"
 #include "kick/core/engine.h"
 #include "kick/scene/light.h"
-#include "sprite.h"
+#include "kick/2d/sprite.h"
 #include "glm/gtx/string_cast.hpp"
 #include "kick/texture/texture_atlas.h"
-#include "button.h"
-#include "panel.h"
+#include "kick/2d/button.h"
+#include "kick/2d/panel.h"
 
 using namespace std;
 
 namespace kick {
     
-    Scene::Scene(const char* name)
-    :name(name)
+    Scene::Scene(const std::string & name)
+    :name{name}
     {
     }
     

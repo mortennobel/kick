@@ -11,7 +11,7 @@
 #include "kick/mesh/mesh.h"
 #include "kick/mesh/mesh_data.h"
 #include "glm/glm.hpp"
-#include "engine.h"
+#include "kick/core/engine.h"
 #include <algorithm>
 #include <iostream>
 

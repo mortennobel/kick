@@ -33,7 +33,7 @@ namespace kick {
         Engine(int &argc, char **argv, const WindowConfig& config = WindowConfig::plain);
         Scene *getActiveScene() { return activeScene; }
         void setActiveScene(Scene *scene) { activeScene = scene; }
-        Scene * createScene(const char* name);
+        Scene * createScene(const std::string &name);
         std::vector<Scene>::const_iterator begin() const;
         std::vector<Scene>::const_iterator end() const;
         std::vector<Scene>::iterator begin();

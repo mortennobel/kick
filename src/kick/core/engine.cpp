@@ -53,7 +53,7 @@ namespace kick {
         context->swapBuffer();
     }
     
-    Scene * Engine::createScene(const char* name){
+    Scene * Engine::createScene(const std::string & name){
         scenes.push_back(Scene{name});
         Scene * scene = &(scenes.back());;
         if (!activeScene){
