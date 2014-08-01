@@ -12,13 +12,13 @@ using namespace glm;
 
 namespace kick {
     Ray::Ray()
-    :origin(vec3(0,0,0)),direction(vec3(0,0,-1))
+    :origin{vec3(0,0,0)},direction{vec3(0,0,-1)}
     {
     
     }
     
     Ray::Ray(vec3 origin, vec3 direction)
-    :origin(origin),direction(direction)
+    :origin{origin},direction{glm::normalize(direction)}
     {
     }
     
@@ -28,7 +28,7 @@ namespace kick {
     
     bool Ray::ClosestPoints(glm::vec3 rayOrigin, glm::vec3 rayDirection, glm::vec3 otherRayOrigin, glm::vec3 otherRayDirection, glm::vec3& outPoint1, glm::vec3& outPoint2){
         float epsilon = 1.401298E-45f;
-        bool isParallel = fabs(dot(normalize(rayDirection), normalize(otherRayDirection))) >= 1 - epsilon;
+        bool isParallel = fabs(dot(rayDirection, otherRayDirection)) >= 1 - epsilon;
 		if (isParallel){
 			outPoint1 = vec3{0};
 			outPoint2 = vec3{0};
@@ -64,5 +64,25 @@ namespace kick {
 		outPoint2 = otherRayOrigin + otherRayDirection * res[0];
         
 		return true;
+    }
+
+    void Ray::setDirection(glm::vec3 const &direction) {
+        Ray::direction = glm::normalize(direction);
+    }
+
+    glm::vec3 const &Ray::getDirection() const {
+        return direction;
+    }
+
+    void Ray::setOrigin(glm::vec3 const &origin) {
+        Ray::origin = origin;
+    }
+
+    glm::vec3 const &Ray::getOrigin() const {
+        return origin;
+    }
+
+    glm::vec3 Ray::getPoint(float offset) const {
+        return origin + direction*offset;
     }
 }
