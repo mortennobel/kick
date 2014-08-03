@@ -6,9 +6,13 @@
 
 var makefileName = './Makefile';
 
+var verbose = false;
+
 for (var i=0;i<process.argv.length;i++){
     if (process.argv[i] === '-f' && i+1 < process.argv.length){
         makefileName = process.argv[i+1];
+    } else if (process.argv[i] === '-v' || process.argv[i] === '--verbose'){
+        verbose = true;
     } else {
         var splitString = process.argv[i].split('=');
         if (splitString.length == 2 && (splitString[0] === '--file' || splitString[0] === '--makefile')){
@@ -105,6 +109,64 @@ var getFilesUsingFilter = function(filter){
     return getFilesUsingFilterResursive(root, includeFilter);
 }
 
+// http://stackoverflow.com/a/14387791/420250
+function copyFile(source, target, cb) {
+    if (verbose){
+        console.log("Copy file from "+source+" to "+target);
+    }
+    var cbCalled = false;
+
+    var rd = fs.createReadStream(source);
+    rd.on("error", function(err) {
+        done(err);
+    });
+    var wr = fs.createWriteStream(target);
+    wr.on("error", function(err) {
+        done(err);
+    });
+    wr.on("close", function(ex) {
+        done();
+    });
+    rd.pipe(wr);
+
+    function done(err) {
+        if (!cbCalled) {
+            cb(err);
+            cbCalled = true;
+        }
+    }
+}
+
+var copyFilesUsingFilter = function(filter, destDir, onFinish){
+    var files = getFilesUsingFilter(filter);
+    var root = filter.root || ".";
+    if (root[root.length-1] != pathSep){
+        root += pathSep;
+    }
+    if (destDir[destDir.length-1] != pathSep ){
+        destDir += pathSep;
+    }
+    var copiedFiles = [];
+    var copiedFilesCount = 0;
+    for (var i = 0;i<files.length;i++){
+        var file = files[i];
+        var relativeFileName = file.substr(root.length);
+        var lastPathSepPos = relativeFileName.lastIndexOf(pathSep);
+        var relativePathName = lastPathSepPos !== -1 ? relativeFileName.substr(0, lastPathSepPos) : "";
+        mkdirSync(destDir+relativePathName);
+        copiedFiles.push(relativeFileName);
+        copyFile(file, destDir+relativeFileName, function(err){
+            if (err){
+                console.log(err);
+            }
+            copiedFilesCount++;
+            if (copiedFilesCount == files.length){
+                onFinish(copiedFiles);
+            }
+        });
+    }
+}
+
 function replaceAll(find, replace, str) {
     return str.replace(new RegExp(find, 'g'), replace);
 }
@@ -114,14 +176,25 @@ function fixPath(path){
 }
 
 
-function queueExecs(commands, onEnd){
+function queueExecs(commands, onEnd, cwd){
     var executed = 0;
     for (var i=0;i<commands.length;i++){
         (function(){
             var command = commands[i];
-            exec(command,
+            var options = { encoding: 'utf8',
+                timeout: 0,
+                maxBuffer: 200*1024,
+                killSignal: 'SIGTERM',
+                cwd: null,
+                env: null };
+            if (cwd){
+                options.cwd = cwd;
+            }
+            exec(command, options,
                 function (error, stdout, stderr) {
-                    console.log(command);
+                    if (verbose){
+                        console.log(command);
+                    }
                     if (stdout.length>0) {
                         console.log('stdout:\n' + stdout);
                     }
@@ -144,7 +217,7 @@ function queueExecs(commands, onEnd){
 
 var BuildEM = function(project){
     var objectfiledir = fixPath(project.targetdir) + pathSep + "tmp";
-    var target = fixPath(project.targetdir) + pathSep + project.target;
+    var target = ".." + pathSep + project.target;
     mkdir(objectfiledir);
     var allCommands = [];
 
@@ -171,31 +244,64 @@ var BuildEM = function(project){
             var bcfile = objectfiledir+pathSep + filename+".bc";
             var command = "emcc " + options +buildoptions+ file + " -o " + bcfile;
             allCommands.push(command);
-            bcfiles.push(bcfile);
+            bcfiles.push(filename +".bc");
         }
     }
+
+    // http://stackoverflow.com/a/12761924/420250
+    var deleteFolderRecursive = function(path) {
+        var files = [];
+        if( fs.existsSync(path) ) {
+            files = fs.readdirSync(path);
+            files.forEach(function(file,index){
+                var curPath = path + "/" + file;
+                if(fs.lstatSync(curPath).isDirectory()) { // recurse
+                    deleteFolderRecursive(curPath);
+                } else { // delete file
+                    fs.unlinkSync(curPath);
+                }
+            });
+            fs.rmdirSync(path);
+        }
+    };
+
     var clean = function(){
-        fs.rmdirSync(objectfiledir);
+        if (verbose){
+            console.log("Keeping object directory "+objectfiledir);
+        } else {
+            deleteFolderRecursive(objectfiledir);
+        }
     }
     var link = function(){
         var command = "emcc " + options;
         for (var i=0;i<bcfiles.length;i++){
             command += bcfiles[i] + " ";
         }
-        for (var i=0;i<project.preload.length;i++) {
-            var files = getFilesUsingFilter(project.preload[i]);
-            for (var j=0;j<files.length;j++){
-                command += "--preload-file "+files[j]+" ";
+        var count = 0;
+        var finish = function(){
+            count++;
+            if (count == project.preload.length + project.embed.length){
+                command += " -o " + target;
+                queueExecs([command], clean, objectfiledir);
             }
+        }
+
+        for (var i=0;i<project.preload.length;i++) {
+            copyFilesUsingFilter(project.preload[i], objectfiledir, function(files){
+                for (var j=0;j<files.length;j++){
+                    command += "--preload-file "+files[j]+" ";
+                }
+                finish();
+            });
         }
         for (var i=0;i<project.embed.length;i++) {
-            var files = getFilesUsingFilter(project.embed[i]);
-            for (var j=0;j<files.length;j++){
-                command += "--embed-file "+files[j]+" ";
-            }
+            copyFilesUsingFilter(project.embed[i], objectfiledir, function(files){
+                for (var j=0;j<files.length;j++){
+                    command += "--embed-file "+files[j]+" ";
+                }
+                finish();
+            });
         }
-        command += " -o " + target;
-        queueExecs([command], clean);
     };
 
     queueExecs(allCommands, link);
