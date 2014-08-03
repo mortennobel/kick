@@ -11,14 +11,22 @@
 #include "glm/glm.hpp"
 
 namespace kick {
-    struct Ray {
+    class Ray {
+    public:
         Ray();
         Ray(glm::vec3 origin, glm::vec3 direction);
         
         bool ClosestPoints(Ray otherRay, glm::vec3& outPoint1, glm::vec3& outPoint2);
         
         static bool ClosestPoints(glm::vec3 rayOrigin, glm::vec3 rayDirection, glm::vec3 otherRayOrigin, glm::vec3 otherRayDirection, glm::vec3& outPoint1, glm::vec3& outPoint2);
-        
+
+        glm::vec3 const & getOrigin() const;
+        void setOrigin(glm::vec3 const &origin);
+        glm::vec3 const & getDirection() const;
+        void setDirection(glm::vec3 const &direction);
+
+        glm::vec3 getPoint(float offset) const;
+    private:
         glm::vec3 origin;
         glm::vec3 direction;
     };
