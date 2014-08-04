@@ -4,7 +4,13 @@
 // node make.js [-f FILE, --file=FILE, --makefile=FILE] [target]
 //
 
-var makefileName = './Makefile';
+var makefile = require(makefileName);
+var fs = require('fs');
+var pathSep = require('path').sep;
+var util = require('util'),
+    exec = require('child_process').exec;
+
+var makefileName = '.'+pathSep+'Makefile';
 
 var verbose = false;
 
@@ -21,11 +27,7 @@ for (var i=0;i<process.argv.length;i++){
     }
 }
 
-var makefile = require(makefileName);
-var fs = require('fs');
-var pathSep = require('path').sep;
-var util = require('util'),
-    exec = require('child_process').exec;
+
 
 // https://gist.github.com/danherbert-epam/3960169
 var mkdirSync = function __directory_mkdirSync__(path) {
@@ -254,7 +256,7 @@ var BuildEM = function(project){
         if( fs.existsSync(path) ) {
             files = fs.readdirSync(path);
             files.forEach(function(file,index){
-                var curPath = path + "/" + file;
+                var curPath = path + pathSep + file;
                 if(fs.lstatSync(curPath).isDirectory()) { // recurse
                     deleteFolderRecursive(curPath);
                 } else { // delete file
