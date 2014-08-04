@@ -99,6 +99,9 @@ var getFilesUsingFilterResursive = function getFilesUsingFilterSelf(root, includ
 
 var getFilesUsingFilter = function(filter){
     var root = filter.root || ".";
+    if (root[root.length-1] == pathSep){
+        root = root.substr(0,root.length-1);
+    }
     var includeFilter = function(){return false;}
     if (typeof(filter.filter) === "string"){ // is regexp object
         var re = new RegExp(filter.filter);
@@ -149,6 +152,9 @@ var copyFilesUsingFilter = function(filter, destDir, onFinish){
     }
     var copiedFiles = [];
     var copiedFilesCount = 0;
+    if (files.length == 0){
+        onFinish([]);
+    }
     for (var i = 0;i<files.length;i++){
         var file = files[i];
         var relativeFileName = file.substr(root.length);
@@ -191,11 +197,11 @@ function queueExecs(commands, onEnd, cwd){
             if (cwd){
                 options.cwd = cwd;
             }
+            if (verbose){
+                console.log(command);
+            }
             exec(command, options,
                 function (error, stdout, stderr) {
-                    if (verbose){
-                        console.log(command);
-                    }
                     if (stdout.length>0) {
                         console.log('stdout:\n' + stdout);
                     }
@@ -204,7 +210,6 @@ function queueExecs(commands, onEnd, cwd){
                     }
                     if (error !== null) {
                         console.log('exec error:\n' + error);
-                        process.exit(1);
                     }
                     executed++;
                     if (executed == commands.length){
@@ -281,6 +286,7 @@ var BuildEM = function(project){
         var count = 0;
         var finish = function(){
             count++;
+            console.log(count+"/"+(project.preload.length + project.embed.length));
             if (count == project.preload.length + project.embed.length){
                 command += " -o " + target;
                 queueExecs([command], clean, objectfiledir);
