@@ -7,7 +7,6 @@
 var target = "DEBUG";
 
 for (var i=2;i<process.argv.length;i++){
-    console.log(process.argv[i]);
     if (process.argv[i].indexOf('-')===0){
         i++;
     } else  if (i === process.argv.length-1){

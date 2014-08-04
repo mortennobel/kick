@@ -4,13 +4,14 @@
 // node make.js [-f FILE, --file=FILE, --makefile=FILE] [target]
 //
 
-var makefile = require(makefileName);
 var fs = require('fs');
 var pathSep = require('path').sep;
 var util = require('util'),
     exec = require('child_process').exec;
 
 var makefileName = '.'+pathSep+'Makefile';
+
+var makefile = require(makefileName);
 
 var verbose = false;
 
@@ -26,8 +27,6 @@ for (var i=0;i<process.argv.length;i++){
         }
     }
 }
-
-
 
 // https://gist.github.com/danherbert-epam/3960169
 var mkdirSync = function __directory_mkdirSync__(path) {
