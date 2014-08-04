@@ -286,7 +286,6 @@ var BuildEM = function(project){
         var count = 0;
         var finish = function(){
             count++;
-            console.log(count+"/"+(project.preload.length + project.embed.length));
             if (count == project.preload.length + project.embed.length){
                 command += " -o " + target;
                 queueExecs([command], clean, objectfiledir);
