@@ -80,6 +80,14 @@ var mkdir = function __directory_mkdir__(path, callback) {
     }
 };
 
+function relativePathToAbsolutePath(path){
+    var pwd = process.cwd();
+    while (path.substr(0,2) == ".."){
+        path = path.substr(3); // skip "../"
+        pwd = pwd.substr(0, pwd.lastIndexOf(pathSep));
+    }
+    return pwd + pathSep + path;
+}
 
 var getFilesUsingFilterResursive = function getFilesUsingFilterSelf(root, includeFn) {
     var filesUnfiltered = fs.readdirSync(root);
@@ -135,13 +143,13 @@ function copyFile(source, target, cb) {
 
     function done(err) {
         if (!cbCalled) {
-            cb(err);
             cbCalled = true;
+            cb(err);
         }
     }
 }
 
-var copyFilesUsingFilter = function(filter, destDir, onFinish){
+var copyFilesUsingFilter = function(filter, destDir, excludeList, onFinish){
     var files = getFilesUsingFilter(filter);
     var root = filter.root || ".";
     if (root[root.length-1] != pathSep){
@@ -151,27 +159,48 @@ var copyFilesUsingFilter = function(filter, destDir, onFinish){
         destDir += pathSep;
     }
     var copiedFiles = [];
-    var copiedFilesCount = 0;
-    if (files.length == 0){
-        onFinish([]);
-    }
-    for (var i = 0;i<files.length;i++){
+
+    var queue = [];
+    for (var i = 0;i<files.length;i++) {
         var file = files[i];
         var relativeFileName = file.substr(root.length);
         var lastPathSepPos = relativeFileName.lastIndexOf(pathSep);
         var relativePathName = lastPathSepPos !== -1 ? relativeFileName.substr(0, lastPathSepPos) : "";
-        mkdirSync(destDir+relativePathName);
-        copiedFiles.push(relativeFileName);
-        copyFile(file, destDir+relativeFileName, function(err){
+        mkdirSync(destDir + relativePathName);
+        if (excludeList.indexOf(relativeFileName) == -1){
+            copiedFiles.push(relativeFileName);
+            queue.push({"file":file,"relativeFileName":relativeFileName});
+        } else if (verbose) {
+            console.log("Skipping file "+file);
+        }
+    }
+    if (queue.length == 0){
+        onFinish([]);
+        return;
+    }
+
+    var currentFile = 0;
+    handleFile= function () {
+        if (!queue[currentFile]){
+            console.log(queue, currentFile, queue.length);
+        }
+        copyFile(queue[currentFile].file, destDir+queue[currentFile].relativeFileName, function(err){
             if (err){
                 console.log(err);
             }
-            copiedFilesCount++;
-            if (copiedFilesCount == files.length){
+            currentFile++;
+            if (currentFile > queue.length){
+                console.log("Error too many callbacks for file. was "+currentFile+" queue length "+queue.length);
+            }
+            if (currentFile == queue.length){
                 onFinish(copiedFiles);
+            } else {
+                handleFile();
             }
         });
-    }
+    };
+    handleFile();
+
 }
 
 function replaceAll(find, replace, str) {
@@ -221,9 +250,17 @@ function queueExecs(commands, onEnd, cwd){
     }
 }
 
+function updatePaths(project){
+    for (var i=0;i<project.includedirs.length;i++){
+        project.includedirs[i] = relativePathToAbsolutePath(project.includedirs[i])
+    }
+    project.targetdir = relativePathToAbsolutePath(project.targetdir);
+}
+
 var BuildEM = function(project){
+    updatePaths(project);
     var objectfiledir = fixPath(project.targetdir) + pathSep + "tmp";
-    var target = ".." + pathSep + project.target;
+    var target = project.targetdir + pathSep + project.target;
     mkdir(objectfiledir);
     var allCommands = [];
 
@@ -283,31 +320,54 @@ var BuildEM = function(project){
         for (var i=0;i<bcfiles.length;i++){
             command += bcfiles[i] + " ";
         }
-        var count = 0;
         var finish = function(){
-            count++;
-            if (count == project.preload.length + project.embed.length){
-                command += " -o " + target;
-                queueExecs([command], clean, objectfiledir);
+            if (verbose){
+                console.log("Linking");
             }
+            command += " -o " + target;
+            queueExecs([command], clean, objectfiledir);
         }
 
-        for (var i=0;i<project.preload.length;i++) {
-            copyFilesUsingFilter(project.preload[i], objectfiledir, function(files){
-                for (var j=0;j<files.length;j++){
-                    command += "--preload-file "+files[j]+" ";
-                }
-                finish();
-            });
-        }
-        for (var i=0;i<project.embed.length;i++) {
-            copyFilesUsingFilter(project.embed[i], objectfiledir, function(files){
+        var skipEmbedFiles = [];
+        var embedCount = 0;
+        var embed = function(){
+
+            copyFilesUsingFilter(project.embed[embedCount], objectfiledir, skipEmbedFiles, function(files){
                 for (var j=0;j<files.length;j++){
                     command += "--embed-file "+files[j]+" ";
                 }
-                finish();
+                embedCount++;
+                if (embedCount == project.embed.length){
+                    finish();
+                } else {
+                    embed();
+                }
+            });
+
+        }
+
+        if (verbose){
+            console.log("Searching for preload files");
+        }
+        var preloadCount = 0;
+        function preloadFiles(){
+            copyFilesUsingFilter(project.preload[preloadCount], objectfiledir, [], function(files){
+                for (var j=0;j<files.length;j++){
+                    command += "--preload-file "+files[j]+" ";
+                    skipEmbedFiles.push(files[j]);
+                }
+                preloadCount++;
+                if (preloadCount == project.preload.length){
+                    if (verbose){
+                        console.log("Searching for embed files");
+                    }
+                    embed();
+                } else {
+                    preloadFiles();
+                }
             });
         }
+        preloadFiles();
     };
 
     queueExecs(allCommands, link);
