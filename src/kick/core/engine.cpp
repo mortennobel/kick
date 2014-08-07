@@ -29,6 +29,7 @@ namespace kick {
         createScene("defaultScene");
         context->contextSurfaceSize.registerSyncValue(engineUniforms.viewportDimension);
         context->setKeyInput(&keyInput);
+        context->setTouchInput(&touchInput);
         context->setMouseInput(&mouseInput);
         engineUniforms.viewportDimension.setValue(context->getContextSurfaceDim());
     }
@@ -85,6 +86,7 @@ namespace kick {
     void Engine::startFrame() {
         keyInput.reset();
         mouseInput.reset();
+        touchInput.reset();
     }
 
     const KeyInput &Engine::getKeyInput() {

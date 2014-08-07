@@ -65,10 +65,8 @@ namespace kick {
     bool SDL2Context::init(int &argc, char **argv){
 #ifndef EMSCRIPTEN
         SDL_SetMainReady();
-        bool res = SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO) >= 0;
-#else
-        bool res = SDL_Init(SDL_INIT_EVERYTHING) >= 0;
 #endif
+        bool res = SDL_Init(SDL_INIT_EVERYTHING) >= 0;
 
 #ifndef EMSCRIPTEN
         if (SDL_IsScreenSaverEnabled()){
@@ -94,7 +92,6 @@ namespace kick {
         }
 
 #ifdef EMSCRIPTEN
-        cout << "SDL_SetVideoMode("<<width<<height<<endl;
         SDL_Surface *screen = SDL_SetVideoMode(width, height, 32, SDL_OPENGL);
         window = nullptr;
 #else
@@ -203,6 +200,15 @@ namespace kick {
                 case SDL_MOUSEWHEEL:
                     handleMouseWheel(event.wheel);
                     break;
+                case SDL_FINGERDOWN: /* Touch events */
+                    handleTouch(event.tfinger);
+                    break;
+                case SDL_FINGERUP:
+                    handleTouch(event.tfinger);
+                    break;
+                case SDL_FINGERMOTION:
+                    handleTouch(event.tfinger);
+                    break;
 #ifndef EMSCRIPTEN
                 case SDL_JOYAXISMOTION:
                     break;
@@ -230,12 +236,6 @@ namespace kick {
                     break;
                 case SDL_CONTROLLERDEVICEREMAPPED:
                     break;
-                case SDL_FINGERDOWN: /* Touch events */
-                    break;
-                case SDL_FINGERUP:
-                    break;
-                case SDL_FINGERMOTION:
-                    break;
                 case SDL_DOLLARGESTURE: /* Gesture events */
                     break;
                 case SDL_DOLLARRECORD:
@@ -246,10 +246,12 @@ namespace kick {
                     break;
                 case SDL_DROPFILE: /**< The system requests a file open */
                     break;
+
+#endif
                 default:
                     // unhandled
+                    cout << "Unhandled event "<< event.type << endl;
                     break;
-#endif
             }
         }
         step();
@@ -354,4 +356,22 @@ namespace kick {
         return "";
 #endif
     }
+
+    void SDL2Context::handleTouch(SDL_TouchFingerEvent event) {
+        ivec2 pos{(int)round(contextSurfaceDim.x * event.x), (int)round(contextSurfaceDim.y * event.y)};
+        switch (event.type){
+            case SDL_FINGERDOWN:
+                touchInput->setTouchStarted(event.fingerId, pos, event.pressure);
+                break;
+            case SDL_FINGERMOTION:
+                touchInput->setTouchMoved(event.fingerId, pos, event.pressure);
+                break;
+            case SDL_FINGERUP:
+                touchInput->setTouchEnded(event.fingerId, pos);
+                break;
+            default:
+                cout << "Unknown event type "<<event.type<<endl;
+        }
+    }
+
 }

@@ -36,4 +36,8 @@ namespace kick {
     void Context::setKeyInput(KeyInput* keyInput){
         this->keyInput = keyInput;
     }
+
+    void Context::setTouchInput(TouchInput *touchInput) {
+        this->touchInput = touchInput;
+    }
 }

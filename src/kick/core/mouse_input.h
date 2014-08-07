@@ -44,13 +44,9 @@ namespace kick {
         void reset();
         static const int mouseButtons = 5;
 
-        int getClicks() const {
-            return clicks;
-        }
+        int getClicks() const;
 
-        void setClicks(int clicks) {
-            MouseInput::clicks = clicks;
-        }
+        void setClicks(int clicks);
 
     private:
         // absolute mouse position (relative to upper left corner)

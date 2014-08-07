@@ -80,4 +80,12 @@ namespace kick {
     glm::ivec2 MouseInput::getPosition() const {
         return position;
     }
+
+    int MouseInput::getClicks() const {
+        return clicks;
+    }
+
+    void MouseInput::setClicks(int clicks) {
+        MouseInput::clicks = clicks;
+    }
 }

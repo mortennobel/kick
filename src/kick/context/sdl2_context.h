@@ -45,6 +45,7 @@ namespace kick {
         void handleMouseButton(SDL_MouseButtonEvent event, bool buttonDown);
         void handleMouseWheel(SDL_MouseWheelEvent event);
         void handleKey(SDL_KeyboardEvent event, bool keyDown);
+        void handleTouch(SDL_TouchFingerEvent event);
         Uint32 timeLeft();
         Uint32 nextTime;
         Uint32 tickInterval = 16; // 60 fps
@@ -52,5 +53,7 @@ namespace kick {
         SDL_GLContext context = nullptr;
         std::string basePath;
         bool fullscreen = false;
+
+
     };
 };

@@ -14,6 +14,7 @@
 
 #include "glm/glm.hpp"
 #include "kick/core/event.h"
+#include "kick/core/touch_input.h"
 #include "kick/context/window_config.h"
 
 namespace kick {
@@ -42,10 +43,12 @@ namespace kick {
         std::string getGLSLPrefix();
         void setMouseInput(MouseInput* mouseInput);
         void setKeyInput(KeyInput* keyInput);
+        void setTouchInput(TouchInput* touchInput);
     protected:
         glm::ivec2 contextSurfaceDim = glm::ivec2{512, 512};
 
         MouseInput* mouseInput = nullptr;
         KeyInput* keyInput = nullptr;
+        TouchInput* touchInput = nullptr;
     };
 };

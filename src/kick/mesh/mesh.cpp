@@ -36,6 +36,7 @@ namespace kick {
     
     void Mesh::bind(Shader * shader){
         shader->bind();
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
 #ifndef GL_ES_VERSION_2_0
         if (openglUsingVao()){
 
@@ -49,14 +50,12 @@ namespace kick {
 
                 // reassign buffers
                 glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
-                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
 
                 updateArrayBufferStructure(shader);
                 vertexArrayObject[shader] = vertexArrayObjectIdx;
             } else {
                 GLuint vertexArrayObject = iter->second;
                 glBindVertexArray(vertexArrayObject);
-                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
             }
 
         } else

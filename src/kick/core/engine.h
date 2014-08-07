@@ -18,6 +18,7 @@
 #include "kick/core/engine.h"
 #include "kick/core/mouse_input.h"
 #include "kick/core/key_input.h"
+#include "kick/core/touch_input.h"
 #include "kick/core/default_key_handler.h"
 
 namespace kick {
@@ -58,6 +59,7 @@ namespace kick {
         Context* context = nullptr;
         MouseInput mouseInput;
         KeyInput keyInput;
+        TouchInput touchInput;
         DefaultKeyHandler defaultKeyHandler;
     };
 };
