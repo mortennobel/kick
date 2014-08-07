@@ -28,9 +28,7 @@ namespace kick {
         virtual bool showWindow(const WindowConfig& config) = 0;
         virtual void swapBuffer() = 0;
         virtual void mainLoop() = 0;
-        virtual void setStartFrameCallback(std::function<void ()> startFrameCallback);
-        virtual void setRenderCallback(std::function<void ()> renderCallback);
-        virtual void setUpdateCallback(std::function<void ()> updateCallback);
+
         virtual bool isFullscreen() = 0;
         virtual void setFullscreen(bool fullscreen) = 0;
         virtual void setWindowTitle(std::string title) = 0;
@@ -46,9 +44,7 @@ namespace kick {
         void setKeyInput(KeyInput* keyInput);
     protected:
         glm::ivec2 contextSurfaceDim = glm::ivec2{512, 512};
-        std::function<void ()> startFrameCallback;
-        std::function<void ()> renderCallback;
-        std::function<void ()> updateCallback;
+
         MouseInput* mouseInput = nullptr;
         KeyInput* keyInput = nullptr;
     };

@@ -17,18 +17,6 @@ namespace kick {
     Context::Context()
     {}
 
-    void Context::setStartFrameCallback(std::function<void ()> startFrameCallback){
-        this->startFrameCallback = startFrameCallback;
-    }
-
-    void Context::setRenderCallback(std::function<void ()> renderCallback) {
-        this->renderCallback = renderCallback;
-    };
-    
-    void Context::setUpdateCallback(std::function<void ()> updateCallback) {
-        this->updateCallback = updateCallback;
-    };
-
     glm::ivec2 Context::getContextSurfaceDim(){
         return contextSurfaceDim;
     }

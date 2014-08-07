@@ -9,13 +9,17 @@
 #include "kick/core/engine.h"
 #include "kick/core/time.h"
 #include "kick/context/sdl2_context.h"
+#include <iostream>
+
+using namespace std;
 
 namespace kick {
+
     Engine* Engine::instance = nullptr;
-    
+
     Engine::Engine(int &argc, char **argv,const WindowConfig& config)
-    :context(new SDL2Context()), tickStartTime{Time::getTime()}
-    {
+    :context(new SDL2Context()), tickStartTime{Time::getTime()} {
+        instance = this;
         context->init(argc, argv);
         context->showWindow(config);
         printf("%s (%s)\n",
@@ -23,19 +27,13 @@ namespace kick {
                 glGetString(GL_VERSION)    // e.g. 3.2  INTEL-8.0.61
         );
         createScene("defaultScene");
-        context->setStartFrameCallback([&](){startFrame();});
-        context->setUpdateCallback([&](){update();});
-        context->setRenderCallback([&](){render();});
         context->contextSurfaceSize.registerSyncValue(engineUniforms.viewportDimension);
         context->setKeyInput(&keyInput);
         context->setMouseInput(&mouseInput);
         engineUniforms.viewportDimension.setValue(context->getContextSurfaceDim());
-        
-        instance = this;
     }
 
     void Engine::startMainLoop(){
-        Time::getTime(); // start timer
         context->mainLoop();
     }
 

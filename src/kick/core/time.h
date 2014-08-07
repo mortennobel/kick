@@ -18,6 +18,7 @@ namespace kick {
         // return frame count since startup
         static long getFrame();
         friend class Engine;
+        static void initTimer();
     private:
         static long frame;
         static float deltaTime;

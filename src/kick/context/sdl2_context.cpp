@@ -9,14 +9,15 @@
 #include "kick/context/sdl2_context.h"
 #include "kick/core/mouse_input.h"
 #include "kick/core/key_input.h"
+#include "kick/core/engine.h"
 
 using namespace std;
 using namespace glm;
 
 namespace kick {
-
     SDL2Context *context = nullptr;
-    
+
+
     SDL2Context::SDL2Context(){
         context = this;
         /*
@@ -48,20 +49,27 @@ namespace kick {
     }
     
     SDL2Context::~SDL2Context(){
+
         if (context){
             SDL_GL_DeleteContext(context);
         }
+#ifndef EMSCRIPTEN
         if (window){
             SDL_DestroyWindow(window);
         }
+#endif
         SDL_Quit();
+
     }
     
     bool SDL2Context::init(int &argc, char **argv){
 #ifndef EMSCRIPTEN
         SDL_SetMainReady();
-#endif
         bool res = SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO) >= 0;
+#else
+        bool res = SDL_Init(SDL_INIT_EVERYTHING) >= 0;
+#endif
+
 #ifndef EMSCRIPTEN
         if (SDL_IsScreenSaverEnabled()){
             SDL_DisableScreenSaver();
@@ -78,8 +86,17 @@ namespace kick {
         int depthSize = config.depthBufferSize;
         
         contextSurfaceDim = glm::vec2(width, height);
+        if (depthSize>0){
+            /* Turn on double buffering with a 24bit Z buffer.
+             * You may need to change this to 16 or 32 for your system */
+            SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+            SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, depthSize);
+        }
+
 #ifdef EMSCRIPTEN
+        cout << "SDL_SetVideoMode("<<width<<height<<endl;
         SDL_Surface *screen = SDL_SetVideoMode(width, height, 32, SDL_OPENGL);
+        window = nullptr;
 #else
         /* Request opengl 3.2 context.
          * SDL doesn't have the ability to choose which profile at this time of writing,
@@ -96,14 +113,6 @@ namespace kick {
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,SDL_GL_CONTEXT_PROFILE_CORE);
 #endif
 
-        
-        if (depthSize>0){
-            /* Turn on double buffering with a 24bit Z buffer.
-             * You may need to change this to 16 or 32 for your system */
-            SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-            SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, depthSize);
-        }
-        
         /* Create our window centered at 512x512 resolution */
         window = SDL_CreateWindow(windowName, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                   width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
@@ -120,14 +129,14 @@ namespace kick {
     }
     
     void SDL2Context::step(){
-        updateCallback();
-        renderCallback();
+        Engine::instance->update();
+        Engine::instance->render();
     }
 
     bool SDL2Context::tick(){
         bool quit = false;
         SDL_Event event;
-        startFrameCallback();
+        Engine::instance->startFrame();
         while(SDL_PollEvent(&event))
         {
             switch (event.type) {
@@ -237,6 +246,9 @@ namespace kick {
                     break;
                 case SDL_DROPFILE: /**< The system requests a file open */
                     break;
+                default:
+                    // unhandled
+                    break;
 #endif
             }
         }
@@ -252,7 +264,7 @@ namespace kick {
 
     void SDL2Context::mainLoop(){
 #ifdef EMSCRIPTEN
-        int fps = 60;
+        int fps = 0;
         int simulate_infinite_loop = 1;
         emscripten_set_main_loop(kick_emscripten_tick, fps, simulate_infinite_loop);
 #else

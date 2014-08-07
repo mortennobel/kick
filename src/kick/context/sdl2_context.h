@@ -24,15 +24,15 @@ namespace kick {
     public:
         SDL2Context();
         virtual ~SDL2Context();
-        virtual bool init(int &argc, char **argv);
-        virtual bool showWindow(const WindowConfig& config = WindowConfig::plain);
-        virtual void swapBuffer();
-        virtual void mainLoop();
+        virtual bool init(int &argc, char **argv) override;
+        virtual bool showWindow(const WindowConfig& config = WindowConfig::plain)  override;
+        virtual void swapBuffer() override;
+        virtual void mainLoop()  override;
         std::string getBasePath();
 
-        virtual bool isFullscreen();
+        virtual bool isFullscreen() override;
 
-        virtual void setFullscreen(bool fullscreen);
+        virtual void setFullscreen(bool fullscreen) override;
 
         virtual void setWindowTitle(std::string title) override;
 

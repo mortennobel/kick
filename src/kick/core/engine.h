@@ -45,11 +45,12 @@ namespace kick {
         const KeyInput& getKeyInput();
         DefaultKeyHandler & getDefaultKeyHandler();
         void startMainLoop();
-    private:
-        float tickStartTime;
         void startFrame();
         void update();
         void render();
+    private:
+        float tickStartTime;
+
         Project project;
         std::vector<Scene> scenes;
         EngineUniforms engineUniforms;
