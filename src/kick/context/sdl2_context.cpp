@@ -14,12 +14,12 @@
 using namespace std;
 using namespace glm;
 
+
+
 namespace kick {
-    SDL2Context *context = nullptr;
 
 
     SDL2Context::SDL2Context(){
-        context = this;
         /*
         char *base_path = SDL_GetBasePath();
         if (base_path) {
@@ -49,9 +49,8 @@ namespace kick {
     }
     
     SDL2Context::~SDL2Context(){
-
-        if (context){
-            SDL_GL_DeleteContext(context);
+        if (glContext){
+            SDL_GL_DeleteContext(glContext);
         }
 #ifndef EMSCRIPTEN
         if (window){
@@ -83,13 +82,14 @@ namespace kick {
         int height = config.height;
         int depthSize = config.depthBufferSize;
         
-        contextSurfaceDim = glm::vec2(width, height);
+        contextSurfaceDim = glm::ivec2(width, height);
         if (depthSize>0){
             /* Turn on double buffering with a 24bit Z buffer.
              * You may need to change this to 16 or 32 for your system */
             SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
             SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, depthSize);
         }
+
 
 #ifdef EMSCRIPTEN
         SDL_Surface *screen = SDL_SetVideoMode(width, height, 32, SDL_OPENGL);
@@ -116,7 +116,7 @@ namespace kick {
         if (!window)
             return false;
         
-        context = SDL_GL_CreateContext(window);
+        glContext = SDL_GL_CreateContext(window);
 #endif
         return true;
     }
@@ -260,13 +260,14 @@ namespace kick {
 
 #ifdef EMSCRIPTEN
     void kick_emscripten_tick(){
-        context->tick();
+        SDL2Context *c = (SDL2Context*)Engine::instance->getContext();
+        c->tick();
     }
 #endif
 
     void SDL2Context::mainLoop(){
 #ifdef EMSCRIPTEN
-        int fps = 0;
+        int fps = 0; // 0 is RequestAnimFrame
         int simulate_infinite_loop = 1;
         emscripten_set_main_loop(kick_emscripten_tick, fps, simulate_infinite_loop);
 #else
@@ -332,7 +333,6 @@ namespace kick {
 
     void SDL2Context::setFullscreen(bool fullscreen) {
 #ifndef EMSCRIPTEN
-        cout << "Fullscreen "<<fullscreen<<" value "<<(fullscreen ? SDL_WINDOW_FULLSCREEN : 0)<<endl;
         int error = SDL_SetWindowFullscreen(window, fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
         if (error){
             cout << "Error "<<SDL_GetError()<<endl;

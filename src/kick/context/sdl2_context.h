@@ -23,6 +23,7 @@ namespace kick {
     class SDL2Context : public Context {
     public:
         SDL2Context();
+        SDL2Context(const SDL2Context&) = delete;
         virtual ~SDL2Context();
         virtual bool init(int &argc, char **argv) override;
         virtual bool showWindow(const WindowConfig& config = WindowConfig::plain)  override;
@@ -50,10 +51,8 @@ namespace kick {
         Uint32 nextTime;
         Uint32 tickInterval = 16; // 60 fps
         SDL_Window *window = nullptr;
-        SDL_GLContext context = nullptr;
+        SDL_GLContext glContext = nullptr;
         std::string basePath;
         bool fullscreen = false;
-
-
     };
 };
