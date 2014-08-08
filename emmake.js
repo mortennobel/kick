@@ -275,8 +275,9 @@ var BuildEM = function(project){
     for (var i=0;i<project.buildoptions.length;i++){
         buildoptions += project.buildoptions[i]+" ";
     }
+    var defines = "";
     for (var i=0;i<project.defines.length;i++){
-        buildoptions += "-D "+project.defines[i]+" ";
+        defines += "-D "+project.defines[i]+" ";
     }
     var bcfiles = [];
     for (var i=0;i<project.files.length;i++){
@@ -285,7 +286,7 @@ var BuildEM = function(project){
             var file = files[j];
             var filename = file.split(pathSep).slice(-1)[0];
             var bcfile = objectfiledir+pathSep + filename+".bc";
-            var command = "emcc " + options +buildoptions+ file + " -o " + bcfile;
+            var command = "emcc " + options +buildoptions+ defines + file + " -o " + bcfile;
             allCommands.push(command);
             bcfiles.push(filename +".bc");
         }
@@ -316,7 +317,7 @@ var BuildEM = function(project){
         }
     }
     var link = function(){
-        var command = "emcc " + options;
+        var command = "emcc " + options + buildoptions;
         for (var i=0;i<bcfiles.length;i++){
             command += bcfiles[i] + " ";
         }
