@@ -13,7 +13,6 @@ using namespace glm;
 
 namespace kick{
     void TouchInput::setTouchStarted(int64_t fingerid, glm::ivec2 pos, float pressure) {
-        cout << "touch started "<<glm::to_string(pos)<<endl;
         Touch touch;
         touch.down = true;
         touch.up   = false;
@@ -25,7 +24,6 @@ namespace kick{
     }
 
     void TouchInput::setTouchMoved(int64_t fingerid, glm::ivec2 pos, float pressure) {
-        cout << "touch moved "<<glm::to_string(pos)<<endl;
         auto & touch = touches[fingerid];
 
         touch.delta = pos - touch.pos;
@@ -34,7 +32,6 @@ namespace kick{
     }
 
     void TouchInput::setTouchEnded(int64_t fingerid, glm::ivec2 pos) {
-        cout << "touch ended "<<glm::to_string(pos)<<endl;
         auto & touch = touches[fingerid];
         touch.delta = pos - touch.pos;
         touch.pos = pos;
