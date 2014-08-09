@@ -3,6 +3,11 @@ kick
 
 Simple game engine for C++ 11 / OpenGL 3.x +.
 
+## Cross platform
+ - Desktop OpenGL 3.x and 4.x
+ - OpenGL ES 2.0 and 3.x
+ - WebGL 1.0 (compiled using Emscripten)
+
 ## Dependencies
 
  - SDL 2.x for platform abstraction layer
@@ -25,13 +30,12 @@ http://mortennobel.github.io/kick/
     
     int main(int argc, char * argv[])
     {
-        Engine engine(argc, argv);
-        auto scene = engine.getActiveScene();
+        Engine* engine = Engine::init(argc, argv);
         auto camera = scene->createPerspectiveCamera();
         camera->getGameObject()->getTransform()->setLocalPosition({0,0,10});
         scene->createSphere();
         scene->createDirectionalLight();
-        engine.startMainLoop();
+        engine->startMainLoop();
     
         return 0;
     }
