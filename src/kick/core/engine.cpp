@@ -68,13 +68,6 @@ namespace kick {
         return scenes.end();
     }
     
-    std::vector<Scene>::iterator Engine::begin() {
-        return scenes.begin();
-    }
-    std::vector<Scene>::iterator Engine::end() {
-        return scenes.end();
-    }
-    
     Context* Engine::getContext(){
         return context;
     }
@@ -95,5 +88,10 @@ namespace kick {
 
     DefaultKeyHandler &Engine::getDefaultKeyHandler() {
         return defaultKeyHandler;
+    }
+
+    Engine *Engine::init(int &argc, char **argv, WindowConfig const &config) {
+        assert(instance == nullptr);
+        return new Engine(argc, argv, config);
     }
 }

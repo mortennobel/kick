@@ -7,6 +7,7 @@
 #include "kick/2d/sprite.h"
 #include "kick/2d/button.h"
 #include "kick/scene/scene.h"
+#include "kick/2d/component2d.h"
 #include "kick/material/material.h"
 #include "kick/mesh/mesh.h"
 #include "kick/mesh/mesh_data.h"
@@ -43,13 +44,13 @@ namespace kick{
 
         vector<Sprite*> sprites;
         TextureAtlas* textureAtlas = nullptr;
-        for (auto iter = components.begin();iter != components.end(); iter++){
-            auto text = dynamic_cast<Text*>(*iter);
+        for (auto& comp : components){
+            auto text = dynamic_cast<Text*>(comp);
             if (text){
-                renderSprites(sprites, engineUniforms);
+                renderSprites(sprites, engineUniforms); // render previous sprites
                 text->render(engineUniforms);
             } else {
-                auto sprite = dynamic_cast<Sprite*>(*iter);
+                auto sprite = dynamic_cast<Sprite*>(comp);
                 if (textureAtlas != sprite->getTextureAtlas().get()){
                     renderSprites(sprites, engineUniforms);
                     textureAtlas = sprite->getTextureAtlas().get();
@@ -237,7 +238,7 @@ namespace kick{
     }
 
     Button *Panel::createButton() {
-        std::shared_ptr<TextureAtlas> textureAtlas = Project::loadTextureAtlas("assets/ui/ui.txt", "assets/ui/ui.png");
+        std::shared_ptr<TextureAtlas> textureAtlas = Project::loadTextureAtlas("assets/ui/ui.txt");
         GameObject *gameObject = getGameObject()->getScene()->createGameObject("Button");
         gameObject->getTransform()->setParent(getTransform());
         Button* button = gameObject->addComponent<Button>();
@@ -256,7 +257,7 @@ namespace kick{
         go->getTransform()->setParent(getTransform());
         Text* textComponent = go->addComponent<Text>();
 
-        Font* font = Project::createAsset<Font>();
+        auto font = Project::loadFont();
         textComponent->setFont(font);
         textComponent->setText(text);
 

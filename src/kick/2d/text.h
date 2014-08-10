@@ -19,8 +19,8 @@ namespace kick {
     class Text : public Component2D {
     public:
         Text(GameObject *gameObject);
-        Font * getFont() const;
-        void setFont(Font *font);
+        std::shared_ptr<Font> getFont() const;
+        void setFont(std::shared_ptr<Font>& font);
         virtual void render(EngineUniforms *engineUniforms);
         std::string const & getText() const;
         void setText(std::string const &text);
@@ -37,7 +37,7 @@ namespace kick {
         EventListener<Font*> eventListener;
         Bounds2D bounds;
         void updateVertexBuffer();
-        Font *font = nullptr;
+        std::shared_ptr<Font> font = nullptr;
         Mesh *mesh = nullptr;
         MeshData *meshData = nullptr;
         std::string text;

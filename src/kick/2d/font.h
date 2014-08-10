@@ -33,7 +33,9 @@ class Font : public ProjectAsset {
 public:
     Font(Project *project);
     ~Font();
-    bool loadFntFile(std::string filename = "assets/font/font-default.fnt", std::string texturename = "assets/font/font-default.png");
+    // filename is the .fnt file. There must be a .png with the same name containing the bitmap font texture in
+    // the same folder
+    bool loadFntFile(std::string filename = "assets/font/open_sans_28.fnt");
     int width(std::string text);
     int height();
 
@@ -59,6 +61,7 @@ public:
 
     Event<Font*> fontListener;
 private:
+    int getKerning(int t1, int t2);
     std::shared_ptr<Texture2D> texture;
     int lineHeight = 0;
     int base = 0;
@@ -67,5 +70,6 @@ private:
     int pages = 1;
     std::map<int, FontChar> fontMap;
     std::shared_ptr<Shader> shader;
+    std::map<std::pair<int, int>, int> kerning;
 };
 }

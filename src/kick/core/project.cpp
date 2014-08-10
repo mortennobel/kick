@@ -16,6 +16,7 @@
 
 #include <glm/gtc/type_ptr.hpp>
 #include "kick/texture/texture_atlas.h"
+#include "kick/2d/font.h"
 
 using namespace std;
 
@@ -25,6 +26,7 @@ namespace kick {
     std::map<std::string, std::weak_ptr<Shader>> Project::shaderRef;
     std::map<std::string, std::weak_ptr<Texture2D>> Project::texture2DRef;
     std::map<std::string, std::weak_ptr<TextureCube>> Project::textureCubeRef;
+    std::map<std::string, std::weak_ptr<Font>> Project::fontRef;
 
     Project::Project()
     :assetLoader{new AssetLoader()}
@@ -462,9 +464,10 @@ namespace kick {
         // todo implement
     }
 
-    std::shared_ptr<TextureAtlas> Project::loadTextureAtlas(std::string filename, std::string texture) {
-        string key = filename +"\n" +texture;
-        auto iter = textureAtlasRef.find(key);
+    std::shared_ptr<TextureAtlas> Project::loadTextureAtlas(std::string filename) {
+        std::string texture = filename.substr(0, filename.size()-4) + ".png";
+
+        auto iter = textureAtlasRef.find(filename);
         if (iter != textureAtlasRef.end()){
             if (!iter->second.expired()){
                 return iter->second.lock();
@@ -473,7 +476,21 @@ namespace kick {
         TextureAtlas* textureAtlas = Project::createAsset<TextureAtlas>();
         textureAtlas->load(filename, texture);
         auto ref = std::shared_ptr<TextureAtlas>{textureAtlas};
-        textureAtlasRef[key] = weak_ptr<TextureAtlas>{ref};
+        textureAtlasRef[filename] = weak_ptr<TextureAtlas>{ref};
+        return ref;
+    }
+
+    std::shared_ptr<Font> Project::loadFont(string fontname) {
+        auto iter = fontRef.find(fontname);
+        if (iter != fontRef.end()){
+            if (!iter->second.expired()){
+                return iter->second.lock();
+            }
+        }
+        Font* font = Project::createAsset<Font>();
+        font->loadFntFile(fontname);
+        auto ref = std::shared_ptr<Font>{font};
+        fontRef[fontname] = weak_ptr<Font>{ref};
         return ref;
     }
 }

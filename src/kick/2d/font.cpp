@@ -4,6 +4,7 @@
 
 #include "kick/2d/font.h"
 #include "kick/core/project.h"
+#include "log.h"
 #include <string>
 #include <sstream>
 #include <iostream>
@@ -28,8 +29,10 @@ namespace kick{
         return elems;
     }
 
-    bool Font::loadFntFile(std::string filename, std::string texturename) {
+    bool Font::loadFntFile(string filename) {
+        string texturename = filename.substr(0, filename.size()-4) + ".png";
         fontMap.clear();
+        kerning.clear();
         setTexture(Project::loadTexture2D(texturename));
         if (!texture){
             return false;
@@ -65,37 +68,53 @@ namespace kick{
             } else if (elems[0] == "page") {
             } else if (elems[0] == "chars") {
             } else if (elems[0] == "char") {
-                FontChar f{};
+                FontChar fc{};
                 int id = -1;
                 for (int i=1;i<elems.size();i++){
                     split(elems[i], '=', keyval);
                     if (keyval[0] == "id"){
                         id = stoi(keyval[1]);
                     } else if (keyval[0] == "x"){
-                        f.x = stoi(keyval[1]);
+                        fc.x = stoi(keyval[1]);
                     } else if (keyval[0] == "y"){
-                        f.y = stoi(keyval[1]);
+                        fc.y = stoi(keyval[1]);
                     } else if (keyval[0] == "width"){
-                        f.width = stoi(keyval[1]);
+                        fc.width = stoi(keyval[1]);
                     } else if (keyval[0] == "height"){
-                        f.height = stoi(keyval[1]);
+                        fc.height = stoi(keyval[1]);
                     } else if (keyval[0] == "xoffset"){
-                        f.xoffset = stoi(keyval[1]);
+                        fc.xoffset = stoi(keyval[1]);
                     } else if (keyval[0] == "yoffset"){
-                        f.yoffset = stoi(keyval[1]);
+                        fc.yoffset = stoi(keyval[1]);
                     } else if (keyval[0] == "xadvance"){
-                        f.xadvance = stoi(keyval[1]);
+                        fc.xadvance = stoi(keyval[1]);
                     } else if (keyval[0] == "page"){
-                        f.page = stoi(keyval[1]);
+                        fc.page = stoi(keyval[1]);
                     } else if (keyval[0] == "chnl"){
-                        f.chnl = stoi(keyval[1]);
+                        fc.chnl = stoi(keyval[1]);
                     } else if (keyval[0] == "letter"){
                         //    f.letter = keyval[1].substr (1, (unsigned long) (keyval[1].length()-2));
                     }
                 }
-                fontMap[id] = f;
+                fontMap[id] = fc;
             } else if (elems[0] == "kernings") {
 
+            } else if (elems[0] == "kerning") {
+                int first =0;
+                int second=0;
+                int amount=0;
+                for (int i=1;i<elems.size();i++) {
+
+                    split(elems[i], '=', keyval);
+                    if (keyval[0] == "first"){
+                        first  =stoi(keyval[1]);
+                    } else if (keyval[0] == "second"){
+                        second =stoi(keyval[1]);
+                    } else if (keyval[0] == "amount"){
+                        amount =stoi(keyval[1]);
+                    }
+                }
+                kerning[pair<int,int>{first, second}] = amount;
             } else {
                 cout << "Not found type "<<elems[0]<<endl;
             }
@@ -106,15 +125,28 @@ namespace kick{
 
     int Font::width(std::string text) {
         int sum = 0;
-        for (auto f : text){
-            auto found = fontMap.find((int)f);
+        int lastChar = -1;
+        for (int i=0;i<text.length();i++){
+            int f = text[i];
+            auto found = fontMap.find(f);
             if (found != fontMap.end()){
+                sum += getKerning(lastChar, f);
                 sum += found->second.xadvance;
+                lastChar = f;
             } else {
+                cout << "Cannot find char "<<f<<endl;
                 return -1;
             }
         }
         return sum;
+    }
+
+    int Font::getKerning(int t1, int t2){
+        auto foundKerning = kerning.find(pair<int,int>{t1, t2});
+        if (foundKerning != kerning.end()){
+            return foundKerning->second;
+        }
+        return 0;
     }
 
     int Font::height() {
