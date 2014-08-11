@@ -36,7 +36,6 @@ namespace kick {
     
     void Mesh::bind(Shader * shader){
         shader->bind();
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
 #ifndef GL_ES_VERSION_2_0
         if (openglUsingVao()){
 
@@ -63,7 +62,7 @@ namespace kick {
         {
             updateArrayBufferStructure(shader);
         }
-        
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
     }
     
     void Mesh::updateArrayBufferStructure(Shader *shader){

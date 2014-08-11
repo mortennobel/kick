@@ -437,6 +437,10 @@ namespace kick {
                                 shader->setDefaultUniform(name, value);
                             }
                                 break;
+                            default:{
+                                cout << "Unhandled case " << uniform->type << endl;
+                            }
+                            break;
                         }
                     }
                 }
@@ -480,17 +484,17 @@ namespace kick {
         return ref;
     }
 
-    std::shared_ptr<Font> Project::loadFont(string fontname) {
-        auto iter = fontRef.find(fontname);
+    std::shared_ptr<Font> Project::loadFont(string fontName) {
+        auto iter = fontRef.find(fontName);
         if (iter != fontRef.end()){
             if (!iter->second.expired()){
                 return iter->second.lock();
             }
         }
         Font* font = Project::createAsset<Font>();
-        font->loadFntFile(fontname);
+        font->loadFntFile(fontName);
         auto ref = std::shared_ptr<Font>{font};
-        fontRef[fontname] = weak_ptr<Font>{ref};
+        fontRef[fontName] = weak_ptr<Font>{ref};
         return ref;
     }
 }
