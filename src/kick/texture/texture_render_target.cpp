@@ -12,32 +12,23 @@ using namespace std;
 namespace kick {
     TextureRenderTarget::TextureRenderTarget(Project *project)
             : ProjectAsset(project) {
-#ifndef GL_ES_VERSION_2_0
         glGenFramebuffers(1, &framebuffer);
-#endif
     }
 
     TextureRenderTarget::~TextureRenderTarget() {
-#ifndef GL_ES_VERSION_2_0
         glDeleteFramebuffers(1, &framebuffer);
-#endif
         framebuffer = 0;
     }
 
     void TextureRenderTarget::bind() {
-#ifndef GL_ES_VERSION_2_0
         glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-#endif
     }
 
     void TextureRenderTarget::unbind() {
-#ifndef GL_ES_VERSION_2_0
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-#endif
     }
 
     void TextureRenderTarget::apply() {
-#ifndef GL_ES_VERSION_2_0
         if (renderBuffers.size()) {
             glDeleteRenderbuffers(renderBuffers.size(), renderBuffers.data());
             renderBuffers.clear();
@@ -48,7 +39,7 @@ namespace kick {
         if (colorTextures.size() > 0){
             for (int i=0;i<colorTextures.size();i++) {
                 Texture2D* colorTexture = colorTextures[i].get();
-                glFramebufferTexture(GL_FRAMEBUFFER, (GLenum) (GL_COLOR_ATTACHMENT0+i), colorTexture->textureid, 0);
+                glFramebufferTexture2D(GL_FRAMEBUFFER, (GLenum) (GL_COLOR_ATTACHMENT0+i), GL_TEXTURE_2D, colorTexture->textureid, 0);
             }
         } else {
             GLuint renderBuffer;
@@ -70,31 +61,35 @@ namespace kick {
         checkStatus();
 
         unbind();
-#endif
     }
 
     void TextureRenderTarget::checkStatus() {
-#ifndef GL_ES_VERSION_2_0
         GLenum frameBufferStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
         if (frameBufferStatus != GL_FRAMEBUFFER_COMPLETE) {
             switch (frameBufferStatus) {
-                case GL_FRAMEBUFFER_UNDEFINED:
-                    cerr << ("FRAMEBUFFER_INCOMPLETE_ATTACHMENT");
-                    break;
                 case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
                     cerr << ("GL_FRAMEBUFFER_UNDEFINED");
                     break;
+#ifdef GL_ES_VERSION_2_0
+                case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
+                    cerr << ("GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS");
+                    break;
+#endif
                 case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
                     cerr << ("GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT");
                     break;
+                case GL_FRAMEBUFFER_UNSUPPORTED:
+                    cerr << ("FRAMEBUFFER_UNSUPPORTED");
+                    break;
+#ifndef GL_ES_VERSION_2_0
                 case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
                     cerr << ("GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER");
                     break;
                 case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
                     cerr << ("GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER");
                     break;
-                case GL_FRAMEBUFFER_UNSUPPORTED:
-                    cerr << ("FRAMEBUFFER_UNSUPPORTED");
+                case GL_FRAMEBUFFER_UNDEFINED:
+                    cerr << ("FRAMEBUFFER_INCOMPLETE_ATTACHMENT");
                     break;
                 case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
                     cerr << ("GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE");
@@ -102,12 +97,12 @@ namespace kick {
                 case GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS:
                     cerr << ("GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS");
                     break;
+#endif
                 default:
                     cerr << string("Invalid framebuffer ")+ __1::to_string(frameBufferStatus);
                     break;
             }
         }
-#endif
     }
 
     void TextureRenderTarget::setSize(glm::ivec2 size) {

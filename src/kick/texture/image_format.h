@@ -21,7 +21,7 @@ namespace kick {
     };
     
     struct ImageFormat {
-        GLenum internalFormat = GL_RGB;
+        GLenum internalFormat = GL_RGBA;
         GLenum format = GL_RGBA;
         GLenum type = GL_UNSIGNED_BYTE;
         int mipmapLevel = 0;
