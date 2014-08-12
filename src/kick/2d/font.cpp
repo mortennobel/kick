@@ -4,7 +4,7 @@
 
 #include "kick/2d/font.h"
 #include "kick/core/project.h"
-#include "log.h"
+#include "kick/core/log.h"
 #include <string>
 #include <sstream>
 #include <iostream>
