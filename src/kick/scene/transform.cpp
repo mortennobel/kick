@@ -90,7 +90,7 @@ namespace kick {
     
     void Transform::setRotation(glm::quat rot){
         assert(!glm::isnan(rot.w) && !glm::isnan(rot.x) && !glm::isnan(rot.y) && !glm::isnan(rot.z));
-        if (parent == nullptr){
+        if (parent == nullptr || parent->globalRotationQuat == glm::quat{1, 0,0,0}){
             setLocalRotation(rot);
         } else {
             quat diff = conjugate(rot) * getRotation();
