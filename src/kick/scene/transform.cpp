@@ -40,7 +40,6 @@ namespace kick {
             setLocalPosition(position);
             return;
         }
-        // todo test for correctness
         vec3 currentPosition = getPosition();
         setLocalPosition(currentPosition - position);
         markLocalDirty();
@@ -90,7 +89,8 @@ namespace kick {
     
     void Transform::setRotation(glm::quat rot){
         assert(!glm::isnan(rot.w) && !glm::isnan(rot.x) && !glm::isnan(rot.y) && !glm::isnan(rot.z));
-        if (parent == nullptr || parent->globalRotationQuat == glm::quat{1, 0,0,0}){
+        if (parent == nullptr ||
+                parent->globalRotationQuat == glm::quat{1,0,0,0}){ // if parent is identity rotation
             setLocalRotation(rot);
         } else {
             quat diff = conjugate(rot) * getRotation();
