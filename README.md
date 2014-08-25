@@ -31,6 +31,7 @@ http://mortennobel.github.io/kick/
     int main(int argc, char * argv[])
     {
         Engine* engine = Engine::init(argc, argv);
+        auto scene = engine->getActiveScene();
         auto camera = scene->createPerspectiveCamera();
         camera->getGameObject()->getTransform()->setLocalPosition({0,0,10});
         scene->createSphere();
