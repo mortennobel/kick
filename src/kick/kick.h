@@ -28,6 +28,7 @@
 #include "kick/scene/game_object.h"
 #include "kick/scene/light.h"
 #include "kick/scene/mesh_renderer.h"
+#include "kick/scene/line_renderer.h"
 #include "kick/scene/scene.h"
 #include "kick/scene/transform.h"
 #include "kick/texture/texture2d.h"
