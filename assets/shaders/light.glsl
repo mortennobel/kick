@@ -5,9 +5,13 @@ uniform mat3 _pLights[LIGHTS];
 vec3 getPointLightDiffuse(vec3 normal, vec3 ecPosition, mat3 pLights[LIGHTS]){
     vec3 diffuse = vec3(0.0);
     for (int i=0;i<LIGHTS;i++){
+
         vec3 ecLightPos = pLights[i][0]; // light position in eye coordinates
         vec3 colorIntensity = pLights[i][1];
         vec3 attenuationVector = pLights[i][2];
+        if (colorIntensity == vec3(0.0)){
+            continue;
+        }
 
         // direction from surface to light position
         vec3 VP = ecLightPos -  ecPosition;
@@ -37,6 +41,9 @@ void getPointLight(vec3 normal, vec3 ecPosition, mat3 pLights[LIGHTS],float spec
         vec3 ecLightPos = pLights[i][0]; // light position in eye coordinates
         vec3 colorIntensity = pLights[i][1];
         vec3 attenuationVector = pLights[i][2];
+        if (colorIntensity == vec3(0.0)){
+            continue;
+        }
 
         // direction from surface to light position
         vec3 VP = ecLightPos -  ecPosition;
