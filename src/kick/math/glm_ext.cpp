@@ -13,7 +13,7 @@
 using namespace glm;
 
 namespace kick {
-    glm::mat4 Math::TRS(glm::vec3 translate, glm::quat rotateQuat, glm::vec3 scale){
+    glm::mat4 TRS(glm::vec3 translate, glm::quat rotateQuat, glm::vec3 scale){
         return glm::translate(translate) * mat4_cast(rotateQuat) * glm::scale(scale);
         /*glm::mat4 res;
         float *out = &(res[0][0]);
@@ -54,7 +54,7 @@ namespace kick {
         return res;       */
     }
     
-    glm::mat4 Math::TRSInverse(glm::vec3 translate, glm::quat rotateQuat, glm::vec3 scale){
+    glm::mat4 TRSInverse(glm::vec3 translate, glm::quat rotateQuat, glm::vec3 scale){
         return inverse(TRS(translate, rotateQuat, scale));
         /*
         // Quaternion math
@@ -128,7 +128,7 @@ namespace kick {
         return res;   */
     }
 
-    glm::quat Math::lookAt(glm::vec3 eyePosition, glm::vec3 lookAtPos, glm::vec3 up){
+    glm::quat lookAt(glm::vec3 eyePosition, glm::vec3 lookAtPos, glm::vec3 up){
         return quat_cast(glm::lookAt(eyePosition, lookAtPos, up));
     }
 }

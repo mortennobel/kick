@@ -157,7 +157,7 @@ namespace kick {
     
     glm::mat4 Transform::getLocalTRSInverse(){
         if (dirty.localInv){
-            localMatrixInverse = Math::TRSInverse(localPosition, localRotationQuat, localScale);
+            localMatrixInverse = kick::TRSInverse(localPosition, localRotationQuat, localScale);
             dirty.localInv = false;
         }
         return localMatrixInverse;
@@ -181,13 +181,13 @@ namespace kick {
         vec3 eye = getPosition();
         vec3 center = target->getPosition();
         assert(glm::length(eye - center) > glm::epsilon<float>());
-        auto rotation = Math::lookAt(eye, center, up);
+        auto rotation = kick::lookAt(eye, center, up);
         setRotation(conjugate(rotation));
     }
     
     glm::mat4 Transform::getLocalMatrix(){
         if (dirty.local) {
-            localMatrix = Math::TRS(localPosition, localRotationQuat, localScale);
+            localMatrix = kick::TRS(localPosition, localRotationQuat, localScale);
             dirty.local = false;
         }
         return localMatrix;
