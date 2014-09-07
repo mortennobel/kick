@@ -25,7 +25,7 @@ void initEngine(int& argc, char** argv){
     // Manually create engine instance
     //GLUTContext cont;
 
-    ::engine = new Engine (argc, argv);
+    ::engine = Engine::init(argc, argv);
     kick::Log::disable();
 }
 

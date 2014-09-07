@@ -12,13 +12,11 @@
 #include <glm/ext.hpp>
 
 namespace kick {
-    class Math {
-    public:
-        static glm::mat4 TRS(glm::vec3 translate, glm::quat rotate, glm::vec3 scale);
-        
-        static glm::mat4 TRSInverse(glm::vec3 translate, glm::quat rotate, glm::vec3 scale);
-        
-        // based on http://stackoverflow.com/questions/18172388/glm-quaternion-lookat-function
-        static glm::quat lookAt(glm::vec3 eyePosition, glm::vec3 lookAtPos, glm::vec3 up = glm::vec3(0,1,0));
-    };
+
+    glm::mat4 TRS(glm::vec3 translate, glm::quat rotate, glm::vec3 scale);
+
+    glm::mat4 TRSInverse(glm::vec3 translate, glm::quat rotate, glm::vec3 scale);
+
+    glm::quat lookAt(glm::vec3 eyePosition, glm::vec3 lookAtPos, glm::vec3 up = glm::vec3(0,1,0));
+
 };
