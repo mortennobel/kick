@@ -12,17 +12,15 @@
 #include <memory>
 #include <unordered_map>
 #include <vector>
-#ifdef EMSCRIPTEN
-#   include <SDL/SDL_image.h>
-#else
-#   include <SDL2_image/SDL_image.h>
-#endif
+
 #include "kick/core/project_asset.h"
 #include "kick/core/asset_loader.h"
 #include "kick/texture/texture2d.h"
 #include "kick/material/shader.h"
 #include "kick/texture/texture_atlas.h"
 
+// forward declaration
+struct SDL_Surface;
 
 namespace kick {
     class Engine;

@@ -17,7 +17,11 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "kick/texture/texture_atlas.h"
 #include "kick/2d/font.h"
-
+#ifdef EMSCRIPTEN
+#   include <SDL/SDL_image.h>
+#else
+#   include <SDL2_image/SDL_image.h>
+#endif
 using namespace std;
 
 namespace kick {

@@ -7,11 +7,7 @@
 //
 #pragma once
 
-#ifdef EMSCRIPTEN
-#   include <SDL/SDL_keycode.h>
-#else
-#   include <SDL2/SDL_keycode.h>
-#endif
+#include "kick/core/key_input_enum.h"
 #include <set>
 #include <vector>
 #include <initializer_list>
