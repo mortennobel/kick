@@ -175,14 +175,18 @@ namespace kick {
         }
         return globalMatrixInverse;
     }
-    
-    void Transform::lookAt(Transform *target, glm::vec3 up){
+
+    void Transform::lookAt(vec3 center, glm::vec3 up){
         assert(!glm::any(glm::isnan(up)));
         vec3 eye = getPosition();
-        vec3 center = target->getPosition();
         assert(glm::length(eye - center) > glm::epsilon<float>());
         auto rotation = kick::lookAt(eye, center, up);
         setRotation(conjugate(rotation));
+    }
+
+    void Transform::lookAt(Transform *target, glm::vec3 up){
+        vec3 center = target->getPosition();
+        lookAt(center, up);
     }
     
     glm::mat4 Transform::getLocalMatrix(){
