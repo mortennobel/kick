@@ -15,7 +15,7 @@ namespace kick {
     float Time::getTime() {
         static time_point<system_clock> start = system_clock::now();
         auto elapsed_seconds = duration_cast<std::chrono::microseconds>(system_clock::now()-start);
-        return elapsed_seconds.count()*10.0e-6f;
+        return elapsed_seconds.count()*1.0e-6f;
     }
 
     long Time::getFrame() {
