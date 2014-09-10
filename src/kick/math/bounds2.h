@@ -57,6 +57,11 @@ namespace kick {
             return {max.x, max.y};
         }
 
+        Bounds2 lerp(float f, Bounds2 b){
+            return Bounds2 {glm::mix(min, b.min, f), glm::mix(max, b.max, f)};
+
+        }
+
         bool contains(glm::vec2 point){
             return min.x <= point.x && min.y <= point.y &&
                    max.x >= point.x && max.y >= point.y;

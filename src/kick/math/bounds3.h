@@ -40,6 +40,11 @@ namespace kick {
             max = glm::vec3{ std::numeric_limits<float>::lowest() };
         }
 
+        Bounds3 lerp(float f, Bounds3 b){
+            return Bounds3 {glm::mix(min, b.min, f), glm::mix(max, b.max, f)};
+
+        }
+
         bool contains(glm::vec3 point){
             return min.x <= point.x && min.y <= point.y && min.z <= point.z &&
                     max.x >= point.x && max.y >= point.y && max.z >= point.z
