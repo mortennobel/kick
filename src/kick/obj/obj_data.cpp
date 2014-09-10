@@ -30,6 +30,11 @@ namespace kick {
                             std::to_string(vertexPositions.size()));
                     return false;
                 }
+                if (vertex.vertexPositionIdx<=0){
+                    logError(string{"Invalid vertex position index. Must be positive. Was "} +
+                            std::to_string(vertex.vertexPositionIdx));
+                    return false;
+                }
                 
                 if (vertex.textureIdx > textureCoords.size()){
                     logError(string{"Invalid texture index. Index was "} +

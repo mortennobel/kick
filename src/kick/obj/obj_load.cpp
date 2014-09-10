@@ -61,7 +61,7 @@ namespace kick {
         size_t start_pos = str.find(from);
         if(start_pos == std::string::npos)
             return false;
-        str.replace(start_pos, from.length(), to);
+        str = str.replace(start_pos, from.length(), to);
         return true;
     }
     
@@ -70,12 +70,15 @@ namespace kick {
         for (int i=1; i<tokens.size(); i++) {
             string & p = tokens[i];
             replace(p, "//","/0/");
-            
+
+            if (p.length()==0){
+                continue;
+            }
+
             ObjVertex o{0,0,0};
             
             stringstream ss{p};
             char buffer[50];
-            
             ss.getline(buffer,50, '/');
             o.vertexPositionIdx = atoi(buffer);
             if (ss.good()){
@@ -88,7 +91,7 @@ namespace kick {
             }
             res.push_back(o);
         }
-        return move(res);
+        return res;
     }
     
     void parseMaterialLib(std::string & materialLib, ObjData & dest){
