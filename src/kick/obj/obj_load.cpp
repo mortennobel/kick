@@ -199,6 +199,9 @@ namespace kick {
     }
     
     std::string fixPathEnd(std::string &path){
+        if (path.length() == 0){
+            return path;
+        }
         char lastChar = path[path.length()-1];
         if (lastChar != '/'){
             return path + "/";

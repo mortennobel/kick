@@ -91,8 +91,8 @@ namespace kick {
         return type;
     }
 
-    Bounds2D Sprite::getBounds() const {
-        Bounds2D bounds;
+    Bounds2 Sprite::getBounds() const {
+        Bounds2 bounds;
 
         float w = entry.spriteSourceSize.z * scale.x;
         float h = entry.spriteSourceSize.w * scale.y;
@@ -101,8 +101,8 @@ namespace kick {
         return bounds;
     }
 
-    Bounds2D Sprite::getTrimmedBounds() const {
-        Bounds2D bounds;
+    Bounds2 Sprite::getTrimmedBounds() const {
+        Bounds2 bounds;
 
         float w = entry.frame.z * scale.x;
         float h = entry.frame.w * scale.y;

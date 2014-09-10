@@ -113,7 +113,7 @@ namespace kick {
         mesh->setMeshData(meshData);
     }
 
-    Bounds2D Text::getBounds() {
+    Bounds2 Text::getBounds() {
         return bounds;
     }
 

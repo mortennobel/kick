@@ -8,7 +8,7 @@
 #include "kick/2d/component2d.h"
 #include "kick/scene/game_object.h"
 #include "kick/2d/font.h"
-#include "kick/math/bounds2d.h"
+#include "bounds2.h"
 #include "kick/core/event_listener.h"
 
 
@@ -24,7 +24,7 @@ namespace kick {
         virtual void render(EngineUniforms *engineUniforms);
         std::string const & getText() const;
         void setText(std::string const &text);
-        Bounds2D getBounds();
+        Bounds2 getBounds();
         Shader* getShader() const override;
         Material * getMaterial() const;
         void setMaterial(Material *material);
@@ -35,7 +35,7 @@ namespace kick {
         void setAnchor(glm::vec2 anchor);
     private:
         EventListener<Font*> eventListener;
-        Bounds2D bounds;
+        Bounds2 bounds;
         void updateVertexBuffer();
         std::shared_ptr<Font> font = nullptr;
         Mesh *mesh = nullptr;

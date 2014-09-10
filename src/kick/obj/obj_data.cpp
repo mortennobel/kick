@@ -65,8 +65,45 @@ namespace kick {
         std::vector<unsigned int> res;
         for (auto & f : faces){
             assert (f.size()==3);
-            for (auto &v : f){
-                res.push_back(v.vertexPositionIdx-1);
+            for (int i=0;i<3;i++){
+                res.push_back((unsigned short)(f[i].vertexPositionIdx-1));
+            }
+            for (int i=3;i<f.size();i++){
+                res.push_back((unsigned short)(f[0].vertexPositionIdx-1));
+                res.push_back((unsigned short)(f[i-1].vertexPositionIdx-1));
+                res.push_back((unsigned short)(f[i].vertexPositionIdx-1));
+            }
+        }
+        return res;
+    }
+
+    std::vector<glm::vec3> ObjData::getVertexPositionVec3() {
+        std::vector<glm::vec3> res;
+        for (auto p : vertexPositions){
+            res.push_back((glm::vec3)p);
+        }
+        return res;
+    }
+
+    std::vector<glm::vec2> ObjData::getTextureCoordsVec2() {
+        std::vector<glm::vec2> res;
+        for (auto t : textureCoords){
+            res.push_back((glm::vec2)t);
+        }
+        return res;
+    }
+
+    std::vector<unsigned short> ObjData::getIndicesUS() {
+        std::vector<unsigned short> res;
+        for (auto & f : faces){
+            assert (f.size()>=3);
+            for (int i=0;i<3;i++){
+                res.push_back((unsigned short)(f[i].vertexPositionIdx-1));
+            }
+            for (int i=3;i<f.size();i++){
+                res.push_back((unsigned short)(f[0].vertexPositionIdx-1));
+                res.push_back((unsigned short)(f[i-1].vertexPositionIdx-1));
+                res.push_back((unsigned short)(f[i].vertexPositionIdx-1));
             }
         }
         return res;

@@ -25,8 +25,4 @@ namespace kick {
     float Time::getDeltaTime() {
         return deltaTime;
     }
-
-    void Time::initTimer(){
-        getTime();
-    }
 };

@@ -10,6 +10,7 @@
 #include "kick/scene/game_object.h"
 #include "kick/mesh/mesh.h"
 #include "kick/scene/game_object.h"
+#include "log.h"
 
 namespace kick {
     MeshRenderer::MeshRenderer(GameObject *gameObject)
@@ -24,7 +25,10 @@ namespace kick {
     }
     
     void MeshRenderer::render(EngineUniforms *engineUniforms){
-        for (int i=0;i<materials.size();i++){
+        if (mesh == nullptr){
+            logWarning("Cannot render mesh is null");
+        }
+        for (unsigned int i=0;i<materials.size();i++){
             auto material = materials[i];
             auto shader = material->getShader();
             mesh->bind(shader.get());

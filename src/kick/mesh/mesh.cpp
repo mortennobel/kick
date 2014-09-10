@@ -8,6 +8,7 @@
 
 #include "mesh.h"
 #include "kick/mesh/mesh_data.h"
+#include "log.h"
 #include <vector>
 #include <set>
 
@@ -79,6 +80,10 @@ namespace kick {
     }
     
     void Mesh::render(unsigned int submeshIndex){
+        if (submeshIndex >= submeshData.size()){
+            logWarning("submesh not found");
+            return;
+        }
         auto data = submeshData[submeshIndex];
         GLenum mode = data.mode;
         GLsizei count = data.indexCount;

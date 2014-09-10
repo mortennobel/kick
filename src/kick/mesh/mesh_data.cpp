@@ -51,6 +51,7 @@ namespace kick {
     MeshData::MeshData(Project *p)
     :ProjectAsset{p}
     {
+        setSubmesh(0, {}, MeshType::Triangles);
     }
     
     void MeshData::setAabb(const AABB &a){

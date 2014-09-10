@@ -98,6 +98,10 @@ namespace kick {
         std::vector<float> getInterleavedVertexData(bool includeTextureCoords = true, bool includeNormals = true, int vertexPositionSize = 3, int texCoordinateSize = 2);
 
         std::vector<unsigned int> getIndices();
+
+        std::vector<glm::vec3> getVertexPositionVec3();
+        std::vector<glm::vec2> getTextureCoordsVec2();
+        std::vector<unsigned short> getIndicesUS();
     };
 
 }

@@ -82,7 +82,7 @@ namespace kick{
 
 
             TextureAtlasEntry entry = sprite->getEntry();
-            Bounds2D bounds = sprite->getTrimmedBounds();
+            Bounds2 bounds = sprite->getTrimmedBounds();
             vec4 color = sprite->getColor();
 
             if (sprite->getType() == SpriteType::Simple) {
@@ -282,7 +282,7 @@ namespace kick{
         int index = 0;
         for (auto ml : mouseListeners){
             Sprite* sprite = dynamic_cast<Sprite*>(ml);
-            Bounds2D bounds = sprite->getTrimmedBounds();
+            Bounds2 bounds = sprite->getTrimmedBounds();
             vec2 mouseLocalCoord = (vec2)(sprite->getTransform()->getGlobalTRSInverse() * vec4{mouseWorldCoord, 0, 1});
 
             auto mouseOverIter = find(mouseOver.begin(), mouseOver.end(), ml);

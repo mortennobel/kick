@@ -8,7 +8,7 @@
 #include "kick/texture/texture_atlas.h"
 #include <string>
 #include "kick/core/event.h"
-#include "kick/math/bounds2d.h"
+#include "bounds2.h"
 
 #pragma once
 
@@ -38,8 +38,8 @@ namespace kick {
 
         TextureAtlasEntry getEntry() const;
 
-        Bounds2D getTrimmedBounds() const;
-        Bounds2D getBounds() const;
+        Bounds2 getTrimmedBounds() const;
+        Bounds2 getBounds() const;
 
         virtual Shader *getShader() const;
 
