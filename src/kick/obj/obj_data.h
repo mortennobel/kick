@@ -12,6 +12,7 @@
 #include <iostream>
 #include <glm/glm.hpp>
 #include <vector>
+#include "kick/mesh/mesh_data.h"
 
 namespace kick {
     struct ObjVertex {
@@ -99,9 +100,7 @@ namespace kick {
 
         std::vector<unsigned int> getIndices();
 
-        std::vector<glm::vec3> getVertexPositionVec3();
-        std::vector<glm::vec2> getTextureCoordsVec2();
-        std::vector<unsigned short> getIndicesUS();
+        MeshData* getMeshData();
     };
 
 }

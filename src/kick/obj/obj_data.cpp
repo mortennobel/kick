@@ -10,6 +10,7 @@
 #include <stdexcept>
 #include <string>
 #include "kick/core/log.h"
+#include "project.h"
 
 using namespace std;
 
@@ -82,35 +83,71 @@ namespace kick {
         return res;
     }
 
-    std::vector<glm::vec3> ObjData::getVertexPositionVec3() {
-        std::vector<glm::vec3> res;
-        for (auto p : vertexPositions){
-            res.push_back((glm::vec3)p);
-        }
-        return res;
-    }
+    MeshData *ObjData::getMeshData() {
+        MeshData *meshData = Project::createAsset<MeshData>();
 
-    std::vector<glm::vec2> ObjData::getTextureCoordsVec2() {
-        std::vector<glm::vec2> res;
-        for (auto t : textureCoords){
-            res.push_back((glm::vec2)t);
-        }
-        return res;
-    }
+        struct tuple_hash
+        {
+            std::size_t operator()(const tuple<int,int,int>& k) const
+            {
+                return (std::get<0>(k) << 16) | (std::get<1>(k) << 8) | std::get<2>(k);
+            }
+        };
 
-    std::vector<unsigned short> ObjData::getIndicesUS() {
-        std::vector<unsigned short> res;
+        unordered_map<tuple<int, int, int>, int, tuple_hash> map;
+        std::vector<glm::vec3> vertices;
+        std::vector<glm::vec2> uv;
+        std::vector<glm::vec3> ns;
+        std::vector<unsigned short> indices;
+
+        auto insert = [&](int i, ObjFace& f){
+            tuple<int,int,int> t{f[i].vertexPositionIdx, f[i].textureIdx, f[i].normalIdx};
+            auto res = map.find(t);
+            if (res != map.end()){
+                int index = res->second;
+                indices.push_back(index);
+            } else {
+                int index = map.size();
+                map[t] = index;
+                indices.push_back((unsigned short) index);
+                vertices.push_back((glm::vec3)vertexPositions[f[i].vertexPositionIdx-1]);
+                if (textureCoords.size() > f[i].textureIdx-1){
+                    uv.push_back((glm::vec2)textureCoords[f[i].textureIdx-1]);
+                }
+                if (normals.size() > f[i].normalIdx-1){
+                    ns.push_back((glm::vec3)normals[f[i].normalIdx-1]);
+                }
+            }
+        };
+
         for (auto & f : faces){
             assert (f.size()>=3);
             for (int i=0;i<3;i++){
-                res.push_back((unsigned short)(f[i].vertexPositionIdx-1));
+                insert(i, f);
             }
             for (int i=3;i<f.size();i++){
-                res.push_back((unsigned short)(f[0].vertexPositionIdx-1));
-                res.push_back((unsigned short)(f[i-1].vertexPositionIdx-1));
-                res.push_back((unsigned short)(f[i].vertexPositionIdx-1));
+                insert(0, f);
+                insert(i-1, f);
+                insert(i, f);
             }
         }
-        return res;
+
+        meshData->setPosition(vertices);
+        meshData->setSubmesh(0, indices, MeshType::Triangles);
+        if (uv.size()>0){
+            meshData->setTexCoord0(uv);
+        }
+        if (ns.size()==0){
+            meshData->recomputeNormals();
+        } else {
+            if (ns[0] == glm::vec3{0}){
+                logWarning("Invalid normal import.Was {0,0,0}");
+                meshData->recomputeNormals();
+            } else {
+                meshData->setNormal(ns);
+            }
+        }
+
+        return meshData;
     }
 }
