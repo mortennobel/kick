@@ -11,6 +11,7 @@
 #include <iostream>
 #include <vector>
 #include "kick/scene/engine_uniforms.h"
+#include "kick/core/event.h"
 
 namespace kick {
 
@@ -33,10 +34,14 @@ namespace kick {
         virtual void deactivated(){}
         Transform* getTransform();
         GameObject* getGameObject();
+
+        bool isEnabled() const;
+        void setEnabled(bool enabled);
     protected:
         GameObject* gameObject;
     private:
         Component(const Component& component) = delete;
+        bool enabled = true;
     };
     
     typedef std::vector<Component*>::const_iterator ConstComponentIter;

@@ -41,4 +41,15 @@ namespace kick {
     GameObject *Component::getGameObject() {
         return gameObject;
     }
+
+    bool Component::isEnabled() const {
+        return enabled;
+    }
+
+    void Component::setEnabled(bool enabled) {
+        if (Component::enabled != enabled){
+            Component::enabled = enabled;
+
+        }
+    }
 }

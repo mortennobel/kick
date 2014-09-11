@@ -25,6 +25,9 @@ namespace kick {
     }
     
     void MeshRenderer::render(EngineUniforms *engineUniforms){
+        if (!isEnabled()){
+            return;
+        }
         if (mesh == nullptr){
             logWarning("Cannot render mesh is null");
         }

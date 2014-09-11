@@ -132,6 +132,9 @@ namespace kick {
 
     
     void Camera::render(EngineUniforms *engineUniforms){
+        if (!isEnabled()){
+            return;
+        }
         auto sceneLights = engineUniforms->sceneLights;
         if (shadow && sceneLights->directionalLight && sceneLights->directionalLight->getShadowType() != ShadowType::None) {
             renderShadowMap(sceneLights->directionalLight);

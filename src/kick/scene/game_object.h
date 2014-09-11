@@ -64,6 +64,7 @@ namespace kick {
         int layer = 1;
         bool destroyed = false;
         std::vector<Component*> components;
+        std::vector<Component*> newComponents;
         std::vector<std::function<void (Component*, ComponentUpdateStatus)>> componentListeners;
         Transform *transform;
     };
