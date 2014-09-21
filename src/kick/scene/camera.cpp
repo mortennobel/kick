@@ -19,6 +19,7 @@
 #include "kick/texture/texture_render_target.h"
 #include "kick/core/engine.h"
 #include "kick/scene/light.h"
+#include "misc.h"
 
 using namespace std;
 using namespace glm;
@@ -33,6 +34,7 @@ namespace kick {
 
     Camera::~Camera() {
         destroyShadowMap();
+        delete pickingRenderTarget;
     }
     
     void Camera::activated(){
@@ -128,8 +130,6 @@ namespace kick {
     void Camera::renderShadowMap(Light* directionalLight){
 
     }
-
-
     
     void Camera::render(EngineUniforms *engineUniforms){
         if (!isEnabled()){
@@ -156,8 +156,66 @@ namespace kick {
         if (target){
             target->unbind();
         }
+
+        if (pickQueue.size() > 0){
+            handleObjectPicking(engineUniforms);
+        }
     }
-    
+
+    void Camera::handleObjectPicking(EngineUniforms *engineUniforms) {
+        auto viewportSize = engineUniforms->viewportDimension.getValue();
+        if (pickingRenderTarget == nullptr || viewportSize != pickingRenderTarget->getSize()){
+            delete pickingRenderTarget;
+            pickingRenderTarget = new TextureRenderTarget();
+            pickingRenderTarget->setSize(viewportSize);
+            if (pickingTexture == nullptr){
+                pickingTexture = make_shared<Texture2D>();
+            }
+            ImageFormat imageFormat{};
+            imageFormat.mipmap = Mipmap::None;
+            pickingTexture->setData(viewportSize.x, viewportSize.y, nullptr, imageFormat);
+
+            pickingRenderTarget->setColorTexture(0, pickingTexture);
+            if (pickingShader.get() == nullptr){
+                pickingShader = Project::loadShader("assets/shaders/__pick.shader");
+            }
+        }
+        pickingRenderTarget->bind();
+        glClearColor(0, 0, 0, 0);
+        glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+        for (auto c : renderableComponents){
+            if (c->getGameObject()->getLayer() & cullingMask) {
+                c->render(engineUniforms, pickingShader.get());
+            }
+        }
+        for (auto q : pickQueue){
+            vector<glm::u8vec4> data(q.size.x * q.size.y);
+            glReadPixels(q.point.x, q.point.y, q.size.x, q.size.y, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *) glm::value_ptr(*data.data()));
+            std::map<int,int> gameObjectFrequency;
+            for (auto p : data){
+                int uid = vec4ToUint32(p);
+                cout << "uid "<<uid<<endl;
+                if (uid != 0){
+                    auto iter = gameObjectFrequency.find(uid);
+                    if (iter != gameObjectFrequency.end()){
+                        iter->second++;
+                    } else {
+                        gameObjectFrequency.insert(pair<int,int>(uid,1));
+                    }
+                }
+            }
+            auto scene = gameObject->getScene();
+            for (auto uid : gameObjectFrequency){
+                auto hitGameObject = scene->getGameObjectByUID(uid.first);
+                if (hitGameObject) {
+                    q.onPicked(hitGameObject, uid.second);
+                }
+            }
+        }
+        pickingRenderTarget->unbind();
+        pickQueue.clear();
+    }
+
     void Camera::setClearColor(bool clear){
         if (clear){
             clearFlag |= GL_COLOR_BUFFER_BIT;
@@ -222,7 +280,7 @@ namespace kick {
 
     void Camera::initShadowMap() {
         shadowMapShader = Project::loadShader("assets/shaders/__shadowmap.shader");
-        shadowMapMaterial = Project::createAsset<Material>();
+        shadowMapMaterial = new Material();
         shadowMapMaterial->setShader(shadowMapShader);
     }
 
@@ -243,5 +301,9 @@ namespace kick {
 
     void Camera::setTarget(TextureRenderTarget *target) {
         Camera::target = target;
+    }
+
+    void Camera::pick(glm::ivec2 point, std::function<void(GameObject*,int)> onPicked, glm::ivec2 size){
+        pickQueue.push_back({point, size, onPicked});
     }
 }

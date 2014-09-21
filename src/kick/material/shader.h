@@ -33,7 +33,7 @@ namespace kick {
     class Shader : public ProjectAsset {
     public:
         /// If vertexShader and fragmentShader is specified then apply is called
-        Shader(Project *p, std::string vertexShader = "", std::string fragmentShader = "", std::string geometryShader = "");
+        Shader(std::string vertexShader = "", std::string fragmentShader = "", std::string geometryShader = "");
         Shader(Shader&& s);
         Shader(const Shader&) = delete;
         ~Shader();

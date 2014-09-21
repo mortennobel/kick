@@ -32,12 +32,12 @@ void initEngine(int& argc, char** argv){
 int TestShader() {
     Shader *shader;
 
-    shader = Project::createAsset<Shader>("foo", "foo");
+    shader = new Shader("foo", "foo");
 
     TINYTEST_ASSERT(shader->apply() == false);
 
 
-    shader = Project::createAsset<Shader>();
+    shader = new Shader();
     TINYTEST_ASSERT(shader->apply() == false);
 
 
@@ -63,7 +63,7 @@ int TestShader() {
             }
             )";
 
-    shader = Project::createAsset<Shader>(vertexShader, fragmentShader);
+    shader = new Shader(vertexShader, fragmentShader);
 
     TINYTEST_ASSERT_MSG(shader == nullptr || !shader->apply(), "Warn linker error not found.");
 
@@ -91,7 +91,7 @@ int TestShader() {
             }
             )";
 
-    shader = Project::createAsset<Shader>(vertexShader, fragmentShader);
+    shader = new Shader(vertexShader, fragmentShader);
     TINYTEST_ASSERT_MSG(shader  == nullptr || !shader->apply(), "Vertex Shader Compiler error not found.");
 
     vertexShader =
@@ -118,7 +118,7 @@ int TestShader() {
             }
             )";
 
-    shader = Project::createAsset<Shader>(vertexShader, fragmentShader);
+    shader = new Shader(vertexShader, fragmentShader);
     shader->apply();
 
     auto shaderUniforms = shader->getShaderUniforms();
@@ -164,10 +164,10 @@ int TestMaterial() {
                 fragColor = colorV;
             }
             )";
-    auto shader = std::shared_ptr<Shader>{Project::createAsset<Shader>(vertexShader, fragmentShader)};
+    auto shader = std::shared_ptr<Shader>{new Shader(vertexShader, fragmentShader)};
 
     shader->apply();
-    Material* material = Project::createAsset<Material>();
+    Material* material = new Material();
     material->setShader(shader);
     material->setUniform("p", glm::vec4{0,1,0,1});
 
@@ -175,7 +175,7 @@ int TestMaterial() {
 }
 
 int TestMeshData(){
-    MeshData* meshData = Project::createAsset<MeshData>();
+    MeshData* meshData = new MeshData();
 
     const vec3 p0{0,0,0};
     const vec3 p1{1,0,0};
@@ -315,7 +315,7 @@ int TestDefaultShaders(){
         success = Project::loadTextResource(fragmentShaderURI, fragmentShader);
         TINYTEST_ASSERT(success);
 
-        Shader* shader = Project::createAsset<Shader>(vertexShader, fragmentShader);
+        Shader* shader = new Shader(vertexShader, fragmentShader);
 
         success = shader->apply();
         if (!success){
@@ -711,7 +711,7 @@ int TestComponentListener(){
 }
 
 int TestFont(){
-    Font* font = Project::createAsset<Font>();
+    Font* font = new Font();
     font->loadFntFile();
 
     TINYTEST_ASSERT(font->height() > 0);
@@ -722,13 +722,13 @@ int TestFont(){
 }
 
 int TestTextureAtlas(){
-    TextureAtlas* textureAtlas = Project::createAsset<TextureAtlas>();
+    TextureAtlas* textureAtlas = new TextureAtlas();
     textureAtlas->load("unittest/sprites/sprites.txt", "unittest/sprites/sprites.png");
     return 1;
 }
 
 int TestSprite(){
-    auto textureAtlas = std::shared_ptr<TextureAtlas>{Project::createAsset<TextureAtlas>()};
+    auto textureAtlas = std::shared_ptr<TextureAtlas>{new TextureAtlas()};
     textureAtlas->load("unittest/sprites/sprites.txt", "unittest/sprites/sprites.png");
 
     auto scene = Engine::instance->getActiveScene();

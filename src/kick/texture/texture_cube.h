@@ -16,7 +16,7 @@ namespace kick {
 
     class TextureCube : public ProjectAsset {
     public:
-        TextureCube(Project* p, TextureSampler textureSampler = {});
+        TextureCube(TextureSampler textureSampler = {});
         TextureCube(const TextureCube&) = delete;
         TextureCube(TextureCube&& m);
         ~TextureCube();

@@ -80,7 +80,7 @@ namespace kick {
      */
     class MeshData : public ProjectAsset {
     public:
-        MeshData(Project *p);
+        MeshData();
         void setAabb(const AABB &aabb);
         const AABB & getAabb();
 

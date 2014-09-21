@@ -15,12 +15,12 @@ namespace kick {
     
     class ProjectAsset {
     public:
-        ProjectAsset(Project *project);
+        ProjectAsset();
         ~ProjectAsset();
-        void destroy();
+        virtual void destroy();
         friend class Project;
     protected:
-        Project *project;
+
     private:
         ProjectAsset(const ProjectAsset&) = delete;
         int uid;

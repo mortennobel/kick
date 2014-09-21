@@ -15,8 +15,8 @@
 using namespace std;
 
 namespace kick {
-    Mesh::Mesh(Project* project)
-    :ProjectAsset{project}{
+    Mesh::Mesh()
+    {
         glGenBuffers(1, &vertexBufferId);
         glGenBuffers(1, &elementBufferId);
     }

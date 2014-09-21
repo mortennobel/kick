@@ -1,8 +1,8 @@
-in vec4 gameObjectUID;
+uniform vec2 _gameObjectUID;
 
 out vec4 fragColor;
 
 void main(void)
 {
-    fragColor = gameObjectUID;
+    fragColor = _gameObjectUID.xyxy;
 }

@@ -15,7 +15,7 @@ namespace kick {
 
     class TextureRenderTarget : public ProjectAsset {
     public:
-        TextureRenderTarget(Project *project);
+        TextureRenderTarget();
         ~TextureRenderTarget();
         void bind();
         void unbind();

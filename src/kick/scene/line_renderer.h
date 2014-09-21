@@ -21,7 +21,7 @@ namespace kick {
         LineRenderer(GameObject *gameObject);
         ~LineRenderer();
         virtual void activated();
-        virtual void render(EngineUniforms *engineUniforms);
+        virtual void render(EngineUniforms *engineUniforms, Shader* replacementShader = nullptr);
 
         std::vector<glm::vec3> const & getPoints() const;
         void setPoints(std::vector<glm::vec3> const &points);

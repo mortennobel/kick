@@ -84,7 +84,7 @@ namespace kick {
     }
 
     MeshData *ObjData::getMeshData() {
-        MeshData *meshData = Project::createAsset<MeshData>();
+        MeshData *meshData = new MeshData();
 
         struct tuple_hash
         {

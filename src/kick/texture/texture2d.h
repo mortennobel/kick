@@ -17,7 +17,7 @@ namespace kick {
     
     class Texture2D : public ProjectAsset {
     public:
-        Texture2D(Project* p, TextureSampler textureSampler = {});
+        Texture2D(TextureSampler textureSampler = {});
         Texture2D(const Texture2D&) = delete;
         Texture2D(Texture2D&& m);
         ~Texture2D();

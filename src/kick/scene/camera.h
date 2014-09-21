@@ -14,12 +14,20 @@
 #include "kick/core/event_listener.h"
 #include "component_renderable.h"
 #include <utility>
+#include <functional>
 
 namespace kick {
     class GameObject;
     class Shader;
     class Material;
     class TextureRenderTarget;
+    class Texture2D;
+
+    struct PickEntry {
+        glm::ivec2 point;
+        glm::ivec2 size;
+        std::function<void(GameObject*, int)> onPicked;
+    };
 
     class Camera : public Component {
     public:
@@ -29,10 +37,7 @@ namespace kick {
         virtual void deactivated();
         virtual void render(EngineUniforms *engineUniforms);
 
-
-
-
-// reset matrix if used parameters (if any)
+        // reset matrix if used parameters (if any)
         virtual void resetProjectionMatrix();
         glm::vec4 getClearColor();
         void setClearColor(glm::vec4 clearColor);
@@ -53,6 +58,8 @@ namespace kick {
         void setCullingMask(int cullingMask);
         TextureRenderTarget * getTarget() const;
         void setTarget(TextureRenderTarget *target);
+
+        void pick(glm::ivec2 point, std::function<void(GameObject*,int)> onPicked, glm::ivec2 size = glm::ivec2{1,1});
     protected:
         glm::mat4 projectionMatrix;
         glm::vec2 normalizedViewportOffset = glm::vec2(0,0);
@@ -62,8 +69,13 @@ namespace kick {
         void destroyShadowMap();
         void renderShadowMap(Light* directionalLight);
         void rebuildComponentList();
+        void handleObjectPicking(EngineUniforms *engineUniforms);
         ComponentRenderable *includeComponent(Component* comp);
+        TextureRenderTarget* pickingRenderTarget = nullptr;
+        std::shared_ptr<Texture2D> pickingTexture;
+        std::shared_ptr<Shader> pickingShader;
         std::shared_ptr<Shader> shadowMapShader;
+
         Material* shadowMapMaterial;
         EventListener<std::pair<Component*, ComponentUpdateStatus>> componentListener;
         void setupViewport(glm::vec2 &offset, glm::vec2 &dim);
@@ -73,5 +85,7 @@ namespace kick {
         int clearFlag; // default clear color clear depth
         bool shadow = false;
         TextureRenderTarget* target = nullptr;
+        std::vector<PickEntry> pickQueue;
+
     };
 }

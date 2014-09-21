@@ -31,7 +31,7 @@ namespace kick {
 
 class Font : public ProjectAsset {
 public:
-    Font(Project *project);
+    Font();
     ~Font();
     // filename is the .fnt file. There must be a .png with the same name containing the bitmap font texture in
     // the same folder

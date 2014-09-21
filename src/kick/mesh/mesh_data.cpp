@@ -48,8 +48,7 @@ namespace kick {
         }
     }
 
-    MeshData::MeshData(Project *p)
-    :ProjectAsset{p}
+    MeshData::MeshData()
     {
         setSubmesh(0, {}, MeshType::Triangles);
     }

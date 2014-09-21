@@ -14,9 +14,8 @@ using namespace std;
 
 namespace kick {
     
-    GameObject::GameObject(const string &name, Scene* scene)
-    :name(name), scene(scene), components(),componentListeners()
-
+    GameObject::GameObject(const string &name, Scene* scene, int uniqueId)
+    :name{name}, scene{scene}, uniqueId{uniqueId}, components{}, componentListeners{}
     {
         transform = addComponent<Transform>();
     }
@@ -94,5 +93,9 @@ namespace kick {
                 componentEvent.notifyListeners({c, ComponentUpdateStatus::Updated});
             }
         }
+    }
+
+    int GameObject::getUniqueId() {
+        return uniqueId;
     }
 };

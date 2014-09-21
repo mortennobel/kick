@@ -6,14 +6,14 @@
 
 
 namespace kick {
-    TextureCube::TextureCube(Project* p, TextureSampler textureSampler)
-            :ProjectAsset{p}{
+    TextureCube::TextureCube(TextureSampler textureSampler)
+    {
         glGenTextures(1, &textureid);
         setTextureSampler(textureSampler);
     }
 
     TextureCube::TextureCube(TextureCube&& m)
-            :ProjectAsset{m.project},textureid(m.textureid)
+    :textureid(m.textureid)
     {
         m.textureid = 0;
     }

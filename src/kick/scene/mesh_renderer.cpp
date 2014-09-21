@@ -24,7 +24,7 @@ namespace kick {
         transform = gameObject->getTransform();
     }
     
-    void MeshRenderer::render(EngineUniforms *engineUniforms){
+    void MeshRenderer::render(EngineUniforms *engineUniforms, Shader* replacementShader){
         if (!isEnabled()){
             return;
         }
@@ -33,8 +33,8 @@ namespace kick {
         }
         for (unsigned int i=0;i<materials.size();i++){
             auto material = materials[i];
-            auto shader = material->getShader();
-            mesh->bind(shader.get());
+            auto shader = (replacementShader != nullptr) ? replacementShader : material->getShader().get();
+            mesh->bind(shader);
             shader->bind_uniforms(material, engineUniforms, transform);
             mesh->render(i);
         }

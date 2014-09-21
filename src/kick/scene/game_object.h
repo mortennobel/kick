@@ -57,9 +57,12 @@ namespace kick {
         int getLayer() const;
         void setLayer(int layer);
         friend class Scene;
+
+        int32_t getUniqueId();
     private:
-        GameObject(const std::string &name, Scene *scene);
+        GameObject(const std::string &name, Scene *scene, int uniqueId);
         Scene *scene;
+        int uniqueId;
         std::string name;
         int layer = 1;
         bool destroyed = false;

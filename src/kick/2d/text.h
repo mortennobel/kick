@@ -8,7 +8,7 @@
 #include "kick/2d/component2d.h"
 #include "kick/scene/game_object.h"
 #include "kick/2d/font.h"
-#include "bounds2.h"
+#include "kick/math/bounds2.h"
 #include "kick/core/event_listener.h"
 
 

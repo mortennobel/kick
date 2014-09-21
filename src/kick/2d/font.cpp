@@ -12,8 +12,8 @@
 using namespace std;
 
 namespace kick{
-    Font::Font(Project *project) : ProjectAsset(project) {
-        shader = project->loadShader("assets/shaders/font.shader");
+    Font::Font()  {
+        shader = Project::loadShader("assets/shaders/font.shader");
     }
 
     Font::~Font() {

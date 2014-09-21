@@ -100,6 +100,8 @@ namespace kick {
         friend class Engine;
         friend class GameObject;
 
+        GameObject * getGameObjectByUID(int32_t uid);
+
     private:
         Scene(const std::string & name);
         Scene(const Scene& scene) = delete;
@@ -112,6 +114,8 @@ namespace kick {
         std::unordered_map<Light*, EventListener<Light*>> lights;
         SceneLights sceneLights;
         std::string name = "";
+
+        int32_t uniqueIdGenerator = 0;
 
         void rebuildSceneLights();
     };

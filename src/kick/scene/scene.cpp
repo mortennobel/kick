@@ -52,7 +52,7 @@ namespace kick {
     }
     
     GameObject *Scene::createGameObject(const string &name){
-        auto res = new GameObject(name, this);
+        auto res = new GameObject(name, this, ++uniqueIdGenerator);
         EventListener<std::pair<Component*, ComponentUpdateStatus>> eventListener = res->componentEvent.createListener([&](std::pair<Component*, ComponentUpdateStatus> e){
             componentListener(e.first, e.second);
         });
@@ -186,12 +186,12 @@ namespace kick {
     MeshRenderer* Scene::createCube(){
         GameObject *gameObject = createGameObject("Cube");
         MeshRenderer *meshRenderer = gameObject->addComponent<MeshRenderer>();
-        Mesh* mesh = Project::createAsset<Mesh>();
+        Mesh* mesh = new Mesh();
         mesh->setMeshData(MeshFactory::createCubeData());
         meshRenderer->setMesh(mesh);
 
         auto shader = Project::loadShader("assets/shaders/diffuse.shader");
-        Material* mat = Project::createAsset<Material>();
+        Material* mat = new Material();
         mat->setShader(shader);
         meshRenderer->setMaterial(mat);
         return meshRenderer;
@@ -200,12 +200,12 @@ namespace kick {
     MeshRenderer* Scene::createSphere(){
         GameObject *gameObject = createGameObject("Sphere");
         MeshRenderer *meshRenderer = gameObject->addComponent<MeshRenderer>();
-        Mesh* mesh = Project::createAsset<Mesh>();
+        Mesh* mesh = new Mesh();
         mesh->setMeshData(MeshFactory::createUVSphereData());
         meshRenderer->setMesh(mesh);
 
         auto shader = Project::loadShader("assets/shaders/diffuse.shader");
-        Material* mat = Project::createAsset<Material>();
+        Material* mat = new Material();
         mat->setShader(shader);
         meshRenderer->setMaterial(mat);
         return meshRenderer;
@@ -214,12 +214,12 @@ namespace kick {
     MeshRenderer* Scene::createPlane(){
         GameObject *gameObject = createGameObject("Plane");
         MeshRenderer *meshRenderer = gameObject->addComponent<MeshRenderer>();
-        Mesh* mesh = Project::createAsset<Mesh>();
+        Mesh* mesh = new Mesh();
         mesh->setMeshData(MeshFactory::createPlaneData());
         meshRenderer->setMesh(mesh);
 
         auto shader = Project::loadShader("assets/shaders/diffuse.shader");
-        Material* mat = Project::createAsset<Material>();
+        Material* mat = new Material();
         mat->setShader(shader);
         meshRenderer->setMaterial(mat);
         return meshRenderer;
@@ -265,5 +265,14 @@ namespace kick {
             panel->setCamera(camera);
         }
         return panel;
+    }
+
+    GameObject *Scene::getGameObjectByUID(int32_t uid) {
+        for (auto & gameObject : *this){
+            if (gameObject->getUniqueId() == uid){
+                return gameObject.get();
+            }
+        }
+        return nullptr;
     }
 }

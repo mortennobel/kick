@@ -11,6 +11,7 @@
 
 namespace kick {
     class EngineUniforms;
+    class Shader;
 
     class ComponentRenderable : public Component{
     public:
@@ -18,7 +19,7 @@ namespace kick {
                 : Component(gameObject) {
         }
 
-        virtual void render(EngineUniforms *engineUniforms) = 0;
+        virtual void render(EngineUniforms *engineUniforms, Shader* replacementShader = nullptr) = 0;
 
         // return the (shader) render order
         // 0-999: Background. Mainly for skyboxes etc

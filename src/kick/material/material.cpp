@@ -36,8 +36,7 @@ namespace kick {
         return *this;
     }
     
-    Material::Material(Project *p, std::shared_ptr<Shader> s)
-    :ProjectAsset{p}
+    Material::Material(std::shared_ptr<Shader> s)
     {
         setShader(s);
     }

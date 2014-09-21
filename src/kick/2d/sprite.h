@@ -8,7 +8,7 @@
 #include "kick/texture/texture_atlas.h"
 #include <string>
 #include "kick/core/event.h"
-#include "bounds2.h"
+#include "kick/math/bounds2.h"
 
 #pragma once
 

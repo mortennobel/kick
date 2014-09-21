@@ -23,7 +23,7 @@ namespace kick {
         MeshRenderer(GameObject *gameObject);
         ~MeshRenderer();
         virtual void activated();
-        virtual void render(EngineUniforms *engineUniforms);
+        virtual void render(EngineUniforms *engineUniforms, Shader* replacementShader = nullptr);
         void setMesh(Mesh *mesh);
         Mesh*getMesh();
         // set the first material

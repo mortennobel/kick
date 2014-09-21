@@ -33,7 +33,6 @@ namespace kick {
     std::map<std::string, std::weak_ptr<Font>> Project::fontRef;
 
     Project::Project()
-    :assetLoader{new AssetLoader()}
     {
 #ifndef EMSCRIPTEN
         SDL_version compile_version;
@@ -67,10 +66,7 @@ namespace kick {
         }
     }
     
-    Project *Project::getProjectRef(){
-        Engine* engine = Engine::instance;
-        return &(engine->project);
-    }
+
 
 
     bool Project::loadTextResource(std::string uri, std::string &res){
@@ -205,7 +201,7 @@ namespace kick {
 #else
         invert_image(image->pitch, image->h, image->pixels);
 #endif
-        Texture2D *texturePtr = createAsset<Texture2D>();
+        Texture2D *texturePtr = new Texture2D();
         texturePtr->setData(image->w, image->h, static_cast<char*>(image->pixels), imageFormat);
 #if EMSCRIPTEN
         glPixelStorei(GL_UNPACK_FLIP_Y_WEBGL, false);
@@ -233,7 +229,7 @@ namespace kick {
 
     TextureCube *Project::surfaceToTextureCube( SDL_Surface *image) {
         ImageFormat imageFormat;
-        TextureCube *texturePtr = createAsset<TextureCube>();
+        TextureCube *texturePtr = new TextureCube();
         convertTextureIfNeeded(imageFormat, &image);
         assert(image->h == image->w * 6);
         for (int i = 0; i < 6; i++) {
@@ -282,7 +278,7 @@ namespace kick {
         if (document.Parse<0>( shaderSource.c_str() ).HasParseError() ) {
             logError("Error parsing .shader file");
         } else {
-            shader = createAsset<Shader>();
+            shader = new Shader();
             auto getString = [&](string name, string defaultValue){
                 if (!document.HasMember(name.c_str())){
                     return defaultValue;
@@ -455,19 +451,6 @@ namespace kick {
         return ref;
     }
 
-    int Project::mapAssetURIToId(std::string assetURI){
-        // todo implement
-        // store assetId in file? Or database? (currently the id assignment can change on program execution)
-        static int tempAssetCounter = 0;
-        auto valueIter = assetIdMap.find(assetURI);
-        if (valueIter != assetIdMap.end()){
-            return valueIter->second;
-        }
-        tempAssetCounter--;
-        assetIdMap[assetURI] = tempAssetCounter;
-        return tempAssetCounter;
-    }
-
     void Project::destroyAsset(ProjectAsset* asset) {
         // todo implement
     }
@@ -481,7 +464,7 @@ namespace kick {
                 return iter->second.lock();
             }
         }
-        TextureAtlas* textureAtlas = Project::createAsset<TextureAtlas>();
+        TextureAtlas* textureAtlas = new TextureAtlas();
         textureAtlas->load(filename, texture);
         auto ref = std::shared_ptr<TextureAtlas>{textureAtlas};
         textureAtlasRef[filename] = weak_ptr<TextureAtlas>{ref};
@@ -495,7 +478,7 @@ namespace kick {
                 return iter->second.lock();
             }
         }
-        Font* font = Project::createAsset<Font>();
+        Font* font = new Font();
         font->loadFntFile(fontName);
         auto ref = std::shared_ptr<Font>{font};
         fontRef[fontName] = weak_ptr<Font>{ref};

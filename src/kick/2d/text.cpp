@@ -15,9 +15,9 @@ namespace kick {
     Text::Text(GameObject *gameObject)
             : Component2D(gameObject),
               bounds{vec2{0,0},vec2{0,0}} {
-        mesh = Project::createAsset<Mesh>();
-        meshData = Project::createAsset<MeshData>();
-        material = Project::createAsset<Material>();
+        mesh = new Mesh();
+        meshData = new MeshData();
+        material = new Material();
         mesh->setMeshData(meshData);
     }
 

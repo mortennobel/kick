@@ -11,6 +11,7 @@
 #include "kick/core/Project.h"
 #include "kick/core/engine.h"
 #include "kick/core/time.h"
+#include "kick/math/misc.h"
 #include <sstream>
 #include <vector>
 #include <iostream>
@@ -146,7 +147,7 @@ break;
     }
 
     Shader::Shader(Shader&& s)
-    :ProjectAsset(s.project)
+
     {
         *this = move(s);
     }
@@ -166,12 +167,11 @@ break;
         swap(polygonOffsetEnabled, o.polygonOffsetEnabled);
         swap(polygonOffsetFactorAndUnit, o.polygonOffsetFactorAndUnit);
         swap(zTest, o.zTest);
-        swap(project, o.project);
         return *this;
     }
     
-    Shader::Shader(Project *p, string vertexShader, string fragmentShader, string geometryShader)
-    :ProjectAsset{p},shaderProgram(0)
+    Shader::Shader(string vertexShader, string fragmentShader, string geometryShader)
+    :shaderProgram(0)
     {
         setShaderSource(ShaderType::VertexShader, vertexShader);
         setShaderSource(ShaderType::FragmentShader, fragmentShader);
@@ -581,7 +581,7 @@ break;
     glm::vec2 Shader::getPolygonOffsetFactorAndUnit() { return polygonOffsetFactorAndUnit; }
     void Shader::setZTest(ZTestType zTest) { this->zTest = zTest; }
     ZTestType Shader::getZTest() { return zTest; }
-    
+
     void Shader::bind_uniforms(Material *material, EngineUniforms *engineUniforms, Transform* transform){
         material->bind();
         SceneLights * sceneLights = engineUniforms->sceneLights;
@@ -611,8 +611,9 @@ break;
                 auto mvProj = engineUniforms->viewProjectionMatrix * transform->getGlobalMatrix();
                 glUniformMatrix4fv(uniform.index, 1, GL_FALSE, glm::value_ptr(mvProj));
             } else if (uniform.name == UniformNames::gameObjectUID){
-//                throw invalid_argument("gameObjectUID not yet implemented"); // todo
-                logWarning("\"gameObjectUID not yet implemented");
+                int32_t uid = transform->getGameObject()->getUniqueId();
+                glm::vec4 packedInt = uint32ToVec4(uid);
+                glUniform4fv(uniform.index, 1, glm::value_ptr(packedInt ));
             } else if (uniform.name == UniformNames::shadowMapTexture) {
                 //throw invalid_argument("shadowMapTexture not yet implemented"); // todo
                 cout <<"shadowMapTexture not yet implemented\n"; // todo

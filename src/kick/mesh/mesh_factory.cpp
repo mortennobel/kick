@@ -16,14 +16,14 @@ using namespace glm;
 
 namespace kick {
     MeshData* MeshFactory::createPointData(){
-        auto meshData = Project::createAsset<MeshData>();
+        auto meshData = new MeshData();
         meshData->setPosition({vec3{0,0,0}});
         meshData->setSubmesh(0, {0}, MeshType::Points);
         return meshData;
     }
     
     MeshData* MeshFactory::createTriangleData(){
-        auto meshData = Project::createAsset<MeshData>();
+        auto meshData = new MeshData();
         float sqrt75 = glm::sqrt(0.75f);
         meshData->setPosition({
             vec3{0,1,0},
@@ -50,7 +50,7 @@ namespace kick {
     }
     
     MeshData *MeshFactory::createDiscData(unsigned short slices){
-        auto meshData = Project::createAsset<MeshData>();
+        auto meshData = new MeshData();
         size_t vertexCount = slices+1;
         vector<vec3> vertices{vertexCount};
         vector<vec2> uvs{vertexCount};
@@ -76,7 +76,7 @@ namespace kick {
     }
     
     MeshData *MeshFactory::createPlaneData(){
-        auto meshData = Project::createAsset<MeshData>();
+        auto meshData = new MeshData();
         
         meshData->setPosition({
             vec3{1, -1, 0},
@@ -108,7 +108,7 @@ namespace kick {
     }
     
     MeshData * MeshFactory::createUVSphereData(unsigned short slices, unsigned short stacks, float radius){
-        auto meshData = Project::createAsset<MeshData>();
+        auto meshData = new MeshData();
         size_t vertexCount = (stacks+1) * (slices + 1);
         vector<vec3> vertices{vertexCount};
         vector<vec2> uvs{vertexCount};
@@ -162,7 +162,7 @@ namespace kick {
     }
     
     MeshData * MeshFactory::createCubeData(float length){
-        auto meshData = Project::createAsset<MeshData>();
+        auto meshData = new MeshData();
         //    v6----- v5
         //   /|      /|
         //  v1------v0|

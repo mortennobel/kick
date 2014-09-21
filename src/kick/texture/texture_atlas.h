@@ -24,7 +24,7 @@ namespace kick {
 
     class TextureAtlas : public ProjectAsset  {
     public:
-        TextureAtlas(Project *project);
+        TextureAtlas();
 
         bool load(std::string filename, std::string texture);
 

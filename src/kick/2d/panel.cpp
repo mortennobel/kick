@@ -23,11 +23,11 @@ using namespace glm;
 namespace kick{
 
     Panel::Panel(GameObject *gameObject) : ComponentRenderable(gameObject) {
-        mesh = Project::createAsset<Mesh>();
-        meshData = Project::createAsset<MeshData>();
+        mesh = new Mesh();
+        meshData = new MeshData();
         meshData->setMeshUsage(MeshUsage::DynamicDraw);
         mesh->setMeshData(meshData);
-        material = Project::createAsset<Material>();
+        material = new Material();
         mouseInput = &Engine::instance->getMouseInput();
     }
 
@@ -35,7 +35,7 @@ namespace kick{
 
     }
 
-    void Panel::render(kick::EngineUniforms *engineUniforms) {
+    void Panel::render(kick::EngineUniforms *engineUniforms, Shader* replacementShader) {
         sort(components.begin(), components.end(), [](Component2D *c1, Component2D *c2){
             int order = c1->getOrder() - c2->getOrder();
             return order < 0 || (order==0 &&
@@ -47,12 +47,12 @@ namespace kick{
         for (auto& comp : components){
             auto text = dynamic_cast<Text*>(comp);
             if (text){
-                renderSprites(sprites, engineUniforms); // render previous sprites
+                renderSprites(sprites, engineUniforms, replacementShader); // render previous sprites
                 text->render(engineUniforms);
             } else {
                 auto sprite = dynamic_cast<Sprite*>(comp);
                 if (textureAtlas != sprite->getTextureAtlas().get()){
-                    renderSprites(sprites, engineUniforms);
+                    renderSprites(sprites, engineUniforms, replacementShader);
                     textureAtlas = sprite->getTextureAtlas().get();
                 }
                 if (sprite){
@@ -60,7 +60,7 @@ namespace kick{
                 }
             }
         }
-        renderSprites(sprites, engineUniforms);
+        renderSprites(sprites, engineUniforms, replacementShader);
     }
 
     void Panel::updateVertexBuffer(std::vector<Sprite *> &sprites) {
@@ -158,7 +158,7 @@ namespace kick{
         mesh->setMeshData(meshData);
     }
 
-    void Panel::renderSprites(std::vector<Sprite *> &sprites, kick::EngineUniforms *engineUniforms) {
+    void Panel::renderSprites(std::vector<Sprite *> &sprites, kick::EngineUniforms *engineUniforms, Shader* replacementShader) {
         if (sprites.size()==0){
             return;
         }
@@ -167,7 +167,7 @@ namespace kick{
         material->setShader(sprites[0]->getTextureAtlas()->getShader());
         auto shader = material->getShader();
         assert(shader);
-        mesh->bind(shader.get());
+        mesh->bind((replacementShader != nullptr) ? replacementShader : shader.get());
 
         material->setUniform("mainTexture", sprites[0]->getTextureAtlas()->getTexture());
         shader->bind_uniforms(material, engineUniforms, getTransform());
@@ -279,7 +279,7 @@ namespace kick{
 
         mat4 viewProjection = inverse(camera->getProjectionMatrix() * camera->getViewMatrix());
         vec2 mouseWorldCoord = (vec2)(viewProjection * vec4(mouseClipCoord, 0, 1));
-        int index = 0;
+
         for (auto ml : mouseListeners){
             Sprite* sprite = dynamic_cast<Sprite*>(ml);
             Bounds2 bounds = sprite->getTrimmedBounds();

@@ -25,7 +25,8 @@ namespace kick {
         }
     }
 
-    TextureAtlas::TextureAtlas(Project *project) : ProjectAsset(project) {
+    TextureAtlas::TextureAtlas()
+    {
         shader = Project::loadShader("assets/shaders/sprite.shader");
     }
 

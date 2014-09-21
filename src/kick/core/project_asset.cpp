@@ -10,8 +10,8 @@
 #include "kick/core/project.h"
 
 namespace kick {
-    ProjectAsset::ProjectAsset(Project *project)
-    :project{project} {
+    ProjectAsset::ProjectAsset()
+    {
         
     }
     

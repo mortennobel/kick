@@ -11,10 +11,10 @@ using namespace glm;
 
 namespace kick {
     LineRenderer::LineRenderer(GameObject *gameObject) : ComponentRenderable(gameObject) {
-        mesh = Project::createAsset<Mesh>();
-        meshData = Project::createAsset<MeshData>();
+        mesh = new Mesh();
+        meshData = new MeshData();
         auto shader = Project::loadShader("assets/shaders/unlit.shader");
-        material = Project::createAsset<Material>();
+        material = new Material();
         material->setShader(shader);
         mesh->setMeshData(meshData);
     }
@@ -37,9 +37,9 @@ namespace kick {
         transform = gameObject->getTransform();
     }
 
-    void LineRenderer::render(EngineUniforms *engineUniforms) {
-        auto shader = material->getShader();
-        mesh->bind(shader.get());
+    void LineRenderer::render(EngineUniforms *engineUniforms, Shader* replacementShader) {
+        auto shader = replacementShader!= nullptr?replacementShader : material->getShader().get();
+        mesh->bind(shader);
         shader->bind_uniforms(material, engineUniforms, transform);
         glLineWidth(width);
         mesh->render(0);

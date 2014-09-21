@@ -24,7 +24,7 @@ namespace kick {
      */
     class Mesh : public ProjectAsset {
     public:
-        Mesh(Project* project);
+        Mesh();
         ~Mesh();
         void bind(Shader * shader);
         void render(unsigned int submeshIndex);

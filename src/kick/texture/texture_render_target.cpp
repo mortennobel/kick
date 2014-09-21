@@ -10,8 +10,8 @@
 using namespace std;
 
 namespace kick {
-    TextureRenderTarget::TextureRenderTarget(Project *project)
-            : ProjectAsset(project) {
+    TextureRenderTarget::TextureRenderTarget()
+    {
         glGenFramebuffers(1, &framebuffer);
     }
 

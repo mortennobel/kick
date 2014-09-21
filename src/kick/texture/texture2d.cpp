@@ -9,14 +9,14 @@
 #include "texture2d.h"
 
 namespace kick {
-    Texture2D::Texture2D(Project* p, TextureSampler textureSampler)
-    :ProjectAsset{p}{
+    Texture2D::Texture2D(TextureSampler textureSampler)
+    {
         glGenTextures(1, &textureid);
         setTextureSampler(textureSampler);
     }
     
     Texture2D::Texture2D(Texture2D&& m)
-    :ProjectAsset{m.project},textureid(m.textureid)
+    :textureid(m.textureid)
     {
         m.textureid = 0;
     }
