@@ -6,11 +6,11 @@
 //  Copyright (c) 2013 morten. All rights reserved.
 //
 
-#include "obj_data.h"
+#include "kick/obj/obj_data.h"
 #include <stdexcept>
 #include <string>
 #include "kick/core/log.h"
-#include "project.h"
+#include "kick/core/project.h"
 
 using namespace std;
 

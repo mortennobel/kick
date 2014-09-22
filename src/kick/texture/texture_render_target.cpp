@@ -56,7 +56,14 @@ namespace kick {
         glGenRenderbuffers(1, &renderBuffer);
         renderBuffers.push_back(renderBuffer);
         glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer);
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT32, size.x, size.y);
+        glRenderbufferStorage(GL_RENDERBUFFER,
+#ifdef EMSCRIPTEN
+                GL_DEPTH_COMPONENT16,
+#else
+                GL_DEPTH_COMPONENT32,
+#endif
+
+                size.x, size.y);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, renderBuffer);
 
         checkStatus();
@@ -104,9 +111,6 @@ namespace kick {
                     break;
             }
         }
-
-        cout <<"glCheckFramebufferStatus "<<frameBufferStatus<<endl;
-
     }
 
     void TextureRenderTarget::setSize(glm::ivec2 size) {

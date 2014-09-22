@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Morten Nobel-Joergensen. All rights reserved.
 //
 
-#include "mesh.h"
+#include "kick/mesh/mesh.h"
 #include "kick/mesh/mesh_data.h"
-#include "log.h"
+#include "kick/core/log.h"
 #include <vector>
 #include <set>
 

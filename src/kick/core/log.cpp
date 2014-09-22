@@ -2,7 +2,7 @@
 // Created by morten on 15/07/14.
 //
 
-#include "log.h"
+#include "kick/core/log.h"
 #include <iostream>
 #ifdef __APPLE__
 #include <execinfo.h>
