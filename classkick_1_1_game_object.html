@@ -92,6 +92,18 @@ template&lt;typename C &gt; </td></tr>
 <tr><td class="memTemplParams" colspan="2"><a class="anchor" id="a38c51a59c6d30c75c8d17549fb077d7f"></a><!-- doxytag: member="kick::GameObject::getComponents" ref="a38c51a59c6d30c75c8d17549fb077d7f" args="()" -->
 template&lt;typename C &gt; </td></tr>
 <tr><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; C * &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getComponents</b> ()</td></tr>
+<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="aae6e011c9ceba190e6134457b2735203"></a><!-- doxytag: member="kick::GameObject::getComponentInParent" ref="aae6e011c9ceba190e6134457b2735203" args="()" -->
+template&lt;typename C &gt; </td></tr>
+<tr><td class="memTemplItemLeft" align="right" valign="top">C *&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getComponentInParent</b> ()</td></tr>
+<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="ac96cec35abccffbf1ab797331ee64147"></a><!-- doxytag: member="kick::GameObject::getComponentsInParent" ref="ac96cec35abccffbf1ab797331ee64147" args="()" -->
+template&lt;typename C &gt; </td></tr>
+<tr><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; C * &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getComponentsInParent</b> ()</td></tr>
+<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="a7a723652f92a0ef4521799b4d415f9be"></a><!-- doxytag: member="kick::GameObject::getComponentInChildren" ref="a7a723652f92a0ef4521799b4d415f9be" args="()" -->
+template&lt;typename C &gt; </td></tr>
+<tr><td class="memTemplItemLeft" align="right" valign="top">C *&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getComponentInChildren</b> ()</td></tr>
+<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="aba282e387d03bcdc77626825374e1a03"></a><!-- doxytag: member="kick::GameObject::getComponentsInChildren" ref="aba282e387d03bcdc77626825374e1a03" args="()" -->
+template&lt;typename C &gt; </td></tr>
+<tr><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; C * &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getComponentsInChildren</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a930661b8ef30b30ad3a72d04a97de796"></a><!-- doxytag: member="kick::GameObject::destroyComponent" ref="a930661b8ef30b30ad3a72d04a97de796" args="(Component *component)" -->
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>destroyComponent</b> (<a class="el" href="classkick_1_1_component.html">Component</a> *component)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeed95c202082d69250aa2c8882a9c58b"></a><!-- doxytag: member="kick::GameObject::begin" ref="aeed95c202082d69250aa2c8882a9c58b" args="() const " -->
@@ -114,6 +126,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setName</b> (std::str
 int&#160;</td><td class="memItemRight" valign="bottom"><b>getLayer</b> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a74e710f236049e574ff18b351b098229"></a><!-- doxytag: member="kick::GameObject::setLayer" ref="a74e710f236049e574ff18b351b098229" args="(int layer)" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setLayer</b> (int layer)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4a0d7e627388bc717bb67b9622f6dc0c"></a><!-- doxytag: member="kick::GameObject::getUniqueId" ref="a4a0d7e627388bc717bb67b9622f6dc0c" args="()" -->
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>getUniqueId</b> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a882280732d76e811355826ebff3b38de"></a><!-- doxytag: member="kick::GameObject::componentEvent" ref="a882280732d76e811355826ebff3b38de" args="" -->
@@ -138,7 +152,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Scene</b></td></tr>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -147,7 +161,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Scene</b></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:44 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

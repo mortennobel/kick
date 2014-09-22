@@ -83,37 +83,39 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00023"></a><a class="code" href="classkick_1_1_s_d_l2_context.html">00023</a>     <span class="keyword">class </span><a class="code" href="classkick_1_1_s_d_l2_context.html">SDL2Context</a> : <span class="keyword">public</span> <a class="code" href="classkick_1_1_context.html">Context</a> {
 <a name="l00024"></a>00024     <span class="keyword">public</span>:
 <a name="l00025"></a>00025         <a class="code" href="classkick_1_1_s_d_l2_context.html">SDL2Context</a>();
-<a name="l00026"></a>00026         <span class="keyword">virtual</span> ~<a class="code" href="classkick_1_1_s_d_l2_context.html">SDL2Context</a>();
-<a name="l00027"></a>00027         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> init(<span class="keywordtype">int</span> &amp;argc, <span class="keywordtype">char</span> **argv);
-<a name="l00028"></a>00028         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> showWindow(<span class="keyword">const</span> <a class="code" href="structkick_1_1_window_config.html">WindowConfig</a>&amp; config = WindowConfig::plain);
-<a name="l00029"></a>00029         <span class="keyword">virtual</span> <span class="keywordtype">void</span> swapBuffer();
-<a name="l00030"></a>00030         <span class="keyword">virtual</span> <span class="keywordtype">void</span> mainLoop();
-<a name="l00031"></a>00031         std::string <a class="code" href="classkick_1_1_s_d_l2_context.html#a5f81f77f0214855115f546cb816d38a7">getBasePath</a>();
-<a name="l00032"></a>00032 
-<a name="l00033"></a>00033         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> isFullscreen();
-<a name="l00034"></a>00034 
-<a name="l00035"></a>00035         <span class="keyword">virtual</span> <span class="keywordtype">void</span> setFullscreen(<span class="keywordtype">bool</span> fullscreen);
-<a name="l00036"></a>00036 
-<a name="l00037"></a>00037         <span class="keyword">virtual</span> <span class="keywordtype">void</span> setWindowTitle(std::string title) <span class="keyword">override</span>;
-<a name="l00038"></a>00038 
-<a name="l00039"></a>00039         <span class="keyword">virtual</span> std::string getWindowTitle() <span class="keyword">override</span>;
-<a name="l00040"></a>00040 
-<a name="l00041"></a>00041         <span class="keywordtype">void</span> step();
-<a name="l00042"></a>00042         <span class="keywordtype">bool</span> <a class="code" href="classkick_1_1_s_d_l2_context.html#a7581521b579c5015f9f32e75c4ff2777">tick</a>();
-<a name="l00043"></a>00043     <span class="keyword">private</span>:
-<a name="l00044"></a>00044         <span class="keywordtype">void</span> handleMouseMotion(SDL_MouseMotionEvent event);
-<a name="l00045"></a>00045         <span class="keywordtype">void</span> handleMouseButton(SDL_MouseButtonEvent event, <span class="keywordtype">bool</span> buttonDown);
-<a name="l00046"></a>00046         <span class="keywordtype">void</span> handleMouseWheel(SDL_MouseWheelEvent event);
-<a name="l00047"></a>00047         <span class="keywordtype">void</span> handleKey(SDL_KeyboardEvent event, <span class="keywordtype">bool</span> keyDown);
-<a name="l00048"></a>00048         Uint32 timeLeft();
-<a name="l00049"></a>00049         Uint32 nextTime;
-<a name="l00050"></a>00050         Uint32 tickInterval = 16; <span class="comment">// 60 fps</span>
-<a name="l00051"></a>00051         SDL_Window *window = <span class="keyword">nullptr</span>;
-<a name="l00052"></a>00052         SDL_GLContext context = <span class="keyword">nullptr</span>;
-<a name="l00053"></a>00053         std::string basePath;
-<a name="l00054"></a>00054         <span class="keywordtype">bool</span> fullscreen = <span class="keyword">false</span>;
-<a name="l00055"></a>00055     };
-<a name="l00056"></a>00056 };
+<a name="l00026"></a>00026         <a class="code" href="classkick_1_1_s_d_l2_context.html">SDL2Context</a>(<span class="keyword">const</span> <a class="code" href="classkick_1_1_s_d_l2_context.html">SDL2Context</a>&amp;) = <span class="keyword">delete</span>;
+<a name="l00027"></a>00027         <span class="keyword">virtual</span> ~<a class="code" href="classkick_1_1_s_d_l2_context.html">SDL2Context</a>();
+<a name="l00028"></a>00028         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> init(<span class="keywordtype">int</span> &amp;argc, <span class="keywordtype">char</span> **argv) <span class="keyword">override</span>;
+<a name="l00029"></a>00029         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> showWindow(<span class="keyword">const</span> <a class="code" href="structkick_1_1_window_config.html">WindowConfig</a>&amp; config = WindowConfig::plain)  <span class="keyword">override</span>;
+<a name="l00030"></a>00030         <span class="keyword">virtual</span> <span class="keywordtype">void</span> swapBuffer() <span class="keyword">override</span>;
+<a name="l00031"></a>00031         <span class="keyword">virtual</span> <span class="keywordtype">void</span> mainLoop()  <span class="keyword">override</span>;
+<a name="l00032"></a>00032         std::string <a class="code" href="classkick_1_1_s_d_l2_context.html#a5f81f77f0214855115f546cb816d38a7">getBasePath</a>();
+<a name="l00033"></a>00033 
+<a name="l00034"></a>00034         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> isFullscreen() <span class="keyword">override</span>;
+<a name="l00035"></a>00035 
+<a name="l00036"></a>00036         <span class="keyword">virtual</span> <span class="keywordtype">void</span> setFullscreen(<span class="keywordtype">bool</span> fullscreen) <span class="keyword">override</span>;
+<a name="l00037"></a>00037 
+<a name="l00038"></a>00038         <span class="keyword">virtual</span> <span class="keywordtype">void</span> setWindowTitle(std::string title) <span class="keyword">override</span>;
+<a name="l00039"></a>00039 
+<a name="l00040"></a>00040         <span class="keyword">virtual</span> std::string getWindowTitle() <span class="keyword">override</span>;
+<a name="l00041"></a>00041 
+<a name="l00042"></a>00042         <span class="keywordtype">void</span> step();
+<a name="l00043"></a>00043         <span class="keywordtype">bool</span> <a class="code" href="classkick_1_1_s_d_l2_context.html#a7581521b579c5015f9f32e75c4ff2777">tick</a>();
+<a name="l00044"></a>00044     <span class="keyword">private</span>:
+<a name="l00045"></a>00045         <span class="keywordtype">void</span> handleMouseMotion(SDL_MouseMotionEvent event);
+<a name="l00046"></a>00046         <span class="keywordtype">void</span> handleMouseButton(SDL_MouseButtonEvent event, <span class="keywordtype">bool</span> buttonDown);
+<a name="l00047"></a>00047         <span class="keywordtype">void</span> handleMouseWheel(SDL_MouseWheelEvent event);
+<a name="l00048"></a>00048         <span class="keywordtype">void</span> handleKey(SDL_KeyboardEvent event, <span class="keywordtype">bool</span> keyDown);
+<a name="l00049"></a>00049         <span class="keywordtype">void</span> handleTouch(SDL_TouchFingerEvent event);
+<a name="l00050"></a>00050         Uint32 timeLeft();
+<a name="l00051"></a>00051         Uint32 nextTime;
+<a name="l00052"></a>00052         Uint32 tickInterval = 16; <span class="comment">// 60 fps</span>
+<a name="l00053"></a>00053         SDL_Window *window = <span class="keyword">nullptr</span>;
+<a name="l00054"></a>00054         SDL_GLContext glContext = <span class="keyword">nullptr</span>;
+<a name="l00055"></a>00055         std::string basePath;
+<a name="l00056"></a>00056         <span class="keywordtype">bool</span> fullscreen = <span class="keyword">false</span>;
+<a name="l00057"></a>00057     };
+<a name="l00058"></a>00058 };
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -121,7 +123,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -130,7 +132,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:39 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

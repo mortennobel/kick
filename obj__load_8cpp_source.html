@@ -121,7 +121,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00061"></a>00061         <span class="keywordtype">size_t</span> start_pos = str.find(from);
 <a name="l00062"></a>00062         <span class="keywordflow">if</span>(start_pos == std::string::npos)
 <a name="l00063"></a>00063             <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00064"></a>00064         str.replace(start_pos, from.length(), to);
+<a name="l00064"></a>00064         str = str.replace(start_pos, from.length(), to);
 <a name="l00065"></a>00065         <span class="keywordflow">return</span> <span class="keyword">true</span>;
 <a name="l00066"></a>00066     }
 <a name="l00067"></a>00067     
@@ -130,151 +130,157 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00070"></a>00070         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=1; i&lt;tokens.size(); i++) {
 <a name="l00071"></a>00071             <span class="keywordtype">string</span> &amp; p = tokens[i];
 <a name="l00072"></a>00072             replace(p, <span class="stringliteral">&quot;//&quot;</span>,<span class="stringliteral">&quot;/0/&quot;</span>);
-<a name="l00073"></a>00073             
-<a name="l00074"></a>00074             ObjVertex o{0,0,0};
-<a name="l00075"></a>00075             
-<a name="l00076"></a>00076             stringstream ss{p};
-<a name="l00077"></a>00077             <span class="keywordtype">char</span> buffer[50];
-<a name="l00078"></a>00078             
-<a name="l00079"></a>00079             ss.getline(buffer,50, <span class="charliteral">&#39;/&#39;</span>);
-<a name="l00080"></a>00080             o.vertexPositionIdx = atoi(buffer);
-<a name="l00081"></a>00081             <span class="keywordflow">if</span> (ss.good()){
-<a name="l00082"></a>00082                 ss.getline(buffer,50, <span class="charliteral">&#39;/&#39;</span>);
-<a name="l00083"></a>00083                 o.textureIdx = atoi(buffer);
-<a name="l00084"></a>00084             }
-<a name="l00085"></a>00085             <span class="keywordflow">if</span> (ss.good()){
-<a name="l00086"></a>00086                 ss.getline(buffer,50, <span class="charliteral">&#39;/&#39;</span>);
-<a name="l00087"></a>00087                 o.normalIdx = atoi(buffer);
-<a name="l00088"></a>00088             }
-<a name="l00089"></a>00089             res.push_back(o);
-<a name="l00090"></a>00090         }
-<a name="l00091"></a>00091         <span class="keywordflow">return</span> move(res);
-<a name="l00092"></a>00092     }
-<a name="l00093"></a>00093     
-<a name="l00094"></a>00094     <span class="keywordtype">void</span> parseMaterialLib(std::string &amp; materialLib, ObjData &amp; dest){
-<a name="l00095"></a>00095         <span class="keyword">const</span> <span class="keywordtype">int</span> bufferSize = 256;
-<a name="l00096"></a>00096         <span class="keywordtype">char</span> buffer[bufferSize];
-<a name="l00097"></a>00097         <span class="keywordtype">char</span> buffer2[bufferSize];
-<a name="l00098"></a>00098         stringstream ss{materialLib};
-<a name="l00099"></a>00099         
-<a name="l00100"></a>00100         <span class="keywordflow">while</span> (ss.good()){
-<a name="l00101"></a>00101             ss.getline(buffer, bufferSize);
-<a name="l00102"></a>00102             stringstream likeTokensizer{buffer};
-<a name="l00103"></a>00103             vector&lt;string&gt; tokens;
-<a name="l00104"></a>00104             <span class="keywordflow">while</span> (likeTokensizer.good()) {
-<a name="l00105"></a>00105                 likeTokensizer.getline(buffer2, bufferSize, <span class="charliteral">&#39; &#39;</span>);
-<a name="l00106"></a>00106                 tokens.push_back(buffer2);
-<a name="l00107"></a>00107             }
-<a name="l00108"></a>00108             <span class="keywordflow">if</span> (tokens.size()==0){
-<a name="l00109"></a>00109                 <span class="keywordflow">continue</span>;
+<a name="l00073"></a>00073 
+<a name="l00074"></a>00074             <span class="keywordflow">if</span> (p.length()==0){
+<a name="l00075"></a>00075                 <span class="keywordflow">continue</span>;
+<a name="l00076"></a>00076             }
+<a name="l00077"></a>00077 
+<a name="l00078"></a>00078             ObjVertex o{0,0,0};
+<a name="l00079"></a>00079             
+<a name="l00080"></a>00080             stringstream ss{p};
+<a name="l00081"></a>00081             <span class="keywordtype">char</span> buffer[50];
+<a name="l00082"></a>00082             ss.getline(buffer,50, <span class="charliteral">&#39;/&#39;</span>);
+<a name="l00083"></a>00083             o.vertexPositionIdx = atoi(buffer);
+<a name="l00084"></a>00084             <span class="keywordflow">if</span> (ss.good()){
+<a name="l00085"></a>00085                 ss.getline(buffer,50, <span class="charliteral">&#39;/&#39;</span>);
+<a name="l00086"></a>00086                 o.textureIdx = atoi(buffer);
+<a name="l00087"></a>00087             }
+<a name="l00088"></a>00088             <span class="keywordflow">if</span> (ss.good()){
+<a name="l00089"></a>00089                 ss.getline(buffer,50, <span class="charliteral">&#39;/&#39;</span>);
+<a name="l00090"></a>00090                 o.normalIdx = atoi(buffer);
+<a name="l00091"></a>00091             }
+<a name="l00092"></a>00092             res.push_back(o);
+<a name="l00093"></a>00093         }
+<a name="l00094"></a>00094         <span class="keywordflow">return</span> res;
+<a name="l00095"></a>00095     }
+<a name="l00096"></a>00096     
+<a name="l00097"></a>00097     <span class="keywordtype">void</span> parseMaterialLib(std::string &amp; materialLib, ObjData &amp; dest){
+<a name="l00098"></a>00098         <span class="keyword">const</span> <span class="keywordtype">int</span> bufferSize = 256;
+<a name="l00099"></a>00099         <span class="keywordtype">char</span> buffer[bufferSize];
+<a name="l00100"></a>00100         <span class="keywordtype">char</span> buffer2[bufferSize];
+<a name="l00101"></a>00101         stringstream ss{materialLib};
+<a name="l00102"></a>00102         
+<a name="l00103"></a>00103         <span class="keywordflow">while</span> (ss.good()){
+<a name="l00104"></a>00104             ss.getline(buffer, bufferSize);
+<a name="l00105"></a>00105             stringstream likeTokensizer{buffer};
+<a name="l00106"></a>00106             vector&lt;string&gt; tokens;
+<a name="l00107"></a>00107             <span class="keywordflow">while</span> (likeTokensizer.good()) {
+<a name="l00108"></a>00108                 likeTokensizer.getline(buffer2, bufferSize, <span class="charliteral">&#39; &#39;</span>);
+<a name="l00109"></a>00109                 tokens.push_back(buffer2);
 <a name="l00110"></a>00110             }
-<a name="l00111"></a>00111             <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;newmtl&quot;</span>){
-<a name="l00112"></a>00112                 vec3 zero{0,0,0};
-<a name="l00113"></a>00113                 ObjMaterial material{tokens[1],zero,zero,zero,50,1};
-<a name="l00114"></a>00114                 dest.materials.push_back(material);
-<a name="l00115"></a>00115             } <span class="keywordflow">else</span> {
-<a name="l00116"></a>00116                 <span class="keywordflow">if</span> (dest.materials.size()==0){
-<a name="l00117"></a>00117                     <span class="keywordflow">continue</span>;
-<a name="l00118"></a>00118                 }
-<a name="l00119"></a>00119                 ObjMaterial &amp; currentMat = dest.materials.back();
-<a name="l00120"></a>00120                 <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;Ka&quot;</span>){
-<a name="l00121"></a>00121                     currentMat.ambientColor = toVec3(tokens);
-<a name="l00122"></a>00122                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;Kd&quot;</span>){
-<a name="l00123"></a>00123                     currentMat.diffuseColor = toVec3(tokens);
-<a name="l00124"></a>00124                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;Ks&quot;</span>){
-<a name="l00125"></a>00125                     currentMat.specularColor = toVec3(tokens);
-<a name="l00126"></a>00126                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;d&quot;</span>){
-<a name="l00127"></a>00127                     currentMat.transparent = atoi(tokens[1].c_str());
-<a name="l00128"></a>00128                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;illum&quot;</span>){
-<a name="l00129"></a>00129                     <span class="keywordtype">int</span> illumMode = atoi(tokens[1].c_str());
-<a name="l00130"></a>00130                     currentMat.illuminationModes.push_back(static_cast&lt;ObjIlluminationMode&gt;(illumMode));
-<a name="l00131"></a>00131                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;map_Ka&quot;</span>){
-<a name="l00132"></a>00132                     
-<a name="l00133"></a>00133                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;map_Kd&quot;</span>){
-<a name="l00134"></a>00134                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;map_Ks&quot;</span>){
-<a name="l00135"></a>00135                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;map_Ns&quot;</span>){
-<a name="l00136"></a>00136                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;map_d&quot;</span>){
-<a name="l00137"></a>00137                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;map_bump&quot;</span> || tokens[0] == <span class="stringliteral">&quot;bump&quot;</span> ){
-<a name="l00138"></a>00138                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;map_disp&quot;</span> || tokens[0] == <span class="stringliteral">&quot;disp&quot;</span> ){
-<a name="l00139"></a>00139                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;map_decal&quot;</span> || tokens[0] == <span class="stringliteral">&quot;decal&quot;</span> ){
-<a name="l00140"></a>00140                 }
-<a name="l00141"></a>00141             }
-<a name="l00142"></a>00142         }
-<a name="l00143"></a>00143     }
-<a name="l00144"></a>00144     
-<a name="l00145"></a>00145     ObjData loadObjData(std::string objSource, std::function&lt;std::string (std::string)&gt; materialMap){
-<a name="l00146"></a>00146         ObjData res;
-<a name="l00147"></a>00147         stringstream ss{objSource};
-<a name="l00148"></a>00148         <span class="keyword">const</span> <span class="keywordtype">int</span> bufferSize = 256;
-<a name="l00149"></a>00149         <span class="keywordtype">char</span> buffer[bufferSize];
-<a name="l00150"></a>00150         <span class="keywordtype">char</span> buffer2[bufferSize];
-<a name="l00151"></a>00151         <span class="keywordtype">bool</span> initialComment = <span class="keyword">true</span>;
-<a name="l00152"></a>00152         <span class="keywordflow">while</span> (ss.good()){
-<a name="l00153"></a>00153             ss.getline(buffer, bufferSize);
-<a name="l00154"></a>00154             stringstream likeTokensizer{buffer};
-<a name="l00155"></a>00155             vector&lt;string&gt; tokens;
-<a name="l00156"></a>00156             <span class="keywordflow">while</span> (likeTokensizer.good()) {
-<a name="l00157"></a>00157                 likeTokensizer.getline(buffer2, bufferSize, <span class="charliteral">&#39; &#39;</span>);
-<a name="l00158"></a>00158                 tokens.push_back(buffer2);
-<a name="l00159"></a>00159             }
-<a name="l00160"></a>00160             <span class="keywordflow">if</span> (tokens.size()==0){
-<a name="l00161"></a>00161                 <span class="keywordflow">continue</span>;
+<a name="l00111"></a>00111             <span class="keywordflow">if</span> (tokens.size()==0){
+<a name="l00112"></a>00112                 <span class="keywordflow">continue</span>;
+<a name="l00113"></a>00113             }
+<a name="l00114"></a>00114             <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;newmtl&quot;</span>){
+<a name="l00115"></a>00115                 vec3 zero{0,0,0};
+<a name="l00116"></a>00116                 ObjMaterial material{tokens[1],zero,zero,zero,50,1};
+<a name="l00117"></a>00117                 dest.materials.push_back(material);
+<a name="l00118"></a>00118             } <span class="keywordflow">else</span> {
+<a name="l00119"></a>00119                 <span class="keywordflow">if</span> (dest.materials.size()==0){
+<a name="l00120"></a>00120                     <span class="keywordflow">continue</span>;
+<a name="l00121"></a>00121                 }
+<a name="l00122"></a>00122                 ObjMaterial &amp; currentMat = dest.materials.back();
+<a name="l00123"></a>00123                 <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;Ka&quot;</span>){
+<a name="l00124"></a>00124                     currentMat.ambientColor = toVec3(tokens);
+<a name="l00125"></a>00125                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;Kd&quot;</span>){
+<a name="l00126"></a>00126                     currentMat.diffuseColor = toVec3(tokens);
+<a name="l00127"></a>00127                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;Ks&quot;</span>){
+<a name="l00128"></a>00128                     currentMat.specularColor = toVec3(tokens);
+<a name="l00129"></a>00129                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;d&quot;</span>){
+<a name="l00130"></a>00130                     currentMat.transparent = atoi(tokens[1].c_str());
+<a name="l00131"></a>00131                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;illum&quot;</span>){
+<a name="l00132"></a>00132                     <span class="keywordtype">int</span> illumMode = atoi(tokens[1].c_str());
+<a name="l00133"></a>00133                     currentMat.illuminationModes.push_back(static_cast&lt;ObjIlluminationMode&gt;(illumMode));
+<a name="l00134"></a>00134                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;map_Ka&quot;</span>){
+<a name="l00135"></a>00135                     
+<a name="l00136"></a>00136                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;map_Kd&quot;</span>){
+<a name="l00137"></a>00137                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;map_Ks&quot;</span>){
+<a name="l00138"></a>00138                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;map_Ns&quot;</span>){
+<a name="l00139"></a>00139                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;map_d&quot;</span>){
+<a name="l00140"></a>00140                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;map_bump&quot;</span> || tokens[0] == <span class="stringliteral">&quot;bump&quot;</span> ){
+<a name="l00141"></a>00141                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;map_disp&quot;</span> || tokens[0] == <span class="stringliteral">&quot;disp&quot;</span> ){
+<a name="l00142"></a>00142                 } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;map_decal&quot;</span> || tokens[0] == <span class="stringliteral">&quot;decal&quot;</span> ){
+<a name="l00143"></a>00143                 }
+<a name="l00144"></a>00144             }
+<a name="l00145"></a>00145         }
+<a name="l00146"></a>00146     }
+<a name="l00147"></a>00147     
+<a name="l00148"></a>00148     ObjData loadObjData(std::string objSource, std::function&lt;std::string (std::string)&gt; materialMap){
+<a name="l00149"></a>00149         ObjData res;
+<a name="l00150"></a>00150         stringstream ss{objSource};
+<a name="l00151"></a>00151         <span class="keyword">const</span> <span class="keywordtype">int</span> bufferSize = 256;
+<a name="l00152"></a>00152         <span class="keywordtype">char</span> buffer[bufferSize];
+<a name="l00153"></a>00153         <span class="keywordtype">char</span> buffer2[bufferSize];
+<a name="l00154"></a>00154         <span class="keywordtype">bool</span> initialComment = <span class="keyword">true</span>;
+<a name="l00155"></a>00155         <span class="keywordflow">while</span> (ss.good()){
+<a name="l00156"></a>00156             ss.getline(buffer, bufferSize);
+<a name="l00157"></a>00157             stringstream likeTokensizer{buffer};
+<a name="l00158"></a>00158             vector&lt;string&gt; tokens;
+<a name="l00159"></a>00159             <span class="keywordflow">while</span> (likeTokensizer.good()) {
+<a name="l00160"></a>00160                 likeTokensizer.getline(buffer2, bufferSize, <span class="charliteral">&#39; &#39;</span>);
+<a name="l00161"></a>00161                 tokens.push_back(buffer2);
 <a name="l00162"></a>00162             }
-<a name="l00163"></a>00163             initialComment = initialComment &amp;&amp; (tokens[0] == <span class="stringliteral">&quot;#&quot;</span>);
-<a name="l00164"></a>00164             <span class="keywordtype">int</span> currentIndex = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(res.faces.size()) + 1;
-<a name="l00165"></a>00165             <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;#&quot;</span>){ <span class="comment">// comment</span>
-<a name="l00166"></a>00166                 <span class="keywordflow">if</span> (initialComment){
-<a name="l00167"></a>00167                     res.initialComment += string(buffer + 2) + <span class="stringliteral">&quot;\n&quot;</span>;
-<a name="l00168"></a>00168                 }
-<a name="l00169"></a>00169             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;v&quot;</span>){ <span class="comment">// vertex position</span>
-<a name="l00170"></a>00170                 vec4 vertexPosition = toVec4(tokens);
-<a name="l00171"></a>00171                 res.vertexPositions.push_back(vertexPosition);
-<a name="l00172"></a>00172             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;vt&quot;</span>){ <span class="comment">// vertex texture coordinates</span>
-<a name="l00173"></a>00173                 vec3 textureCoord = toVec3(tokens);
-<a name="l00174"></a>00174                 res.textureCoords.push_back(textureCoord);
-<a name="l00175"></a>00175             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;vn&quot;</span>){ <span class="comment">// vertex normal</span>
-<a name="l00176"></a>00176                 vec3 normal = toVec3(tokens);
-<a name="l00177"></a>00177                 res.normals.push_back(normal);
-<a name="l00178"></a>00178             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;f&quot;</span>){ <span class="comment">// face</span>
-<a name="l00179"></a>00179                 res.faces.push_back(toObjFace(tokens));
-<a name="l00180"></a>00180             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;mtllib&quot;</span>){ <span class="comment">// material library</span>
-<a name="l00181"></a>00181                 <span class="keywordtype">string</span> materialLib = materialMap(tokens[1]);
-<a name="l00182"></a>00182                 parseMaterialLib(materialLib, res);
-<a name="l00183"></a>00183             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;usemtl&quot;</span>){ <span class="comment">// use material</span>
-<a name="l00184"></a>00184                 res.materialChanges.push_back({currentIndex, tokens[1]});
-<a name="l00185"></a>00185             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;o&quot;</span>){ <span class="comment">// named object</span>
-<a name="l00186"></a>00186                 res.namedObjects.push_back({currentIndex, tokens[1]});
-<a name="l00187"></a>00187             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;g&quot;</span>){ <span class="comment">// polygon group</span>
-<a name="l00188"></a>00188                 res.polygonGroups.push_back({currentIndex, tokens[1]});
-<a name="l00189"></a>00189             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;s&quot;</span>){ <span class="comment">// smoothing groups</span>
-<a name="l00190"></a>00190                 <span class="keywordtype">int</span> smoothingGroup = 0; <span class="comment">// 0 = no smoothing</span>
-<a name="l00191"></a>00191                 <span class="keywordflow">if</span> (tokens[1] != <span class="stringliteral">&quot;off&quot;</span>){
-<a name="l00192"></a>00192                     smoothingGroup = atoi(tokens[1].c_str());
-<a name="l00193"></a>00193                 }
-<a name="l00194"></a>00194                 res.smoothGroups.push_back({currentIndex, smoothingGroup});
-<a name="l00195"></a>00195             }
-<a name="l00196"></a>00196         }
-<a name="l00197"></a>00197 
-<a name="l00198"></a>00198         <span class="keywordflow">return</span> res;
-<a name="l00199"></a>00199     }
-<a name="l00200"></a>00200     
-<a name="l00201"></a>00201     std::string fixPathEnd(std::string &amp;path){
-<a name="l00202"></a>00202         <span class="keywordtype">char</span> lastChar = path[path.length()-1];
-<a name="l00203"></a>00203         <span class="keywordflow">if</span> (lastChar != <span class="charliteral">&#39;/&#39;</span>){
-<a name="l00204"></a>00204             <span class="keywordflow">return</span> path + <span class="stringliteral">&quot;/&quot;</span>;
-<a name="l00205"></a>00205         }
-<a name="l00206"></a>00206         <span class="keywordflow">return</span> path;
-<a name="l00207"></a>00207     }
-<a name="l00208"></a>00208     
-<a name="l00209"></a>00209     ObjData loadObjData(std::string path, std::string filename){
-<a name="l00210"></a>00210         path = fixPathEnd(path);
-<a name="l00211"></a>00211         <span class="keywordtype">string</span> file = getFileContents(path+filename);
-<a name="l00212"></a>00212         std::function&lt;std::string (std::string)&gt;  materialLoader = [&amp;](<span class="keywordtype">string</span> filename){
-<a name="l00213"></a>00213             <span class="keywordflow">return</span> getFileContents(path+filename);
-<a name="l00214"></a>00214         };
-<a name="l00215"></a>00215         <span class="keywordflow">return</span> loadObjData(file, materialLoader);
-<a name="l00216"></a>00216     }
-<a name="l00217"></a>00217 }
+<a name="l00163"></a>00163             <span class="keywordflow">if</span> (tokens.size()==0){
+<a name="l00164"></a>00164                 <span class="keywordflow">continue</span>;
+<a name="l00165"></a>00165             }
+<a name="l00166"></a>00166             initialComment = initialComment &amp;&amp; (tokens[0] == <span class="stringliteral">&quot;#&quot;</span>);
+<a name="l00167"></a>00167             <span class="keywordtype">int</span> currentIndex = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(res.faces.size()) + 1;
+<a name="l00168"></a>00168             <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;#&quot;</span>){ <span class="comment">// comment</span>
+<a name="l00169"></a>00169                 <span class="keywordflow">if</span> (initialComment){
+<a name="l00170"></a>00170                     res.initialComment += string(buffer + 2) + <span class="stringliteral">&quot;\n&quot;</span>;
+<a name="l00171"></a>00171                 }
+<a name="l00172"></a>00172             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;v&quot;</span>){ <span class="comment">// vertex position</span>
+<a name="l00173"></a>00173                 vec4 vertexPosition = toVec4(tokens);
+<a name="l00174"></a>00174                 res.vertexPositions.push_back(vertexPosition);
+<a name="l00175"></a>00175             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;vt&quot;</span>){ <span class="comment">// vertex texture coordinates</span>
+<a name="l00176"></a>00176                 vec3 textureCoord = toVec3(tokens);
+<a name="l00177"></a>00177                 res.textureCoords.push_back(textureCoord);
+<a name="l00178"></a>00178             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;vn&quot;</span>){ <span class="comment">// vertex normal</span>
+<a name="l00179"></a>00179                 vec3 normal = toVec3(tokens);
+<a name="l00180"></a>00180                 res.normals.push_back(normal);
+<a name="l00181"></a>00181             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;f&quot;</span>){ <span class="comment">// face</span>
+<a name="l00182"></a>00182                 res.faces.push_back(toObjFace(tokens));
+<a name="l00183"></a>00183             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;mtllib&quot;</span>){ <span class="comment">// material library</span>
+<a name="l00184"></a>00184                 <span class="keywordtype">string</span> materialLib = materialMap(tokens[1]);
+<a name="l00185"></a>00185                 parseMaterialLib(materialLib, res);
+<a name="l00186"></a>00186             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;usemtl&quot;</span>){ <span class="comment">// use material</span>
+<a name="l00187"></a>00187                 res.materialChanges.push_back({currentIndex, tokens[1]});
+<a name="l00188"></a>00188             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;o&quot;</span>){ <span class="comment">// named object</span>
+<a name="l00189"></a>00189                 res.namedObjects.push_back({currentIndex, tokens[1]});
+<a name="l00190"></a>00190             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;g&quot;</span>){ <span class="comment">// polygon group</span>
+<a name="l00191"></a>00191                 res.polygonGroups.push_back({currentIndex, tokens[1]});
+<a name="l00192"></a>00192             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tokens[0] == <span class="stringliteral">&quot;s&quot;</span>){ <span class="comment">// smoothing groups</span>
+<a name="l00193"></a>00193                 <span class="keywordtype">int</span> smoothingGroup = 0; <span class="comment">// 0 = no smoothing</span>
+<a name="l00194"></a>00194                 <span class="keywordflow">if</span> (tokens[1] != <span class="stringliteral">&quot;off&quot;</span>){
+<a name="l00195"></a>00195                     smoothingGroup = atoi(tokens[1].c_str());
+<a name="l00196"></a>00196                 }
+<a name="l00197"></a>00197                 res.smoothGroups.push_back({currentIndex, smoothingGroup});
+<a name="l00198"></a>00198             }
+<a name="l00199"></a>00199         }
+<a name="l00200"></a>00200 
+<a name="l00201"></a>00201         <span class="keywordflow">return</span> res;
+<a name="l00202"></a>00202     }
+<a name="l00203"></a>00203     
+<a name="l00204"></a>00204     std::string fixPathEnd(std::string &amp;path){
+<a name="l00205"></a>00205         <span class="keywordflow">if</span> (path.length() == 0){
+<a name="l00206"></a>00206             <span class="keywordflow">return</span> path;
+<a name="l00207"></a>00207         }
+<a name="l00208"></a>00208         <span class="keywordtype">char</span> lastChar = path[path.length()-1];
+<a name="l00209"></a>00209         <span class="keywordflow">if</span> (lastChar != <span class="charliteral">&#39;/&#39;</span>){
+<a name="l00210"></a>00210             <span class="keywordflow">return</span> path + <span class="stringliteral">&quot;/&quot;</span>;
+<a name="l00211"></a>00211         }
+<a name="l00212"></a>00212         <span class="keywordflow">return</span> path;
+<a name="l00213"></a>00213     }
+<a name="l00214"></a>00214     
+<a name="l00215"></a>00215     ObjData loadObjData(std::string path, std::string filename){
+<a name="l00216"></a>00216         path = fixPathEnd(path);
+<a name="l00217"></a>00217         <span class="keywordtype">string</span> file = getFileContents(path+filename);
+<a name="l00218"></a>00218         std::function&lt;std::string (std::string)&gt;  materialLoader = [&amp;](<span class="keywordtype">string</span> filename){
+<a name="l00219"></a>00219             <span class="keywordflow">return</span> getFileContents(path+filename);
+<a name="l00220"></a>00220         };
+<a name="l00221"></a>00221         <span class="keywordflow">return</span> loadObjData(file, materialLoader);
+<a name="l00222"></a>00222     }
+<a name="l00223"></a>00223 }
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -282,7 +288,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -291,7 +297,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -72,97 +72,56 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00012"></a>00012 <span class="preprocessor">#include &lt;memory&gt;</span>
 <a name="l00013"></a>00013 <span class="preprocessor">#include &lt;unordered_map&gt;</span>
 <a name="l00014"></a>00014 <span class="preprocessor">#include &lt;vector&gt;</span>
-<a name="l00015"></a>00015 <span class="preprocessor">#ifdef EMSCRIPTEN</span>
-<a name="l00016"></a>00016 <span class="preprocessor"></span><span class="preprocessor">#   include &lt;SDL/SDL_image.h&gt;</span>
-<a name="l00017"></a>00017 <span class="preprocessor">#else</span>
-<a name="l00018"></a>00018 <span class="preprocessor"></span><span class="preprocessor">#   include &lt;SDL2_image/SDL_image.h&gt;</span>
-<a name="l00019"></a>00019 <span class="preprocessor">#endif</span>
-<a name="l00020"></a>00020 <span class="preprocessor"></span><span class="preprocessor">#include &quot;kick/core/project_asset.h&quot;</span>
-<a name="l00021"></a>00021 <span class="preprocessor">#include &quot;kick/core/asset_loader.h&quot;</span>
-<a name="l00022"></a>00022 <span class="preprocessor">#include &quot;kick/texture/texture2d.h&quot;</span>
-<a name="l00023"></a>00023 <span class="preprocessor">#include &quot;kick/material/shader.h&quot;</span>
-<a name="l00024"></a>00024 
-<a name="l00025"></a>00025 <span class="keyword">namespace </span>kick {
-<a name="l00026"></a>00026     <span class="keyword">class </span>Engine;
-<a name="l00027"></a>00027     
-<a name="l00028"></a><a class="code" href="classkick_1_1_project.html">00028</a>     <span class="keyword">class </span><a class="code" href="classkick_1_1_project.html">Project</a> {
-<a name="l00029"></a>00029     <span class="keyword">public</span>:
-<a name="l00030"></a>00030         <span class="keyword">template</span> &lt;<span class="keyword">class </span>E,  <span class="keyword">typename</span> ... Args&gt;
-<a name="l00031"></a>00031         <span class="keyword">static</span> E* createAsset(Args ... args);
+<a name="l00015"></a>00015 
+<a name="l00016"></a>00016 <span class="preprocessor">#include &quot;kick/core/project_asset.h&quot;</span>
+<a name="l00017"></a>00017 <span class="preprocessor">#include &quot;kick/texture/texture2d.h&quot;</span>
+<a name="l00018"></a>00018 <span class="preprocessor">#include &quot;kick/material/shader.h&quot;</span>
+<a name="l00019"></a>00019 <span class="preprocessor">#include &quot;kick/texture/texture_atlas.h&quot;</span>
+<a name="l00020"></a>00020 
+<a name="l00021"></a>00021 <span class="comment">// forward declaration</span>
+<a name="l00022"></a>00022 <span class="keyword">struct </span>SDL_Surface;
+<a name="l00023"></a>00023 
+<a name="l00024"></a>00024 <span class="keyword">namespace </span>kick {
+<a name="l00025"></a>00025     <span class="keyword">class </span>Engine;
+<a name="l00026"></a>00026     <span class="keyword">class </span>TextureAtlas;
+<a name="l00027"></a>00027     <span class="keyword">class </span>Font;
+<a name="l00028"></a>00028 
+<a name="l00029"></a><a class="code" href="classkick_1_1_project.html">00029</a>     <span class="keyword">class </span><a class="code" href="classkick_1_1_project.html">Project</a> {
+<a name="l00030"></a>00030     <span class="keyword">public</span>:
+<a name="l00031"></a>00031         <span class="keyword">static</span> <span class="keywordtype">void</span> destroyAsset(<a class="code" href="classkick_1_1_project_asset.html">ProjectAsset</a>* asset);
 <a name="l00032"></a>00032 
-<a name="l00033"></a>00033         <span class="keyword">static</span> <span class="keywordtype">void</span> destroyAsset(<a class="code" href="classkick_1_1_project_asset.html">ProjectAsset</a>* asset);
-<a name="l00034"></a>00034         <span class="comment">/*</span>
-<a name="l00035"></a>00035 <span class="comment">        template &lt;class E&gt;</span>
-<a name="l00036"></a>00036 <span class="comment">        E* getAsset(int assetId){</span>
-<a name="l00037"></a>00037 <span class="comment">            ProjectAsset *ptr;</span>
-<a name="l00038"></a>00038 <span class="comment">            if (assetId &lt; 0){</span>
-<a name="l00039"></a>00039 <span class="comment">                return loadAsset&lt;E&gt;(assetId);</span>
-<a name="l00040"></a>00040 <span class="comment">            } else {</span>
-<a name="l00041"></a>00041 <span class="comment">                ptr = assets[assetId].get();</span>
-<a name="l00042"></a>00042 <span class="comment">            }</span>
-<a name="l00043"></a>00043 <span class="comment">            return dynamic_cast&lt;E*&gt;(ptr);</span>
-<a name="l00044"></a>00044 <span class="comment">        }</span>
-<a name="l00045"></a>00045 <span class="comment">        </span>
-<a name="l00046"></a>00046 <span class="comment">        template &lt;class E&gt;</span>
-<a name="l00047"></a>00047 <span class="comment">        E* getAsset(std::string assetURI){</span>
-<a name="l00048"></a>00048 <span class="comment">            int assetId = mapAssetURIToId(assetURI);</span>
-<a name="l00049"></a>00049 <span class="comment">            return getAsset&lt;E&gt;(assetId);</span>
-<a name="l00050"></a>00050 <span class="comment">        }</span>
-<a name="l00051"></a>00051 <span class="comment">        </span>
-<a name="l00052"></a>00052 <span class="comment">        </span>
-<a name="l00053"></a>00053 <span class="comment">        </span>
-<a name="l00054"></a>00054 <span class="comment">        template &lt;class E&gt;</span>
-<a name="l00055"></a>00055 <span class="comment">        E* loadAsset(int id){</span>
-<a name="l00056"></a>00056 <span class="comment">            E* ptr = dynamic_cast&lt;E*&gt;(assets[id]);</span>
-<a name="l00057"></a>00057 <span class="comment">            if (!ptr) {</span>
-<a name="l00058"></a>00058 <span class="comment">                ptr = assetLoader-&gt;loadAsset(id);</span>
-<a name="l00059"></a>00059 <span class="comment">                if (ptr) {</span>
-<a name="l00060"></a>00060 <span class="comment">                    assets[id] = std::unique_ptr&lt;E&gt;(ptr);</span>
-<a name="l00061"></a>00061 <span class="comment">                }</span>
-<a name="l00062"></a>00062 <span class="comment">            }</span>
-<a name="l00063"></a>00063 <span class="comment">            return ptr;</span>
-<a name="l00064"></a>00064 <span class="comment">        }*/</span>
-<a name="l00065"></a>00065         
-<a name="l00066"></a>00066 
-<a name="l00067"></a>00067         <span class="keyword">static</span> <span class="keywordtype">bool</span> loadTextResource(std::string uri, std::string &amp;outText);
-<a name="l00068"></a>00068         <span class="keyword">static</span> <span class="keywordtype">bool</span> loadBinaryResource(std::string uri, std::vector&lt;char&gt; &amp;outResource);
-<a name="l00069"></a>00069         <span class="keyword">static</span> <a class="code" href="classkick_1_1_shader.html">Shader</a>* loadShader(std::string uri);
-<a name="l00070"></a>00070         <span class="keyword">static</span> <a class="code" href="classkick_1_1_texture2_d.html">Texture2D</a>* loadTexture2D(std::string uri);
-<a name="l00071"></a>00071         <span class="keyword">static</span> <a class="code" href="classkick_1_1_texture2_d.html">Texture2D</a>* loadTexture2DFromMemory(<span class="keyword">const</span> <span class="keywordtype">char</span> *data, <span class="keywordtype">int</span> size);
-<a name="l00072"></a>00072 
-<a name="l00073"></a>00073         <span class="keyword">static</span> <a class="code" href="classkick_1_1_texture_cube.html">TextureCube</a>* loadTextureCube(std::string uri);
-<a name="l00074"></a>00074         <span class="keyword">static</span> <a class="code" href="classkick_1_1_texture_cube.html">TextureCube</a>* loadTextureCubeFromMemory(<span class="keyword">const</span> <span class="keywordtype">char</span> *data, <span class="keywordtype">int</span> size);
-<a name="l00075"></a>00075 
-<a name="l00076"></a>00076 
-<a name="l00077"></a>00077 
-<a name="l00078"></a>00078         <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classkick_1_1_project_asset.html">ProjectAsset</a>;
-<a name="l00079"></a>00079         <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classkick_1_1_engine.html">Engine</a>;
-<a name="l00080"></a>00080     <span class="keyword">private</span>:
-<a name="l00081"></a>00081         <span class="keywordtype">int</span> maxAssetId = 1;
-<a name="l00082"></a>00082         <a class="code" href="classkick_1_1_project.html">Project</a>();
-<a name="l00083"></a>00083         <a class="code" href="classkick_1_1_project.html">Project</a>(<span class="keyword">const</span> <a class="code" href="classkick_1_1_project.html">Project</a>&amp;) = <span class="keyword">delete</span>;
-<a name="l00084"></a>00084         <a class="code" href="classkick_1_1_project.html">Project</a>(<a class="code" href="classkick_1_1_project.html">Project</a>&amp;&amp;) = <span class="keyword">delete</span>;
-<a name="l00085"></a>00085         <span class="keyword">static</span> <a class="code" href="classkick_1_1_project.html">Project</a> * getProjectRef();
-<a name="l00086"></a>00086         std::unordered_map&lt;int, std::unique_ptr&lt;ProjectAsset&gt;&gt; assets;
-<a name="l00087"></a>00087         std::unique_ptr&lt;AssetLoader&gt; assetLoader;
-<a name="l00088"></a>00088         <span class="keywordtype">int</span> mapAssetURIToId(std::string assetURI);
-<a name="l00089"></a>00089         std::unordered_map&lt;std::string, int&gt; assetIdMap;
-<a name="l00090"></a>00090 
-<a name="l00091"></a>00091         <span class="keyword">static</span> <a class="code" href="classkick_1_1_texture2_d.html">Texture2D</a> *surfaceToTexture2D( SDL_Surface *image);
-<a name="l00092"></a>00092 
-<a name="l00093"></a>00093         <span class="keyword">static</span> <a class="code" href="classkick_1_1_texture_cube.html">TextureCube</a> *surfaceToTextureCube(SDL_Surface *image);
-<a name="l00094"></a>00094     };
-<a name="l00095"></a>00095 
-<a name="l00096"></a>00096     <span class="keyword">template</span> &lt;<span class="keyword">class </span>E,  <span class="keyword">typename</span> ... Args&gt;
-<a name="l00097"></a>00097     <span class="keyword">inline</span> E* Project::createAsset(Args ... args){
-<a name="l00098"></a>00098         E* res = <span class="keyword">new</span> E{getProjectRef(), args...};
-<a name="l00099"></a>00099         <span class="comment">//res-&gt;uid = maxAssetId;</span>
-<a name="l00100"></a>00100         <span class="comment">//assets[maxAssetId] = std::unique_ptr&lt;E&gt;(res);</span>
-<a name="l00101"></a>00101         <span class="comment">//maxAssetId++;</span>
-<a name="l00102"></a>00102         <span class="keywordflow">return</span> res;
-<a name="l00103"></a>00103     }
-<a name="l00104"></a>00104 
-<a name="l00105"></a>00105 }
+<a name="l00033"></a>00033         <span class="keyword">static</span> <span class="keywordtype">bool</span> loadTextResource(std::string uri, std::string &amp;outText);
+<a name="l00034"></a>00034         <span class="keyword">static</span> <span class="keywordtype">bool</span> loadBinaryResource(std::string uri, std::vector&lt;char&gt; &amp;outResource);
+<a name="l00035"></a>00035         <span class="keyword">static</span> std::shared_ptr&lt;Shader&gt; loadShader(std::string uri);
+<a name="l00036"></a>00036         <span class="keyword">static</span> std::shared_ptr&lt;Texture2D&gt; loadTexture2D(std::string uri);
+<a name="l00037"></a>00037         <span class="keyword">static</span> std::shared_ptr&lt;Font&gt; loadFont(std::string fontName = <span class="stringliteral">&quot;assets/font/open_sans_28.fnt&quot;</span>);
+<a name="l00038"></a>00038         <span class="keyword">static</span> <a class="code" href="classkick_1_1_texture2_d.html">Texture2D</a>* loadTexture2DFromMemory(<span class="keyword">const</span> <span class="keywordtype">char</span> *data, <span class="keywordtype">int</span> size);
+<a name="l00039"></a>00039 
+<a name="l00040"></a>00040         <span class="keyword">static</span> std::shared_ptr&lt;TextureCube&gt; loadTextureCube(std::string uri);
+<a name="l00041"></a>00041         <span class="keyword">static</span> <a class="code" href="classkick_1_1_texture_cube.html">TextureCube</a>* loadTextureCubeFromMemory(<span class="keyword">const</span> <span class="keywordtype">char</span> *data, <span class="keywordtype">int</span> size);
+<a name="l00042"></a>00042 
+<a name="l00043"></a>00043         <span class="comment">// filename should be the .txt file. There should be a png file with the same name in the same folder containing</span>
+<a name="l00044"></a>00044         <span class="comment">// the actual sprites</span>
+<a name="l00045"></a>00045         <span class="keyword">static</span> std::shared_ptr&lt;TextureAtlas&gt; loadTextureAtlas(std::string filename);
+<a name="l00046"></a>00046 
+<a name="l00047"></a>00047         <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classkick_1_1_project_asset.html">ProjectAsset</a>;
+<a name="l00048"></a>00048         <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classkick_1_1_engine.html">Engine</a>;
+<a name="l00049"></a>00049     <span class="keyword">private</span>:
+<a name="l00050"></a>00050         <a class="code" href="classkick_1_1_project.html">Project</a>();
+<a name="l00051"></a>00051         <a class="code" href="classkick_1_1_project.html">Project</a>(<span class="keyword">const</span> <a class="code" href="classkick_1_1_project.html">Project</a>&amp;) = <span class="keyword">delete</span>;
+<a name="l00052"></a>00052         <a class="code" href="classkick_1_1_project.html">Project</a>(<a class="code" href="classkick_1_1_project.html">Project</a>&amp;&amp;) = <span class="keyword">delete</span>;
+<a name="l00053"></a>00053 
+<a name="l00054"></a>00054         <span class="keyword">static</span> <a class="code" href="classkick_1_1_texture2_d.html">Texture2D</a> *surfaceToTexture2D( SDL_Surface *image);
+<a name="l00055"></a>00055 
+<a name="l00056"></a>00056         <span class="keyword">static</span> <a class="code" href="classkick_1_1_texture_cube.html">TextureCube</a> *surfaceToTextureCube(SDL_Surface *image);
+<a name="l00057"></a>00057 
+<a name="l00058"></a>00058         <span class="keyword">static</span> std::map&lt;std::string, std::weak_ptr&lt;TextureAtlas&gt;&gt; textureAtlasRef;
+<a name="l00059"></a>00059         <span class="keyword">static</span> std::map&lt;std::string, std::weak_ptr&lt;Shader&gt;&gt; shaderRef;
+<a name="l00060"></a>00060         <span class="keyword">static</span> std::map&lt;std::string, std::weak_ptr&lt;Texture2D&gt;&gt; texture2DRef;
+<a name="l00061"></a>00061         <span class="keyword">static</span> std::map&lt;std::string, std::weak_ptr&lt;TextureCube&gt;&gt; textureCubeRef;
+<a name="l00062"></a>00062         <span class="keyword">static</span> std::map&lt;std::string, std::weak_ptr&lt;Font&gt;&gt; fontRef;
+<a name="l00063"></a>00063     };
+<a name="l00064"></a>00064 }
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -170,7 +129,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -179,7 +138,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

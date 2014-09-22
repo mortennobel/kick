@@ -66,31 +66,31 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00006"></a>00006 <span class="comment">//  Copyright (c) 2013 Morten Nobel-Joergensen. All rights reserved.</span>
 <a name="l00007"></a>00007 <span class="comment">//</span>
 <a name="l00008"></a>00008 
-<a name="l00009"></a>00009 <span class="preprocessor">#include &quot;mesh.h&quot;</span>
+<a name="l00009"></a>00009 <span class="preprocessor">#include &quot;kick/mesh/mesh.h&quot;</span>
 <a name="l00010"></a>00010 <span class="preprocessor">#include &quot;kick/mesh/mesh_data.h&quot;</span>
-<a name="l00011"></a>00011 <span class="preprocessor">#include &lt;vector&gt;</span>
-<a name="l00012"></a>00012 <span class="preprocessor">#include &lt;set&gt;</span>
-<a name="l00013"></a>00013 
-<a name="l00014"></a>00014 <span class="keyword">using namespace </span>std;
-<a name="l00015"></a>00015 
-<a name="l00016"></a>00016 <span class="keyword">namespace </span>kick {
-<a name="l00017"></a>00017     Mesh::Mesh(Project* project)
-<a name="l00018"></a>00018     :ProjectAsset{project}{
-<a name="l00019"></a>00019         glGenBuffers(1, &amp;vertexBufferId);
-<a name="l00020"></a>00020         glGenBuffers(1, &amp;elementBufferId);
-<a name="l00021"></a>00021     }
-<a name="l00022"></a>00022     
-<a name="l00023"></a>00023     Mesh::~Mesh(){
-<a name="l00024"></a>00024         <span class="keywordflow">if</span> (vertexArrayObject.size()&gt;0){
-<a name="l00025"></a>00025             vector&lt;GLuint&gt; array(vertexArrayObject.size());
-<a name="l00026"></a>00026             <span class="keywordflow">for</span> (<span class="keyword">auto</span> keyValue : vertexArrayObject){
-<a name="l00027"></a>00027                 array.push_back(keyValue.second);
-<a name="l00028"></a>00028             }
-<a name="l00029"></a>00029 <span class="preprocessor">#ifndef GL_ES_VERSION_2_0</span>
-<a name="l00030"></a>00030 <span class="preprocessor"></span>            glDeleteVertexArrays((GLsizei)array.size(), array.data());
-<a name="l00031"></a>00031 <span class="preprocessor">#endif</span>
-<a name="l00032"></a>00032 <span class="preprocessor"></span>
-<a name="l00033"></a>00033         }
+<a name="l00011"></a>00011 <span class="preprocessor">#include &quot;kick/core/log.h&quot;</span>
+<a name="l00012"></a>00012 <span class="preprocessor">#include &lt;vector&gt;</span>
+<a name="l00013"></a>00013 <span class="preprocessor">#include &lt;set&gt;</span>
+<a name="l00014"></a>00014 
+<a name="l00015"></a>00015 <span class="keyword">using namespace </span>std;
+<a name="l00016"></a>00016 
+<a name="l00017"></a>00017 <span class="keyword">namespace </span>kick {
+<a name="l00018"></a>00018     Mesh::Mesh()
+<a name="l00019"></a>00019     {
+<a name="l00020"></a>00020         glGenBuffers(1, &amp;vertexBufferId);
+<a name="l00021"></a>00021         glGenBuffers(1, &amp;elementBufferId);
+<a name="l00022"></a>00022     }
+<a name="l00023"></a>00023     
+<a name="l00024"></a>00024     Mesh::~Mesh(){
+<a name="l00025"></a>00025         <span class="keywordflow">if</span> (vertexArrayObject.size()&gt;0){
+<a name="l00026"></a>00026             vector&lt;GLuint&gt; array(vertexArrayObject.size());
+<a name="l00027"></a>00027             <span class="keywordflow">for</span> (<span class="keyword">auto</span> keyValue : vertexArrayObject){
+<a name="l00028"></a>00028                 array.push_back(keyValue.second);
+<a name="l00029"></a>00029             }
+<a name="l00030"></a>00030 <span class="preprocessor">#ifndef GL_ES_VERSION_2_0</span>
+<a name="l00031"></a>00031 <span class="preprocessor"></span>            glDeleteVertexArrays((GLsizei)array.size(), array.data());
+<a name="l00032"></a>00032 <span class="preprocessor">#endif</span>
+<a name="l00033"></a>00033 <span class="preprocessor"></span>        }
 <a name="l00034"></a>00034         glDeleteBuffers(1, &amp;vertexBufferId);
 <a name="l00035"></a>00035         glDeleteBuffers(1, &amp;elementBufferId);
 <a name="l00036"></a>00036     }
@@ -110,80 +110,83 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00050"></a>00050 
 <a name="l00051"></a>00051                 <span class="comment">// reassign buffers</span>
 <a name="l00052"></a>00052                 glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
-<a name="l00053"></a>00053                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
-<a name="l00054"></a>00054 
-<a name="l00055"></a>00055                 updateArrayBufferStructure(shader);
-<a name="l00056"></a>00056                 vertexArrayObject[shader] = vertexArrayObjectIdx;
-<a name="l00057"></a>00057             } <span class="keywordflow">else</span> {
-<a name="l00058"></a>00058                 GLuint vertexArrayObject = iter-&gt;second;
-<a name="l00059"></a>00059                 glBindVertexArray(vertexArrayObject);
-<a name="l00060"></a>00060             }
-<a name="l00061"></a>00061 
-<a name="l00062"></a>00062         } <span class="keywordflow">else</span>
-<a name="l00063"></a>00063 <span class="preprocessor">#endif</span>
-<a name="l00064"></a>00064 <span class="preprocessor"></span>        {
-<a name="l00065"></a>00065             updateArrayBufferStructure(shader);
-<a name="l00066"></a>00066         }
-<a name="l00067"></a>00067         
-<a name="l00068"></a>00068     }
-<a name="l00069"></a>00069     
-<a name="l00070"></a>00070     <span class="keywordtype">void</span> Mesh::updateArrayBufferStructure(Shader *shader){
-<a name="l00071"></a>00071         glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
-<a name="l00072"></a>00072         <span class="keywordflow">for</span> (InterleavedRecord format_record : interleavedFormat) {
-<a name="l00073"></a>00073             <span class="keyword">const</span> AttributeDescriptor * desc = shader-&gt;getShaderAttribute(format_record.semantic);
-<a name="l00074"></a>00074             <span class="keywordflow">if</span> (desc){
-<a name="l00075"></a>00075                 glEnableVertexAttribArray(desc-&gt;index);
-<a name="l00076"></a>00076                 glVertexAttribPointer(desc-&gt;index, format_record.size,
-<a name="l00077"></a>00077                                        format_record.type, (GLboolean) format_record.normalized, format_record.stride, format_record.offset);
-<a name="l00078"></a>00078                 
-<a name="l00079"></a>00079             }
-<a name="l00080"></a>00080         }
-<a name="l00081"></a>00081     }
-<a name="l00082"></a>00082     
-<a name="l00083"></a>00083     <span class="keywordtype">void</span> Mesh::render(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> submeshIndex){
-<a name="l00084"></a>00084         <span class="keyword">auto</span> data = submeshData[submeshIndex];
-<a name="l00085"></a>00085         GLenum mode = data.mode;
-<a name="l00086"></a>00086         GLsizei count = data.indexCount;
-<a name="l00087"></a>00087         GLenum type = data.type;
-<a name="l00088"></a>00088         <span class="keyword">const</span> GLvoid * offset = data.dataOffset;
-<a name="l00089"></a>00089         glDrawElements(mode, count, type, offset);
-<a name="l00090"></a>00090     }
-<a name="l00091"></a>00091     
-<a name="l00092"></a>00092     std::string Mesh::getName(){
-<a name="l00093"></a>00093         <span class="keywordflow">return</span> name;
-<a name="l00094"></a>00094     }
-<a name="l00095"></a>00095     
-<a name="l00096"></a>00096     <span class="keywordtype">void</span> Mesh::setName(std::string n){
-<a name="l00097"></a>00097         name = n;
-<a name="l00098"></a>00098     }
-<a name="l00099"></a>00099     
-<a name="l00100"></a>00100     MeshData *Mesh::getMeshData() {
-<a name="l00101"></a>00101         <span class="keywordflow">return</span> mesh_data;
-<a name="l00102"></a>00102     }
-<a name="l00103"></a>00103     
-<a name="l00104"></a>00104     <span class="keywordtype">void</span> Mesh::setMeshData(MeshData *m){
-<a name="l00105"></a>00105         mesh_data = m;
-<a name="l00106"></a>00106         <span class="keywordflow">if</span> (m != <span class="keyword">nullptr</span>){
-<a name="l00107"></a>00107             interleavedFormat = m-&gt;getInterleavedFormat();
-<a name="l00108"></a>00108             submeshData = m-&gt;getIndicesFormat();
-<a name="l00109"></a>00109             updateMeshData();
-<a name="l00110"></a>00110         } <span class="keywordflow">else</span> {
-<a name="l00111"></a>00111             interleavedFormat.clear();
-<a name="l00112"></a>00112         }
-<a name="l00113"></a>00113     }
-<a name="l00114"></a>00114     
-<a name="l00115"></a>00115     <span class="keywordtype">void</span> Mesh::updateMeshData(){
-<a name="l00116"></a>00116         glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
-<a name="l00117"></a>00117         vector&lt;float&gt; data = mesh_data-&gt;getInterleavedData();
-<a name="l00118"></a>00118         GLsizeiptr vertexDataSize =data.size()*<span class="keyword">sizeof</span>(float);
-<a name="l00119"></a>00119         glBufferData(GL_ARRAY_BUFFER, vertexDataSize, data.data(), mesh_data-&gt;getMeshUsageVal());
-<a name="l00120"></a>00120         
-<a name="l00121"></a>00121         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
-<a name="l00122"></a>00122         vector&lt;GLushort&gt; indices = mesh_data-&gt;getIndices();
-<a name="l00123"></a>00123         GLsizeiptr indicesSize = indices.size()*<span class="keyword">sizeof</span>(GLushort);
-<a name="l00124"></a>00124         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices.data(), mesh_data-&gt;getMeshUsageVal());
-<a name="l00125"></a>00125     }
-<a name="l00126"></a>00126 };
+<a name="l00053"></a>00053 
+<a name="l00054"></a>00054                 updateArrayBufferStructure(shader);
+<a name="l00055"></a>00055                 vertexArrayObject[shader] = vertexArrayObjectIdx;
+<a name="l00056"></a>00056             } <span class="keywordflow">else</span> {
+<a name="l00057"></a>00057                 GLuint vertexArrayObject = iter-&gt;second;
+<a name="l00058"></a>00058                 glBindVertexArray(vertexArrayObject);
+<a name="l00059"></a>00059             }
+<a name="l00060"></a>00060 
+<a name="l00061"></a>00061         } <span class="keywordflow">else</span>
+<a name="l00062"></a>00062 <span class="preprocessor">#endif</span>
+<a name="l00063"></a>00063 <span class="preprocessor"></span>        {
+<a name="l00064"></a>00064             updateArrayBufferStructure(shader);
+<a name="l00065"></a>00065         }
+<a name="l00066"></a>00066         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
+<a name="l00067"></a>00067     }
+<a name="l00068"></a>00068     
+<a name="l00069"></a>00069     <span class="keywordtype">void</span> Mesh::updateArrayBufferStructure(Shader *shader){
+<a name="l00070"></a>00070         glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
+<a name="l00071"></a>00071         <span class="keywordflow">for</span> (InterleavedRecord format_record : interleavedFormat) {
+<a name="l00072"></a>00072             <span class="keyword">const</span> AttributeDescriptor * desc = shader-&gt;getShaderAttribute(format_record.semantic);
+<a name="l00073"></a>00073             <span class="keywordflow">if</span> (desc){
+<a name="l00074"></a>00074                 glEnableVertexAttribArray(desc-&gt;index);
+<a name="l00075"></a>00075                 glVertexAttribPointer(desc-&gt;index, format_record.size,
+<a name="l00076"></a>00076                                        format_record.type, (GLboolean) format_record.normalized, format_record.stride, format_record.offset);
+<a name="l00077"></a>00077                 
+<a name="l00078"></a>00078             }
+<a name="l00079"></a>00079         }
+<a name="l00080"></a>00080     }
+<a name="l00081"></a>00081     
+<a name="l00082"></a>00082     <span class="keywordtype">void</span> Mesh::render(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> submeshIndex){
+<a name="l00083"></a>00083         <span class="keywordflow">if</span> (submeshIndex &gt;= submeshData.size()){
+<a name="l00084"></a>00084             logWarning(<span class="stringliteral">&quot;submesh not found&quot;</span>);
+<a name="l00085"></a>00085             <span class="keywordflow">return</span>;
+<a name="l00086"></a>00086         }
+<a name="l00087"></a>00087         <span class="keyword">auto</span> data = submeshData[submeshIndex];
+<a name="l00088"></a>00088         GLenum mode = data.mode;
+<a name="l00089"></a>00089         GLsizei count = data.indexCount;
+<a name="l00090"></a>00090         GLenum type = data.type;
+<a name="l00091"></a>00091         <span class="keyword">const</span> GLvoid * offset = data.dataOffset;
+<a name="l00092"></a>00092         glDrawElements(mode, count, type, offset);
+<a name="l00093"></a>00093     }
+<a name="l00094"></a>00094     
+<a name="l00095"></a>00095     std::string Mesh::getName(){
+<a name="l00096"></a>00096         <span class="keywordflow">return</span> name;
+<a name="l00097"></a>00097     }
+<a name="l00098"></a>00098     
+<a name="l00099"></a>00099     <span class="keywordtype">void</span> Mesh::setName(std::string n){
+<a name="l00100"></a>00100         name = n;
+<a name="l00101"></a>00101     }
+<a name="l00102"></a>00102     
+<a name="l00103"></a>00103     MeshData *Mesh::getMeshData() {
+<a name="l00104"></a>00104         <span class="keywordflow">return</span> mesh_data;
+<a name="l00105"></a>00105     }
+<a name="l00106"></a>00106     
+<a name="l00107"></a>00107     <span class="keywordtype">void</span> Mesh::setMeshData(MeshData *m){
+<a name="l00108"></a>00108         mesh_data = m;
+<a name="l00109"></a>00109         <span class="keywordflow">if</span> (m != <span class="keyword">nullptr</span>){
+<a name="l00110"></a>00110             interleavedFormat = m-&gt;getInterleavedFormat();
+<a name="l00111"></a>00111             submeshData = m-&gt;getIndicesFormat();
+<a name="l00112"></a>00112             updateMeshData();
+<a name="l00113"></a>00113         } <span class="keywordflow">else</span> {
+<a name="l00114"></a>00114             interleavedFormat.clear();
+<a name="l00115"></a>00115         }
+<a name="l00116"></a>00116     }
+<a name="l00117"></a>00117     
+<a name="l00118"></a>00118     <span class="keywordtype">void</span> Mesh::updateMeshData(){
+<a name="l00119"></a>00119         glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
+<a name="l00120"></a>00120         vector&lt;float&gt; data = mesh_data-&gt;getInterleavedData();
+<a name="l00121"></a>00121         GLsizeiptr vertexDataSize =data.size()*<span class="keyword">sizeof</span>(float);
+<a name="l00122"></a>00122         glBufferData(GL_ARRAY_BUFFER, vertexDataSize, data.data(), mesh_data-&gt;getMeshUsageVal());
+<a name="l00123"></a>00123         
+<a name="l00124"></a>00124         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
+<a name="l00125"></a>00125         vector&lt;GLushort&gt; indices = mesh_data-&gt;getIndices();
+<a name="l00126"></a>00126         GLsizeiptr indicesSize = indices.size()*<span class="keyword">sizeof</span>(GLushort);
+<a name="l00127"></a>00127         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices.data(), mesh_data-&gt;getMeshUsageVal());
+<a name="l00128"></a>00128     }
+<a name="l00129"></a>00129 };
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -191,7 +194,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -200,7 +203,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

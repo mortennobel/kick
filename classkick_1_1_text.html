@@ -70,14 +70,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">kick::Text Class Reference</div>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="kick::Text" --><!-- doxytag: inherits="kick::ComponentRenderable" --><div class="dynheader">
+<!-- doxytag: class="kick::Text" --><!-- doxytag: inherits="kick::Component2D" --><div class="dynheader">
 Inheritance diagram for kick::Text:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="classkick_1_1_text.png" usemap="#kick::Text_map" alt=""/>
   <map id="kick::Text_map" name="kick::Text_map">
-<area href="classkick_1_1_component_renderable.html" alt="kick::ComponentRenderable" shape="rect" coords="0,56,168,80"/>
-<area href="classkick_1_1_component.html" alt="kick::Component" shape="rect" coords="0,0,168,24"/>
+<area href="classkick_1_1_component2_d.html" alt="kick::Component2D" shape="rect" coords="0,56,119,80"/>
+<area href="classkick_1_1_component.html" alt="kick::Component" shape="rect" coords="0,0,119,24"/>
 </map>
  </div></div>
 
@@ -87,31 +87,37 @@ Inheritance diagram for kick::Text:</div>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a96a278c5429dd720eee42119c0aa18c0"></a><!-- doxytag: member="kick::Text::Text" ref="a96a278c5429dd720eee42119c0aa18c0" args="(GameObject *gameObject)" -->
 &#160;</td><td class="memItemRight" valign="bottom"><b>Text</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *gameObject)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a394980bc96d507fa10fa6d6efe3f2425"></a><!-- doxytag: member="kick::Text::getFont" ref="a394980bc96d507fa10fa6d6efe3f2425" args="() const " -->
-<a class="el" href="classkick_1_1_font.html">Font</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getFont</b> () const </td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa7109f4751b4214bc165d60ed8ff6eaa"></a><!-- doxytag: member="kick::Text::setFont" ref="aa7109f4751b4214bc165d60ed8ff6eaa" args="(Font *font)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setFont</b> (<a class="el" href="classkick_1_1_font.html">Font</a> *font)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab7cafbb1bfca424db1b0ef308046725c"></a><!-- doxytag: member="kick::Text::render" ref="ab7cafbb1bfca424db1b0ef308046725c" args="(EngineUniforms *engineUniforms) override" -->
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>render</b> (<a class="el" href="structkick_1_1_engine_uniforms.html">EngineUniforms</a> *engineUniforms) override</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2bb864fb9ac8dc3403815133d2117917"></a><!-- doxytag: member="kick::Text::getFont" ref="a2bb864fb9ac8dc3403815133d2117917" args="() const " -->
+std::shared_ptr&lt; <a class="el" href="classkick_1_1_font.html">Font</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getFont</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a16474e7965c686cd0a9b4a7727fd5885"></a><!-- doxytag: member="kick::Text::setFont" ref="a16474e7965c686cd0a9b4a7727fd5885" args="(std::shared_ptr&lt; Font &gt; &amp;font)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setFont</b> (std::shared_ptr&lt; <a class="el" href="classkick_1_1_font.html">Font</a> &gt; &amp;font)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa2f0ba672542acfe653fd8d49cad7811"></a><!-- doxytag: member="kick::Text::render" ref="aa2f0ba672542acfe653fd8d49cad7811" args="(EngineUniforms *engineUniforms)" -->
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>render</b> (<a class="el" href="structkick_1_1_engine_uniforms.html">EngineUniforms</a> *engineUniforms)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9dc623bac2fa6fbe53a62915fd87a2ea"></a><!-- doxytag: member="kick::Text::getText" ref="a9dc623bac2fa6fbe53a62915fd87a2ea" args="() const " -->
 std::string const &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getText</b> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9c4ca888b24db63aacb9384d1829aaea"></a><!-- doxytag: member="kick::Text::setText" ref="a9c4ca888b24db63aacb9384d1829aaea" args="(std::string const &amp;text)" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setText</b> (std::string const &amp;text)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa8a7256184136b2e7f51231b05edb814"></a><!-- doxytag: member="kick::Text::getBounds" ref="aa8a7256184136b2e7f51231b05edb814" args="()" -->
-<a class="el" href="structkick_1_1_bounds2_d.html">Bounds2D</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getBounds</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a706cc70f0eae9db84f0dea8d7ce7384d"></a><!-- doxytag: member="kick::Text::getBounds" ref="a706cc70f0eae9db84f0dea8d7ce7384d" args="()" -->
+<a class="el" href="structkick_1_1_bounds2.html">Bounds2</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getBounds</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3e18bd243b5ae202d1010662416d6a26"></a><!-- doxytag: member="kick::Text::getShader" ref="a3e18bd243b5ae202d1010662416d6a26" args="() const override" -->
+<a class="el" href="classkick_1_1_shader.html">Shader</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getShader</b> () const override</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a56c964eaa46243ef73e89491c8f27b89"></a><!-- doxytag: member="kick::Text::getMaterial" ref="a56c964eaa46243ef73e89491c8f27b89" args="() const " -->
 <a class="el" href="classkick_1_1_material.html">Material</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getMaterial</b> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2ba733ab340f11511e507b789fadf923"></a><!-- doxytag: member="kick::Text::setMaterial" ref="a2ba733ab340f11511e507b789fadf923" args="(Material *material)" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setMaterial</b> (<a class="el" href="classkick_1_1_material.html">Material</a> *material)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abcf1ddd765a48c067b0c0d0ecd223456"></a><!-- doxytag: member="kick::Text::getRenderOrder" ref="abcf1ddd765a48c067b0c0d0ecd223456" args="()" -->
 virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>getRenderOrder</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6bd96de61265a7d5c8d139da67d81b39"></a><!-- doxytag: member="kick::Text::getAnchor" ref="a6bd96de61265a7d5c8d139da67d81b39" args="() const " -->
+glm::vec2&#160;</td><td class="memItemRight" valign="bottom"><b>getAnchor</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a34529e7fafd97b27348ffeae00247ce9"></a><!-- doxytag: member="kick::Text::setAnchor" ref="a34529e7fafd97b27348ffeae00247ce9" args="(glm::vec2 anchor)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setAnchor</b> (glm::vec2 anchor)</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
 <p>Definition at line <a class="el" href="text_8h_source.html#l00019">19</a> of file <a class="el" href="text_8h_source.html">text.h</a>.</p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
-<li>/Users/morten/Programmering/cpp/kick/src/kick/sprite/<a class="el" href="text_8h_source.html">text.h</a></li>
-<li>/Users/morten/Programmering/cpp/kick/src/kick/sprite/<a class="el" href="text_8cpp_source.html">text.cpp</a></li>
+<li>/Users/morten/Programmering/cpp/kick/src/kick/2d/<a class="el" href="text_8h_source.html">text.h</a></li>
+<li>/Users/morten/Programmering/cpp/kick/src/kick/2d/<a class="el" href="text_8cpp_source.html">text.cpp</a></li>
 </ul>
 </div>
 <!-- window showing the filter options -->
@@ -119,7 +125,7 @@ virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>getRenderOrder
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -128,7 +134,7 @@ virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>getRenderOrder
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:44 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

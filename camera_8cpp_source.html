@@ -79,223 +79,309 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00019"></a>00019 <span class="preprocessor">#include &quot;kick/texture/texture_render_target.h&quot;</span>
 <a name="l00020"></a>00020 <span class="preprocessor">#include &quot;kick/core/engine.h&quot;</span>
 <a name="l00021"></a>00021 <span class="preprocessor">#include &quot;kick/scene/light.h&quot;</span>
-<a name="l00022"></a>00022 
-<a name="l00023"></a>00023 <span class="keyword">using namespace </span>std;
-<a name="l00024"></a>00024 <span class="keyword">using namespace </span>glm;
-<a name="l00025"></a>00025 
-<a name="l00026"></a>00026 <span class="keyword">namespace </span>kick {
-<a name="l00027"></a>00027     
-<a name="l00028"></a>00028     Camera::Camera(GameObject *gameObject)
-<a name="l00029"></a>00029     :Component(gameObject), clearFlag(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT),
-<a name="l00030"></a>00030      projectionMatrix{1}{
-<a name="l00031"></a>00031 
-<a name="l00032"></a>00032     }
+<a name="l00022"></a>00022 <span class="preprocessor">#include &quot;kick/math/misc.h&quot;</span>
+<a name="l00023"></a>00023 <span class="preprocessor">#include &quot;kick/material/material.h&quot;</span>
+<a name="l00024"></a>00024 
+<a name="l00025"></a>00025 <span class="keyword">using namespace </span>std;
+<a name="l00026"></a>00026 <span class="keyword">using namespace </span>glm;
+<a name="l00027"></a>00027 
+<a name="l00028"></a>00028 <span class="keyword">namespace </span>kick {
+<a name="l00029"></a>00029     
+<a name="l00030"></a>00030     Camera::Camera(GameObject *gameObject)
+<a name="l00031"></a>00031     :Component(gameObject), clearFlag(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT),
+<a name="l00032"></a>00032      projectionMatrix{1}{
 <a name="l00033"></a>00033 
-<a name="l00034"></a>00034     Camera::~Camera() {
-<a name="l00035"></a>00035         destroyShadowMap();
-<a name="l00036"></a>00036     }
-<a name="l00037"></a>00037     
-<a name="l00038"></a>00038     <span class="keywordtype">void</span> Camera::activated(){
-<a name="l00039"></a>00039         Scene* scene = gameObject-&gt;getScene();
-<a name="l00040"></a>00040         componentListener = scene-&gt;componentEvents.createListener([&amp;](pair&lt;Component*, ComponentUpdateStatus&gt; value){
-<a name="l00041"></a>00041             <span class="keywordflow">if</span> (value.second == ComponentUpdateStatus::Created){
-<a name="l00042"></a>00042                 <span class="keyword">auto</span> r = includeComponent(value.first);
-<a name="l00043"></a>00043                 if (r){
-<a name="l00044"></a>00044                     renderableComponents.push_back(r);
-<a name="l00045"></a>00045                 }
-<a name="l00046"></a>00046             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (value.second == ComponentUpdateStatus::Destroyed){
-<a name="l00047"></a>00047                 <span class="keyword">auto</span> r = includeComponent(value.first);
-<a name="l00048"></a>00048                 <span class="keywordflow">if</span> (r) {
-<a name="l00049"></a>00049                     <span class="keyword">auto</span> iter = find(renderableComponents.begin(), renderableComponents.end(), value.first);
-<a name="l00050"></a>00050                     <span class="keywordflow">if</span> (iter != renderableComponents.end()) {
-<a name="l00051"></a>00051                         renderableComponents.erase(iter);
-<a name="l00052"></a>00052                     }
-<a name="l00053"></a>00053                 }
-<a name="l00054"></a>00054             }
-<a name="l00055"></a>00055         });
-<a name="l00056"></a>00056         rebuildComponentList();
-<a name="l00057"></a>00057     }
-<a name="l00058"></a>00058     
-<a name="l00059"></a>00059     <span class="keywordtype">void</span> Camera::rebuildComponentList(){
-<a name="l00060"></a>00060         renderableComponents.clear();
-<a name="l00061"></a>00061         <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp; gameObject : *gameObject-&gt;getScene()) {
-<a name="l00062"></a>00062             <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp; component :  *gameObject){
-<a name="l00063"></a>00063                 <span class="keyword">auto</span> r = includeComponent(component);
-<a name="l00064"></a>00064                 <span class="keywordflow">if</span> (r){
-<a name="l00065"></a>00065                     renderableComponents.push_back(r);
-<a name="l00066"></a>00066                 }
-<a name="l00067"></a>00067             }
-<a name="l00068"></a>00068         }
-<a name="l00069"></a>00069     }
-<a name="l00070"></a>00070     
-<a name="l00071"></a>00071     ComponentRenderable *Camera::includeComponent(Component* component){
-<a name="l00072"></a>00072         <span class="keyword">auto</span> r = <span class="keyword">dynamic_cast&lt;</span>ComponentRenderable*<span class="keyword">&gt;</span>(component);
-<a name="l00073"></a>00073         <span class="keywordflow">if</span> (!r){
-<a name="l00074"></a>00074             <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;
-<a name="l00075"></a>00075         }
-<a name="l00076"></a>00076         <span class="keywordflow">if</span> (dynamic_cast&lt;Camera*&gt;(r)){
+<a name="l00034"></a>00034     }
+<a name="l00035"></a>00035 
+<a name="l00036"></a>00036     Camera::~Camera() {
+<a name="l00037"></a>00037         destroyShadowMap();
+<a name="l00038"></a>00038         <span class="keyword">delete</span> pickingRenderTarget;
+<a name="l00039"></a>00039     }
+<a name="l00040"></a>00040     
+<a name="l00041"></a>00041     <span class="keywordtype">void</span> Camera::activated(){
+<a name="l00042"></a>00042         Scene* scene = gameObject-&gt;getScene();
+<a name="l00043"></a>00043         componentListener = scene-&gt;componentEvents.createListener([&amp;](pair&lt;Component*, ComponentUpdateStatus&gt; value){
+<a name="l00044"></a>00044             <span class="keywordflow">if</span> (value.second == ComponentUpdateStatus::Created){
+<a name="l00045"></a>00045                 <span class="keyword">auto</span> r = includeComponent(value.first);
+<a name="l00046"></a>00046                 if (r){
+<a name="l00047"></a>00047                     renderableComponents.push_back(r);
+<a name="l00048"></a>00048                 }
+<a name="l00049"></a>00049             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (value.second == ComponentUpdateStatus::Destroyed){
+<a name="l00050"></a>00050                 <span class="keyword">auto</span> r = includeComponent(value.first);
+<a name="l00051"></a>00051                 <span class="keywordflow">if</span> (r) {
+<a name="l00052"></a>00052                     <span class="keyword">auto</span> iter = find(renderableComponents.begin(), renderableComponents.end(), value.first);
+<a name="l00053"></a>00053                     <span class="keywordflow">if</span> (iter != renderableComponents.end()) {
+<a name="l00054"></a>00054                         renderableComponents.erase(iter);
+<a name="l00055"></a>00055                     }
+<a name="l00056"></a>00056                 }
+<a name="l00057"></a>00057             }
+<a name="l00058"></a>00058         });
+<a name="l00059"></a>00059         rebuildComponentList();
+<a name="l00060"></a>00060     }
+<a name="l00061"></a>00061     
+<a name="l00062"></a>00062     <span class="keywordtype">void</span> Camera::rebuildComponentList(){
+<a name="l00063"></a>00063         renderableComponents.clear();
+<a name="l00064"></a>00064         <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp; gameObject : *gameObject-&gt;getScene()) {
+<a name="l00065"></a>00065             <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp; component :  *gameObject){
+<a name="l00066"></a>00066                 <span class="keyword">auto</span> r = includeComponent(component);
+<a name="l00067"></a>00067                 <span class="keywordflow">if</span> (r){
+<a name="l00068"></a>00068                     renderableComponents.push_back(r);
+<a name="l00069"></a>00069                 }
+<a name="l00070"></a>00070             }
+<a name="l00071"></a>00071         }
+<a name="l00072"></a>00072     }
+<a name="l00073"></a>00073     
+<a name="l00074"></a>00074     ComponentRenderable *Camera::includeComponent(Component* component){
+<a name="l00075"></a>00075         <span class="keyword">auto</span> r = <span class="keyword">dynamic_cast&lt;</span>ComponentRenderable*<span class="keyword">&gt;</span>(component);
+<a name="l00076"></a>00076         <span class="keywordflow">if</span> (!r){
 <a name="l00077"></a>00077             <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;
 <a name="l00078"></a>00078         }
-<a name="l00079"></a>00079         <span class="comment">// todo - filter</span>
-<a name="l00080"></a>00080         <span class="keywordflow">return</span> r;
-<a name="l00081"></a>00081     }
-<a name="l00082"></a>00082     
-<a name="l00083"></a>00083     <span class="keywordtype">void</span> Camera::deactivated(){
-<a name="l00084"></a>00084         <span class="comment">// remove listener</span>
-<a name="l00085"></a>00085         componentListener = {};
-<a name="l00086"></a>00086     }
-<a name="l00087"></a>00087     
-<a name="l00088"></a>00088     glm::vec4 Camera::getClearColor(){
-<a name="l00089"></a>00089         <span class="keywordflow">return</span> clearColor;
-<a name="l00090"></a>00090     }
-<a name="l00091"></a>00091     
-<a name="l00092"></a>00092     <span class="keywordtype">void</span> Camera::setClearColor(glm::vec4 clearColor){
-<a name="l00093"></a>00093         this-&gt;clearColor = clearColor;
-<a name="l00094"></a>00094     }
-<a name="l00095"></a>00095     
-<a name="l00096"></a>00096     <span class="keywordtype">void</span> Camera::setupViewport(vec2 &amp;offset, vec2 &amp;dim){
-<a name="l00097"></a>00097         offset = round(offset);
-<a name="l00098"></a>00098         dim = round(dim);
-<a name="l00099"></a>00099         <span class="keywordtype">int</span> offsetX = (int)offset.x;
-<a name="l00100"></a>00100         <span class="keywordtype">int</span> offsetY = (<span class="keywordtype">int</span>)offset.y;
-<a name="l00101"></a>00101         <span class="keywordtype">int</span> width = (int)dim.x;
-<a name="l00102"></a>00102         <span class="keywordtype">int</span> height = (<span class="keywordtype">int</span>)dim.y;
-<a name="l00103"></a>00103         glViewport(offsetX, offsetY, width, height);
-<a name="l00104"></a>00104         glScissor(offsetX, offsetY, width, height);
-<a name="l00105"></a>00105     }
-<a name="l00106"></a>00106     
-<a name="l00107"></a>00107     <span class="keywordtype">void</span> Camera::setupCamera(EngineUniforms *engineUniforms) {
-<a name="l00108"></a>00108         vec2 viewportDimension = (vec2)<span class="comment">/*renderTarget? renderTarget.dimension : */</span> engineUniforms-&gt;viewportDimension.getValue();
-<a name="l00109"></a>00109         vec2 offset = viewportDimension * normalizedViewportOffset;
-<a name="l00110"></a>00110         vec2 dim = viewportDimension * normalizedViewportDim;
-<a name="l00111"></a>00111         setupViewport(offset, dim);
-<a name="l00112"></a>00112         <span class="keywordflow">if</span> (clearFlag) {
-<a name="l00113"></a>00113             <span class="keywordflow">if</span> (isClearColor()) {
-<a name="l00114"></a>00114                 glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
-<a name="l00115"></a>00115             }
-<a name="l00116"></a>00116             glClear(clearFlag);
-<a name="l00117"></a>00117         }
-<a name="l00118"></a>00118 
-<a name="l00119"></a>00119         engineUniforms-&gt;viewMatrix = gameObject-&gt;getTransform()-&gt;getGlobalTRSInverse();
-<a name="l00120"></a>00120         engineUniforms-&gt;viewProjectionMatrix = projectionMatrix * engineUniforms-&gt;viewMatrix;
-<a name="l00121"></a>00121         engineUniforms-&gt;projectionMatrix = projectionMatrix;
-<a name="l00122"></a>00122     }
-<a name="l00123"></a>00123 
-<a name="l00124"></a>00124     <span class="keywordtype">void</span> Camera::renderShadowMap(Light* directionalLight){
-<a name="l00125"></a>00125 
-<a name="l00126"></a>00126     }
-<a name="l00127"></a>00127     
-<a name="l00128"></a>00128     <span class="keywordtype">void</span> Camera::render(EngineUniforms *engineUniforms){
-<a name="l00129"></a>00129         <span class="keyword">auto</span> sceneLights = engineUniforms-&gt;sceneLights;
-<a name="l00130"></a>00130         <span class="keywordflow">if</span> (shadow &amp;&amp; sceneLights-&gt;directionalLight &amp;&amp; sceneLights-&gt;directionalLight-&gt;getShadowType() != ShadowType::None) {
-<a name="l00131"></a>00131             renderShadowMap(sceneLights-&gt;directionalLight);
-<a name="l00132"></a>00132         }
-<a name="l00133"></a>00133 
-<a name="l00134"></a>00134         <span class="keywordflow">if</span> (target){
-<a name="l00135"></a>00135             target-&gt;bind();
-<a name="l00136"></a>00136         }
-<a name="l00137"></a>00137         setupCamera(engineUniforms);
-<a name="l00138"></a>00138         engineUniforms-&gt;sceneLights-&gt;recomputeLight(engineUniforms-&gt;viewMatrix);
-<a name="l00139"></a>00139         sort(renderableComponents.begin(), renderableComponents.end(), [](ComponentRenderable* r1, ComponentRenderable* r2){
-<a name="l00140"></a>00140             <span class="keywordflow">return</span> r1-&gt;getRenderOrder() &lt; r2-&gt;getRenderOrder();
-<a name="l00141"></a>00141         });
-<a name="l00142"></a>00142         <span class="keywordflow">for</span> (<span class="keyword">auto</span> c : renderableComponents){
-<a name="l00143"></a>00143             <span class="keywordflow">if</span> (c-&gt;getGameObject()-&gt;getLayer() &amp; cullingMask) {
-<a name="l00144"></a>00144                 c-&gt;render(engineUniforms);
-<a name="l00145"></a>00145             }
+<a name="l00079"></a>00079         <span class="keywordflow">if</span> (dynamic_cast&lt;Camera*&gt;(r)){
+<a name="l00080"></a>00080             <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;
+<a name="l00081"></a>00081         }
+<a name="l00082"></a>00082         <span class="comment">// todo - filter</span>
+<a name="l00083"></a>00083         <span class="keywordflow">return</span> r;
+<a name="l00084"></a>00084     }
+<a name="l00085"></a>00085     
+<a name="l00086"></a>00086     <span class="keywordtype">void</span> Camera::deactivated(){
+<a name="l00087"></a>00087         <span class="comment">// remove listener</span>
+<a name="l00088"></a>00088         componentListener = {};
+<a name="l00089"></a>00089     }
+<a name="l00090"></a>00090     
+<a name="l00091"></a>00091     glm::vec4 Camera::getClearColor(){
+<a name="l00092"></a>00092         <span class="keywordflow">return</span> clearColor;
+<a name="l00093"></a>00093     }
+<a name="l00094"></a>00094     
+<a name="l00095"></a>00095     <span class="keywordtype">void</span> Camera::setClearColor(glm::vec4 clearColor){
+<a name="l00096"></a>00096         this-&gt;clearColor = clearColor;
+<a name="l00097"></a>00097     }
+<a name="l00098"></a>00098     
+<a name="l00099"></a>00099     <span class="keywordtype">void</span> Camera::setupViewport(vec2 &amp;offset, vec2 &amp;dim){
+<a name="l00100"></a>00100         offset = round(offset);
+<a name="l00101"></a>00101         dim = round(dim);
+<a name="l00102"></a>00102         <span class="keywordtype">int</span> offsetX = (int)offset.x;
+<a name="l00103"></a>00103         <span class="keywordtype">int</span> offsetY = (<span class="keywordtype">int</span>)offset.y;
+<a name="l00104"></a>00104         <span class="keywordtype">int</span> width = (int)dim.x;
+<a name="l00105"></a>00105         <span class="keywordtype">int</span> height = (<span class="keywordtype">int</span>)dim.y;
+<a name="l00106"></a>00106         glViewport(offsetX, offsetY, width, height);
+<a name="l00107"></a>00107         glScissor(offsetX, offsetY, width, height);
+<a name="l00108"></a>00108     }
+<a name="l00109"></a>00109     
+<a name="l00110"></a>00110     <span class="keywordtype">void</span> Camera::setupCamera(EngineUniforms *engineUniforms) {
+<a name="l00111"></a>00111         vec2 viewportDimension = (vec2)<span class="comment">/*renderTarget? renderTarget.dimension : */</span> engineUniforms-&gt;viewportDimension.getValue();
+<a name="l00112"></a>00112         vec2 offset = viewportDimension * normalizedViewportOffset;
+<a name="l00113"></a>00113         vec2 dim = viewportDimension * normalizedViewportDim;
+<a name="l00114"></a>00114         setupViewport(offset, dim);
+<a name="l00115"></a>00115         <span class="keywordflow">if</span> (clearFlag) {
+<a name="l00116"></a>00116             <span class="keywordflow">if</span> (isClearColor()) {
+<a name="l00117"></a>00117                 glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
+<a name="l00118"></a>00118             }
+<a name="l00119"></a>00119             glClear(clearFlag);
+<a name="l00120"></a>00120         }
+<a name="l00121"></a>00121 
+<a name="l00122"></a>00122         engineUniforms-&gt;viewMatrix = getViewMatrix();
+<a name="l00123"></a>00123         engineUniforms-&gt;viewProjectionMatrix = projectionMatrix * engineUniforms-&gt;viewMatrix;
+<a name="l00124"></a>00124         engineUniforms-&gt;projectionMatrix = projectionMatrix;
+<a name="l00125"></a>00125     }
+<a name="l00126"></a>00126 
+<a name="l00127"></a>00127     glm::mat4 Camera::getViewMatrix(){
+<a name="l00128"></a>00128         <span class="keywordflow">return</span> gameObject-&gt;getTransform()-&gt;getGlobalTRSInverse();
+<a name="l00129"></a>00129     }
+<a name="l00130"></a>00130 
+<a name="l00131"></a>00131     <span class="keywordtype">void</span> Camera::renderShadowMap(Light* directionalLight){
+<a name="l00132"></a>00132 
+<a name="l00133"></a>00133     }
+<a name="l00134"></a>00134     
+<a name="l00135"></a>00135     <span class="keywordtype">void</span> Camera::render(EngineUniforms *engineUniforms){
+<a name="l00136"></a>00136         <span class="keywordflow">if</span> (!isEnabled()){
+<a name="l00137"></a>00137             <span class="keywordflow">return</span>;
+<a name="l00138"></a>00138         }
+<a name="l00139"></a>00139         <span class="keyword">auto</span> sceneLights = engineUniforms-&gt;sceneLights;
+<a name="l00140"></a>00140         <span class="keywordflow">if</span> (shadow &amp;&amp; sceneLights-&gt;directionalLight &amp;&amp; sceneLights-&gt;directionalLight-&gt;getShadowType() != ShadowType::None) {
+<a name="l00141"></a>00141             renderShadowMap(sceneLights-&gt;directionalLight);
+<a name="l00142"></a>00142         }
+<a name="l00143"></a>00143 
+<a name="l00144"></a>00144         <span class="keywordflow">if</span> (target){
+<a name="l00145"></a>00145             target-&gt;bind();
 <a name="l00146"></a>00146         }
-<a name="l00147"></a>00147         <span class="keywordflow">if</span> (target){
-<a name="l00148"></a>00148             target-&gt;unbind();
-<a name="l00149"></a>00149         }
-<a name="l00150"></a>00150     }
-<a name="l00151"></a>00151     
-<a name="l00152"></a>00152     <span class="keywordtype">void</span> Camera::setClearColor(<span class="keywordtype">bool</span> clear){
-<a name="l00153"></a>00153         <span class="keywordflow">if</span> (clear){
-<a name="l00154"></a>00154             clearFlag |= GL_COLOR_BUFFER_BIT;
-<a name="l00155"></a>00155         } <span class="keywordflow">else</span> {
-<a name="l00156"></a>00156             clearFlag &amp;= ~GL_COLOR_BUFFER_BIT;
-<a name="l00157"></a>00157         }
-<a name="l00158"></a>00158     }
-<a name="l00159"></a>00159     
-<a name="l00160"></a>00160     <span class="keywordtype">bool</span> Camera::isClearColor(){
-<a name="l00161"></a>00161         <span class="keywordflow">return</span> (<span class="keywordtype">bool</span>) (clearFlag &amp; GL_COLOR_BUFFER_BIT);
-<a name="l00162"></a>00162     }
-<a name="l00163"></a>00163     
-<a name="l00164"></a>00164     <span class="keywordtype">void</span> Camera::setClearDepth(<span class="keywordtype">bool</span> clear){
-<a name="l00165"></a>00165         <span class="keywordflow">if</span> (clear){
-<a name="l00166"></a>00166             clearFlag |= GL_DEPTH_BUFFER_BIT;
-<a name="l00167"></a>00167         } <span class="keywordflow">else</span> {
-<a name="l00168"></a>00168             clearFlag &amp;= ~GL_DEPTH_BUFFER_BIT;
-<a name="l00169"></a>00169         }
-<a name="l00170"></a>00170     }
-<a name="l00171"></a>00171     
-<a name="l00172"></a>00172     <span class="keywordtype">bool</span> Camera::isClearDepth(){
-<a name="l00173"></a>00173         <span class="keywordflow">return</span> (<span class="keywordtype">bool</span>) (clearFlag &amp; GL_DEPTH_BUFFER_BIT);
-<a name="l00174"></a>00174     }
-<a name="l00175"></a>00175     
-<a name="l00176"></a>00176     <span class="keywordtype">void</span> Camera::setClearStencil(<span class="keywordtype">bool</span> clear){
-<a name="l00177"></a>00177         <span class="keywordflow">if</span> (clear){
-<a name="l00178"></a>00178             clearFlag |= GL_STENCIL_BUFFER_BIT;
-<a name="l00179"></a>00179         } <span class="keywordflow">else</span> {
-<a name="l00180"></a>00180             clearFlag &amp;= ~GL_STENCIL_BUFFER_BIT;
-<a name="l00181"></a>00181         }
-<a name="l00182"></a>00182     }
-<a name="l00183"></a>00183     
-<a name="l00184"></a>00184     <span class="keywordtype">bool</span> Camera::isClearStencil(){
-<a name="l00185"></a>00185         <span class="keywordflow">return</span> (<span class="keywordtype">bool</span>) (clearFlag &amp; GL_STENCIL_BUFFER_BIT);
-<a name="l00186"></a>00186     }
-<a name="l00187"></a>00187 
-<a name="l00188"></a>00188     glm::mat4 Camera::getProjectionMatrix() {
-<a name="l00189"></a>00189         <span class="keywordflow">return</span> projectionMatrix;
-<a name="l00190"></a>00190     }
-<a name="l00191"></a>00191 
-<a name="l00192"></a>00192     <span class="keywordtype">void</span> Camera::setProjectionMatrix(glm::mat4 projectionMatrix) {
-<a name="l00193"></a>00193         this-&gt;projectionMatrix = projectionMatrix;
-<a name="l00194"></a>00194     }
-<a name="l00195"></a>00195 
-<a name="l00196"></a>00196     <span class="keywordtype">void</span> Camera::resetProjectionMatrix(){
-<a name="l00197"></a>00197     }
-<a name="l00198"></a>00198 
-<a name="l00199"></a>00199     <span class="keywordtype">bool</span> Camera::isShadow()<span class="keyword"> const </span>{
-<a name="l00200"></a>00200         <span class="keywordflow">return</span> shadow;
-<a name="l00201"></a>00201     }
-<a name="l00202"></a>00202 
-<a name="l00203"></a>00203     <span class="keywordtype">void</span> Camera::setShadow(<span class="keywordtype">bool</span> renderShadow) {
-<a name="l00204"></a>00204         <span class="keywordflow">if</span> (Camera::shadow != renderShadow) {
-<a name="l00205"></a>00205             Camera::shadow = renderShadow;
-<a name="l00206"></a>00206             <span class="keywordflow">if</span> (renderShadow){
-<a name="l00207"></a>00207                 initShadowMap();
-<a name="l00208"></a>00208             } <span class="keywordflow">else</span> {
-<a name="l00209"></a>00209                 destroyShadowMap();
-<a name="l00210"></a>00210             }
-<a name="l00211"></a>00211         }
-<a name="l00212"></a>00212     }
-<a name="l00213"></a>00213 
-<a name="l00214"></a>00214     <span class="keywordtype">void</span> Camera::initShadowMap() {
-<a name="l00215"></a>00215         shadowMapShader = Project::loadShader(<span class="stringliteral">&quot;assets/shaders/__shadowmap.shader&quot;</span>);
-<a name="l00216"></a>00216         shadowMapMaterial = Project::createAsset&lt;Material&gt;();
-<a name="l00217"></a>00217         shadowMapMaterial-&gt;setShader(shadowMapShader);
-<a name="l00218"></a>00218     }
-<a name="l00219"></a>00219 
-<a name="l00220"></a>00220     <span class="keywordtype">void</span> Camera::destroyShadowMap() {
-<a name="l00221"></a>00221     }
-<a name="l00222"></a>00222 
-<a name="l00223"></a>00223     <span class="keywordtype">int</span> Camera::getCullingMask()<span class="keyword"> const </span>{
-<a name="l00224"></a>00224         <span class="keywordflow">return</span> cullingMask;
-<a name="l00225"></a>00225     }
-<a name="l00226"></a>00226 
-<a name="l00227"></a>00227     <span class="keywordtype">void</span> Camera::setCullingMask(<span class="keywordtype">int</span> cullingMask) {
-<a name="l00228"></a>00228         Camera::cullingMask = cullingMask;
-<a name="l00229"></a>00229     }
-<a name="l00230"></a>00230 
-<a name="l00231"></a>00231     TextureRenderTarget *Camera::getTarget()<span class="keyword"> const </span>{
-<a name="l00232"></a>00232         <span class="keywordflow">return</span> target;
-<a name="l00233"></a>00233     }
-<a name="l00234"></a>00234 
-<a name="l00235"></a>00235     <span class="keywordtype">void</span> Camera::setTarget(TextureRenderTarget *target) {
-<a name="l00236"></a>00236         Camera::target = target;
-<a name="l00237"></a>00237     }
-<a name="l00238"></a>00238 }
+<a name="l00147"></a>00147         setupCamera(engineUniforms);
+<a name="l00148"></a>00148         engineUniforms-&gt;sceneLights-&gt;recomputeLight(engineUniforms-&gt;viewMatrix);
+<a name="l00149"></a>00149         sort(renderableComponents.begin(), renderableComponents.end(), [](ComponentRenderable* r1, ComponentRenderable* r2){
+<a name="l00150"></a>00150             <span class="keywordflow">return</span> r1-&gt;getRenderOrder() &lt; r2-&gt;getRenderOrder();
+<a name="l00151"></a>00151         });
+<a name="l00152"></a>00152 
+<a name="l00153"></a>00153 
+<a name="l00154"></a>00154 
+<a name="l00155"></a>00155         <span class="keywordflow">for</span> (<span class="keyword">auto</span> c : renderableComponents){
+<a name="l00156"></a>00156             <span class="keywordflow">if</span> (c-&gt;getGameObject()-&gt;getLayer() &amp; cullingMask) {
+<a name="l00157"></a>00157                 c-&gt;render(engineUniforms, replacementMaterial.get());
+<a name="l00158"></a>00158             }
+<a name="l00159"></a>00159         }
+<a name="l00160"></a>00160         <span class="keywordflow">if</span> (target){
+<a name="l00161"></a>00161             target-&gt;unbind();
+<a name="l00162"></a>00162         }
+<a name="l00163"></a>00163 
+<a name="l00164"></a>00164         <span class="keywordflow">if</span> (pickQueue.size() &gt; 0){
+<a name="l00165"></a>00165             handleObjectPicking(engineUniforms);
+<a name="l00166"></a>00166         }
+<a name="l00167"></a>00167     }
+<a name="l00168"></a>00168 
+<a name="l00169"></a>00169     <span class="keywordtype">void</span> Camera::handleObjectPicking(EngineUniforms *engineUniforms) {
+<a name="l00170"></a>00170         <span class="keyword">auto</span> viewportSize = engineUniforms-&gt;viewportDimension.getValue();
+<a name="l00171"></a>00171         <span class="keywordflow">if</span> (pickingRenderTarget == <span class="keyword">nullptr</span> || viewportSize != pickingRenderTarget-&gt;getSize()){
+<a name="l00172"></a>00172             <span class="keyword">delete</span> pickingRenderTarget;
+<a name="l00173"></a>00173             pickingRenderTarget = <span class="keyword">new</span> TextureRenderTarget();
+<a name="l00174"></a>00174             pickingRenderTarget-&gt;setSize(viewportSize);
+<a name="l00175"></a>00175             <span class="keywordflow">if</span> (pickingTexture == <span class="keyword">nullptr</span>){
+<a name="l00176"></a>00176                 pickingTexture = make_shared&lt;Texture2D&gt;();
+<a name="l00177"></a>00177             }
+<a name="l00178"></a>00178             ImageFormat imageFormat{};
+<a name="l00179"></a>00179             imageFormat.mipmap = Mipmap::None;
+<a name="l00180"></a>00180             pickingTexture-&gt;setData(viewportSize.x, viewportSize.y, <span class="keyword">nullptr</span>, imageFormat);
+<a name="l00181"></a>00181 
+<a name="l00182"></a>00182             pickingRenderTarget-&gt;setColorTexture(0, pickingTexture);
+<a name="l00183"></a>00183             <span class="keywordflow">if</span> (pickingMaterial.get() == <span class="keyword">nullptr</span>){
+<a name="l00184"></a>00184                 pickingMaterial = std::shared_ptr&lt;Material&gt;(<span class="keyword">new</span> Material());
+<a name="l00185"></a>00185                 pickingMaterial-&gt;setShader(Project::loadShader(<span class="stringliteral">&quot;assets/shaders/__pick.shader&quot;</span>));
+<a name="l00186"></a>00186             }
+<a name="l00187"></a>00187             pickingRenderTarget-&gt;apply();
+<a name="l00188"></a>00188             glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+<a name="l00189"></a>00189             glPixelStorei(GL_PACK_ALIGNMENT, 1);
+<a name="l00190"></a>00190         }
+<a name="l00191"></a>00191         pickingRenderTarget-&gt;bind();
+<a name="l00192"></a>00192         glClearColor(0, 0, 0, 0);
+<a name="l00193"></a>00193         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+<a name="l00194"></a>00194         <span class="keywordflow">for</span> (<span class="keyword">auto</span> c : renderableComponents){
+<a name="l00195"></a>00195             <span class="keywordflow">if</span> (c-&gt;getGameObject()-&gt;getLayer() &amp; cullingMask) {
+<a name="l00196"></a>00196                 c-&gt;render(engineUniforms, pickingMaterial.get());
+<a name="l00197"></a>00197             }
+<a name="l00198"></a>00198         }
+<a name="l00199"></a>00199         <span class="keywordflow">for</span> (<span class="keyword">auto</span> q : pickQueue){
+<a name="l00200"></a>00200             vector&lt;glm::u8vec4&gt; data((<span class="keywordtype">int</span>)(q.size.x * q.size.y));
+<a name="l00201"></a>00201             glReadPixels(q.point.x, q.point.y, q.size.x, q.size.y, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *) glm::value_ptr(*data.data()));
+<a name="l00202"></a>00202             std::map&lt;int,int&gt; gameObjectFrequency;
+<a name="l00203"></a>00203             <span class="keywordflow">for</span> (<span class="keyword">auto</span> p : data){
+<a name="l00204"></a>00204                 <span class="keywordtype">int</span> uid = vec4ToUint32(p);
+<a name="l00205"></a>00205                 <span class="keywordflow">if</span> (uid != 0){
+<a name="l00206"></a>00206                     <span class="keyword">auto</span> iter = gameObjectFrequency.find(uid);
+<a name="l00207"></a>00207                     <span class="keywordflow">if</span> (iter != gameObjectFrequency.end()){
+<a name="l00208"></a>00208                         iter-&gt;second++;
+<a name="l00209"></a>00209                     } <span class="keywordflow">else</span> {
+<a name="l00210"></a>00210                         gameObjectFrequency.insert(pair&lt;int,int&gt;(uid,1));
+<a name="l00211"></a>00211                     }
+<a name="l00212"></a>00212                 }
+<a name="l00213"></a>00213             }
+<a name="l00214"></a>00214             <span class="keyword">auto</span> scene = gameObject-&gt;getScene();
+<a name="l00215"></a>00215             <span class="keywordflow">for</span> (<span class="keyword">auto</span> uid : gameObjectFrequency){
+<a name="l00216"></a>00216                 <span class="keyword">auto</span> hitGameObject = scene-&gt;getGameObjectByUID(uid.first);
+<a name="l00217"></a>00217                 <span class="keywordflow">if</span> (hitGameObject) {
+<a name="l00218"></a>00218                     q.onPicked(hitGameObject, uid.second);
+<a name="l00219"></a>00219                 }
+<a name="l00220"></a>00220             }
+<a name="l00221"></a>00221         }
+<a name="l00222"></a>00222         pickingRenderTarget-&gt;unbind();
+<a name="l00223"></a>00223         pickQueue.clear();
+<a name="l00224"></a>00224     }
+<a name="l00225"></a>00225 
+<a name="l00226"></a>00226     <span class="keywordtype">void</span> Camera::setClearColor(<span class="keywordtype">bool</span> clear){
+<a name="l00227"></a>00227         <span class="keywordflow">if</span> (clear){
+<a name="l00228"></a>00228             clearFlag |= GL_COLOR_BUFFER_BIT;
+<a name="l00229"></a>00229         } <span class="keywordflow">else</span> {
+<a name="l00230"></a>00230             clearFlag &amp;= ~GL_COLOR_BUFFER_BIT;
+<a name="l00231"></a>00231         }
+<a name="l00232"></a>00232     }
+<a name="l00233"></a>00233     
+<a name="l00234"></a>00234     <span class="keywordtype">bool</span> Camera::isClearColor(){
+<a name="l00235"></a>00235         <span class="keywordflow">return</span> (<span class="keywordtype">bool</span>) (clearFlag &amp; GL_COLOR_BUFFER_BIT);
+<a name="l00236"></a>00236     }
+<a name="l00237"></a>00237     
+<a name="l00238"></a>00238     <span class="keywordtype">void</span> Camera::setClearDepth(<span class="keywordtype">bool</span> clear){
+<a name="l00239"></a>00239         <span class="keywordflow">if</span> (clear){
+<a name="l00240"></a>00240             clearFlag |= GL_DEPTH_BUFFER_BIT;
+<a name="l00241"></a>00241         } <span class="keywordflow">else</span> {
+<a name="l00242"></a>00242             clearFlag &amp;= ~GL_DEPTH_BUFFER_BIT;
+<a name="l00243"></a>00243         }
+<a name="l00244"></a>00244     }
+<a name="l00245"></a>00245     
+<a name="l00246"></a>00246     <span class="keywordtype">bool</span> Camera::isClearDepth(){
+<a name="l00247"></a>00247         <span class="keywordflow">return</span> (<span class="keywordtype">bool</span>) (clearFlag &amp; GL_DEPTH_BUFFER_BIT);
+<a name="l00248"></a>00248     }
+<a name="l00249"></a>00249     
+<a name="l00250"></a>00250     <span class="keywordtype">void</span> Camera::setClearStencil(<span class="keywordtype">bool</span> clear){
+<a name="l00251"></a>00251         <span class="keywordflow">if</span> (clear){
+<a name="l00252"></a>00252             clearFlag |= GL_STENCIL_BUFFER_BIT;
+<a name="l00253"></a>00253         } <span class="keywordflow">else</span> {
+<a name="l00254"></a>00254             clearFlag &amp;= ~GL_STENCIL_BUFFER_BIT;
+<a name="l00255"></a>00255         }
+<a name="l00256"></a>00256     }
+<a name="l00257"></a>00257     
+<a name="l00258"></a>00258     <span class="keywordtype">bool</span> Camera::isClearStencil(){
+<a name="l00259"></a>00259         <span class="keywordflow">return</span> (<span class="keywordtype">bool</span>) (clearFlag &amp; GL_STENCIL_BUFFER_BIT);
+<a name="l00260"></a>00260     }
+<a name="l00261"></a>00261 
+<a name="l00262"></a>00262     glm::mat4 Camera::getProjectionMatrix() {
+<a name="l00263"></a>00263         <span class="keywordflow">return</span> projectionMatrix;
+<a name="l00264"></a>00264     }
+<a name="l00265"></a>00265 
+<a name="l00266"></a>00266     <span class="keywordtype">void</span> Camera::setProjectionMatrix(glm::mat4 projectionMatrix) {
+<a name="l00267"></a>00267         this-&gt;projectionMatrix = projectionMatrix;
+<a name="l00268"></a>00268     }
+<a name="l00269"></a>00269 
+<a name="l00270"></a>00270     <span class="keywordtype">void</span> Camera::resetProjectionMatrix(){
+<a name="l00271"></a>00271     }
+<a name="l00272"></a>00272 
+<a name="l00273"></a>00273     <span class="keywordtype">bool</span> Camera::isShadow()<span class="keyword"> const </span>{
+<a name="l00274"></a>00274         <span class="keywordflow">return</span> shadow;
+<a name="l00275"></a>00275     }
+<a name="l00276"></a>00276 
+<a name="l00277"></a>00277     <span class="keywordtype">void</span> Camera::setShadow(<span class="keywordtype">bool</span> renderShadow) {
+<a name="l00278"></a>00278         <span class="keywordflow">if</span> (Camera::shadow != renderShadow) {
+<a name="l00279"></a>00279             Camera::shadow = renderShadow;
+<a name="l00280"></a>00280             <span class="keywordflow">if</span> (renderShadow){
+<a name="l00281"></a>00281                 initShadowMap();
+<a name="l00282"></a>00282             } <span class="keywordflow">else</span> {
+<a name="l00283"></a>00283                 destroyShadowMap();
+<a name="l00284"></a>00284             }
+<a name="l00285"></a>00285         }
+<a name="l00286"></a>00286     }
+<a name="l00287"></a>00287 
+<a name="l00288"></a>00288     <span class="keywordtype">void</span> Camera::initShadowMap() {
+<a name="l00289"></a>00289         shadowMapShader = Project::loadShader(<span class="stringliteral">&quot;assets/shaders/__shadowmap.shader&quot;</span>);
+<a name="l00290"></a>00290         shadowMapMaterial = <span class="keyword">new</span> Material();
+<a name="l00291"></a>00291         shadowMapMaterial-&gt;setShader(shadowMapShader);
+<a name="l00292"></a>00292     }
+<a name="l00293"></a>00293 
+<a name="l00294"></a>00294     <span class="keywordtype">void</span> Camera::destroyShadowMap() {
+<a name="l00295"></a>00295     }
+<a name="l00296"></a>00296 
+<a name="l00297"></a>00297     <span class="keywordtype">int</span> Camera::getCullingMask()<span class="keyword"> const </span>{
+<a name="l00298"></a>00298         <span class="keywordflow">return</span> cullingMask;
+<a name="l00299"></a>00299     }
+<a name="l00300"></a>00300 
+<a name="l00301"></a>00301     <span class="keywordtype">void</span> Camera::setCullingMask(<span class="keywordtype">int</span> cullingMask) {
+<a name="l00302"></a>00302         Camera::cullingMask = cullingMask;
+<a name="l00303"></a>00303     }
+<a name="l00304"></a>00304 
+<a name="l00305"></a>00305     TextureRenderTarget *Camera::getTarget()<span class="keyword"> const </span>{
+<a name="l00306"></a>00306         <span class="keywordflow">return</span> target;
+<a name="l00307"></a>00307     }
+<a name="l00308"></a>00308 
+<a name="l00309"></a>00309     <span class="keywordtype">void</span> Camera::setTarget(TextureRenderTarget *target) {
+<a name="l00310"></a>00310         Camera::target = target;
+<a name="l00311"></a>00311     }
+<a name="l00312"></a>00312 
+<a name="l00313"></a>00313     <span class="keywordtype">void</span> Camera::pick(glm::ivec2 point, std::function&lt;<span class="keywordtype">void</span>(GameObject*,<span class="keywordtype">int</span>)&gt; onPicked, glm::ivec2 size){
+<a name="l00314"></a>00314         pickQueue.push_back({point, size, onPicked});
+<a name="l00315"></a>00315     }
+<a name="l00316"></a>00316 
+<a name="l00317"></a>00317     std::shared_ptr&lt;Material&gt; <span class="keyword">const</span> &amp;Camera::getReplacementMaterial()<span class="keyword"> const </span>{
+<a name="l00318"></a>00318         <span class="keywordflow">return</span> replacementMaterial;
+<a name="l00319"></a>00319     }
+<a name="l00320"></a>00320 
+<a name="l00321"></a>00321     <span class="keywordtype">void</span> Camera::setReplacementMaterial(std::shared_ptr&lt;Material&gt; <span class="keyword">const</span> &amp;replacementMaterial) {
+<a name="l00322"></a>00322         Camera::replacementMaterial = replacementMaterial;
+<a name="l00323"></a>00323     }
+<a name="l00324"></a>00324 }
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -303,7 +389,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -312,7 +398,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

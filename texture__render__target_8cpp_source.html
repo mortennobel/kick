@@ -70,137 +70,140 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00010"></a>00010 <span class="keyword">using namespace </span>std;
 <a name="l00011"></a>00011 
 <a name="l00012"></a>00012 <span class="keyword">namespace </span>kick {
-<a name="l00013"></a>00013     TextureRenderTarget::TextureRenderTarget(Project *project)
-<a name="l00014"></a>00014             : ProjectAsset(project) {
-<a name="l00015"></a>00015 <span class="preprocessor">#ifndef GL_ES_VERSION_2_0</span>
-<a name="l00016"></a>00016 <span class="preprocessor"></span>        glGenFramebuffers(1, &amp;framebuffer);
-<a name="l00017"></a>00017 <span class="preprocessor">#endif</span>
-<a name="l00018"></a>00018 <span class="preprocessor"></span>    }
-<a name="l00019"></a>00019 
-<a name="l00020"></a>00020     TextureRenderTarget::~TextureRenderTarget() {
-<a name="l00021"></a>00021 <span class="preprocessor">#ifndef GL_ES_VERSION_2_0</span>
-<a name="l00022"></a>00022 <span class="preprocessor"></span>        glDeleteFramebuffers(1, &amp;framebuffer);
-<a name="l00023"></a>00023 <span class="preprocessor">#endif</span>
-<a name="l00024"></a>00024 <span class="preprocessor"></span>        framebuffer = 0;
-<a name="l00025"></a>00025     }
-<a name="l00026"></a>00026 
-<a name="l00027"></a>00027     <span class="keywordtype">void</span> TextureRenderTarget::bind() {
-<a name="l00028"></a>00028 <span class="preprocessor">#ifndef GL_ES_VERSION_2_0</span>
-<a name="l00029"></a>00029 <span class="preprocessor"></span>        glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-<a name="l00030"></a>00030 <span class="preprocessor">#endif</span>
-<a name="l00031"></a>00031 <span class="preprocessor"></span>    }
-<a name="l00032"></a>00032 
-<a name="l00033"></a>00033     <span class="keywordtype">void</span> TextureRenderTarget::unbind() {
-<a name="l00034"></a>00034 <span class="preprocessor">#ifndef GL_ES_VERSION_2_0</span>
-<a name="l00035"></a>00035 <span class="preprocessor"></span>        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-<a name="l00036"></a>00036 <span class="preprocessor">#endif</span>
-<a name="l00037"></a>00037 <span class="preprocessor"></span>    }
+<a name="l00013"></a>00013     TextureRenderTarget::TextureRenderTarget()
+<a name="l00014"></a>00014     {
+<a name="l00015"></a>00015         glGenFramebuffers(1, &amp;framebuffer);
+<a name="l00016"></a>00016     }
+<a name="l00017"></a>00017 
+<a name="l00018"></a>00018     TextureRenderTarget::~TextureRenderTarget() {
+<a name="l00019"></a>00019         glDeleteFramebuffers(1, &amp;framebuffer);
+<a name="l00020"></a>00020         framebuffer = 0;
+<a name="l00021"></a>00021     }
+<a name="l00022"></a>00022 
+<a name="l00023"></a>00023     <span class="keywordtype">void</span> TextureRenderTarget::bind() {
+<a name="l00024"></a>00024         assert(renderBuffers.size() &gt; 0); <span class="comment">// probably missing TextureRenderTarget.apply</span>
+<a name="l00025"></a>00025         glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+<a name="l00026"></a>00026     }
+<a name="l00027"></a>00027 
+<a name="l00028"></a>00028     <span class="keywordtype">void</span> TextureRenderTarget::unbind() {
+<a name="l00029"></a>00029         glBindFramebuffer(GL_FRAMEBUFFER, 0);
+<a name="l00030"></a>00030     }
+<a name="l00031"></a>00031 
+<a name="l00032"></a>00032     <span class="keywordtype">void</span> TextureRenderTarget::apply() {
+<a name="l00033"></a>00033         <span class="keywordflow">if</span> (renderBuffers.size()) {
+<a name="l00034"></a>00034             glDeleteRenderbuffers(renderBuffers.size(), renderBuffers.data());
+<a name="l00035"></a>00035             renderBuffers.clear();
+<a name="l00036"></a>00036         }
+<a name="l00037"></a>00037         glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 <a name="l00038"></a>00038 
-<a name="l00039"></a>00039     <span class="keywordtype">void</span> TextureRenderTarget::apply() {
-<a name="l00040"></a>00040 <span class="preprocessor">#ifndef GL_ES_VERSION_2_0</span>
-<a name="l00041"></a>00041 <span class="preprocessor"></span>        <span class="keywordflow">if</span> (renderBuffers.size()) {
-<a name="l00042"></a>00042             glDeleteRenderbuffers(renderBuffers.size(), renderBuffers.data());
-<a name="l00043"></a>00043             renderBuffers.clear();
-<a name="l00044"></a>00044         }
-<a name="l00045"></a>00045         bind();
-<a name="l00046"></a>00046 
-<a name="l00047"></a>00047         <span class="comment">// bind color attachment</span>
-<a name="l00048"></a>00048         <span class="keywordflow">if</span> (colorTextures.size() &gt; 0){
-<a name="l00049"></a>00049             <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=0;i&lt;colorTextures.size();i++) {
-<a name="l00050"></a>00050                 Texture2D* colorTexture = colorTextures[i];
-<a name="l00051"></a>00051                 glFramebufferTexture(GL_FRAMEBUFFER, (GLenum) (GL_COLOR_ATTACHMENT0+i), colorTexture-&gt;textureid, 0);
-<a name="l00052"></a>00052             }
-<a name="l00053"></a>00053         } <span class="keywordflow">else</span> {
-<a name="l00054"></a>00054             GLuint renderBuffer;
-<a name="l00055"></a>00055             glGenRenderbuffers(1, &amp;renderBuffer);
-<a name="l00056"></a>00056             renderBuffers.push_back(renderBuffer);
-<a name="l00057"></a>00057             glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer);
-<a name="l00058"></a>00058             glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA4, size.x, size.y);
-<a name="l00059"></a>00059             glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderBuffer);
-<a name="l00060"></a>00060         }
-<a name="l00061"></a>00061 
-<a name="l00062"></a>00062         <span class="comment">// bind depth attachments</span>
-<a name="l00063"></a>00063         GLuint renderBuffer;
-<a name="l00064"></a>00064         glGenRenderbuffers(1, &amp;renderBuffer);
-<a name="l00065"></a>00065         renderBuffers.push_back(renderBuffer);
-<a name="l00066"></a>00066         glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer);
-<a name="l00067"></a>00067         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, size.x, size.y);
-<a name="l00068"></a>00068         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, renderBuffer);
-<a name="l00069"></a>00069 
-<a name="l00070"></a>00070         checkStatus();
-<a name="l00071"></a>00071 
-<a name="l00072"></a>00072         unbind();
-<a name="l00073"></a>00073 <span class="preprocessor">#endif</span>
-<a name="l00074"></a>00074 <span class="preprocessor"></span>    }
-<a name="l00075"></a>00075 
-<a name="l00076"></a>00076     <span class="keywordtype">void</span> TextureRenderTarget::checkStatus() {
-<a name="l00077"></a>00077 <span class="preprocessor">#ifndef GL_ES_VERSION_2_0</span>
-<a name="l00078"></a>00078 <span class="preprocessor"></span>        GLenum frameBufferStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-<a name="l00079"></a>00079         <span class="keywordflow">if</span> (frameBufferStatus != GL_FRAMEBUFFER_COMPLETE) {
-<a name="l00080"></a>00080             <span class="keywordflow">switch</span> (frameBufferStatus) {
-<a name="l00081"></a>00081                 <span class="keywordflow">case</span> GL_FRAMEBUFFER_UNDEFINED:
-<a name="l00082"></a>00082                     cerr &lt;&lt; (<span class="stringliteral">&quot;FRAMEBUFFER_INCOMPLETE_ATTACHMENT&quot;</span>);
-<a name="l00083"></a>00083                     <span class="keywordflow">break</span>;
-<a name="l00084"></a>00084                 <span class="keywordflow">case</span> GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
-<a name="l00085"></a>00085                     cerr &lt;&lt; (<span class="stringliteral">&quot;GL_FRAMEBUFFER_UNDEFINED&quot;</span>);
-<a name="l00086"></a>00086                     <span class="keywordflow">break</span>;
-<a name="l00087"></a>00087                 <span class="keywordflow">case</span> GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
-<a name="l00088"></a>00088                     cerr &lt;&lt; (<span class="stringliteral">&quot;GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT&quot;</span>);
-<a name="l00089"></a>00089                     <span class="keywordflow">break</span>;
-<a name="l00090"></a>00090                 <span class="keywordflow">case</span> GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
-<a name="l00091"></a>00091                     cerr &lt;&lt; (<span class="stringliteral">&quot;GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER&quot;</span>);
-<a name="l00092"></a>00092                     <span class="keywordflow">break</span>;
-<a name="l00093"></a>00093                 <span class="keywordflow">case</span> GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
-<a name="l00094"></a>00094                     cerr &lt;&lt; (<span class="stringliteral">&quot;GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER&quot;</span>);
+<a name="l00039"></a>00039         <span class="comment">// bind color attachment</span>
+<a name="l00040"></a>00040         <span class="keywordflow">if</span> (colorTextures.size() &gt; 0){
+<a name="l00041"></a>00041             <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=0;i&lt;colorTextures.size();i++) {
+<a name="l00042"></a>00042                 Texture2D* colorTexture = colorTextures[i].get();
+<a name="l00043"></a>00043                 glFramebufferTexture2D(GL_FRAMEBUFFER, (GLenum) (GL_COLOR_ATTACHMENT0+i), GL_TEXTURE_2D, colorTexture-&gt;textureid, 0);
+<a name="l00044"></a>00044             }
+<a name="l00045"></a>00045         } <span class="keywordflow">else</span> {
+<a name="l00046"></a>00046             GLuint renderBuffer;
+<a name="l00047"></a>00047             glGenRenderbuffers(1, &amp;renderBuffer);
+<a name="l00048"></a>00048             renderBuffers.push_back(renderBuffer);
+<a name="l00049"></a>00049             glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer);
+<a name="l00050"></a>00050             glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA4, size.x, size.y);
+<a name="l00051"></a>00051             glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderBuffer);
+<a name="l00052"></a>00052         }
+<a name="l00053"></a>00053 
+<a name="l00054"></a>00054         <span class="comment">// bind depth attachments</span>
+<a name="l00055"></a>00055         GLuint renderBuffer;
+<a name="l00056"></a>00056         glGenRenderbuffers(1, &amp;renderBuffer);
+<a name="l00057"></a>00057         renderBuffers.push_back(renderBuffer);
+<a name="l00058"></a>00058         glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer);
+<a name="l00059"></a>00059         glRenderbufferStorage(GL_RENDERBUFFER,
+<a name="l00060"></a>00060 #ifdef EMSCRIPTEN
+<a name="l00061"></a>00061                 GL_DEPTH_COMPONENT16,
+<a name="l00062"></a>00062 #<span class="keywordflow">else</span>
+<a name="l00063"></a>00063                 GL_DEPTH_COMPONENT32,
+<a name="l00064"></a>00064 #endif
+<a name="l00065"></a>00065 
+<a name="l00066"></a>00066                 size.x, size.y);
+<a name="l00067"></a>00067         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, renderBuffer);
+<a name="l00068"></a>00068 
+<a name="l00069"></a>00069         checkStatus();
+<a name="l00070"></a>00070 
+<a name="l00071"></a>00071         glBindFramebuffer(GL_FRAMEBUFFER, 0);
+<a name="l00072"></a>00072     }
+<a name="l00073"></a>00073 
+<a name="l00074"></a>00074     <span class="keywordtype">void</span> TextureRenderTarget::checkStatus() {
+<a name="l00075"></a>00075         GLenum frameBufferStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+<a name="l00076"></a>00076         <span class="keywordflow">if</span> (frameBufferStatus != GL_FRAMEBUFFER_COMPLETE) {
+<a name="l00077"></a>00077             <span class="keywordflow">switch</span> (frameBufferStatus) {
+<a name="l00078"></a>00078                 <span class="keywordflow">case</span> GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+<a name="l00079"></a>00079                     cerr &lt;&lt; (<span class="stringliteral">&quot;GL_FRAMEBUFFER_UNDEFINED&quot;</span>);
+<a name="l00080"></a>00080                     <span class="keywordflow">break</span>;
+<a name="l00081"></a>00081 <span class="preprocessor">#ifdef GL_ES_VERSION_2_0</span>
+<a name="l00082"></a>00082 <span class="preprocessor"></span>                <span class="keywordflow">case</span> GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
+<a name="l00083"></a>00083                     cerr &lt;&lt; (<span class="stringliteral">&quot;GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS&quot;</span>);
+<a name="l00084"></a>00084                     <span class="keywordflow">break</span>;
+<a name="l00085"></a>00085 <span class="preprocessor">#endif</span>
+<a name="l00086"></a>00086 <span class="preprocessor"></span>                <span class="keywordflow">case</span> GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+<a name="l00087"></a>00087                     cerr &lt;&lt; (<span class="stringliteral">&quot;GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT&quot;</span>);
+<a name="l00088"></a>00088                     <span class="keywordflow">break</span>;
+<a name="l00089"></a>00089                 <span class="keywordflow">case</span> GL_FRAMEBUFFER_UNSUPPORTED:
+<a name="l00090"></a>00090                     cerr &lt;&lt; (<span class="stringliteral">&quot;FRAMEBUFFER_UNSUPPORTED&quot;</span>);
+<a name="l00091"></a>00091                     <span class="keywordflow">break</span>;
+<a name="l00092"></a>00092 <span class="preprocessor">#ifndef GL_ES_VERSION_2_0</span>
+<a name="l00093"></a>00093 <span class="preprocessor"></span>                <span class="keywordflow">case</span> GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
+<a name="l00094"></a>00094                     cerr &lt;&lt; (<span class="stringliteral">&quot;GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER&quot;</span>);
 <a name="l00095"></a>00095                     <span class="keywordflow">break</span>;
-<a name="l00096"></a>00096                 <span class="keywordflow">case</span> GL_FRAMEBUFFER_UNSUPPORTED:
-<a name="l00097"></a>00097                     cerr &lt;&lt; (<span class="stringliteral">&quot;FRAMEBUFFER_UNSUPPORTED&quot;</span>);
+<a name="l00096"></a>00096                 <span class="keywordflow">case</span> GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
+<a name="l00097"></a>00097                     cerr &lt;&lt; (<span class="stringliteral">&quot;GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER&quot;</span>);
 <a name="l00098"></a>00098                     <span class="keywordflow">break</span>;
-<a name="l00099"></a>00099                 <span class="keywordflow">case</span> GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
-<a name="l00100"></a>00100                     cerr &lt;&lt; (<span class="stringliteral">&quot;GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE&quot;</span>);
+<a name="l00099"></a>00099                 <span class="keywordflow">case</span> GL_FRAMEBUFFER_UNDEFINED:
+<a name="l00100"></a>00100                     cerr &lt;&lt; (<span class="stringliteral">&quot;FRAMEBUFFER_INCOMPLETE_ATTACHMENT&quot;</span>);
 <a name="l00101"></a>00101                     <span class="keywordflow">break</span>;
-<a name="l00102"></a>00102                 <span class="keywordflow">case</span> GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS:
-<a name="l00103"></a>00103                     cerr &lt;&lt; (<span class="stringliteral">&quot;GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS&quot;</span>);
+<a name="l00102"></a>00102                 <span class="keywordflow">case</span> GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
+<a name="l00103"></a>00103                     cerr &lt;&lt; (<span class="stringliteral">&quot;GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE&quot;</span>);
 <a name="l00104"></a>00104                     <span class="keywordflow">break</span>;
-<a name="l00105"></a>00105                 <span class="keywordflow">default</span>:
-<a name="l00106"></a>00106                     cerr &lt;&lt; string(<span class="stringliteral">&quot;Invalid framebuffer &quot;</span>)+ __1::to_string(frameBufferStatus);
+<a name="l00105"></a>00105                 <span class="keywordflow">case</span> GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS:
+<a name="l00106"></a>00106                     cerr &lt;&lt; (<span class="stringliteral">&quot;GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS&quot;</span>);
 <a name="l00107"></a>00107                     <span class="keywordflow">break</span>;
-<a name="l00108"></a>00108             }
-<a name="l00109"></a>00109         }
-<a name="l00110"></a>00110 <span class="preprocessor">#endif</span>
-<a name="l00111"></a>00111 <span class="preprocessor"></span>    }
-<a name="l00112"></a>00112 
-<a name="l00113"></a>00113     <span class="keywordtype">void</span> TextureRenderTarget::setSize(glm::ivec2 size) {
-<a name="l00114"></a>00114         TextureRenderTarget::size = size;
-<a name="l00115"></a>00115     }
-<a name="l00116"></a>00116 
-<a name="l00117"></a>00117     glm::ivec2 TextureRenderTarget::getSize()<span class="keyword"> const </span>{
-<a name="l00118"></a>00118         <span class="keywordflow">return</span> size;
-<a name="l00119"></a>00119     }
-<a name="l00120"></a>00120 
-<a name="l00121"></a>00121     <span class="keywordtype">void</span> TextureRenderTarget::setColorTexture(<span class="keywordtype">size_t</span> channel, Texture2D *texture) {
-<a name="l00122"></a>00122         <span class="keywordflow">if</span> (colorTextures.size() &lt;= channel){
-<a name="l00123"></a>00123             colorTextures.resize(channel+1, <span class="keyword">nullptr</span>);
-<a name="l00124"></a>00124         }
-<a name="l00125"></a>00125         colorTextures[channel] = texture;
-<a name="l00126"></a>00126     }
-<a name="l00127"></a>00127 
-<a name="l00128"></a>00128     Texture2D *TextureRenderTarget::getColorTexture(<span class="keywordtype">size_t</span> channel) {
-<a name="l00129"></a>00129         <span class="keywordflow">if</span> (colorTextures.size() &lt;= channel){
-<a name="l00130"></a>00130             <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;
-<a name="l00131"></a>00131         }
-<a name="l00132"></a>00132         <span class="keywordflow">return</span> colorTextures[channel];
-<a name="l00133"></a>00133     }
-<a name="l00134"></a>00134 
-<a name="l00135"></a>00135     <span class="keywordtype">bool</span> TextureRenderTarget::deleteColorTexture(<span class="keywordtype">size_t</span> channel) {
-<a name="l00136"></a>00136         <span class="keywordflow">if</span> (colorTextures.size() &lt;= channel){
-<a name="l00137"></a>00137             <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00138"></a>00138         }
-<a name="l00139"></a>00139         <span class="keyword">delete</span> colorTextures[channel];
-<a name="l00140"></a>00140         colorTextures.erase(colorTextures.begin() + channel);
-<a name="l00141"></a>00141         <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00142"></a>00142     }
-<a name="l00143"></a>00143 }
+<a name="l00108"></a>00108 <span class="preprocessor">#endif</span>
+<a name="l00109"></a>00109 <span class="preprocessor"></span>                <span class="keywordflow">default</span>:
+<a name="l00110"></a>00110                     cerr &lt;&lt; string(<span class="stringliteral">&quot;Invalid framebuffer &quot;</span>)+ __1::to_string(frameBufferStatus);
+<a name="l00111"></a>00111                     <span class="keywordflow">break</span>;
+<a name="l00112"></a>00112             }
+<a name="l00113"></a>00113         }
+<a name="l00114"></a>00114     }
+<a name="l00115"></a>00115 
+<a name="l00116"></a>00116     <span class="keywordtype">void</span> TextureRenderTarget::setSize(glm::ivec2 size) {
+<a name="l00117"></a>00117         TextureRenderTarget::size = size;
+<a name="l00118"></a>00118     }
+<a name="l00119"></a>00119 
+<a name="l00120"></a>00120     glm::ivec2 TextureRenderTarget::getSize()<span class="keyword"> const </span>{
+<a name="l00121"></a>00121         <span class="keywordflow">return</span> size;
+<a name="l00122"></a>00122     }
+<a name="l00123"></a>00123 
+<a name="l00124"></a>00124     <span class="keywordtype">void</span> TextureRenderTarget::setColorTexture(<span class="keywordtype">size_t</span> channel, std::shared_ptr&lt;Texture2D&gt; texture) {
+<a name="l00125"></a>00125         <span class="keywordflow">if</span> (colorTextures.size() &lt;= channel){
+<a name="l00126"></a>00126             colorTextures.resize(channel+1, <span class="keyword">nullptr</span>);
+<a name="l00127"></a>00127         }
+<a name="l00128"></a>00128         colorTextures[channel] = texture;
+<a name="l00129"></a>00129     }
+<a name="l00130"></a>00130 
+<a name="l00131"></a>00131     std::shared_ptr&lt;Texture2D&gt; TextureRenderTarget::getColorTexture(<span class="keywordtype">size_t</span> channel) {
+<a name="l00132"></a>00132         <span class="keywordflow">if</span> (colorTextures.size() &lt;= channel){
+<a name="l00133"></a>00133             <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;
+<a name="l00134"></a>00134         }
+<a name="l00135"></a>00135         <span class="keywordflow">return</span> colorTextures[channel];
+<a name="l00136"></a>00136     }
+<a name="l00137"></a>00137 
+<a name="l00138"></a>00138     <span class="keywordtype">bool</span> TextureRenderTarget::deleteColorTexture(<span class="keywordtype">size_t</span> channel) {
+<a name="l00139"></a>00139         <span class="keywordflow">if</span> (colorTextures.size() &lt;= channel){
+<a name="l00140"></a>00140             <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00141"></a>00141         }
+<a name="l00142"></a>00142         colorTextures[channel].reset();
+<a name="l00143"></a>00143         colorTextures.erase(colorTextures.begin() + channel);
+<a name="l00144"></a>00144         <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00145"></a>00145     }
+<a name="l00146"></a>00146 }
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -208,7 +211,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -217,7 +220,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

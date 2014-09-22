@@ -78,16 +78,18 @@ Inheritance diagram for kick::Component:</div>
   <img src="classkick_1_1_component.png" usemap="#kick::Component_map" alt=""/>
   <map id="kick::Component_map" name="kick::Component_map">
 <area href="classkick_1_1_camera.html" alt="kick::Camera" shape="rect" coords="89,56,257,80"/>
-<area href="classkick_1_1_component_renderable.html" alt="kick::ComponentRenderable" shape="rect" coords="534,56,702,80"/>
-<area href="classkick_1_1_component_updateable.html" alt="kick::ComponentUpdateable" shape="rect" coords="712,56,880,80"/>
-<area href="classkick_1_1_light.html" alt="kick::Light" shape="rect" coords="890,56,1058,80"/>
-<area href="classkick_1_1_sprite.html" alt="kick::Sprite" shape="rect" coords="1068,56,1236,80"/>
+<area href="classkick_1_1_component2_d.html" alt="kick::Component2D" shape="rect" coords="445,56,613,80"/>
+<area href="classkick_1_1_component_renderable.html" alt="kick::ComponentRenderable" shape="rect" coords="890,56,1058,80"/>
+<area href="classkick_1_1_light.html" alt="kick::Light" shape="rect" coords="1068,56,1236,80"/>
 <area href="classkick_1_1_transform.html" alt="kick::Transform" shape="rect" coords="1246,56,1414,80"/>
 <area href="classkick_1_1_camera_orthographic.html" alt="kick::CameraOrthographic" shape="rect" coords="0,112,168,136"/>
 <area href="classkick_1_1_camera_perspective.html" alt="kick::CameraPerspective" shape="rect" coords="178,112,346,136"/>
-<area href="classkick_1_1_mesh_renderer.html" alt="kick::MeshRenderer" shape="rect" coords="356,112,524,136"/>
-<area href="classkick_1_1_sprite_manager.html" alt="kick::SpriteManager" shape="rect" coords="534,112,702,136"/>
-<area href="classkick_1_1_text.html" alt="kick::Text" shape="rect" coords="712,112,880,136"/>
+<area href="classkick_1_1_sprite.html" alt="kick::Sprite" shape="rect" coords="356,112,524,136"/>
+<area href="classkick_1_1_text.html" alt="kick::Text" shape="rect" coords="534,112,702,136"/>
+<area href="classkick_1_1_line_renderer.html" alt="kick::LineRenderer" shape="rect" coords="712,112,880,136"/>
+<area href="classkick_1_1_mesh_renderer.html" alt="kick::MeshRenderer" shape="rect" coords="890,112,1058,136"/>
+<area href="classkick_1_1_panel.html" alt="kick::Panel" shape="rect" coords="1068,112,1236,136"/>
+<area href="classkick_1_1_button.html" alt="kick::Button" shape="rect" coords="356,168,524,192"/>
 </map>
  </div></div>
 
@@ -109,6 +111,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>deactivated</
 <a class="el" href="classkick_1_1_transform.html">Transform</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getTransform</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a923c85119f5991230103cd6ecb2b6e4b"></a><!-- doxytag: member="kick::Component::getGameObject" ref="a923c85119f5991230103cd6ecb2b6e4b" args="()" -->
 <a class="el" href="classkick_1_1_game_object.html">GameObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getGameObject</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8e5fc1ca5193ea57dd131e0a84bbf36f"></a><!-- doxytag: member="kick::Component::isEnabled" ref="a8e5fc1ca5193ea57dd131e0a84bbf36f" args="() const " -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>isEnabled</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac61f4a7305d3ee5dcd133e93a5329a29"></a><!-- doxytag: member="kick::Component::setEnabled" ref="ac61f4a7305d3ee5dcd133e93a5329a29" args="(bool enabled)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setEnabled</b> (bool enabled)</td></tr>
 <tr><td colspan="2"><h2><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8606a91b13294981c642cedbaea85d51"></a><!-- doxytag: member="kick::Component::gameObject" ref="a8606a91b13294981c642cedbaea85d51" args="" -->
@@ -116,7 +122,7 @@ Protected Attributes</h2></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="component_8h_source.html#l00026">26</a> of file <a class="el" href="component_8h_source.html">component.h</a>.</p>
+<p>Definition at line <a class="el" href="component_8h_source.html#l00027">27</a> of file <a class="el" href="component_8h_source.html">component.h</a>.</p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>/Users/morten/Programmering/cpp/kick/src/kick/scene/<a class="el" href="component_8h_source.html">component.h</a></li>
 <li>/Users/morten/Programmering/cpp/kick/src/kick/scene/<a class="el" href="component_8cpp_source.html">component.cpp</a></li>
@@ -127,7 +133,7 @@ Protected Attributes</h2></td></tr>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -136,7 +142,7 @@ Protected Attributes</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:44 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

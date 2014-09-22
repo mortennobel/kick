@@ -117,6 +117,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isClearStencil</b> ()
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setupCamera</b> (<a class="el" href="structkick_1_1_engine_uniforms.html">EngineUniforms</a> *engineUniforms)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a01e5e19db5f703becbadade09783755c"></a><!-- doxytag: member="kick::Camera::getProjectionMatrix" ref="a01e5e19db5f703becbadade09783755c" args="()" -->
 glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><b>getProjectionMatrix</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad3c9e3ecfccee8b60bf7717d83550084"></a><!-- doxytag: member="kick::Camera::getViewMatrix" ref="ad3c9e3ecfccee8b60bf7717d83550084" args="()" -->
+glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><b>getViewMatrix</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3c752b86d517be3798273201355b6f24"></a><!-- doxytag: member="kick::Camera::setProjectionMatrix" ref="a3c752b86d517be3798273201355b6f24" args="(glm::mat4 projectionMatrix)" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setProjectionMatrix</b> (glm::mat4 projectionMatrix)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab95ec9143f193981a04a7637004ea4a4"></a><!-- doxytag: member="kick::Camera::isShadow" ref="ab95ec9143f193981a04a7637004ea4a4" args="() const " -->
@@ -131,6 +133,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setCullingMask</b> (i
 <a class="el" href="classkick_1_1_texture_render_target.html">TextureRenderTarget</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getTarget</b> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae0c6173c7fc65d6d8029e90831447e71"></a><!-- doxytag: member="kick::Camera::setTarget" ref="ae0c6173c7fc65d6d8029e90831447e71" args="(TextureRenderTarget *target)" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setTarget</b> (<a class="el" href="classkick_1_1_texture_render_target.html">TextureRenderTarget</a> *target)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adbabbe88814840af473363481224e12e"></a><!-- doxytag: member="kick::Camera::pick" ref="adbabbe88814840af473363481224e12e" args="(glm::ivec2 point, std::function&lt; void(GameObject *, int)&gt; onPicked, glm::ivec2 size=glm::ivec2{1, 1})" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>pick</b> (glm::ivec2 point, std::function&lt; void(<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *, int)&gt; onPicked, glm::ivec2 size=glm::ivec2{1, 1})</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af985adaf2f7391722bb6fccf7eee9155"></a><!-- doxytag: member="kick::Camera::getReplacementMaterial" ref="af985adaf2f7391722bb6fccf7eee9155" args="() const " -->
+std::shared_ptr&lt; <a class="el" href="classkick_1_1_material.html">Material</a> &gt; const &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getReplacementMaterial</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1adb2a7767d4d2fc74f8f61ec15f741d"></a><!-- doxytag: member="kick::Camera::setReplacementMaterial" ref="a1adb2a7767d4d2fc74f8f61ec15f741d" args="(std::shared_ptr&lt; Material &gt; const &amp;replacementMaterial)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setReplacementMaterial</b> (std::shared_ptr&lt; <a class="el" href="classkick_1_1_material.html">Material</a> &gt; const &amp;replacementMaterial)</td></tr>
 <tr><td colspan="2"><h2><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae149557686bebc9b9ce381955d4fb9e9"></a><!-- doxytag: member="kick::Camera::projectionMatrix" ref="ae149557686bebc9b9ce381955d4fb9e9" args="" -->
@@ -142,7 +150,7 @@ glm::vec2&#160;</td><td class="memItemRight" valign="bottom"><b>normalizedViewpo
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="camera_8h_source.html#l00024">24</a> of file <a class="el" href="camera_8h_source.html">camera.h</a>.</p>
+<p>Definition at line <a class="el" href="camera_8h_source.html#l00032">32</a> of file <a class="el" href="camera_8h_source.html">camera.h</a>.</p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>/Users/morten/Programmering/cpp/kick/src/kick/scene/<a class="el" href="camera_8h_source.html">camera.h</a></li>
 <li>/Users/morten/Programmering/cpp/kick/src/kick/scene/<a class="el" href="camera_8cpp_source.html">camera.cpp</a></li>
@@ -153,7 +161,7 @@ glm::vec2&#160;</td><td class="memItemRight" valign="bottom"><b>normalizedViewpo
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -162,7 +170,7 @@ glm::vec2&#160;</td><td class="memItemRight" valign="bottom"><b>normalizedViewpo
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

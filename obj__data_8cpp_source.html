@@ -66,72 +66,151 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00006"></a>00006 <span class="comment">//  Copyright (c) 2013 morten. All rights reserved.</span>
 <a name="l00007"></a>00007 <span class="comment">//</span>
 <a name="l00008"></a>00008 
-<a name="l00009"></a>00009 <span class="preprocessor">#include &quot;obj_data.h&quot;</span>
+<a name="l00009"></a>00009 <span class="preprocessor">#include &quot;kick/obj/obj_data.h&quot;</span>
 <a name="l00010"></a>00010 <span class="preprocessor">#include &lt;stdexcept&gt;</span>
 <a name="l00011"></a>00011 <span class="preprocessor">#include &lt;string&gt;</span>
 <a name="l00012"></a>00012 <span class="preprocessor">#include &quot;kick/core/log.h&quot;</span>
-<a name="l00013"></a>00013 
-<a name="l00014"></a>00014 <span class="keyword">using namespace </span>std;
-<a name="l00015"></a>00015 
-<a name="l00016"></a>00016 <span class="keyword">namespace </span>kick {
-<a name="l00017"></a><a class="code" href="structkick_1_1_obj_data.html#a457c6ca80e054f7322f9789993c65110">00017</a>     <span class="keywordtype">bool</span> ObjData::verifyFaces() {
-<a name="l00018"></a>00018         <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp; face : faces) {
-<a name="l00019"></a>00019             <span class="keywordflow">if</span> (face.size()&lt;3){
-<a name="l00020"></a>00020 <span class="comment">//                throw length_error();</span>
-<a name="l00021"></a>00021                 logError(<span class="stringliteral">&quot;Faces must be at least 3 vertices&quot;</span>);
-<a name="l00022"></a>00022                 <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00023"></a>00023             }
-<a name="l00024"></a>00024             
-<a name="l00025"></a>00025             <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp; vertex : face) {
-<a name="l00026"></a>00026                 <span class="keywordflow">if</span> (vertex.vertexPositionIdx &gt; vertexPositions.size()){
-<a name="l00027"></a>00027                     logError(<span class="keywordtype">string</span>{<span class="stringliteral">&quot;Invalid vertex position index. Index was &quot;</span>} +
-<a name="l00028"></a>00028                             std::to_string(vertex.vertexPositionIdx) +
-<a name="l00029"></a>00029                             <span class="stringliteral">&quot; number of vertex positions is &quot;</span>+
-<a name="l00030"></a>00030                             std::to_string(vertexPositions.size()));
-<a name="l00031"></a>00031                     <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00032"></a>00032                 }
-<a name="l00033"></a>00033                 
-<a name="l00034"></a>00034                 <span class="keywordflow">if</span> (vertex.textureIdx &gt; textureCoords.size()){
-<a name="l00035"></a>00035                     logError(<span class="keywordtype">string</span>{<span class="stringliteral">&quot;Invalid texture index. Index was &quot;</span>} +
-<a name="l00036"></a>00036                             std::to_string(vertex.textureIdx) +
-<a name="l00037"></a>00037                             <span class="stringliteral">&quot; number of texture indices is &quot;</span>+
-<a name="l00038"></a>00038                             std::to_string(textureCoords.size()));
-<a name="l00039"></a>00039                     <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00040"></a>00040                 }
-<a name="l00041"></a>00041                 
-<a name="l00042"></a>00042                 <span class="keywordflow">if</span> (vertex.normalIdx &gt; normals.size()){
-<a name="l00043"></a>00043                     logError(<span class="keywordtype">string</span>{<span class="stringliteral">&quot;Invalid normal index. Index was &quot;</span>} +
-<a name="l00044"></a>00044                             std::to_string(vertex.normalIdx) +
-<a name="l00045"></a>00045                             <span class="stringliteral">&quot; number of normals is &quot;</span>+
-<a name="l00046"></a>00046                             std::to_string(normals.size()));
-<a name="l00047"></a>00047                     <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00048"></a>00048                 }
-<a name="l00049"></a>00049             }
-<a name="l00050"></a>00050         }
-<a name="l00051"></a>00051         
-<a name="l00052"></a>00052         <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00053"></a>00053     }
-<a name="l00054"></a>00054     
-<a name="l00055"></a>00055     <a class="code" href="structkick_1_1_obj_material.html">ObjMaterial</a>* ObjData::getMaterial(std::string name){
-<a name="l00056"></a>00056         <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp; mat : materials){
-<a name="l00057"></a>00057             <span class="keywordflow">if</span> (mat.name == name){
-<a name="l00058"></a>00058                 <span class="keywordflow">return</span> &amp;mat;
-<a name="l00059"></a>00059             }
-<a name="l00060"></a>00060         }
-<a name="l00061"></a>00061         <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;
-<a name="l00062"></a>00062     }
-<a name="l00063"></a>00063 
-<a name="l00064"></a>00064     std::vector&lt;unsigned int&gt; ObjData::getIndices() {
-<a name="l00065"></a>00065         std::vector&lt;unsigned int&gt; res;
-<a name="l00066"></a>00066         <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp; f : faces){
-<a name="l00067"></a>00067             assert (f.size()==3);
-<a name="l00068"></a>00068             <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;v : f){
-<a name="l00069"></a>00069                 res.push_back(v.vertexPositionIdx-1);
-<a name="l00070"></a>00070             }
-<a name="l00071"></a>00071         }
-<a name="l00072"></a>00072         <span class="keywordflow">return</span> res;
-<a name="l00073"></a>00073     }
-<a name="l00074"></a>00074 }
+<a name="l00013"></a>00013 <span class="preprocessor">#include &quot;kick/core/project.h&quot;</span>
+<a name="l00014"></a>00014 
+<a name="l00015"></a>00015 <span class="keyword">using namespace </span>std;
+<a name="l00016"></a>00016 
+<a name="l00017"></a>00017 <span class="keyword">namespace </span>kick {
+<a name="l00018"></a><a class="code" href="structkick_1_1_obj_data.html#a457c6ca80e054f7322f9789993c65110">00018</a>     <span class="keywordtype">bool</span> ObjData::verifyFaces() {
+<a name="l00019"></a>00019         <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp; face : faces) {
+<a name="l00020"></a>00020             <span class="keywordflow">if</span> (face.size()&lt;3){
+<a name="l00021"></a>00021 <span class="comment">//                throw length_error();</span>
+<a name="l00022"></a>00022                 logError(<span class="stringliteral">&quot;Faces must be at least 3 vertices&quot;</span>);
+<a name="l00023"></a>00023                 <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00024"></a>00024             }
+<a name="l00025"></a>00025             
+<a name="l00026"></a>00026             <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp; vertex : face) {
+<a name="l00027"></a>00027                 <span class="keywordflow">if</span> (vertex.vertexPositionIdx &gt; vertexPositions.size()){
+<a name="l00028"></a>00028                     logError(<span class="keywordtype">string</span>{<span class="stringliteral">&quot;Invalid vertex position index. Index was &quot;</span>} +
+<a name="l00029"></a>00029                             std::to_string(vertex.vertexPositionIdx) +
+<a name="l00030"></a>00030                             <span class="stringliteral">&quot; number of vertex positions is &quot;</span>+
+<a name="l00031"></a>00031                             std::to_string(vertexPositions.size()));
+<a name="l00032"></a>00032                     <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00033"></a>00033                 }
+<a name="l00034"></a>00034                 <span class="keywordflow">if</span> (vertex.vertexPositionIdx&lt;=0){
+<a name="l00035"></a>00035                     logError(<span class="keywordtype">string</span>{<span class="stringliteral">&quot;Invalid vertex position index. Must be positive. Was &quot;</span>} +
+<a name="l00036"></a>00036                             std::to_string(vertex.vertexPositionIdx));
+<a name="l00037"></a>00037                     <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00038"></a>00038                 }
+<a name="l00039"></a>00039                 
+<a name="l00040"></a>00040                 <span class="keywordflow">if</span> (vertex.textureIdx &gt; textureCoords.size()){
+<a name="l00041"></a>00041                     logError(<span class="keywordtype">string</span>{<span class="stringliteral">&quot;Invalid texture index. Index was &quot;</span>} +
+<a name="l00042"></a>00042                             std::to_string(vertex.textureIdx) +
+<a name="l00043"></a>00043                             <span class="stringliteral">&quot; number of texture indices is &quot;</span>+
+<a name="l00044"></a>00044                             std::to_string(textureCoords.size()));
+<a name="l00045"></a>00045                     <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00046"></a>00046                 }
+<a name="l00047"></a>00047                 
+<a name="l00048"></a>00048                 <span class="keywordflow">if</span> (vertex.normalIdx &gt; normals.size()){
+<a name="l00049"></a>00049                     logError(<span class="keywordtype">string</span>{<span class="stringliteral">&quot;Invalid normal index. Index was &quot;</span>} +
+<a name="l00050"></a>00050                             std::to_string(vertex.normalIdx) +
+<a name="l00051"></a>00051                             <span class="stringliteral">&quot; number of normals is &quot;</span>+
+<a name="l00052"></a>00052                             std::to_string(normals.size()));
+<a name="l00053"></a>00053                     <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00054"></a>00054                 }
+<a name="l00055"></a>00055             }
+<a name="l00056"></a>00056         }
+<a name="l00057"></a>00057         
+<a name="l00058"></a>00058         <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00059"></a>00059     }
+<a name="l00060"></a>00060     
+<a name="l00061"></a>00061     <a class="code" href="structkick_1_1_obj_material.html">ObjMaterial</a>* ObjData::getMaterial(std::string name){
+<a name="l00062"></a>00062         <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp; mat : materials){
+<a name="l00063"></a>00063             <span class="keywordflow">if</span> (mat.name == name){
+<a name="l00064"></a>00064                 <span class="keywordflow">return</span> &amp;mat;
+<a name="l00065"></a>00065             }
+<a name="l00066"></a>00066         }
+<a name="l00067"></a>00067         <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;
+<a name="l00068"></a>00068     }
+<a name="l00069"></a>00069 
+<a name="l00070"></a>00070     std::vector&lt;unsigned int&gt; ObjData::getIndices() {
+<a name="l00071"></a>00071         std::vector&lt;unsigned int&gt; res;
+<a name="l00072"></a>00072         <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp; f : faces){
+<a name="l00073"></a>00073             assert (f.size()==3);
+<a name="l00074"></a>00074             <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=0;i&lt;3;i++){
+<a name="l00075"></a>00075                 res.push_back((<span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>)(f[i].vertexPositionIdx-1));
+<a name="l00076"></a>00076             }
+<a name="l00077"></a>00077             <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=3;i&lt;f.size();i++){
+<a name="l00078"></a>00078                 res.push_back((<span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>)(f[0].vertexPositionIdx-1));
+<a name="l00079"></a>00079                 res.push_back((<span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>)(f[i-1].vertexPositionIdx-1));
+<a name="l00080"></a>00080                 res.push_back((<span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>)(f[i].vertexPositionIdx-1));
+<a name="l00081"></a>00081             }
+<a name="l00082"></a>00082         }
+<a name="l00083"></a>00083         <span class="keywordflow">return</span> res;
+<a name="l00084"></a>00084     }
+<a name="l00085"></a>00085 
+<a name="l00086"></a>00086     MeshData *ObjData::getMeshData() {
+<a name="l00087"></a>00087         MeshData *meshData = <span class="keyword">new</span> MeshData();
+<a name="l00088"></a>00088 
+<a name="l00089"></a>00089         <span class="keyword">struct </span>tuple_hash
+<a name="l00090"></a>00090         {
+<a name="l00091"></a>00091             std::size_t operator()(<span class="keyword">const</span> tuple&lt;int,int,int&gt;&amp; k)<span class="keyword"> const</span>
+<a name="l00092"></a>00092 <span class="keyword">            </span>{
+<a name="l00093"></a>00093                 <span class="keywordflow">return</span> (std::get&lt;0&gt;(k) &lt;&lt; 16) | (std::get&lt;1&gt;(k) &lt;&lt; 8) | std::get&lt;2&gt;(k);
+<a name="l00094"></a>00094             }
+<a name="l00095"></a>00095         };
+<a name="l00096"></a>00096 
+<a name="l00097"></a>00097         unordered_map&lt;tuple&lt;int, int, int&gt;, int, tuple_hash&gt; map;
+<a name="l00098"></a>00098         std::vector&lt;glm::vec3&gt; vertices;
+<a name="l00099"></a>00099         std::vector&lt;glm::vec2&gt; uv;
+<a name="l00100"></a>00100         std::vector&lt;glm::vec3&gt; ns;
+<a name="l00101"></a>00101         std::vector&lt;unsigned short&gt; indices;
+<a name="l00102"></a>00102 
+<a name="l00103"></a>00103         <span class="keyword">auto</span> insert = [&amp;](<span class="keywordtype">int</span> i, ObjFace&amp; f){
+<a name="l00104"></a>00104             tuple&lt;int,int,int&gt; t{f[i].vertexPositionIdx, f[i].textureIdx, f[i].normalIdx};
+<a name="l00105"></a>00105             <span class="keyword">auto</span> res = map.find(t);
+<a name="l00106"></a>00106             <span class="keywordflow">if</span> (res != map.end()){
+<a name="l00107"></a>00107                 <span class="keywordtype">int</span> index = res-&gt;second;
+<a name="l00108"></a>00108                 indices.push_back(index);
+<a name="l00109"></a>00109             } <span class="keywordflow">else</span> {
+<a name="l00110"></a>00110                 <span class="keywordtype">int</span> index = map.size();
+<a name="l00111"></a>00111                 map[t] = index;
+<a name="l00112"></a>00112                 indices.push_back((<span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>) index);
+<a name="l00113"></a>00113                 vertices.push_back((glm::vec3)vertexPositions[f[i].vertexPositionIdx-1]);
+<a name="l00114"></a>00114                 <span class="keywordflow">if</span> (textureCoords.size() &gt; f[i].textureIdx-1){
+<a name="l00115"></a>00115                     uv.push_back((glm::vec2)textureCoords[f[i].textureIdx-1]);
+<a name="l00116"></a>00116                 }
+<a name="l00117"></a>00117                 <span class="keywordflow">if</span> (normals.size() &gt; f[i].normalIdx-1){
+<a name="l00118"></a>00118                     ns.push_back((glm::vec3)normals[f[i].normalIdx-1]);
+<a name="l00119"></a>00119                 }
+<a name="l00120"></a>00120             }
+<a name="l00121"></a>00121         };
+<a name="l00122"></a>00122 
+<a name="l00123"></a>00123         <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp; f : faces){
+<a name="l00124"></a>00124             assert (f.size()&gt;=3);
+<a name="l00125"></a>00125             <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=0;i&lt;3;i++){
+<a name="l00126"></a>00126                 insert(i, f);
+<a name="l00127"></a>00127             }
+<a name="l00128"></a>00128             <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=3;i&lt;f.size();i++){
+<a name="l00129"></a>00129                 insert(0, f);
+<a name="l00130"></a>00130                 insert(i-1, f);
+<a name="l00131"></a>00131                 insert(i, f);
+<a name="l00132"></a>00132             }
+<a name="l00133"></a>00133         }
+<a name="l00134"></a>00134 
+<a name="l00135"></a>00135         meshData-&gt;setPosition(vertices);
+<a name="l00136"></a>00136         meshData-&gt;setSubmesh(0, indices, MeshType::Triangles);
+<a name="l00137"></a>00137         <span class="keywordflow">if</span> (uv.size()&gt;0){
+<a name="l00138"></a>00138             meshData-&gt;setTexCoord0(uv);
+<a name="l00139"></a>00139         }
+<a name="l00140"></a>00140         <span class="keywordflow">if</span> (ns.size()==0){
+<a name="l00141"></a>00141             meshData-&gt;recomputeNormals();
+<a name="l00142"></a>00142         } <span class="keywordflow">else</span> {
+<a name="l00143"></a>00143             <span class="keywordflow">if</span> (ns[0] == glm::vec3{0}){
+<a name="l00144"></a>00144                 logWarning(<span class="stringliteral">&quot;Invalid normal import.Was {0,0,0}&quot;</span>);
+<a name="l00145"></a>00145                 meshData-&gt;recomputeNormals();
+<a name="l00146"></a>00146             } <span class="keywordflow">else</span> {
+<a name="l00147"></a>00147                 meshData-&gt;setNormal(ns);
+<a name="l00148"></a>00148             }
+<a name="l00149"></a>00149         }
+<a name="l00150"></a>00150 
+<a name="l00151"></a>00151         <span class="keywordflow">return</span> meshData;
+<a name="l00152"></a>00152     }
+<a name="l00153"></a>00153 }
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -139,7 +218,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -148,7 +227,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

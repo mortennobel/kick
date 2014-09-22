@@ -76,25 +76,28 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="a67a73ac9911414ca7b3c39798a97423d"></a><!-- doxytag: member="kick::Project::createAsset" ref="a67a73ac9911414ca7b3c39798a97423d" args="(Args...args)" -->
-template&lt;class E , typename... Args&gt; </td></tr>
-<tr><td class="memTemplItemLeft" align="right" valign="top">static E *&#160;</td><td class="memTemplItemRight" valign="bottom"><b>createAsset</b> (Args...args)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a52567e9f8c08e5e3be30c8660acc32df"></a><!-- doxytag: member="kick::Project::destroyAsset" ref="a52567e9f8c08e5e3be30c8660acc32df" args="(ProjectAsset *asset)" -->
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af97abf1fcc4a660090b3b3163cdae653"></a><!-- doxytag: member="kick::Project::destroyAsset" ref="af97abf1fcc4a660090b3b3163cdae653" args="(ProjectAsset *asset)" -->
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>destroyAsset</b> (<a class="el" href="classkick_1_1_project_asset.html">ProjectAsset</a> *asset)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5c98c34d755b53b833b442bd8f1fe230"></a><!-- doxytag: member="kick::Project::loadTextResource" ref="a5c98c34d755b53b833b442bd8f1fe230" args="(std::string uri, std::string &amp;outText)" -->
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab53b6ee36e487d2938fa3a7e2bb7825f"></a><!-- doxytag: member="kick::Project::loadTextResource" ref="ab53b6ee36e487d2938fa3a7e2bb7825f" args="(std::string uri, std::string &amp;outText)" -->
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>loadTextResource</b> (std::string uri, std::string &amp;outText)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae75f2bb634615ce219fa526715202aaa"></a><!-- doxytag: member="kick::Project::loadBinaryResource" ref="ae75f2bb634615ce219fa526715202aaa" args="(std::string uri, std::vector&lt; char &gt; &amp;outResource)" -->
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a24b3073c3e6434e605d3282064e788b8"></a><!-- doxytag: member="kick::Project::loadBinaryResource" ref="a24b3073c3e6434e605d3282064e788b8" args="(std::string uri, std::vector&lt; char &gt; &amp;outResource)" -->
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>loadBinaryResource</b> (std::string uri, std::vector&lt; char &gt; &amp;outResource)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a31db5b2d8a17b12aa5ba374e6a1c543b"></a><!-- doxytag: member="kick::Project::loadShader" ref="a31db5b2d8a17b12aa5ba374e6a1c543b" args="(std::string uri)" -->
-static <a class="el" href="classkick_1_1_shader.html">Shader</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>loadShader</b> (std::string uri)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a34764aeadcccfff8be1974cdc713c9b6"></a><!-- doxytag: member="kick::Project::loadTexture2D" ref="a34764aeadcccfff8be1974cdc713c9b6" args="(std::string uri)" -->
-static <a class="el" href="classkick_1_1_texture2_d.html">Texture2D</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>loadTexture2D</b> (std::string uri)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1719868bdbe4ae4e962cb702fadf2e0f"></a><!-- doxytag: member="kick::Project::loadTexture2DFromMemory" ref="a1719868bdbe4ae4e962cb702fadf2e0f" args="(const char *data, int size)" -->
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1e7259678d920e53473c282694a33e7a"></a><!-- doxytag: member="kick::Project::loadShader" ref="a1e7259678d920e53473c282694a33e7a" args="(std::string uri)" -->
+static std::shared_ptr&lt; <a class="el" href="classkick_1_1_shader.html">Shader</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>loadShader</b> (std::string uri)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8186993b925e0fbc905577d5bebadcbf"></a><!-- doxytag: member="kick::Project::loadTexture2D" ref="a8186993b925e0fbc905577d5bebadcbf" args="(std::string uri)" -->
+static std::shared_ptr&lt; <a class="el" href="classkick_1_1_texture2_d.html">Texture2D</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>loadTexture2D</b> (std::string uri)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a61b4459a75fe15fd938d356e039893f1"></a><!-- doxytag: member="kick::Project::loadFont" ref="a61b4459a75fe15fd938d356e039893f1" args="(std::string fontName=&quot;assets/font/open_sans_28.fnt&quot;)" -->
+static std::shared_ptr&lt; <a class="el" href="classkick_1_1_font.html">Font</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>loadFont</b> (std::string fontName=&quot;assets/font/open_sans_28.fnt&quot;)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6be91d098b62d3462cdb87ec37b31c59"></a><!-- doxytag: member="kick::Project::loadTexture2DFromMemory" ref="a6be91d098b62d3462cdb87ec37b31c59" args="(const char *data, int size)" -->
 static <a class="el" href="classkick_1_1_texture2_d.html">Texture2D</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>loadTexture2DFromMemory</b> (const char *data, int size)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9fadb465d9e7bbb5e4298ad3f53602cf"></a><!-- doxytag: member="kick::Project::loadTextureCube" ref="a9fadb465d9e7bbb5e4298ad3f53602cf" args="(std::string uri)" -->
-static <a class="el" href="classkick_1_1_texture_cube.html">TextureCube</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>loadTextureCube</b> (std::string uri)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acec02f0f6274a72839dfc299b1d301d7"></a><!-- doxytag: member="kick::Project::loadTextureCubeFromMemory" ref="acec02f0f6274a72839dfc299b1d301d7" args="(const char *data, int size)" -->
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a02c7b137596b084d26ae80605c069033"></a><!-- doxytag: member="kick::Project::loadTextureCube" ref="a02c7b137596b084d26ae80605c069033" args="(std::string uri)" -->
+static std::shared_ptr<br class="typebreak"/>
+&lt; <a class="el" href="classkick_1_1_texture_cube.html">TextureCube</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>loadTextureCube</b> (std::string uri)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afe7742107ea2d8fbe11f2c47ca6c3046"></a><!-- doxytag: member="kick::Project::loadTextureCubeFromMemory" ref="afe7742107ea2d8fbe11f2c47ca6c3046" args="(const char *data, int size)" -->
 static <a class="el" href="classkick_1_1_texture_cube.html">TextureCube</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>loadTextureCubeFromMemory</b> (const char *data, int size)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a184525477cac8ccf056d38cdd271eacd"></a><!-- doxytag: member="kick::Project::loadTextureAtlas" ref="a184525477cac8ccf056d38cdd271eacd" args="(std::string filename)" -->
+static std::shared_ptr<br class="typebreak"/>
+&lt; <a class="el" href="classkick_1_1_texture_atlas.html">TextureAtlas</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>loadTextureAtlas</b> (std::string filename)</td></tr>
 <tr><td colspan="2"><h2><a name="friends"></a>
 Friends</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a05a5f0f37fb0b054a09f684210e28578"></a><!-- doxytag: member="kick::Project::ProjectAsset" ref="a05a5f0f37fb0b054a09f684210e28578" args="" -->
@@ -104,7 +107,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Engine</b></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="project_8h_source.html#l00028">28</a> of file <a class="el" href="project_8h_source.html">project.h</a>.</p>
+<p>Definition at line <a class="el" href="project_8h_source.html#l00029">29</a> of file <a class="el" href="project_8h_source.html">project.h</a>.</p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>/Users/morten/Programmering/cpp/kick/src/kick/core/<a class="el" href="project_8h_source.html">project.h</a></li>
 <li>/Users/morten/Programmering/cpp/kick/src/kick/core/<a class="el" href="project_8cpp_source.html">project.cpp</a></li>
@@ -115,7 +118,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Engine</b></td></tr>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -124,7 +127,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Engine</b></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

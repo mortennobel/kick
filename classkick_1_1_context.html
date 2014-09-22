@@ -94,12 +94,6 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>showWindow</b
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>swapBuffer</b> ()=0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7d51d7f576cf8357a0c0c4fe7b80b2e1"></a><!-- doxytag: member="kick::Context::mainLoop" ref="a7d51d7f576cf8357a0c0c4fe7b80b2e1" args="()=0" -->
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>mainLoop</b> ()=0</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3cd020779b523748645d808806fc929e"></a><!-- doxytag: member="kick::Context::setStartFrameCallback" ref="a3cd020779b523748645d808806fc929e" args="(std::function&lt; void()&gt; startFrameCallback)" -->
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setStartFrameCallback</b> (std::function&lt; void()&gt; startFrameCallback)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7953e738ac6d252ec951d71aacf0b5af"></a><!-- doxytag: member="kick::Context::setRenderCallback" ref="a7953e738ac6d252ec951d71aacf0b5af" args="(std::function&lt; void()&gt; renderCallback)" -->
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setRenderCallback</b> (std::function&lt; void()&gt; renderCallback)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a56e2589fcb61578b953501277254c38c"></a><!-- doxytag: member="kick::Context::setUpdateCallback" ref="a56e2589fcb61578b953501277254c38c" args="(std::function&lt; void()&gt; updateCallback)" -->
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setUpdateCallback</b> (std::function&lt; void()&gt; updateCallback)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab86f0bc68dff9ad15419a5620dffd88f"></a><!-- doxytag: member="kick::Context::isFullscreen" ref="ab86f0bc68dff9ad15419a5620dffd88f" args="()=0" -->
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>isFullscreen</b> ()=0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa9e6315c18a70150f9a5a7288505f025"></a><!-- doxytag: member="kick::Context::setFullscreen" ref="aa9e6315c18a70150f9a5a7288505f025" args="(bool fullscreen)=0" -->
@@ -117,6 +111,8 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getGLSLPrefix<
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setMouseInput</b> (<a class="el" href="classkick_1_1_mouse_input.html">MouseInput</a> *mouseInput)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6938883203d16e837dc349e9c60bdb3d"></a><!-- doxytag: member="kick::Context::setKeyInput" ref="a6938883203d16e837dc349e9c60bdb3d" args="(KeyInput *keyInput)" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setKeyInput</b> (<a class="el" href="classkick_1_1_key_input.html">KeyInput</a> *keyInput)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a673d54f55e70111217ba976cf366d42c"></a><!-- doxytag: member="kick::Context::setTouchInput" ref="a673d54f55e70111217ba976cf366d42c" args="(TouchInput *touchInput)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setTouchInput</b> (<a class="el" href="classkick_1_1_touch_input.html">TouchInput</a> *touchInput)</td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8a8a55b88ac6e36761bf256dc8de55b1"></a><!-- doxytag: member="kick::Context::contextSurfaceSize" ref="a8a8a55b88ac6e36761bf256dc8de55b1" args="" -->
@@ -125,20 +121,16 @@ Public Attributes</h2></td></tr>
 Protected Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac3f692724c7266014ee4215de10365c9"></a><!-- doxytag: member="kick::Context::contextSurfaceDim" ref="ac3f692724c7266014ee4215de10365c9" args="" -->
 glm::ivec2&#160;</td><td class="memItemRight" valign="bottom"><b>contextSurfaceDim</b> = glm::ivec2{512, 512}</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae667f7aa96511612d8bf8f215bf086c1"></a><!-- doxytag: member="kick::Context::startFrameCallback" ref="ae667f7aa96511612d8bf8f215bf086c1" args="" -->
-std::function&lt; void()&gt;&#160;</td><td class="memItemRight" valign="bottom"><b>startFrameCallback</b></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8bbc2c26f0bd12d97554cad9ff26e70a"></a><!-- doxytag: member="kick::Context::renderCallback" ref="a8bbc2c26f0bd12d97554cad9ff26e70a" args="" -->
-std::function&lt; void()&gt;&#160;</td><td class="memItemRight" valign="bottom"><b>renderCallback</b></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a64f91c0a43600028bfff5a01ebc693fe"></a><!-- doxytag: member="kick::Context::updateCallback" ref="a64f91c0a43600028bfff5a01ebc693fe" args="" -->
-std::function&lt; void()&gt;&#160;</td><td class="memItemRight" valign="bottom"><b>updateCallback</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a43f3113722e127ecc1730671ade94f54"></a><!-- doxytag: member="kick::Context::mouseInput" ref="a43f3113722e127ecc1730671ade94f54" args="" -->
 <a class="el" href="classkick_1_1_mouse_input.html">MouseInput</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>mouseInput</b> = nullptr</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a594cd8336149e97289db87c890428491"></a><!-- doxytag: member="kick::Context::keyInput" ref="a594cd8336149e97289db87c890428491" args="" -->
 <a class="el" href="classkick_1_1_key_input.html">KeyInput</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>keyInput</b> = nullptr</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa4ba86475293ed6fba9abf63de5c6903"></a><!-- doxytag: member="kick::Context::touchInput" ref="aa4ba86475293ed6fba9abf63de5c6903" args="" -->
+<a class="el" href="classkick_1_1_touch_input.html">TouchInput</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>touchInput</b> = nullptr</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="context_8h_source.html#l00023">23</a> of file <a class="el" href="context_8h_source.html">context.h</a>.</p>
+<p>Definition at line <a class="el" href="context_8h_source.html#l00024">24</a> of file <a class="el" href="context_8h_source.html">context.h</a>.</p>
 </div><hr/><h2>Member Function Documentation</h2>
 <a class="anchor" id="adeddda180513f7ee325512ad45b3cb0e"></a><!-- doxytag: member="kick::Context::getBasePath" ref="adeddda180513f7ee325512ad45b3cb0e" args="()" -->
 <div class="memitem">
@@ -157,7 +149,7 @@ std::function&lt; void()&gt;&#160;</td><td class="memItemRight" valign="bottom">
 
 <p>Reimplemented in <a class="el" href="classkick_1_1_s_d_l2_context.html#a5f81f77f0214855115f546cb816d38a7">kick::SDL2Context</a>.</p>
 
-<p>Definition at line <a class="el" href="context_8cpp_source.html#l00040">40</a> of file <a class="el" href="context_8cpp_source.html">context.cpp</a>.</p>
+<p>Definition at line <a class="el" href="context_8cpp_source.html#l00028">28</a> of file <a class="el" href="context_8cpp_source.html">context.cpp</a>.</p>
 
 </div>
 </div>
@@ -171,7 +163,7 @@ std::function&lt; void()&gt;&#160;</td><td class="memItemRight" valign="bottom">
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -180,7 +172,7 @@ std::function&lt; void()&gt;&#160;</td><td class="memItemRight" valign="bottom">
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

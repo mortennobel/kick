@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>kick: /Users/morten/Programmering/cpp/kick/src/kick/sprite/sprite.cpp Source File</title>
+<title>kick: /Users/morten/Programmering/cpp/kick/src/kick/2d/sprite.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
@@ -55,7 +55,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 <div class="header">
   <div class="headertitle">
-<div class="title">/Users/morten/Programmering/cpp/kick/src/kick/sprite/sprite.cpp</div>  </div>
+<div class="title">/Users/morten/Programmering/cpp/kick/src/kick/2d/sprite.cpp</div>  </div>
 </div>
 <div class="contents">
 <div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">//</span>
@@ -63,7 +63,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00003"></a>00003 <span class="comment">//</span>
 <a name="l00004"></a>00004 
 <a name="l00005"></a>00005 <span class="preprocessor">#include &quot;sprite.h&quot;</span>
-<a name="l00006"></a>00006 <span class="preprocessor">#include &quot;spritemanager.h&quot;</span>
+<a name="l00006"></a>00006 <span class="preprocessor">#include &quot;kick/core/log.h&quot;</span>
 <a name="l00007"></a>00007 
 <a name="l00008"></a>00008 <span class="preprocessor">#include &lt;iostream&gt;</span>
 <a name="l00009"></a>00009 <span class="preprocessor">#include &lt;glm/gtx/string_cast.hpp&gt;</span>
@@ -73,127 +73,121 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00013"></a>00013 
 <a name="l00014"></a>00014 <span class="keyword">namespace </span>kick {
 <a name="l00015"></a>00015 
-<a name="l00016"></a>00016     TextureAtlas *Sprite::getTextureAtlas()<span class="keyword"> const </span>{
-<a name="l00017"></a>00017         <span class="keywordflow">return</span> textureAtlas;
-<a name="l00018"></a>00018     }
-<a name="l00019"></a>00019 
-<a name="l00020"></a>00020     <span class="keywordtype">void</span> Sprite::setTextureAtlas(TextureAtlas *textureAtlas) {
-<a name="l00021"></a>00021         Sprite::textureAtlas = textureAtlas;
-<a name="l00022"></a>00022         <span class="keywordflow">if</span> (textureAtlas &amp;&amp; spriteName.length()&gt;0){
-<a name="l00023"></a>00023             entry = textureAtlas-&gt;get(spriteName);
-<a name="l00024"></a>00024             spriteUpdated.notifyListeners(<span class="keyword">this</span>);
-<a name="l00025"></a>00025         }
-<a name="l00026"></a>00026     }
-<a name="l00027"></a>00027 
-<a name="l00028"></a>00028 
-<a name="l00029"></a>00029     std::string <span class="keyword">const</span> &amp;Sprite::getSpriteName()<span class="keyword"> const </span>{
-<a name="l00030"></a>00030         <span class="keywordflow">return</span> spriteName;
-<a name="l00031"></a>00031     }
-<a name="l00032"></a>00032 
-<a name="l00033"></a>00033     <span class="keywordtype">void</span> Sprite::setSpriteName(std::string <span class="keyword">const</span> &amp;spriteName) {
-<a name="l00034"></a>00034         Sprite::spriteName = spriteName;
-<a name="l00035"></a>00035         <span class="keywordflow">if</span> (textureAtlas){
-<a name="l00036"></a>00036             entry = textureAtlas-&gt;get(spriteName);
-<a name="l00037"></a>00037             spriteUpdated.notifyListeners(<span class="keyword">this</span>);
-<a name="l00038"></a>00038         }
-<a name="l00039"></a>00039     }
-<a name="l00040"></a>00040 
-<a name="l00041"></a>00041     <span class="keywordtype">void</span> Sprite::activated() {
-<a name="l00042"></a>00042         spriteManager = SpriteManager::getInstance(gameObject-&gt;getScene());
-<a name="l00043"></a>00043         spriteManager-&gt;registerSprite(<span class="keyword">this</span>);
-<a name="l00044"></a>00044     }
-<a name="l00045"></a>00045 
-<a name="l00046"></a>00046     <span class="keywordtype">void</span> Sprite::deactivated() {
-<a name="l00047"></a>00047         spriteManager-&gt;deregisterSprite(<span class="keyword">this</span>);
-<a name="l00048"></a>00048     }
-<a name="l00049"></a>00049 
-<a name="l00050"></a>00050     TextureAtlasEntry Sprite::getEntry()<span class="keyword"> const </span>{
-<a name="l00051"></a>00051         <span class="keywordflow">return</span> entry;
-<a name="l00052"></a>00052     }
-<a name="l00053"></a>00053 
-<a name="l00054"></a>00054     <span class="keywordtype">int</span> Sprite::getOrder()<span class="keyword"> const </span>{
-<a name="l00055"></a>00055         <span class="keywordflow">return</span> order;
-<a name="l00056"></a>00056     }
-<a name="l00057"></a>00057 
-<a name="l00058"></a>00058     <span class="keywordtype">void</span> Sprite::setOrder(<span class="keywordtype">int</span> order) {
-<a name="l00059"></a>00059         Sprite::order = order;
-<a name="l00060"></a>00060     }
-<a name="l00061"></a>00061 
-<a name="l00062"></a>00062     glm::vec2 Sprite::getSliceX()<span class="keyword"> const </span>{
-<a name="l00063"></a>00063         <span class="keywordflow">return</span> sliceX;
-<a name="l00064"></a>00064     }
-<a name="l00065"></a>00065 
-<a name="l00066"></a>00066     <span class="keywordtype">void</span> Sprite::setSliceX(glm::vec2 sliceX) {
-<a name="l00067"></a>00067         assert (sliceX.x &lt;= sliceX.y);
-<a name="l00068"></a>00068         assert (0 &lt;= sliceX.x);
-<a name="l00069"></a>00069         assert (sliceX.y &lt;= 1);
-<a name="l00070"></a>00070         Sprite::sliceX = sliceX;
-<a name="l00071"></a>00071     }
-<a name="l00072"></a>00072 
-<a name="l00073"></a>00073     glm::vec2 Sprite::getSliceY()<span class="keyword"> const </span>{
-<a name="l00074"></a>00074         <span class="keywordflow">return</span> sliceY;
-<a name="l00075"></a>00075     }
-<a name="l00076"></a>00076 
-<a name="l00077"></a>00077     <span class="keywordtype">void</span> Sprite::setSliceY(glm::vec2 sliceY) {
-<a name="l00078"></a>00078         assert (sliceY.x &lt;= sliceY.y);
-<a name="l00079"></a>00079         assert (0 &lt;= sliceY.x);
-<a name="l00080"></a>00080         assert (sliceY.y &lt;= 1);
-<a name="l00081"></a>00081         Sprite::sliceY = sliceY;
-<a name="l00082"></a>00082     }
-<a name="l00083"></a>00083 
-<a name="l00084"></a>00084     glm::vec2 Sprite::getAnchor()<span class="keyword"> const </span>{
-<a name="l00085"></a>00085         <span class="keywordflow">return</span> anchor;
-<a name="l00086"></a>00086     }
-<a name="l00087"></a>00087 
-<a name="l00088"></a>00088     <span class="keywordtype">void</span> Sprite::setAnchor(glm::vec2 anchor) {
-<a name="l00089"></a>00089         Sprite::anchor = anchor;
-<a name="l00090"></a>00090     }
-<a name="l00091"></a>00091 
-<a name="l00092"></a>00092     glm::vec2 Sprite::getScale()<span class="keyword"> const </span>{
-<a name="l00093"></a>00093         <span class="keywordflow">return</span> scale;
-<a name="l00094"></a>00094     }
-<a name="l00095"></a>00095 
-<a name="l00096"></a>00096     <span class="keywordtype">void</span> Sprite::setScale(glm::vec2 scale) {
-<a name="l00097"></a>00097         Sprite::scale = scale;
-<a name="l00098"></a>00098     }
-<a name="l00099"></a>00099 
-<a name="l00100"></a>00100     <span class="keywordtype">void</span> Sprite::setType(SpriteType type) {
-<a name="l00101"></a>00101         Sprite::type = type;
+<a name="l00016"></a>00016     Sprite::Sprite(GameObject *gameObject) : Component2D(gameObject) {
+<a name="l00017"></a>00017     }
+<a name="l00018"></a>00018 
+<a name="l00019"></a>00019     std::shared_ptr&lt;TextureAtlas&gt; Sprite::getTextureAtlas()<span class="keyword"> const </span>{
+<a name="l00020"></a>00020         <span class="keywordflow">return</span> textureAtlas;
+<a name="l00021"></a>00021     }
+<a name="l00022"></a>00022 
+<a name="l00023"></a>00023     <span class="keywordtype">void</span> Sprite::setTextureAtlas(std::shared_ptr&lt;TextureAtlas&gt; textureAtlas) {
+<a name="l00024"></a>00024         Sprite::textureAtlas = textureAtlas;
+<a name="l00025"></a>00025         <span class="keywordflow">if</span> (textureAtlas &amp;&amp; spriteName.length()&gt;0){
+<a name="l00026"></a>00026             entry = textureAtlas-&gt;get(spriteName);
+<a name="l00027"></a>00027             spriteUpdated.notifyListeners(<span class="keyword">this</span>);
+<a name="l00028"></a>00028         }
+<a name="l00029"></a>00029     }
+<a name="l00030"></a>00030 
+<a name="l00031"></a>00031 
+<a name="l00032"></a>00032     std::string <span class="keyword">const</span> &amp;Sprite::getSpriteName()<span class="keyword"> const </span>{
+<a name="l00033"></a>00033         <span class="keywordflow">return</span> spriteName;
+<a name="l00034"></a>00034     }
+<a name="l00035"></a>00035 
+<a name="l00036"></a>00036     <span class="keywordtype">void</span> Sprite::setSpriteName(std::string <span class="keyword">const</span> &amp;spriteName) {
+<a name="l00037"></a>00037         Sprite::spriteName = spriteName;
+<a name="l00038"></a>00038         <span class="keywordflow">if</span> (textureAtlas &amp;&amp; spriteName != <span class="stringliteral">&quot;&quot;</span>){
+<a name="l00039"></a>00039             entry = textureAtlas-&gt;get(spriteName);
+<a name="l00040"></a>00040             spriteUpdated.notifyListeners(<span class="keyword">this</span>);
+<a name="l00041"></a>00041         }
+<a name="l00042"></a>00042     }
+<a name="l00043"></a>00043 
+<a name="l00044"></a>00044     TextureAtlasEntry Sprite::getEntry()<span class="keyword"> const </span>{
+<a name="l00045"></a>00045         <span class="keywordflow">return</span> entry;
+<a name="l00046"></a>00046     }
+<a name="l00047"></a>00047 
+<a name="l00048"></a>00048     glm::vec2 Sprite::getSliceX()<span class="keyword"> const </span>{
+<a name="l00049"></a>00049         <span class="keywordflow">return</span> sliceX;
+<a name="l00050"></a>00050     }
+<a name="l00051"></a>00051 
+<a name="l00052"></a>00052     <span class="keywordtype">void</span> Sprite::setSliceX(glm::vec2 sliceX) {
+<a name="l00053"></a>00053         assert (sliceX.x &lt;= sliceX.y);
+<a name="l00054"></a>00054         assert (0 &lt;= sliceX.x);
+<a name="l00055"></a>00055         assert (sliceX.y &lt;= 1);
+<a name="l00056"></a>00056         Sprite::sliceX = sliceX;
+<a name="l00057"></a>00057     }
+<a name="l00058"></a>00058 
+<a name="l00059"></a>00059     glm::vec2 Sprite::getSliceY()<span class="keyword"> const </span>{
+<a name="l00060"></a>00060         <span class="keywordflow">return</span> sliceY;
+<a name="l00061"></a>00061     }
+<a name="l00062"></a>00062 
+<a name="l00063"></a>00063     <span class="keywordtype">void</span> Sprite::setSliceY(glm::vec2 sliceY) {
+<a name="l00064"></a>00064         assert (sliceY.x &lt;= sliceY.y);
+<a name="l00065"></a>00065         assert (0 &lt;= sliceY.x);
+<a name="l00066"></a>00066         assert (sliceY.y &lt;= 1);
+<a name="l00067"></a>00067         Sprite::sliceY = sliceY;
+<a name="l00068"></a>00068     }
+<a name="l00069"></a>00069 
+<a name="l00070"></a>00070     glm::vec2 Sprite::getAnchor()<span class="keyword"> const </span>{
+<a name="l00071"></a>00071         <span class="keywordflow">return</span> anchor;
+<a name="l00072"></a>00072     }
+<a name="l00073"></a>00073 
+<a name="l00074"></a>00074     <span class="keywordtype">void</span> Sprite::setAnchor(glm::vec2 anchor) {
+<a name="l00075"></a>00075         Sprite::anchor = anchor;
+<a name="l00076"></a>00076     }
+<a name="l00077"></a>00077 
+<a name="l00078"></a>00078     glm::vec2 Sprite::getScale()<span class="keyword"> const </span>{
+<a name="l00079"></a>00079         <span class="keywordflow">return</span> scale;
+<a name="l00080"></a>00080     }
+<a name="l00081"></a>00081 
+<a name="l00082"></a>00082     <span class="keywordtype">void</span> Sprite::setScale(glm::vec2 scale) {
+<a name="l00083"></a>00083         Sprite::scale = scale;
+<a name="l00084"></a>00084     }
+<a name="l00085"></a>00085 
+<a name="l00086"></a>00086     <span class="keywordtype">void</span> Sprite::setType(SpriteType type) {
+<a name="l00087"></a>00087         Sprite::type = type;
+<a name="l00088"></a>00088     }
+<a name="l00089"></a>00089 
+<a name="l00090"></a>00090     SpriteType Sprite::getType()<span class="keyword"> const </span>{
+<a name="l00091"></a>00091         <span class="keywordflow">return</span> type;
+<a name="l00092"></a>00092     }
+<a name="l00093"></a>00093 
+<a name="l00094"></a>00094     Bounds2 Sprite::getBounds()<span class="keyword"> const </span>{
+<a name="l00095"></a>00095         Bounds2 bounds;
+<a name="l00096"></a>00096 
+<a name="l00097"></a>00097         <span class="keywordtype">float</span> w = entry.spriteSourceSize.z * scale.x;
+<a name="l00098"></a>00098         <span class="keywordtype">float</span> h = entry.spriteSourceSize.w * scale.y;
+<a name="l00099"></a>00099         bounds.min = -vec2{entry.spriteSourceSize.z, entry.spriteSourceSize.w} * anchor * scale;
+<a name="l00100"></a>00100         bounds.max = bounds.min + glm::vec2{w,h};
+<a name="l00101"></a>00101         <span class="keywordflow">return</span> bounds;
 <a name="l00102"></a>00102     }
 <a name="l00103"></a>00103 
-<a name="l00104"></a>00104     SpriteType Sprite::getType()<span class="keyword"> const </span>{
-<a name="l00105"></a>00105         <span class="keywordflow">return</span> type;
-<a name="l00106"></a>00106     }
-<a name="l00107"></a>00107 
-<a name="l00108"></a>00108     Bounds2D Sprite::getBounds()<span class="keyword"> const </span>{
-<a name="l00109"></a>00109         Bounds2D bounds;
-<a name="l00110"></a>00110 
-<a name="l00111"></a>00111         <span class="keywordtype">float</span> w = entry.spriteSourceSize.z * scale.x;
-<a name="l00112"></a>00112         <span class="keywordtype">float</span> h = entry.spriteSourceSize.w * scale.y;
-<a name="l00113"></a>00113         bounds.min = -vec2{entry.spriteSourceSize.z, entry.spriteSourceSize.w} * anchor * scale;
-<a name="l00114"></a>00114         bounds.max = bounds.min + glm::vec2{w,h};
-<a name="l00115"></a>00115         <span class="keywordflow">return</span> bounds;
-<a name="l00116"></a>00116     }
-<a name="l00117"></a>00117 
-<a name="l00118"></a>00118     Bounds2D Sprite::getTrimmedBounds()<span class="keyword"> const </span>{
-<a name="l00119"></a>00119         Bounds2D bounds;
-<a name="l00120"></a>00120 
-<a name="l00121"></a>00121         <span class="keywordtype">float</span> w = entry.frame.z * scale.x;
-<a name="l00122"></a>00122         <span class="keywordtype">float</span> h = entry.frame.w * scale.y;
-<a name="l00123"></a>00123         bounds.min = {entry.spriteSourceSize.x, entry.spriteSourceSize.w - entry.spriteSourceSize.y - entry.frame.w};
-<a name="l00124"></a>00124         bounds.min -= vec2{entry.spriteSourceSize.z, entry.spriteSourceSize.w} * anchor * scale;
-<a name="l00125"></a>00125         bounds.max = bounds.min + glm::vec2{w,h};
-<a name="l00126"></a>00126         <span class="keywordflow">return</span> bounds;
-<a name="l00127"></a>00127     }
-<a name="l00128"></a>00128 
-<a name="l00129"></a>00129     glm::vec4 Sprite::getColor()<span class="keyword"> const </span>{
-<a name="l00130"></a>00130         <span class="keywordflow">return</span> color;
-<a name="l00131"></a>00131     }
-<a name="l00132"></a>00132 
-<a name="l00133"></a>00133     <span class="keywordtype">void</span> Sprite::setColor(glm::vec4 color) {
-<a name="l00134"></a>00134         Sprite::color = color;
-<a name="l00135"></a>00135     }
-<a name="l00136"></a>00136 }
+<a name="l00104"></a>00104     Bounds2 Sprite::getTrimmedBounds()<span class="keyword"> const </span>{
+<a name="l00105"></a>00105         Bounds2 bounds;
+<a name="l00106"></a>00106 
+<a name="l00107"></a>00107         <span class="keywordtype">float</span> w = entry.frame.z * scale.x;
+<a name="l00108"></a>00108         <span class="keywordtype">float</span> h = entry.frame.w * scale.y;
+<a name="l00109"></a>00109         bounds.min = {entry.spriteSourceSize.x, entry.spriteSourceSize.w - entry.spriteSourceSize.y - entry.frame.w};
+<a name="l00110"></a>00110         bounds.min -= vec2{entry.spriteSourceSize.z, entry.spriteSourceSize.w} * anchor * scale;
+<a name="l00111"></a>00111         bounds.max = bounds.min + glm::vec2{w,h};
+<a name="l00112"></a>00112         <span class="keywordflow">return</span> bounds;
+<a name="l00113"></a>00113     }
+<a name="l00114"></a>00114 
+<a name="l00115"></a>00115     glm::vec4 Sprite::getColor()<span class="keyword"> const </span>{
+<a name="l00116"></a>00116         <span class="keywordflow">return</span> color;
+<a name="l00117"></a>00117     }
+<a name="l00118"></a>00118 
+<a name="l00119"></a>00119     <span class="keywordtype">void</span> Sprite::setColor(glm::vec4 color) {
+<a name="l00120"></a>00120         Sprite::color = color;
+<a name="l00121"></a>00121     }
+<a name="l00122"></a>00122 
+<a name="l00123"></a>00123     Shader *Sprite::getShader()<span class="keyword"> const </span>{
+<a name="l00124"></a>00124         <span class="keywordflow">if</span> (textureAtlas){
+<a name="l00125"></a>00125             <span class="keywordflow">return</span> textureAtlas-&gt;getShader().get();
+<a name="l00126"></a>00126         }
+<a name="l00127"></a>00127         <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;
+<a name="l00128"></a>00128     }
+<a name="l00129"></a>00129 
+<a name="l00130"></a>00130 }
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -201,7 +195,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -210,7 +204,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:39 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

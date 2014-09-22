@@ -73,7 +73,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00013"></a>00013 <span class="keyword">using namespace </span>glm;
 <a name="l00014"></a>00014 
 <a name="l00015"></a>00015 <span class="keyword">namespace </span>kick {
-<a name="l00016"></a>00016     glm::mat4 Math::TRS(glm::vec3 translate, glm::quat rotateQuat, glm::vec3 scale){
+<a name="l00016"></a>00016     glm::mat4 TRS(glm::vec3 translate, glm::quat rotateQuat, glm::vec3 scale){
 <a name="l00017"></a>00017         <span class="keywordflow">return</span> glm::translate(translate) * mat4_cast(rotateQuat) * glm::scale(scale);
 <a name="l00018"></a>00018         <span class="comment">/*glm::mat4 res;</span>
 <a name="l00019"></a>00019 <span class="comment">        float *out = &amp;(res[0][0]);</span>
@@ -114,7 +114,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00054"></a>00054 <span class="comment">        return res;       */</span>
 <a name="l00055"></a>00055     }
 <a name="l00056"></a>00056     
-<a name="l00057"></a>00057     glm::mat4 Math::TRSInverse(glm::vec3 translate, glm::quat rotateQuat, glm::vec3 scale){
+<a name="l00057"></a>00057     glm::mat4 TRSInverse(glm::vec3 translate, glm::quat rotateQuat, glm::vec3 scale){
 <a name="l00058"></a>00058         <span class="keywordflow">return</span> inverse(TRS(translate, rotateQuat, scale));
 <a name="l00059"></a>00059         <span class="comment">/*</span>
 <a name="l00060"></a>00060 <span class="comment">        // Quaternion math</span>
@@ -188,7 +188,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00128"></a>00128 <span class="comment">        return res;   */</span>
 <a name="l00129"></a>00129     }
 <a name="l00130"></a>00130 
-<a name="l00131"></a>00131     glm::quat Math::lookAt(glm::vec3 eyePosition, glm::vec3 lookAtPos, glm::vec3 up){
+<a name="l00131"></a>00131     glm::quat lookAt(glm::vec3 eyePosition, glm::vec3 lookAtPos, glm::vec3 up){
 <a name="l00132"></a>00132         <span class="keywordflow">return</span> quat_cast(glm::lookAt(eyePosition, lookAtPos, up));
 <a name="l00133"></a>00133     }
 <a name="l00134"></a>00134 }
@@ -199,7 +199,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -208,7 +208,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

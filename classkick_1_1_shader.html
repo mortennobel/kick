@@ -86,8 +86,8 @@ Inheritance diagram for kick::Shader:</div>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae63bba571d98a62f51fc902c56c107b2"></a><!-- doxytag: member="kick::Shader::Shader" ref="ae63bba571d98a62f51fc902c56c107b2" args="(Project *p, std::string vertexShader=&quot;&quot;, std::string fragmentShader=&quot;&quot;, std::string geometryShader=&quot;&quot;)" -->
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkick_1_1_shader.html#ae63bba571d98a62f51fc902c56c107b2">Shader</a> (<a class="el" href="classkick_1_1_project.html">Project</a> *p, std::string vertexShader=&quot;&quot;, std::string fragmentShader=&quot;&quot;, std::string geometryShader=&quot;&quot;)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a520d5bd7f55ff6ef7779de91f8c1777c"></a><!-- doxytag: member="kick::Shader::Shader" ref="a520d5bd7f55ff6ef7779de91f8c1777c" args="(std::string vertexShader=&quot;&quot;, std::string fragmentShader=&quot;&quot;, std::string geometryShader=&quot;&quot;)" -->
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkick_1_1_shader.html#a520d5bd7f55ff6ef7779de91f8c1777c">Shader</a> (std::string vertexShader=&quot;&quot;, std::string fragmentShader=&quot;&quot;, std::string geometryShader=&quot;&quot;)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">If vertexShader and fragmentShader is specified then apply is called. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab3d646e5c5a01a3d0b57ee50b264923b"></a><!-- doxytag: member="kick::Shader::Shader" ref="ab3d646e5c5a01a3d0b57ee50b264923b" args="(Shader &amp;&amp;s)" -->
 &#160;</td><td class="memItemRight" valign="bottom"><b>Shader</b> (<a class="el" href="classkick_1_1_shader.html">Shader</a> &amp;&amp;s)</td></tr>
@@ -163,9 +163,20 @@ const std::vector<br class="typebreak"/>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>bind_uniforms</b> (<a class="el" href="classkick_1_1_material.html">Material</a> *material, <a class="el" href="structkick_1_1_engine_uniforms.html">EngineUniforms</a> *engineUniforms, <a class="el" href="classkick_1_1_transform.html">Transform</a> *transform)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a16322de7b5eee6f249ad2b0aebc54825"></a><!-- doxytag: member="kick::Shader::getShaderProgram" ref="a16322de7b5eee6f249ad2b0aebc54825" args="()" -->
 GLuint&#160;</td><td class="memItemRight" valign="bottom"><b>getShaderProgram</b> ()</td></tr>
-<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="afed608d807af198211109c9572ccc72d"></a><!-- doxytag: member="kick::Shader::setDefaultUniform" ref="afed608d807af198211109c9572ccc72d" args="(std::string name, E value)" -->
-template&lt;class E &gt; </td></tr>
-<tr><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setDefaultUniform</b> (std::string name, E value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af71a0d539f662b4e2f76d175cfbc9853"></a><!-- doxytag: member="kick::Shader::setDefaultUniform" ref="af71a0d539f662b4e2f76d175cfbc9853" args="(std::string name, int value)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setDefaultUniform</b> (std::string name, int value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a45eef491e6e3117fdacc8276c5ee976f"></a><!-- doxytag: member="kick::Shader::setDefaultUniform" ref="a45eef491e6e3117fdacc8276c5ee976f" args="(std::string name, float value)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setDefaultUniform</b> (std::string name, float value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a39c576d9fd5d2b5bed8e42fd56824daf"></a><!-- doxytag: member="kick::Shader::setDefaultUniform" ref="a39c576d9fd5d2b5bed8e42fd56824daf" args="(std::string name, glm::vec4 value)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setDefaultUniform</b> (std::string name, glm::vec4 value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7cd39e09b57dce2f3c5f9f887dd784c5"></a><!-- doxytag: member="kick::Shader::setDefaultUniform" ref="a7cd39e09b57dce2f3c5f9f887dd784c5" args="(std::string name, glm::mat3 value)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setDefaultUniform</b> (std::string name, glm::mat3 value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a28d3fd02e99a9299e11b20f3b1b4d561"></a><!-- doxytag: member="kick::Shader::setDefaultUniform" ref="a28d3fd02e99a9299e11b20f3b1b4d561" args="(std::string name, glm::mat4 value)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setDefaultUniform</b> (std::string name, glm::mat4 value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4022582c8ec86dda0182aedbe9fd95fc"></a><!-- doxytag: member="kick::Shader::setDefaultUniform" ref="a4022582c8ec86dda0182aedbe9fd95fc" args="(std::string name, std::shared_ptr&lt; Texture2D &gt; value)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setDefaultUniform</b> (std::string name, std::shared_ptr&lt; <a class="el" href="classkick_1_1_texture2_d.html">Texture2D</a> &gt; value)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a49d4c78d09ec5650616a52ae9a15216b"></a><!-- doxytag: member="kick::Shader::setDefaultUniform" ref="a49d4c78d09ec5650616a52ae9a15216b" args="(std::string name, std::shared_ptr&lt; TextureCube &gt; value)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setDefaultUniform</b> (std::string name, std::shared_ptr&lt; <a class="el" href="classkick_1_1_texture_cube.html">TextureCube</a> &gt; value)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5a9625a8733394d7169c00e4f857c570"></a><!-- doxytag: member="kick::Shader::tryGetDefaultUniform" ref="a5a9625a8733394d7169c00e4f857c570" args="(std::string name, MaterialData &amp;value)" -->
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>tryGetDefaultUniform</b> (std::string name, <a class="el" href="structkick_1_1_material_data.html">MaterialData</a> &amp;value)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a50dd2ff5718d29625cd309f445964530"></a><!-- doxytag: member="kick::Shader::getRenderOrder" ref="a50dd2ff5718d29625cd309f445964530" args="() const " -->
@@ -183,7 +194,7 @@ Public Attributes</h2></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="shader_8h_source.html#l00035">35</a> of file <a class="el" href="shader_8h_source.html">shader.h</a>.</p>
+<p>Definition at line <a class="el" href="shader_8h_source.html#l00033">33</a> of file <a class="el" href="shader_8h_source.html">shader.h</a>.</p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>/Users/morten/Programmering/cpp/kick/src/kick/material/<a class="el" href="shader_8h_source.html">shader.h</a></li>
 <li>/Users/morten/Programmering/cpp/kick/src/kick/material/<a class="el" href="shader_8cpp_source.html">shader.cpp</a></li>
@@ -194,7 +205,7 @@ Public Attributes</h2></td></tr>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -203,7 +214,7 @@ Public Attributes</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

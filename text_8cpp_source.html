@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>kick: /Users/morten/Programmering/cpp/kick/src/kick/sprite/text.cpp Source File</title>
+<title>kick: /Users/morten/Programmering/cpp/kick/src/kick/2d/text.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
@@ -55,7 +55,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 <div class="header">
   <div class="headertitle">
-<div class="title">/Users/morten/Programmering/cpp/kick/src/kick/sprite/text.cpp</div>  </div>
+<div class="title">/Users/morten/Programmering/cpp/kick/src/kick/2d/text.cpp</div>  </div>
 </div>
 <div class="contents">
 <div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">//</span>
@@ -66,125 +66,150 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00006"></a>00006 <span class="preprocessor">#include &lt;iostream&gt;</span>
 <a name="l00007"></a>00007 <span class="preprocessor">#include &quot;kick/mesh/mesh.h&quot;</span>
 <a name="l00008"></a>00008 <span class="preprocessor">#include &quot;glm/gtx/string_cast.hpp&quot;</span>
-<a name="l00009"></a>00009 <span class="keyword">using namespace </span>std;
-<a name="l00010"></a>00010 <span class="keyword">using namespace </span>glm;
-<a name="l00011"></a>00011 
-<a name="l00012"></a>00012 <span class="keyword">namespace </span>kick {
-<a name="l00013"></a>00013 
-<a name="l00014"></a>00014     Text::Text(GameObject *gameObject)
-<a name="l00015"></a>00015             : ComponentRenderable(gameObject),
-<a name="l00016"></a>00016               bounds{vec2{0,0},vec2{0,0}} {
-<a name="l00017"></a>00017         mesh = Project::createAsset&lt;Mesh&gt;();
-<a name="l00018"></a>00018         meshData = Project::createAsset&lt;MeshData&gt;();
-<a name="l00019"></a>00019         material = Project::createAsset&lt;Material&gt;();
-<a name="l00020"></a>00020         mesh-&gt;setMeshData(meshData);
-<a name="l00021"></a>00021     }
-<a name="l00022"></a>00022 
-<a name="l00023"></a>00023     std::string <span class="keyword">const</span> &amp;Text::getText()<span class="keyword"> const </span>{
-<a name="l00024"></a>00024         <span class="keywordflow">return</span> text;
-<a name="l00025"></a>00025     }
-<a name="l00026"></a>00026 
-<a name="l00027"></a>00027     <span class="keywordtype">void</span> Text::setText(std::string <span class="keyword">const</span> &amp;text) {
-<a name="l00028"></a>00028         Text::text = text;
-<a name="l00029"></a>00029         updateVertexBuffer();
-<a name="l00030"></a>00030     }
-<a name="l00031"></a>00031 
-<a name="l00032"></a>00032     <span class="keywordtype">void</span> Text::render(EngineUniforms *engineUniforms) {
-<a name="l00033"></a>00033         <span class="keywordflow">if</span> (!font) <span class="keywordflow">return</span>;
-<a name="l00034"></a>00034         <span class="keyword">auto</span> shader = material-&gt;getShader();
-<a name="l00035"></a>00035         assert(shader);
-<a name="l00036"></a>00036         mesh-&gt;bind(shader);
-<a name="l00037"></a>00037         shader-&gt;bind_uniforms(material, engineUniforms, getTransform());
-<a name="l00038"></a>00038         mesh-&gt;render(0);
-<a name="l00039"></a>00039     }
-<a name="l00040"></a>00040 
-<a name="l00041"></a>00041     <span class="keywordtype">void</span> Text::setFont(Font *font) {
-<a name="l00042"></a>00042         <span class="keywordflow">if</span> (!font-&gt;IsInitialized()){
-<a name="l00043"></a>00043             font-&gt;loadFntFile();
-<a name="l00044"></a>00044         }
-<a name="l00045"></a>00045         Text::font = font;
-<a name="l00046"></a>00046         material-&gt;setShader(font-&gt;getShader());
-<a name="l00047"></a>00047         material-&gt;setUniform(<span class="stringliteral">&quot;mainTexture&quot;</span>, font-&gt;getTexture());
-<a name="l00048"></a>00048         eventListener = font-&gt;fontListener.createListener([&amp;](Font* f){
-<a name="l00049"></a>00049             material-&gt;setShader(f-&gt;getShader());
-<a name="l00050"></a>00050             material-&gt;setUniform(<span class="stringliteral">&quot;mainTexture&quot;</span>, f-&gt;getTexture());
-<a name="l00051"></a>00051         });
-<a name="l00052"></a>00052         updateVertexBuffer();
-<a name="l00053"></a>00053     }
-<a name="l00054"></a>00054 
-<a name="l00055"></a>00055     Font *Text::getFont()<span class="keyword"> const </span>{
-<a name="l00056"></a>00056         <span class="keywordflow">return</span> font;
-<a name="l00057"></a>00057     }
-<a name="l00058"></a>00058 
-<a name="l00059"></a>00059     <span class="keywordtype">void</span> Text::updateVertexBuffer() {
-<a name="l00060"></a>00060         <span class="keywordflow">if</span> (!font || text.length() ==0) {
-<a name="l00061"></a>00061             meshData-&gt;setSubmesh(0, {}, MeshType::Triangles);
-<a name="l00062"></a>00062             mesh-&gt;setMeshData(meshData);
-<a name="l00063"></a>00063             <span class="keywordflow">return</span>;
-<a name="l00064"></a>00064         }
-<a name="l00065"></a>00065         vector&lt;vec3&gt; position;
-<a name="l00066"></a>00066         vector&lt;vec2&gt; textureCoords;
-<a name="l00067"></a>00067         vector&lt;GLushort&gt; indices;
-<a name="l00068"></a>00068         vec2 carent{0,0};
-<a name="l00069"></a>00069         bounds.max = vec2{-FLT_MAX};
-<a name="l00070"></a>00070         bounds.min = vec2{FLT_MAX};
-<a name="l00071"></a>00071         <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> i=0;i&lt;text.length();i++){
-<a name="l00072"></a>00072             FontChar fc = font-&gt;getChar(text[i]);
-<a name="l00073"></a>00073             <span class="keywordflow">if</span> (fc.width  == -1){
-<a name="l00074"></a>00074                 <span class="keywordflow">continue</span>;
-<a name="l00075"></a>00075             }
-<a name="l00076"></a>00076             vec2 basePoint = carent+vec2{fc.xoffset,font-&gt;height()-fc.height-fc.yoffset};
-<a name="l00077"></a>00077 
-<a name="l00078"></a>00078             position.push_back(vec3{basePoint,0});
-<a name="l00079"></a>00079             position.push_back(vec3{basePoint+vec2{fc.width,0},0});
-<a name="l00080"></a>00080             position.push_back(vec3{basePoint+vec2{fc.width,fc.height},0});
-<a name="l00081"></a>00081             position.push_back(vec3{basePoint+vec2{0,fc.height},0});
-<a name="l00082"></a>00082 
-<a name="l00083"></a>00083             bounds.min = glm::min(bounds.min, basePoint);
-<a name="l00084"></a>00084             bounds.max = glm::max(bounds.max, (vec2)position[position.size()-2]);
+<a name="l00009"></a>00009 
+<a name="l00010"></a>00010 <span class="keyword">using namespace </span>std;
+<a name="l00011"></a>00011 <span class="keyword">using namespace </span>glm;
+<a name="l00012"></a>00012 
+<a name="l00013"></a>00013 <span class="keyword">namespace </span>kick {
+<a name="l00014"></a>00014 
+<a name="l00015"></a>00015     Text::Text(GameObject *gameObject)
+<a name="l00016"></a>00016             : Component2D(gameObject),
+<a name="l00017"></a>00017               bounds{vec2{0,0},vec2{0,0}} {
+<a name="l00018"></a>00018         mesh = <span class="keyword">new</span> Mesh();
+<a name="l00019"></a>00019         meshData = <span class="keyword">new</span> MeshData();
+<a name="l00020"></a>00020         material = <span class="keyword">new</span> Material();
+<a name="l00021"></a>00021         mesh-&gt;setMeshData(meshData);
+<a name="l00022"></a>00022     }
+<a name="l00023"></a>00023 
+<a name="l00024"></a>00024     std::string <span class="keyword">const</span> &amp;Text::getText()<span class="keyword"> const </span>{
+<a name="l00025"></a>00025         <span class="keywordflow">return</span> text;
+<a name="l00026"></a>00026     }
+<a name="l00027"></a>00027 
+<a name="l00028"></a>00028     <span class="keywordtype">void</span> Text::setText(std::string <span class="keyword">const</span> &amp;text) {
+<a name="l00029"></a>00029         Text::text = text;
+<a name="l00030"></a>00030         updateVertexBuffer();
+<a name="l00031"></a>00031     }
+<a name="l00032"></a>00032 
+<a name="l00033"></a>00033     <span class="keywordtype">void</span> Text::render(EngineUniforms *engineUniforms) {
+<a name="l00034"></a>00034         <span class="keywordflow">if</span> (!font) <span class="keywordflow">return</span>;
+<a name="l00035"></a>00035         <span class="keyword">auto</span> shader = material-&gt;getShader();
+<a name="l00036"></a>00036         assert(shader);
+<a name="l00037"></a>00037         mesh-&gt;bind(shader.get());
+<a name="l00038"></a>00038         shader-&gt;bind_uniforms(material, engineUniforms, getTransform());
+<a name="l00039"></a>00039         mesh-&gt;render(0);
+<a name="l00040"></a>00040     }
+<a name="l00041"></a>00041 
+<a name="l00042"></a>00042     <span class="keywordtype">void</span> Text::setFont(std::shared_ptr&lt;Font&gt;&amp; font) {
+<a name="l00043"></a>00043         <span class="keywordflow">if</span> (!font-&gt;IsInitialized()){
+<a name="l00044"></a>00044             font-&gt;loadFntFile();
+<a name="l00045"></a>00045         }
+<a name="l00046"></a>00046         Text::font = font;
+<a name="l00047"></a>00047         material-&gt;setShader(font-&gt;getShader());
+<a name="l00048"></a>00048         material-&gt;setUniform(<span class="stringliteral">&quot;mainTexture&quot;</span>, font-&gt;getTexture());
+<a name="l00049"></a>00049         eventListener = font-&gt;fontListener.createListener([&amp;](Font* f){
+<a name="l00050"></a>00050             material-&gt;setShader(f-&gt;getShader());
+<a name="l00051"></a>00051             material-&gt;setUniform(<span class="stringliteral">&quot;mainTexture&quot;</span>, f-&gt;getTexture());
+<a name="l00052"></a>00052         });
+<a name="l00053"></a>00053         updateVertexBuffer();
+<a name="l00054"></a>00054     }
+<a name="l00055"></a>00055 
+<a name="l00056"></a>00056     std::shared_ptr&lt;Font&gt; Text::getFont()<span class="keyword"> const </span>{
+<a name="l00057"></a>00057         <span class="keywordflow">return</span> font;
+<a name="l00058"></a>00058     }
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060     <span class="keywordtype">void</span> Text::updateVertexBuffer() {
+<a name="l00061"></a>00061         <span class="keywordflow">if</span> (!font || text.length() ==0) {
+<a name="l00062"></a>00062             meshData-&gt;setSubmesh(0, {}, MeshType::Triangles);
+<a name="l00063"></a>00063             mesh-&gt;setMeshData(meshData);
+<a name="l00064"></a>00064             <span class="keywordflow">return</span>;
+<a name="l00065"></a>00065         }
+<a name="l00066"></a>00066         vector&lt;vec3&gt; position;
+<a name="l00067"></a>00067         vector&lt;vec2&gt; textureCoords;
+<a name="l00068"></a>00068         vector&lt;GLushort&gt; indices;
+<a name="l00069"></a>00069         vec2 carent{-font-&gt;width(text) * anchor.x, -font-&gt;height() * anchor.y};
+<a name="l00070"></a>00070         bounds.max = vec2{-FLT_MAX};
+<a name="l00071"></a>00071         bounds.min = vec2{FLT_MAX};
+<a name="l00072"></a>00072         GLushort vertexCount = 0;
+<a name="l00073"></a>00073         <span class="keywordtype">int</span> lastChar = -1;
+<a name="l00074"></a>00074         <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> i=0;i&lt;text.length();i++){
+<a name="l00075"></a>00075             <span class="keyword">const</span> FontChar fc = font-&gt;getChar(text[i]);
+<a name="l00076"></a>00076             <span class="keywordflow">if</span> (fc.width  == -1){
+<a name="l00077"></a>00077                 <span class="keywordflow">continue</span>;
+<a name="l00078"></a>00078             }
+<a name="l00079"></a>00079             carent.x += font-&gt;getKerning(lastChar, text[i]);
+<a name="l00080"></a>00080             vec2 basePoint = carent+vec2{fc.xoffset,font-&gt;height()-fc.height-fc.yoffset};
+<a name="l00081"></a>00081             position.push_back(vec3{basePoint,0});
+<a name="l00082"></a>00082             position.push_back(vec3{basePoint+vec2{fc.width,0},0});
+<a name="l00083"></a>00083             position.push_back(vec3{basePoint+vec2{fc.width,fc.height},0});
+<a name="l00084"></a>00084             position.push_back(vec3{basePoint+vec2{0       ,fc.height},0});
 <a name="l00085"></a>00085 
-<a name="l00086"></a>00086             vec2 scale{1.0f/font-&gt;getScaleW(), 1.0f/font-&gt;getScaleH()};
-<a name="l00087"></a>00087 
-<a name="l00088"></a>00088             textureCoords.push_back(vec2{fc.x,font-&gt;getScaleH()-fc.y-fc.height}*scale);
-<a name="l00089"></a>00089             textureCoords.push_back(vec2{fc.x+fc.width,font-&gt;getScaleH()-fc.y-fc.height}*scale);
-<a name="l00090"></a>00090             textureCoords.push_back(vec2{fc.x+fc.width,font-&gt;getScaleH()-fc.y}*scale);
-<a name="l00091"></a>00091             textureCoords.push_back(vec2{fc.x,font-&gt;getScaleH()-fc.y}*scale);
-<a name="l00092"></a>00092 
-<a name="l00093"></a>00093             <span class="comment">// push two triangles</span>
-<a name="l00094"></a>00094             indices.push_back(i*4);
-<a name="l00095"></a>00095             indices.push_back(i*4+1);
-<a name="l00096"></a>00096             indices.push_back(i*4+2);
-<a name="l00097"></a>00097             indices.push_back(i*4+2);
-<a name="l00098"></a>00098             indices.push_back(i*4+3);
-<a name="l00099"></a>00099             indices.push_back(i*4);
-<a name="l00100"></a>00100 
-<a name="l00101"></a>00101             carent.x += fc.xadvance;
-<a name="l00102"></a>00102         }
-<a name="l00103"></a>00103         meshData-&gt;setPosition(position);
-<a name="l00104"></a>00104         meshData-&gt;setTexCoord0(textureCoords);
-<a name="l00105"></a>00105         meshData-&gt;setSubmesh(0,indices, MeshType::Triangles);
-<a name="l00106"></a>00106         mesh-&gt;setMeshData(meshData);
-<a name="l00107"></a>00107     }
-<a name="l00108"></a>00108 
-<a name="l00109"></a>00109     Bounds2D Text::getBounds() {
-<a name="l00110"></a>00110         <span class="keywordflow">return</span> bounds;
-<a name="l00111"></a>00111     }
-<a name="l00112"></a>00112 
-<a name="l00113"></a>00113     Material *Text::getMaterial()<span class="keyword"> const </span>{
-<a name="l00114"></a>00114         <span class="keywordflow">return</span> material;
-<a name="l00115"></a>00115     }
-<a name="l00116"></a>00116 
-<a name="l00117"></a>00117     <span class="keywordtype">void</span> Text::setMaterial(Material *material) {
-<a name="l00118"></a>00118         assert(material);
-<a name="l00119"></a>00119         Text::material = material;
-<a name="l00120"></a>00120         material-&gt;setShader(font-&gt;getShader());
-<a name="l00121"></a>00121         material-&gt;setUniform(<span class="stringliteral">&quot;mainTexture&quot;</span>, font-&gt;getTexture());
+<a name="l00086"></a>00086             bounds.min = glm::min(bounds.min, basePoint);
+<a name="l00087"></a>00087             bounds.max = glm::max(bounds.max, (vec2)position[position.size()-2]);
+<a name="l00088"></a>00088 
+<a name="l00089"></a>00089             vec2 scale{1.0f / font-&gt;getScaleW(), 1.0f / font-&gt;getScaleH()};
+<a name="l00090"></a>00090 
+<a name="l00091"></a>00091             textureCoords.push_back(vec2{fc.x         ,font-&gt;getScaleH()-fc.y-fc.height}*scale);
+<a name="l00092"></a>00092             textureCoords.push_back(vec2{fc.x+fc.width,font-&gt;getScaleH()-fc.y-fc.height}*scale);
+<a name="l00093"></a>00093             textureCoords.push_back(vec2{fc.x+fc.width,font-&gt;getScaleH()-fc.y}*scale);
+<a name="l00094"></a>00094             textureCoords.push_back(vec2{fc.x         ,font-&gt;getScaleH()-fc.y}*scale);
+<a name="l00095"></a>00095 
+<a name="l00096"></a>00096             <span class="comment">// push two triangles</span>
+<a name="l00097"></a>00097             indices.push_back(vertexCount);
+<a name="l00098"></a>00098             indices.push_back(vertexCount + (GLushort)1);
+<a name="l00099"></a>00099             indices.push_back(vertexCount + (GLushort)2);
+<a name="l00100"></a>00100             indices.push_back(vertexCount + (GLushort)2);
+<a name="l00101"></a>00101             indices.push_back(vertexCount + (GLushort)3);
+<a name="l00102"></a>00102             indices.push_back(vertexCount);
+<a name="l00103"></a>00103 
+<a name="l00104"></a>00104             vertexCount += 4;
+<a name="l00105"></a>00105 
+<a name="l00106"></a>00106             carent.x += fc.xadvance;
+<a name="l00107"></a>00107             lastChar = text[i];
+<a name="l00108"></a>00108         }
+<a name="l00109"></a>00109 
+<a name="l00110"></a>00110         meshData-&gt;setPosition(position);
+<a name="l00111"></a>00111         meshData-&gt;setTexCoord0(textureCoords);
+<a name="l00112"></a>00112         meshData-&gt;setSubmesh(0,indices, MeshType::Triangles);
+<a name="l00113"></a>00113         mesh-&gt;setMeshData(meshData);
+<a name="l00114"></a>00114     }
+<a name="l00115"></a>00115 
+<a name="l00116"></a>00116     Bounds2 Text::getBounds() {
+<a name="l00117"></a>00117         <span class="keywordflow">return</span> bounds;
+<a name="l00118"></a>00118     }
+<a name="l00119"></a>00119 
+<a name="l00120"></a>00120     Material *Text::getMaterial()<span class="keyword"> const </span>{
+<a name="l00121"></a>00121         <span class="keywordflow">return</span> material;
 <a name="l00122"></a>00122     }
 <a name="l00123"></a>00123 
-<a name="l00124"></a>00124     <span class="keywordtype">int</span> Text::getRenderOrder() {
-<a name="l00125"></a>00125         <span class="keywordflow">return</span> material-&gt;getRenderOrder();
-<a name="l00126"></a>00126     }
-<a name="l00127"></a>00127 }
+<a name="l00124"></a>00124     <span class="keywordtype">void</span> Text::setMaterial(Material *material) {
+<a name="l00125"></a>00125         assert(material);
+<a name="l00126"></a>00126         Text::material = material;
+<a name="l00127"></a>00127         material-&gt;setShader(font-&gt;getShader());
+<a name="l00128"></a>00128         material-&gt;setUniform(<span class="stringliteral">&quot;mainTexture&quot;</span>, font-&gt;getTexture());
+<a name="l00129"></a>00129     }
+<a name="l00130"></a>00130 
+<a name="l00131"></a>00131     <span class="keywordtype">int</span> Text::getRenderOrder() {
+<a name="l00132"></a>00132         <span class="keywordflow">return</span> material-&gt;getRenderOrder();
+<a name="l00133"></a>00133     }
+<a name="l00134"></a>00134 
+<a name="l00135"></a>00135     <span class="keywordtype">void</span> Text::setAnchor(glm::vec2 anchor) {
+<a name="l00136"></a>00136         <span class="keywordflow">if</span> (anchor != Text::anchor){
+<a name="l00137"></a>00137             Text::anchor = anchor;
+<a name="l00138"></a>00138             updateVertexBuffer();
+<a name="l00139"></a>00139         }
+<a name="l00140"></a>00140     }
+<a name="l00141"></a>00141 
+<a name="l00142"></a>00142     glm::vec2 Text::getAnchor()<span class="keyword"> const </span>{
+<a name="l00143"></a>00143         <span class="keywordflow">return</span> anchor;
+<a name="l00144"></a>00144     }
+<a name="l00145"></a>00145 
+<a name="l00146"></a>00146     Shader *Text::getShader()<span class="keyword"> const </span>{
+<a name="l00147"></a>00147         <span class="keywordflow">if</span> (material){
+<a name="l00148"></a>00148             <span class="keywordflow">return</span> material-&gt;getShader().get();
+<a name="l00149"></a>00149         }
+<a name="l00150"></a>00150         <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;
+<a name="l00151"></a>00151     }
+<a name="l00152"></a>00152 }
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -192,7 +217,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -201,7 +226,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:39 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

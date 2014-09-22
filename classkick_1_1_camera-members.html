@@ -79,15 +79,19 @@ This is the complete list of members for <a class="el" href="classkick_1_1_camer
   <tr bgcolor="#f0f0f0"><td><b>getCullingMask</b>() const  (defined in <a class="el" href="classkick_1_1_camera.html">kick::Camera</a>)</td><td><a class="el" href="classkick_1_1_camera.html">kick::Camera</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>getGameObject</b>() (defined in <a class="el" href="classkick_1_1_component.html">kick::Component</a>)</td><td><a class="el" href="classkick_1_1_component.html">kick::Component</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>getProjectionMatrix</b>() (defined in <a class="el" href="classkick_1_1_camera.html">kick::Camera</a>)</td><td><a class="el" href="classkick_1_1_camera.html">kick::Camera</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>getReplacementMaterial</b>() const  (defined in <a class="el" href="classkick_1_1_camera.html">kick::Camera</a>)</td><td><a class="el" href="classkick_1_1_camera.html">kick::Camera</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>getTarget</b>() const  (defined in <a class="el" href="classkick_1_1_camera.html">kick::Camera</a>)</td><td><a class="el" href="classkick_1_1_camera.html">kick::Camera</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>getTransform</b>() (defined in <a class="el" href="classkick_1_1_component.html">kick::Component</a>)</td><td><a class="el" href="classkick_1_1_component.html">kick::Component</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>getViewMatrix</b>() (defined in <a class="el" href="classkick_1_1_camera.html">kick::Camera</a>)</td><td><a class="el" href="classkick_1_1_camera.html">kick::Camera</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>isClearColor</b>() (defined in <a class="el" href="classkick_1_1_camera.html">kick::Camera</a>)</td><td><a class="el" href="classkick_1_1_camera.html">kick::Camera</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>isClearDepth</b>() (defined in <a class="el" href="classkick_1_1_camera.html">kick::Camera</a>)</td><td><a class="el" href="classkick_1_1_camera.html">kick::Camera</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>isClearStencil</b>() (defined in <a class="el" href="classkick_1_1_camera.html">kick::Camera</a>)</td><td><a class="el" href="classkick_1_1_camera.html">kick::Camera</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>isEnabled</b>() const  (defined in <a class="el" href="classkick_1_1_component.html">kick::Component</a>)</td><td><a class="el" href="classkick_1_1_component.html">kick::Component</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>isShadow</b>() const  (defined in <a class="el" href="classkick_1_1_camera.html">kick::Camera</a>)</td><td><a class="el" href="classkick_1_1_camera.html">kick::Camera</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>normalizedViewportDim</b> (defined in <a class="el" href="classkick_1_1_camera.html">kick::Camera</a>)</td><td><a class="el" href="classkick_1_1_camera.html">kick::Camera</a></td><td><code> [protected]</code></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>normalizedViewportOffset</b> (defined in <a class="el" href="classkick_1_1_camera.html">kick::Camera</a>)</td><td><a class="el" href="classkick_1_1_camera.html">kick::Camera</a></td><td><code> [protected]</code></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>operator=</b>(const Component &amp;other) (defined in <a class="el" href="classkick_1_1_component.html">kick::Component</a>)</td><td><a class="el" href="classkick_1_1_component.html">kick::Component</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>pick</b>(glm::ivec2 point, std::function&lt; void(GameObject *, int)&gt; onPicked, glm::ivec2 size=glm::ivec2{1, 1}) (defined in <a class="el" href="classkick_1_1_camera.html">kick::Camera</a>)</td><td><a class="el" href="classkick_1_1_camera.html">kick::Camera</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>projectionMatrix</b> (defined in <a class="el" href="classkick_1_1_camera.html">kick::Camera</a>)</td><td><a class="el" href="classkick_1_1_camera.html">kick::Camera</a></td><td><code> [protected]</code></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>render</b>(EngineUniforms *engineUniforms) (defined in <a class="el" href="classkick_1_1_camera.html">kick::Camera</a>)</td><td><a class="el" href="classkick_1_1_camera.html">kick::Camera</a></td><td><code> [virtual]</code></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>resetProjectionMatrix</b>() (defined in <a class="el" href="classkick_1_1_camera.html">kick::Camera</a>)</td><td><a class="el" href="classkick_1_1_camera.html">kick::Camera</a></td><td><code> [virtual]</code></td></tr>
@@ -96,7 +100,9 @@ This is the complete list of members for <a class="el" href="classkick_1_1_camer
   <tr bgcolor="#f0f0f0"><td><b>setClearDepth</b>(bool clear) (defined in <a class="el" href="classkick_1_1_camera.html">kick::Camera</a>)</td><td><a class="el" href="classkick_1_1_camera.html">kick::Camera</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>setClearStencil</b>(bool clear) (defined in <a class="el" href="classkick_1_1_camera.html">kick::Camera</a>)</td><td><a class="el" href="classkick_1_1_camera.html">kick::Camera</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>setCullingMask</b>(int cullingMask) (defined in <a class="el" href="classkick_1_1_camera.html">kick::Camera</a>)</td><td><a class="el" href="classkick_1_1_camera.html">kick::Camera</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>setEnabled</b>(bool enabled) (defined in <a class="el" href="classkick_1_1_component.html">kick::Component</a>)</td><td><a class="el" href="classkick_1_1_component.html">kick::Component</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>setProjectionMatrix</b>(glm::mat4 projectionMatrix) (defined in <a class="el" href="classkick_1_1_camera.html">kick::Camera</a>)</td><td><a class="el" href="classkick_1_1_camera.html">kick::Camera</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>setReplacementMaterial</b>(std::shared_ptr&lt; Material &gt; const &amp;replacementMaterial) (defined in <a class="el" href="classkick_1_1_camera.html">kick::Camera</a>)</td><td><a class="el" href="classkick_1_1_camera.html">kick::Camera</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>setShadow</b>(bool renderShadow) (defined in <a class="el" href="classkick_1_1_camera.html">kick::Camera</a>)</td><td><a class="el" href="classkick_1_1_camera.html">kick::Camera</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>setTarget</b>(TextureRenderTarget *target) (defined in <a class="el" href="classkick_1_1_camera.html">kick::Camera</a>)</td><td><a class="el" href="classkick_1_1_camera.html">kick::Camera</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>setupCamera</b>(EngineUniforms *engineUniforms) (defined in <a class="el" href="classkick_1_1_camera.html">kick::Camera</a>)</td><td><a class="el" href="classkick_1_1_camera.html">kick::Camera</a></td><td></td></tr>
@@ -108,7 +114,7 @@ This is the complete list of members for <a class="el" href="classkick_1_1_camer
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -117,7 +123,7 @@ This is the complete list of members for <a class="el" href="classkick_1_1_camer
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

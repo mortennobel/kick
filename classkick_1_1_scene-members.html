@@ -76,17 +76,18 @@ This is the complete list of members for <a class="el" href="classkick_1_1_scene
   <tr bgcolor="#f0f0f0"><td><b>createDirectionalLight</b>() (defined in <a class="el" href="classkick_1_1_scene.html">kick::Scene</a>)</td><td><a class="el" href="classkick_1_1_scene.html">kick::Scene</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>createGameObject</b>(const std::string &amp;name=&quot;gameobject&quot;) (defined in <a class="el" href="classkick_1_1_scene.html">kick::Scene</a>)</td><td><a class="el" href="classkick_1_1_scene.html">kick::Scene</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>createOrthographicCamera</b>() (defined in <a class="el" href="classkick_1_1_scene.html">kick::Scene</a>)</td><td><a class="el" href="classkick_1_1_scene.html">kick::Scene</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>createPanel</b>(bool includeUICamera=true) (defined in <a class="el" href="classkick_1_1_scene.html">kick::Scene</a>)</td><td><a class="el" href="classkick_1_1_scene.html">kick::Scene</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>createPerspectiveCamera</b>() (defined in <a class="el" href="classkick_1_1_scene.html">kick::Scene</a>)</td><td><a class="el" href="classkick_1_1_scene.html">kick::Scene</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>createPlane</b>() (defined in <a class="el" href="classkick_1_1_scene.html">kick::Scene</a>)</td><td><a class="el" href="classkick_1_1_scene.html">kick::Scene</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>createPointLight</b>() (defined in <a class="el" href="classkick_1_1_scene.html">kick::Scene</a>)</td><td><a class="el" href="classkick_1_1_scene.html">kick::Scene</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>createSphere</b>() (defined in <a class="el" href="classkick_1_1_scene.html">kick::Scene</a>)</td><td><a class="el" href="classkick_1_1_scene.html">kick::Scene</a></td><td></td></tr>
-  <tr bgcolor="#f0f0f0"><td><b>createSprite</b>(TextureAtlas *textureAtlas, std::string spriteName, glm::vec2 pos=glm::vec2{0}) (defined in <a class="el" href="classkick_1_1_scene.html">kick::Scene</a>)</td><td><a class="el" href="classkick_1_1_scene.html">kick::Scene</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>destroyGameObject</b>(GameObject *gameObject) (defined in <a class="el" href="classkick_1_1_scene.html">kick::Scene</a>)</td><td><a class="el" href="classkick_1_1_scene.html">kick::Scene</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>end</b>() const  (defined in <a class="el" href="classkick_1_1_scene.html">kick::Scene</a>)</td><td><a class="el" href="classkick_1_1_scene.html">kick::Scene</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>Engine</b> (defined in <a class="el" href="classkick_1_1_scene.html">kick::Scene</a>)</td><td><a class="el" href="classkick_1_1_scene.html">kick::Scene</a></td><td><code> [friend]</code></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>findComponent</b>() (defined in <a class="el" href="classkick_1_1_scene.html">kick::Scene</a>)</td><td><a class="el" href="classkick_1_1_scene.html">kick::Scene</a></td><td><code> [inline]</code></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>findComponents</b>() (defined in <a class="el" href="classkick_1_1_scene.html">kick::Scene</a>)</td><td><a class="el" href="classkick_1_1_scene.html">kick::Scene</a></td><td><code> [inline]</code></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>GameObject</b> (defined in <a class="el" href="classkick_1_1_scene.html">kick::Scene</a>)</td><td><a class="el" href="classkick_1_1_scene.html">kick::Scene</a></td><td><code> [friend]</code></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>getGameObjectByUID</b>(int32_t uid) (defined in <a class="el" href="classkick_1_1_scene.html">kick::Scene</a>)</td><td><a class="el" href="classkick_1_1_scene.html">kick::Scene</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>getName</b>() const  (defined in <a class="el" href="classkick_1_1_scene.html">kick::Scene</a>)</td><td><a class="el" href="classkick_1_1_scene.html">kick::Scene</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>operator=</b>(Scene &amp;&amp;other) (defined in <a class="el" href="classkick_1_1_scene.html">kick::Scene</a>)</td><td><a class="el" href="classkick_1_1_scene.html">kick::Scene</a></td><td></td></tr>
   <tr bgcolor="#f0f0f0"><td><b>render</b>(EngineUniforms *engineUniforms) (defined in <a class="el" href="classkick_1_1_scene.html">kick::Scene</a>)</td><td><a class="el" href="classkick_1_1_scene.html">kick::Scene</a></td><td></td></tr>
@@ -100,7 +101,7 @@ This is the complete list of members for <a class="el" href="classkick_1_1_scene
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -109,7 +110,7 @@ This is the complete list of members for <a class="el" href="classkick_1_1_scene
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:44 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

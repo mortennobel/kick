@@ -78,48 +78,50 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00018"></a>00018 <span class="preprocessor">#include &quot;kick/core/engine.h&quot;</span>
 <a name="l00019"></a>00019 <span class="preprocessor">#include &quot;kick/core/mouse_input.h&quot;</span>
 <a name="l00020"></a>00020 <span class="preprocessor">#include &quot;kick/core/key_input.h&quot;</span>
-<a name="l00021"></a>00021 <span class="preprocessor">#include &quot;kick/core/default_key_handler.h&quot;</span>
-<a name="l00022"></a>00022 
-<a name="l00023"></a>00023 <span class="keyword">namespace </span>kick {
-<a name="l00024"></a>00024     
-<a name="l00025"></a><a class="code" href="structkick_1_1_engine_config.html">00025</a>     <span class="keyword">struct </span><a class="code" href="structkick_1_1_engine_config.html">EngineConfig</a> {
-<a name="l00026"></a>00026         <span class="keywordtype">bool</span> shadows = <span class="keyword">false</span>;
-<a name="l00027"></a>00027         <span class="keywordtype">int</span> maxNumerOfLights = 3;
-<a name="l00028"></a>00028     };
-<a name="l00029"></a>00029     
-<a name="l00030"></a><a class="code" href="classkick_1_1_engine.html">00030</a>     <span class="keyword">class </span><a class="code" href="classkick_1_1_engine.html">Engine</a> {
-<a name="l00031"></a>00031         <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classkick_1_1_project.html">Project</a>;
-<a name="l00032"></a>00032     <span class="keyword">public</span>:
-<a name="l00033"></a>00033         <a class="code" href="classkick_1_1_engine.html">Engine</a>(<span class="keywordtype">int</span> &amp;argc, <span class="keywordtype">char</span> **argv, <span class="keyword">const</span> <a class="code" href="structkick_1_1_window_config.html">WindowConfig</a>&amp; config = WindowConfig::plain);
-<a name="l00034"></a>00034         <a class="code" href="classkick_1_1_scene.html">Scene</a> *getActiveScene() { <span class="keywordflow">return</span> activeScene; }
-<a name="l00035"></a>00035         <span class="keywordtype">void</span> setActiveScene(<a class="code" href="classkick_1_1_scene.html">Scene</a> *scene) { activeScene = scene; }
-<a name="l00036"></a>00036         <a class="code" href="classkick_1_1_scene.html">Scene</a> * createScene(<span class="keyword">const</span> <span class="keywordtype">char</span>* name);
-<a name="l00037"></a>00037         std::vector&lt;Scene&gt;::const_iterator begin() <span class="keyword">const</span>;
-<a name="l00038"></a>00038         std::vector&lt;Scene&gt;::const_iterator end() <span class="keyword">const</span>;
-<a name="l00039"></a>00039         std::vector&lt;Scene&gt;::iterator begin();
-<a name="l00040"></a>00040         std::vector&lt;Scene&gt;::iterator end();
-<a name="l00041"></a>00041         <span class="keyword">static</span> <a class="code" href="classkick_1_1_engine.html">Engine</a>* instance;
-<a name="l00042"></a>00042         <a class="code" href="structkick_1_1_engine_config.html">EngineConfig</a> config;
-<a name="l00043"></a>00043         <a class="code" href="classkick_1_1_context.html">Context</a>* getContext();
-<a name="l00044"></a>00044         <span class="keyword">const</span> <a class="code" href="classkick_1_1_mouse_input.html">MouseInput</a>&amp; getMouseInput();
-<a name="l00045"></a>00045         <span class="keyword">const</span> <a class="code" href="classkick_1_1_key_input.html">KeyInput</a>&amp; getKeyInput();
-<a name="l00046"></a>00046         <a class="code" href="classkick_1_1_default_key_handler.html">DefaultKeyHandler</a> &amp; getDefaultKeyHandler();
-<a name="l00047"></a>00047         <span class="keywordtype">void</span> startMainLoop();
-<a name="l00048"></a>00048     <span class="keyword">private</span>:
-<a name="l00049"></a>00049         <span class="keywordtype">float</span> tickStartTime;
-<a name="l00050"></a>00050         <span class="keywordtype">void</span> startFrame();
-<a name="l00051"></a>00051         <span class="keywordtype">void</span> update();
-<a name="l00052"></a>00052         <span class="keywordtype">void</span> render();
-<a name="l00053"></a>00053         <a class="code" href="classkick_1_1_project.html">Project</a> project;
-<a name="l00054"></a>00054         std::vector&lt;Scene&gt; scenes;
-<a name="l00055"></a>00055         <a class="code" href="structkick_1_1_engine_uniforms.html">EngineUniforms</a> engineUniforms;
-<a name="l00056"></a>00056         <a class="code" href="classkick_1_1_scene.html">Scene</a> *activeScene = <span class="keyword">nullptr</span>;
-<a name="l00057"></a>00057         <a class="code" href="classkick_1_1_context.html">Context</a>* context = <span class="keyword">nullptr</span>;
-<a name="l00058"></a>00058         <a class="code" href="classkick_1_1_mouse_input.html">MouseInput</a> mouseInput;
-<a name="l00059"></a>00059         <a class="code" href="classkick_1_1_key_input.html">KeyInput</a> keyInput;
-<a name="l00060"></a>00060         <a class="code" href="classkick_1_1_default_key_handler.html">DefaultKeyHandler</a> defaultKeyHandler;
-<a name="l00061"></a>00061     };
-<a name="l00062"></a>00062 };
+<a name="l00021"></a>00021 <span class="preprocessor">#include &quot;kick/core/touch_input.h&quot;</span>
+<a name="l00022"></a>00022 <span class="preprocessor">#include &quot;kick/core/default_key_handler.h&quot;</span>
+<a name="l00023"></a>00023 
+<a name="l00024"></a>00024 <span class="keyword">namespace </span>kick {
+<a name="l00025"></a>00025     
+<a name="l00026"></a><a class="code" href="structkick_1_1_engine_config.html">00026</a>     <span class="keyword">struct </span><a class="code" href="structkick_1_1_engine_config.html">EngineConfig</a> {
+<a name="l00027"></a>00027         <span class="keywordtype">bool</span> shadows = <span class="keyword">false</span>;
+<a name="l00028"></a>00028         <span class="keywordtype">int</span> maxNumerOfLights = 3;
+<a name="l00029"></a>00029     };
+<a name="l00030"></a>00030     
+<a name="l00031"></a><a class="code" href="classkick_1_1_engine.html">00031</a>     <span class="keyword">class </span><a class="code" href="classkick_1_1_engine.html">Engine</a> {
+<a name="l00032"></a>00032         <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classkick_1_1_project.html">Project</a>;
+<a name="l00033"></a>00033     <span class="keyword">public</span>:
+<a name="l00034"></a>00034         <span class="keyword">static</span> <a class="code" href="classkick_1_1_engine.html">Engine</a>* init(<span class="keywordtype">int</span> &amp;argc, <span class="keywordtype">char</span> **argv, <span class="keyword">const</span> <a class="code" href="structkick_1_1_window_config.html">WindowConfig</a>&amp; config = WindowConfig::plain);
+<a name="l00035"></a>00035         <a class="code" href="classkick_1_1_scene.html">Scene</a> *getActiveScene() { <span class="keywordflow">return</span> activeScene; }
+<a name="l00036"></a>00036         <span class="keywordtype">void</span> setActiveScene(<a class="code" href="classkick_1_1_scene.html">Scene</a> *scene) { activeScene = scene; }
+<a name="l00037"></a>00037         <a class="code" href="classkick_1_1_scene.html">Scene</a> * createScene(<span class="keyword">const</span> std::string &amp;name);
+<a name="l00038"></a>00038         std::vector&lt;Scene&gt;::const_iterator begin() <span class="keyword">const</span>;
+<a name="l00039"></a>00039         std::vector&lt;Scene&gt;::const_iterator end() <span class="keyword">const</span>;
+<a name="l00040"></a>00040         <span class="keyword">static</span> <a class="code" href="classkick_1_1_engine.html">Engine</a>* instance;
+<a name="l00041"></a>00041         <a class="code" href="structkick_1_1_engine_config.html">EngineConfig</a> config;
+<a name="l00042"></a>00042         <a class="code" href="classkick_1_1_context.html">Context</a>* getContext();
+<a name="l00043"></a>00043         <span class="keyword">const</span> <a class="code" href="classkick_1_1_mouse_input.html">MouseInput</a>&amp; getMouseInput();
+<a name="l00044"></a>00044         <span class="keyword">const</span> <a class="code" href="classkick_1_1_key_input.html">KeyInput</a>&amp; getKeyInput();
+<a name="l00045"></a>00045         <a class="code" href="classkick_1_1_default_key_handler.html">DefaultKeyHandler</a> &amp; getDefaultKeyHandler();
+<a name="l00046"></a>00046         <span class="keywordtype">void</span> startMainLoop();
+<a name="l00047"></a>00047         <span class="keywordtype">void</span> startFrame();
+<a name="l00048"></a>00048         <span class="keywordtype">void</span> update();
+<a name="l00049"></a>00049         <span class="keywordtype">void</span> render();
+<a name="l00050"></a>00050     <span class="keyword">private</span>:
+<a name="l00051"></a>00051         <a class="code" href="classkick_1_1_engine.html">Engine</a>(<span class="keywordtype">int</span> &amp;argc, <span class="keywordtype">char</span> **argv, <span class="keyword">const</span> <a class="code" href="structkick_1_1_window_config.html">WindowConfig</a>&amp; config = WindowConfig::plain);
+<a name="l00052"></a>00052         <span class="keywordtype">float</span> tickStartTime;
+<a name="l00053"></a>00053 
+<a name="l00054"></a>00054         <a class="code" href="classkick_1_1_project.html">Project</a> project;
+<a name="l00055"></a>00055         std::vector&lt;Scene&gt; scenes;
+<a name="l00056"></a>00056         <a class="code" href="structkick_1_1_engine_uniforms.html">EngineUniforms</a> engineUniforms;
+<a name="l00057"></a>00057         <a class="code" href="classkick_1_1_scene.html">Scene</a> *activeScene = <span class="keyword">nullptr</span>;
+<a name="l00058"></a>00058         <a class="code" href="classkick_1_1_context.html">Context</a>* context = <span class="keyword">nullptr</span>;
+<a name="l00059"></a>00059         <a class="code" href="classkick_1_1_mouse_input.html">MouseInput</a> mouseInput;
+<a name="l00060"></a>00060         <a class="code" href="classkick_1_1_key_input.html">KeyInput</a> keyInput;
+<a name="l00061"></a>00061         <a class="code" href="classkick_1_1_touch_input.html">TouchInput</a> touchInput;
+<a name="l00062"></a>00062         <a class="code" href="classkick_1_1_default_key_handler.html">DefaultKeyHandler</a> defaultKeyHandler;
+<a name="l00063"></a>00063     };
+<a name="l00064"></a>00064 };
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -127,7 +129,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -136,7 +138,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sat Jul 19 2014 17:02:43 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:39 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
