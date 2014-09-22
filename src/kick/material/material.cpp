@@ -106,7 +106,6 @@ namespace kick {
     }
     
     int Material::bind(){
-        shader->bind();// should not be needed
         int currentTexture = 0;
         for (auto & uniform : currentUniformData) {
             auto & materialData = uniform.second;

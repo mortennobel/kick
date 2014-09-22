@@ -31,7 +31,7 @@ namespace kick {
 
         virtual void deactivated() override;
 
-        virtual void render(EngineUniforms *engineUniforms, Shader* replacementShader = nullptr) override;
+        virtual void render(EngineUniforms *engineUniforms, Material* replacementMaterial = nullptr) override;
 
 
         virtual void update() override;
@@ -50,7 +50,7 @@ namespace kick {
 
     private:
         void updateVertexBuffer(std::vector<Sprite *> &sprites);
-        void renderSprites(std::vector<Sprite*> &sprites, kick::EngineUniforms *engineUniforms, Shader* replacementShader);
+        void renderSprites(std::vector<Sprite*> &sprites, kick::EngineUniforms *engineUniforms, Material* replacementMaterial);
         friend class Component2D;
         void updateRenderOrder(Component2D* comp);
         void registerComponent2D(Component2D* comp);

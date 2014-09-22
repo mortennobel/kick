@@ -37,10 +37,11 @@ namespace kick {
         transform = gameObject->getTransform();
     }
 
-    void LineRenderer::render(EngineUniforms *engineUniforms, Shader* replacementShader) {
-        auto shader = replacementShader!= nullptr?replacementShader : material->getShader().get();
+    void LineRenderer::render(EngineUniforms *engineUniforms, Material* replacementMaterial) {
+        auto mat = replacementMaterial?replacementMaterial : material;
+        auto shader = mat->getShader().get();
         mesh->bind(shader);
-        shader->bind_uniforms(material, engineUniforms, transform);
+        shader->bind_uniforms(mat, engineUniforms, transform);
         glLineWidth(width);
         mesh->render(0);
     }

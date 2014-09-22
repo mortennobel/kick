@@ -280,8 +280,13 @@ break;
                                &uni.type,
                                buffer.data());
             uni.name = buffer.data();
-            uni.index = glGetUniformLocation(programid, buffer.data());
-            res.push_back(uni);
+            int index = glGetUniformLocation(programid, buffer.data());
+            if (index>=0){
+                uni.index = index;
+                res.push_back(uni);
+            } else {
+                cout << "cannot find uniform index "<< buffer.data()<<endl;
+            }
         }
 
         return move(res);

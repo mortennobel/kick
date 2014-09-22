@@ -24,7 +24,7 @@ namespace kick {
         transform = gameObject->getTransform();
     }
     
-    void MeshRenderer::render(EngineUniforms *engineUniforms, Shader* replacementShader){
+    void MeshRenderer::render(EngineUniforms *engineUniforms, Material* replacementMaterial){
         if (!isEnabled()){
             return;
         }
@@ -32,8 +32,8 @@ namespace kick {
             logWarning("Cannot render mesh is null");
         }
         for (unsigned int i=0;i<materials.size();i++){
-            auto material = materials[i];
-            auto shader = (replacementShader != nullptr) ? replacementShader : material->getShader().get();
+            auto material = replacementMaterial ? replacementMaterial : materials[i];
+            auto shader = material->getShader().get();
             mesh->bind(shader);
             shader->bind_uniforms(material, engineUniforms, transform);
             mesh->render(i);

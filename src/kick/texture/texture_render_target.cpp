@@ -21,6 +21,7 @@ namespace kick {
     }
 
     void TextureRenderTarget::bind() {
+        assert(renderBuffers.size() > 0); // probably missing TextureRenderTarget.apply
         glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
     }
 
@@ -33,7 +34,7 @@ namespace kick {
             glDeleteRenderbuffers(renderBuffers.size(), renderBuffers.data());
             renderBuffers.clear();
         }
-        bind();
+        glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
         // bind color attachment
         if (colorTextures.size() > 0){
@@ -55,12 +56,12 @@ namespace kick {
         glGenRenderbuffers(1, &renderBuffer);
         renderBuffers.push_back(renderBuffer);
         glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer);
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, size.x, size.y);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT32, size.x, size.y);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, renderBuffer);
 
         checkStatus();
 
-        unbind();
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
     void TextureRenderTarget::checkStatus() {
@@ -103,6 +104,9 @@ namespace kick {
                     break;
             }
         }
+
+        cout <<"glCheckFramebufferStatus "<<frameBufferStatus<<endl;
+
     }
 
     void TextureRenderTarget::setSize(glm::ivec2 size) {

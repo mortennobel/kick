@@ -35,7 +35,7 @@ namespace kick{
 
     }
 
-    void Panel::render(kick::EngineUniforms *engineUniforms, Shader* replacementShader) {
+    void Panel::render(kick::EngineUniforms *engineUniforms, Material* replacementMaterial) {
         sort(components.begin(), components.end(), [](Component2D *c1, Component2D *c2){
             int order = c1->getOrder() - c2->getOrder();
             return order < 0 || (order==0 &&
@@ -47,12 +47,12 @@ namespace kick{
         for (auto& comp : components){
             auto text = dynamic_cast<Text*>(comp);
             if (text){
-                renderSprites(sprites, engineUniforms, replacementShader); // render previous sprites
+                renderSprites(sprites, engineUniforms, replacementMaterial); // render previous sprites
                 text->render(engineUniforms);
             } else {
                 auto sprite = dynamic_cast<Sprite*>(comp);
                 if (textureAtlas != sprite->getTextureAtlas().get()){
-                    renderSprites(sprites, engineUniforms, replacementShader);
+                    renderSprites(sprites, engineUniforms, replacementMaterial);
                     textureAtlas = sprite->getTextureAtlas().get();
                 }
                 if (sprite){
@@ -60,7 +60,7 @@ namespace kick{
                 }
             }
         }
-        renderSprites(sprites, engineUniforms, replacementShader);
+        renderSprites(sprites, engineUniforms, replacementMaterial);
     }
 
     void Panel::updateVertexBuffer(std::vector<Sprite *> &sprites) {
@@ -158,18 +158,21 @@ namespace kick{
         mesh->setMeshData(meshData);
     }
 
-    void Panel::renderSprites(std::vector<Sprite *> &sprites, kick::EngineUniforms *engineUniforms, Shader* replacementShader) {
+    void Panel::renderSprites(std::vector<Sprite *> &sprites, kick::EngineUniforms *engineUniforms, Material* replacementMaterial) {
         if (sprites.size()==0){
             return;
         }
         updateVertexBuffer(sprites);
 
-        material->setShader(sprites[0]->getTextureAtlas()->getShader());
-        auto shader = material->getShader();
+        auto mat = replacementMaterial ? replacementMaterial : material;
+        if (!replacementMaterial ){
+            material->setShader(sprites[0]->getTextureAtlas()->getShader());
+            material->setUniform("mainTexture", sprites[0]->getTextureAtlas()->getTexture());
+        }
+        auto shader = mat->getShader();
         assert(shader);
-        mesh->bind((replacementShader != nullptr) ? replacementShader : shader.get());
+        mesh->bind(shader.get());
 
-        material->setUniform("mainTexture", sprites[0]->getTextureAtlas()->getTexture());
         shader->bind_uniforms(material, engineUniforms, getTransform());
 
         mesh->render(0);

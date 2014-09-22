@@ -60,6 +60,9 @@ namespace kick {
         void setTarget(TextureRenderTarget *target);
 
         void pick(glm::ivec2 point, std::function<void(GameObject*,int)> onPicked, glm::ivec2 size = glm::ivec2{1,1});
+
+        std::shared_ptr<Material> const & getReplacementMaterial() const;
+        void setReplacementMaterial(std::shared_ptr<Material> const &replacementMaterial);
     protected:
         glm::mat4 projectionMatrix;
         glm::vec2 normalizedViewportOffset = glm::vec2(0,0);
@@ -73,9 +76,9 @@ namespace kick {
         ComponentRenderable *includeComponent(Component* comp);
         TextureRenderTarget* pickingRenderTarget = nullptr;
         std::shared_ptr<Texture2D> pickingTexture;
-        std::shared_ptr<Shader> pickingShader;
+        std::shared_ptr<Material> pickingMaterial;
         std::shared_ptr<Shader> shadowMapShader;
-
+        std::shared_ptr<Material> replacementMaterial;
         Material* shadowMapMaterial;
         EventListener<std::pair<Component*, ComponentUpdateStatus>> componentListener;
         void setupViewport(glm::vec2 &offset, glm::vec2 &dim);
