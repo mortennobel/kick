@@ -379,8 +379,12 @@ namespace kick {
 // SDL dependency
 typedef int32_t Sint32;
 
+#ifndef SDLK_SCANCODE_MASK
 #define SDLK_SCANCODE_MASK (1<<30)
+#endif
+#ifndef SDL_SCANCODE_TO_KEYCODE
 #define SDL_SCANCODE_TO_KEYCODE(X)  (X | SDLK_SCANCODE_MASK)
+#endif
 
 enum
 {
