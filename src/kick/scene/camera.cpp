@@ -177,6 +177,12 @@ namespace kick {
             }
             ImageFormat imageFormat{};
             imageFormat.mipmap = Mipmap::None;
+            TextureSampler sampler{};
+            sampler.filterMag = TextureFilter::Nearest;
+            sampler.filterMin = TextureFilter::Nearest;
+            sampler.wrapS = TextureWrap::ClampToEdge;
+            sampler.wrapT = TextureWrap::ClampToEdge;
+            pickingTexture->setTextureSampler(sampler);
             pickingTexture->setData(viewportSize.x, viewportSize.y, nullptr, imageFormat);
 
             pickingRenderTarget->setColorTexture(0, pickingTexture);
