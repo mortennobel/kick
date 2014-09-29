@@ -108,6 +108,7 @@ namespace kick {
     }
     
     void Camera::setupCamera(EngineUniforms *engineUniforms) {
+
         vec2 viewportDimension = (vec2)/*renderTarget? renderTarget.dimension : */ engineUniforms->viewportDimension.getValue();
         vec2 offset = viewportDimension * normalizedViewportOffset;
         vec2 dim = viewportDimension * normalizedViewportDim;
@@ -137,6 +138,7 @@ namespace kick {
             return;
         }
         auto sceneLights = engineUniforms->sceneLights;
+
         if (shadow && sceneLights->directionalLight && sceneLights->directionalLight->getShadowType() != ShadowType::None) {
             renderShadowMap(sceneLights->directionalLight);
         }
@@ -144,13 +146,15 @@ namespace kick {
         if (target){
             target->bind();
         }
+        bool customViewport = normalizedViewportOffset != vec2{0} || normalizedViewportDim != vec2{1};
+        if (customViewport){
+            glEnable(GL_SCISSOR_TEST);
+        }
         setupCamera(engineUniforms);
         engineUniforms->sceneLights->recomputeLight(engineUniforms->viewMatrix);
         sort(renderableComponents.begin(), renderableComponents.end(), [](ComponentRenderable* r1, ComponentRenderable* r2){
             return r1->getRenderOrder() < r2->getRenderOrder();
         });
-
-
 
         for (auto c : renderableComponents){
             if (c->getGameObject()->getLayer() & cullingMask) {
@@ -163,6 +167,9 @@ namespace kick {
 
         if (pickQueue.size() > 0){
             handleObjectPicking(engineUniforms);
+        }
+        if (customViewport){
+            glDisable(GL_SCISSOR_TEST);
         }
     }
 
@@ -326,5 +333,21 @@ namespace kick {
 
     void Camera::setReplacementMaterial(std::shared_ptr<Material> const &replacementMaterial) {
         Camera::replacementMaterial = replacementMaterial;
+    }
+
+    glm::vec2 const &Camera::getViewportOffset() const {
+        return normalizedViewportOffset;
+    }
+
+    void Camera::setViewportOffset(glm::vec2 const &normalizedViewportOffset) {
+        Camera::normalizedViewportOffset = normalizedViewportOffset;
+    }
+
+    glm::vec2 const &Camera::getViewportDim() const {
+        return normalizedViewportDim;
+    }
+
+    void Camera::setViewportDim(glm::vec2 const &normalizedViewportDim) {
+        Camera::normalizedViewportDim = normalizedViewportDim;
     }
 }

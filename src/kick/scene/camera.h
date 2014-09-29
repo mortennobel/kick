@@ -63,6 +63,11 @@ namespace kick {
 
         std::shared_ptr<Material> const & getReplacementMaterial() const;
         void setReplacementMaterial(std::shared_ptr<Material> const &replacementMaterial);
+
+        glm::vec2 const &getViewportOffset() const;
+        void setViewportOffset(glm::vec2 const &normalizedViewportOffset);
+        glm::vec2 const &getViewportDim() const;
+        void setViewportDim(glm::vec2 const &normalizedViewportDim);
     protected:
         glm::mat4 projectionMatrix;
         glm::vec2 normalizedViewportOffset = glm::vec2(0,0);
