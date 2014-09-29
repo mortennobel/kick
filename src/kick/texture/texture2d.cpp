@@ -8,6 +8,9 @@
 
 #include "texture2d.h"
 
+#include <SDL2/SDL_surface.h>
+using namespace std;
+
 namespace kick {
     Texture2D::Texture2D(TextureSampler textureSampler)
     {
@@ -62,5 +65,24 @@ namespace kick {
     
     ImageFormat Texture2D::getImageFormat() const {
         return imageFormat;
+    }
+
+    void Texture2D::saveBMPImage(string filename) {
+        vector<char> res(width*height*4);
+#if defined(KICK_CONTEXT_ES2)
+    logWarning("Texture2D::getPngImage() is unsupported on ES2");
+#elif defined(EMSCRIPTEN)
+        logWarning("Texture2D::getPngImage() is unsupported on EMSCRIPTEN");
+#else
+        glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, res.data());
+#endif
+
+#ifndef EMSCRIPTEN
+        SDL_Surface* sdlSurface = SDL_CreateRGBSurfaceFrom(res.data(), width, height,32, width*4, 0xff,0xff<<8,0xff<<16,0xff<<24);
+
+        SDL_SaveBMP(sdlSurface, filename.c_str());
+        sdlSurface->pixels = nullptr;
+        SDL_FreeSurface(sdlSurface);
+#endif
     }
 }

@@ -8,10 +8,14 @@
 
 #pragma once
 
+#include <vector>
+
 #include "kick/core/project_asset.h"
 #include "kick/core/kickgl.h"
 #include "kick/texture/texture_sampler.h"
 #include "kick/texture/image_format.h"
+
+
 namespace kick {
     class Project;
     
@@ -31,6 +35,8 @@ namespace kick {
         TextureSampler getTextureSampler() const;
         ImageFormat getImageFormat() const;
         friend class TextureRenderTarget;
+
+        void saveBMPImage(std::string filename);
     private:
         GLuint textureid;
         int width = -1;
