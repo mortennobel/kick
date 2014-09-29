@@ -299,12 +299,20 @@ namespace kick {
         bool down(const KeyMapping& mapping) const;
         // if all keys in keymapping is pressed and at least one key is pressed down this frame)
         bool pressed(const KeyMapping& mapping)  const;
+        bool anyDown() const;
+        bool anyUp() const;
+        bool anyPressed() const;
 
         void pressBegin(Key k);
         void pressEnd(Key k);
+
+        bool anypressed() const;
+
     private:
         std::set<Key> buttonDown;
         std::set<Key> buttonPressed;
         std::set<Key> buttonUp;
+
+
     };
 }

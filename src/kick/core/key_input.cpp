@@ -20,12 +20,24 @@ namespace kick {
         return buttonDown.find(button) != buttonDown.end();
     }
 
+    bool KeyInput::anyDown() const {
+        return !buttonDown.empty();
+    }
+
     bool KeyInput::pressed(Key button) const {
         return buttonPressed.find(button) != buttonPressed.end();
     }
 
+    bool KeyInput::anyPressed() const {
+        return !buttonPressed.empty();
+    }
+
     bool KeyInput::up(Key button) const {
         return buttonUp.find(button) != buttonUp.end();
+    }
+
+    bool KeyInput::anyUp() const {
+        return !buttonUp.empty();
     }
 
     void KeyInput::pressBegin(Key k) {
