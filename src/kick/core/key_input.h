@@ -305,9 +305,6 @@ namespace kick {
 
         void pressBegin(Key k);
         void pressEnd(Key k);
-
-        bool anypressed() const;
-
     private:
         std::set<Key> buttonDown;
         std::set<Key> buttonPressed;
