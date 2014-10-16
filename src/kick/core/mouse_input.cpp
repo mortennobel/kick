@@ -23,6 +23,7 @@ namespace kick {
     }
     
     void MouseInput::reset(){
+        positionDelta = ivec2(0);
         mouseWheelDelta = ivec2(0);
         for (int i=0;i<mouseButtons;i++){
             buttonDown[i] = false;
