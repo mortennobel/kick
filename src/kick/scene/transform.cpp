@@ -230,4 +230,16 @@ namespace kick {
     Transform *Transform::getParent() {
         return parent;
     }
+
+    vec3 Transform::forward() {
+        return mat3_cast(getRotation()) * vec3(0,0,-1);
+    }
+
+    vec3 Transform::up() {
+        return mat3_cast(getRotation()) * vec3(0,1,0);
+    }
+
+    vec3 Transform::right() {
+        return mat3_cast(getRotation()) * vec3(1,0,0);
+    }
 }

@@ -51,6 +51,10 @@ namespace kick {
         TransformIter end();
         ConstTransformIter begin() const;
         ConstTransformIter end() const;
+
+        glm::vec3 forward();
+        glm::vec3 up();
+        glm::vec3 right();
     private:
         void markGlobalDirty();
         void markLocalDirty();
