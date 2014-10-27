@@ -43,6 +43,9 @@ namespace kick {
         Time::deltaTime = now - tickStartTime;
         tickStartTime = now;
         Time::frame++;
+
+        eventQueue.run();
+
         defaultKeyHandler.handleKeyPress(this, keyInput);
         activeScene->update();
     }

@@ -20,6 +20,7 @@
 #include "kick/core/key_input.h"
 #include "kick/core/touch_input.h"
 #include "kick/core/default_key_handler.h"
+#include "kick/core/event_queue.h"
 
 namespace kick {
     
@@ -27,7 +28,7 @@ namespace kick {
         bool shadows = false;
         int maxNumerOfLights = 3;
     };
-    
+
     class Engine {
         friend class Project;
     public:
@@ -47,6 +48,8 @@ namespace kick {
         void startFrame();
         void update();
         void render();
+
+        EventQueue eventQueue;
     private:
         Engine(int &argc, char **argv, const WindowConfig& config = WindowConfig::plain);
         float tickStartTime;

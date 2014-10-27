@@ -82,7 +82,7 @@ namespace kick {
         int height = config.height;
         int depthSize = config.depthBufferSize;
         
-        contextSurfaceDim = glm::ivec2(width, height);
+
         if (depthSize>0){
             /* Turn on double buffering with a 24bit Z buffer.
              * You may need to change this to 16 or 32 for your system */
@@ -113,10 +113,19 @@ namespace kick {
         /* Create our window centered at 512x512 resolution */
         window = SDL_CreateWindow(windowName, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                   width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+
         if (!window)
             return false;
-        
+
         glContext = SDL_GL_CreateContext(window);
+
+        if (!glContext)
+            return false;
+
+        int w,h;
+        SDL_GL_GetDrawableSize(window, &w, &h);
+        contextSurfaceDim = glm::ivec2(w, h);
+
 #endif
         return true;
     }
@@ -333,11 +342,27 @@ namespace kick {
 
     void SDL2Context::setFullscreen(bool fullscreen) {
 #ifndef EMSCRIPTEN
-        int error = SDL_SetWindowFullscreen(window, fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
+        /*int error = SDL_SetWindowFullscreen(window, fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
         if (error){
             cout << "Error "<<SDL_GetError()<<endl;
         }
         this->fullscreen = fullscreen;
+          */
+        if (this->fullscreen != fullscreen){
+            Uint32 flags = (SDL_GetWindowFlags(window) ^ SDL_WINDOW_FULLSCREEN_DESKTOP);
+            if (SDL_SetWindowFullscreen(window, flags) < 0) // NOTE: this takes FLAGS as the second param, NOT true/false!
+            {
+                std::cout << "Toggling fullscreen mode failed: " << SDL_GetError() << std::endl;
+                return;
+            }
+
+            Engine::instance->eventQueue.scheduleEvent([&](){
+                SDL_GL_GetDrawableSize(window, &contextSurfaceDim.x, &contextSurfaceDim.y);
+                contextSurfaceSize.notifyListeners(contextSurfaceDim);
+            });
+
+            this->fullscreen = fullscreen;
+        }
 #endif
 
     }

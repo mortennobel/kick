@@ -1,0 +1,37 @@
+//
+// Created by Morten Nobel-Jørgensen on 27/10/14.
+//
+
+
+#pragma once
+
+#include <functional>
+#include <vector>
+
+namespace kick {
+
+    struct EventQueueEntry {
+        std::function<void()> fn;
+        float timeStart;
+        float timeEnd;
+        int eventid;
+        EventQueueEntry(std::function<void()>&& fn,float timeStart,float timeEnd,int eventid);
+    };
+
+    class EventQueue {
+    public:
+        EventQueue(){}
+        int scheduleEvent(std::function<void()>&& fn, float timeStart = 0, float timeEnd = 0);
+        bool cancelEvent(int eventid);
+        void run();
+    private:
+        std::vector<EventQueueEntry> queue;
+        std::vector<EventQueueEntry> updatingQueue;
+        int queueCounter = 0;
+        bool updating = false;
+        EventQueue(const EventQueue&) = delete;
+        EventQueue(EventQueue&&) = delete;
+    };
+}
+
+
