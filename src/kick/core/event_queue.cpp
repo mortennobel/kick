@@ -10,7 +10,7 @@
 using namespace std;
 
 namespace kick{
-    int EventQueue::scheduleEvent(std::function<void()> &&fn, float timeStart, float timeEnd) {
+    int EventQueue::scheduleEvent(std::function<void(int)> &&fn, float timeStart, float timeEnd) {
         assert(timeEnd >= timeStart);
         float time = Time::getTime();
         int id = ++queueCounter;
@@ -23,11 +23,14 @@ namespace kick{
     }
 
     bool EventQueue::cancelEvent(int eventid) {
-        auto res = std::remove_if(queue.begin(), queue.end(), [&](EventQueueEntry& e){
+        auto found = std::find_if(queue.begin(), queue.end(), [&](EventQueueEntry& e){
             return e.eventid == eventid;
         });
-        queue.erase(res, queue.end());
-        return res != queue.begin();
+        if (found != queue.end()){
+            found->cancelled = true;
+            return true;
+        }
+        return false;
     }
 
     void EventQueue::run() {
@@ -35,12 +38,12 @@ namespace kick{
         float time = Time::getTime();
 
         for (auto e : queue){
-            if (e.timeStart < time){
-                e.fn();
+            if (e.timeStart < time && !e.cancelled){
+                e.fn(e.eventid);
             }
         }
         auto erase = std::remove_if(queue.begin(), queue.end(), [&](EventQueueEntry& e){
-            return e.timeEnd < time;
+            return e.timeEnd < time || e.cancelled;
         });
         queue.erase(erase, queue.end());
         updating = false;
@@ -51,7 +54,7 @@ namespace kick{
         updatingQueue.clear();
     }
 
-    EventQueueEntry::EventQueueEntry(std::function<void()>&& fn,float timeStart,float timeEnd,int eventid)
+    EventQueueEntry::EventQueueEntry(std::function<void(int)>&& fn,float timeStart,float timeEnd,int eventid)
     : fn(fn), timeStart(timeStart), timeEnd(timeEnd), eventid(eventid) {
     }
 }

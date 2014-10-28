@@ -11,17 +11,18 @@
 namespace kick {
 
     struct EventQueueEntry {
-        std::function<void()> fn;
+        std::function<void(int)> fn;
         float timeStart;
         float timeEnd;
         int eventid;
-        EventQueueEntry(std::function<void()>&& fn,float timeStart,float timeEnd,int eventid);
+        bool cancelled = false;
+        EventQueueEntry(std::function<void(int)>&& fn, float timeStart, float timeEnd, int eventid);
     };
 
     class EventQueue {
     public:
         EventQueue(){}
-        int scheduleEvent(std::function<void()>&& fn, float timeStart = 0, float timeEnd = 0);
+        int scheduleEvent(std::function<void(int)>&& fn, float timeStart = 0, float timeEnd = 0);
         bool cancelEvent(int eventid);
         void run();
     private:
