@@ -18,6 +18,7 @@
 #include "kick/mesh/mesh.h"
 #include "kick/mesh/mesh_data.h"
 #include "kick/mesh/mesh_factory.h"
+#include "kick/math/spherical.h"
 #include "kick/scene/camera.h"
 #include "kick/scene/camera_perspective.h"
 #include "kick/scene/camera_orthographic.h"

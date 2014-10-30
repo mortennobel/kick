@@ -35,66 +35,70 @@ namespace kick {
     }
 
     void Engine::startMainLoop(){
-        context->mainLoop();
+        instance->context->mainLoop();
     }
 
     void Engine::update(){
         float now = Time::getTime();
-        Time::deltaTime = now - tickStartTime;
-        tickStartTime = now;
+        Time::deltaTime = now - instance->tickStartTime;
+        instance->tickStartTime = now;
         Time::frame++;
 
-        eventQueue.run();
+        instance->eventQueue.run();
 
-        defaultKeyHandler.handleKeyPress(this, keyInput);
-        activeScene->update();
+        instance->defaultKeyHandler.handleKeyPress(instance, instance->keyInput);
+        instance->activeScene->update();
     }
     
     void Engine::render(){
-        activeScene->render(&engineUniforms);
-        context->swapBuffer();
+        instance->activeScene->render(&instance->engineUniforms);
+        instance->context->swapBuffer();
     }
     
     Scene * Engine::createScene(const std::string & name){
-        scenes.push_back(Scene{name});
-        Scene * scene = &(scenes.back());;
-        if (!activeScene){
-            activeScene = scene;
+        instance->scenes.push_back(Scene{name});
+        Scene * scene = &(instance->scenes.back());;
+        if (!instance->activeScene){
+            instance->activeScene = scene;
         }
         return scene;
     }
     
-    std::vector<Scene>::const_iterator Engine::begin() const {
-        return scenes.begin();
+    std::vector<Scene>::const_iterator Engine::begin()  {
+        return instance->scenes.begin();
     }
-    std::vector<Scene>::const_iterator Engine::end() const {
-        return scenes.end();
+    std::vector<Scene>::const_iterator Engine::end() {
+        return instance->scenes.end();
     }
     
     Context* Engine::getContext(){
-        return context;
+        return instance->context;
     }
 
     const MouseInput& Engine::getMouseInput(){
-        return mouseInput;
+        return instance->mouseInput;
     }
 
     void Engine::startFrame() {
-        keyInput.reset();
-        mouseInput.reset();
-        touchInput.reset();
+        instance->keyInput.reset();
+        instance->mouseInput.reset();
+        instance->touchInput.reset();
     }
 
     const KeyInput &Engine::getKeyInput() {
-        return keyInput;
+        return instance->keyInput;
     }
 
     DefaultKeyHandler &Engine::getDefaultKeyHandler() {
-        return defaultKeyHandler;
+        return instance->defaultKeyHandler;
     }
 
     Engine *Engine::init(int &argc, char **argv, WindowConfig const &config) {
         assert(instance == nullptr);
         return new Engine(argc, argv, config);
+    }
+
+    EventQueue &Engine::getEventQueue() {
+        return instance->eventQueue;
     }
 }

@@ -33,24 +33,27 @@ namespace kick {
         friend class Project;
     public:
         static Engine* init(int &argc, char **argv, const WindowConfig& config = WindowConfig::plain);
-        Scene *getActiveScene() { return activeScene; }
-        void setActiveScene(Scene *scene) { activeScene = scene; }
-        Scene * createScene(const std::string &name);
-        std::vector<Scene>::const_iterator begin() const;
-        std::vector<Scene>::const_iterator end() const;
+        static Scene *getActiveScene() { return instance->activeScene; }
+        static void setActiveScene(Scene *scene) { instance->activeScene = scene; }
+        static Scene * createScene(const std::string &name);
+        static std::vector<Scene>::const_iterator begin();
+        static std::vector<Scene>::const_iterator end();
         static Engine* instance;
-        EngineConfig config;
-        Context* getContext();
-        const MouseInput& getMouseInput();
-        const KeyInput& getKeyInput();
-        DefaultKeyHandler & getDefaultKeyHandler();
-        void startMainLoop();
-        void startFrame();
-        void update();
-        void render();
+        static EngineConfig& getConfig(){ return instance->config; }
+        static Context* getContext();
+        static const MouseInput& getMouseInput();
+        static const KeyInput& getKeyInput();
+        static DefaultKeyHandler & getDefaultKeyHandler();
+        static void startMainLoop();
+        static void startFrame();
+        static void update();
+        static void render();
 
-        EventQueue eventQueue;
+        static EventQueue & getEventQueue();
+
     private:
+        EngineConfig config;
+        EventQueue eventQueue;
         Engine(int &argc, char **argv, const WindowConfig& config = WindowConfig::plain);
         float tickStartTime;
 

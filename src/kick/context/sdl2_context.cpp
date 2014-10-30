@@ -356,7 +356,7 @@ namespace kick {
                 return;
             }
 
-            Engine::instance->eventQueue.scheduleEvent([&](int eventid){
+            Engine::instance->getEventQueue().scheduleEvent([&](int eventid){
                 SDL_GL_GetDrawableSize(window, &contextSurfaceDim.x, &contextSurfaceDim.y);
                 contextSurfaceSize.notifyListeners(contextSurfaceDim);
             });

@@ -345,8 +345,8 @@ break;
 
         source = version + "\n" +
                 precisionSpecifier+
-        "#define SHADOWS " + (Engine::instance->config.shadows?"true":"false") + "\n" +
-        "#define LIGHTS " + std::to_string((int)Engine::instance->config.maxNumerOfLights) + "\n" +
+        "#define SHADOWS " + (Engine::getConfig().shadows?"true":"false") + "\n" +
+        "#define LIGHTS " + std::to_string((int)Engine::getConfig().maxNumerOfLights) + "\n" +
         "#line " + std::to_string(2) + "\n" +
                 source;
 
