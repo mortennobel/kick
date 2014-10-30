@@ -38,7 +38,7 @@ namespace kick {
         static Scene * createScene(const std::string &name);
         static std::vector<Scene>::const_iterator begin();
         static std::vector<Scene>::const_iterator end();
-        static Engine* instance;
+
         static EngineConfig& getConfig(){ return instance->config; }
         static Context* getContext();
         static const MouseInput& getMouseInput();
@@ -52,6 +52,7 @@ namespace kick {
         static EventQueue & getEventQueue();
 
     private:
+        static Engine* instance;
         EngineConfig config;
         EventQueue eventQueue;
         Engine(int &argc, char **argv, const WindowConfig& config = WindowConfig::plain);

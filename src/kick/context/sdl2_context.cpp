@@ -135,14 +135,14 @@ namespace kick {
     }
     
     void SDL2Context::step(){
-        Engine::instance->update();
-        Engine::instance->render();
+        Engine::update();
+        Engine::render();
     }
 
     bool SDL2Context::tick(){
         bool quit = false;
         SDL_Event event;
-        Engine::instance->startFrame();
+        Engine::startFrame();
         while(SDL_PollEvent(&event))
         {
             switch (event.type) {
@@ -356,7 +356,7 @@ namespace kick {
                 return;
             }
 
-            Engine::instance->getEventQueue().scheduleEvent([&](int eventid){
+            Engine::getEventQueue().scheduleEvent([&](int eventid){
                 SDL_GL_GetDrawableSize(window, &contextSurfaceDim.x, &contextSurfaceDim.y);
                 contextSurfaceSize.notifyListeners(contextSurfaceDim);
             });

@@ -12,7 +12,7 @@ namespace kick {
 
     CameraPerspective::CameraPerspective(GameObject *gameObject)
             : Camera(gameObject),
-              viewportListener{Engine::instance->getContext()->contextSurfaceSize.createListener([&](ivec2 viewport) {
+              viewportListener{Engine::getContext()->contextSurfaceSize.createListener([&](ivec2 viewport) {
                   resetProjectionMatrix();
               })}
     {
@@ -60,7 +60,7 @@ namespace kick {
     }
 
     void CameraPerspective::resetProjectionMatrix() {
-        ivec2 viewportDimension = Engine::instance->getContext()->getContextSurfaceDim();
+        ivec2 viewportDimension = Engine::getContext()->getContextSurfaceDim();
         update(viewportDimension);
     }
 }
