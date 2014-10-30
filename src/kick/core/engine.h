@@ -32,7 +32,7 @@ namespace kick {
     class Engine {
         friend class Project;
     public:
-        static Engine* init(int &argc, char **argv, const WindowConfig& config = WindowConfig::plain);
+        static void init(int &argc, char **argv, const WindowConfig& config = WindowConfig::plain);
         static Scene *getActiveScene() { return instance->activeScene; }
         static void setActiveScene(Scene *scene) { instance->activeScene = scene; }
         static Scene * createScene(const std::string &name);

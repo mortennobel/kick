@@ -93,9 +93,9 @@ namespace kick {
         return instance->defaultKeyHandler;
     }
 
-    Engine *Engine::init(int &argc, char **argv, WindowConfig const &config) {
+    void Engine::init(int &argc, char **argv, WindowConfig const &config) {
         assert(instance == nullptr);
-        return new Engine(argc, argv, config);
+        new Engine(argc, argv, config);
     }
 
     EventQueue &Engine::getEventQueue() {

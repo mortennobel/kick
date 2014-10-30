@@ -28,7 +28,7 @@ namespace kick{
         meshData->setMeshUsage(MeshUsage::DynamicDraw);
         mesh->setMeshData(meshData);
         material = new Material();
-        mouseInput = &Engine::instance->getMouseInput();
+        mouseInput = &Engine::getMouseInput();
     }
 
     Panel::~Panel() {
@@ -277,7 +277,7 @@ namespace kick{
             return;
         }
         vec2 mousePosition = (vec2)mouseInput->getPosition();
-        vec2 screensize = (vec2)Engine::instance->getContext()->getContextSurfaceDim();
+        vec2 screensize = (vec2)Engine::getContext()->getContextSurfaceDim();
         vec2 mouseClipCoord = ((mousePosition / screensize)*2.0f-vec2{1.0})*vec2{1,-1}; // correct
 
         mat4 viewProjection = inverse(camera->getProjectionMatrix() * camera->getViewMatrix());
