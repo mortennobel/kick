@@ -305,6 +305,10 @@ namespace kick {
 
         void pressBegin(Key k);
         void pressEnd(Key k);
+
+        const std::set<Key> & getButtonDown() const;
+        const std::set<Key> & getButtonPressed() const;
+        const std::set<Key> & getButtonUp() const;
     private:
         std::set<Key> buttonDown;
         std::set<Key> buttonPressed;

@@ -102,4 +102,9 @@ namespace kick {
     }
 
 
+    const std::set<Key> &KeyInput::getButtonDown() const { return buttonDown;}
+
+    const std::set<Key> &KeyInput::getButtonPressed() const { return buttonPressed;}
+
+    const std::set<Key> &KeyInput::getButtonUp() const {return buttonUp;}
 }
