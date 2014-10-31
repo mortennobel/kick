@@ -18,5 +18,10 @@ namespace kick {
     // restores a int 32 from vec4
     int32_t vec4ToUint32(glm::u8vec4 vec);
 
+    float clamp01(float value);
+
+    float repeat(float t, float length);
+
+    float lerpAngle(float a, float b, float t);
 }
 

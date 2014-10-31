@@ -32,4 +32,29 @@ namespace kick {
         }
         return uint32;
     }
+
+    float clamp01(float value) {
+        if (value < 0.f)
+        {
+            return 0.f;
+        }
+        if (value > 1.f)
+        {
+            return 1.f;
+        }
+        return value;
+    }
+
+    float repeat(float t, float length) {
+        return t - floor (t / length) * length;
+    }
+
+    float lerpAngle(float a, float b, float t) {
+        float num = repeat (b - a, M_PI*2);
+        if (num > M_PI)
+        {
+            num -= M_PI*2;
+        }
+        return a + num * clamp01 (t);
+    }
 }
