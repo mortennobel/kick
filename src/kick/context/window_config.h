@@ -19,6 +19,8 @@ namespace kick {
         // 0 means no depth buffer
         int depthBufferSize = 24;
         // bool stencilbuffer = false;
+
+        int multisamples = 4;
         
         static const WindowConfig plain;
     };
