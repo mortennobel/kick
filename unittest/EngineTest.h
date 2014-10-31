@@ -10,7 +10,7 @@
 
 #include "EngineTest.h"
 #include "tinytest/tinytest.h"
-#include "kick/kick.h"
+#include "kick.h"
 
 #include "glm/gtx/string_cast.hpp"
 

@@ -14,6 +14,7 @@
 #include "kick/math/aabb.h"
 #include "kick/math/frustum.h"
 #include "kick/math/glm_ext.h"
+#include "kick/math/misc.h"
 #include "kick/math/ray.h"
 #include "kick/mesh/mesh.h"
 #include "kick/mesh/mesh_data.h"
