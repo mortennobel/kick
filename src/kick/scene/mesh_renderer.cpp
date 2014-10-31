@@ -15,15 +15,12 @@
 namespace kick {
     MeshRenderer::MeshRenderer(GameObject *gameObject)
     :ComponentRenderable{gameObject} {
+        transform = gameObject->getTransform();
     }
     
     MeshRenderer::~MeshRenderer(){
     }
-    
-    void MeshRenderer::activated(){
-        transform = gameObject->getTransform();
-    }
-    
+
     void MeshRenderer::render(EngineUniforms *engineUniforms, Material* replacementMaterial){
         if (!isEnabled()){
             return;

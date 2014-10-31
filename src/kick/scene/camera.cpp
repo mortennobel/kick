@@ -30,15 +30,6 @@ namespace kick {
     Camera::Camera(GameObject *gameObject)
     :Component(gameObject), clearFlag(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT),
      projectionMatrix{1}{
-
-    }
-
-    Camera::~Camera() {
-        destroyShadowMap();
-        delete pickingRenderTarget;
-    }
-    
-    void Camera::activated(){
         Scene* scene = gameObject->getScene();
         componentListener = scene->componentEvents.createListener([&](pair<Component*, ComponentUpdateStatus> value){
             if (value.second == ComponentUpdateStatus::Created){
@@ -58,6 +49,13 @@ namespace kick {
         });
         rebuildComponentList();
     }
+
+    Camera::~Camera() {
+        destroyShadowMap();
+        delete pickingRenderTarget;
+    }
+    
+
     
     void Camera::rebuildComponentList(){
         renderableComponents.clear();

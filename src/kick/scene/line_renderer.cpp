@@ -17,6 +17,7 @@ namespace kick {
         material = new Material();
         material->setShader(shader);
         mesh->setMeshData(meshData);
+        transform = gameObject->getTransform();
     }
 
     LineRenderer::~LineRenderer() {
@@ -30,11 +31,6 @@ namespace kick {
     void LineRenderer::setPoints(std::vector<glm::vec3> const &points) {
         LineRenderer::points = points;
         rebuildMesh();
-    }
-
-    void LineRenderer::activated() {
-        Component::activated();
-        transform = gameObject->getTransform();
     }
 
     void LineRenderer::render(EngineUniforms *engineUniforms, Material* replacementMaterial) {

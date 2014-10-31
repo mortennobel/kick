@@ -3,9 +3,9 @@
 namespace kick {
     typedef std::vector<std::unique_ptr<GameObject>>::const_iterator GameObjectIter;
     
-    template <typename C>
-    inline C *GameObject::addComponent(){
-        auto res = new C(this);
+    template <typename C, typename... T>
+    inline C *GameObject::addComponent(T... t){
+        auto res = new C(this, t...);
         components.push_back(res);
         res->activated();
         componentEvent.notifyListeners({res, ComponentUpdateStatus::Created});

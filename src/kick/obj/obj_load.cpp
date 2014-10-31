@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 morten. All rights reserved.
 //
 
-#include "obj_load.h"
+#include "kick/obj/obj_load.h"
 #include <fstream>
 #include <string>
 #include <cstring>

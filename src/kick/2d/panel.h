@@ -27,7 +27,6 @@ namespace kick {
     public:
         Panel(GameObject *gameObject);
         virtual ~Panel();
-        virtual void activated() override;
 
         virtual void deactivated() override;
 

@@ -30,7 +30,8 @@ namespace kick {
         Component(Component&& component);
         Component& operator=(const Component& other);
         virtual ~Component();
-        virtual void activated(){}
+        // deprecated
+        virtual void activated() final {}
         virtual void deactivated(){}
         Transform* getTransform();
         GameObject* getGameObject();

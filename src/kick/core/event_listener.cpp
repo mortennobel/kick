@@ -22,6 +22,7 @@ namespace kick {
     void AbstractEventListener::destroyListener(){
         if (ae){
             ae->removeListener(listenerId);
+            ae = nullptr;
         }
     }
 }

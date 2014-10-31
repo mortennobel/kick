@@ -13,14 +13,12 @@ namespace kick {
 
     class Component2D : public Component{
     public:
-        Component2D(GameObject *gameObject) : Component(gameObject) {
-        }
+        Component2D(GameObject *gameObject);
 
         int getOrder() const;
         virtual void setOrder(int order);
         virtual Shader* getShader() const = 0;
 
-        virtual void activated() override;
         virtual void deactivated() override;
 
     protected:

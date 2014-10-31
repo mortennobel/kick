@@ -29,6 +29,9 @@ namespace kick{
         mesh->setMeshData(meshData);
         material = new Material();
         mouseInput = &Engine::getMouseInput();
+        for (auto c : gameObject->getComponentsInChildren<Component2D>()){
+            registerComponent2D(c);
+        }
     }
 
     Panel::~Panel() {
@@ -192,12 +195,6 @@ namespace kick{
         Panel::camera = camera;
         int cullingMask = camera->getCullingMask();
         gameObject->setLayer((int)round(log2((float)cullingMask))+1); // set to largest value
-    }
-
-    void Panel::activated() {
-        for (auto c : gameObject->getComponentsInChildren<Component2D>()){
-            registerComponent2D(c);
-        }
     }
 
     void Panel::deactivated() {

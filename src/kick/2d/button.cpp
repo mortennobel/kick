@@ -11,8 +11,17 @@
 using namespace std;
 
 namespace kick {
-    Button::Button(GameObject *gameObject) : Sprite(gameObject) {
+    Button::Button(GameObject *gameObject)
+            : Sprite{gameObject},
+              onClick{[](Button*){}}
+    {
         setAnchor({0.5f,0.5f});
+        textComponent = panel->createText(text);
+        textComponent->getTransform()->setParent(getTransform());
+        textComponent->setText(text);
+        textComponent->setAnchor({0.5f,0.5f});
+        textComponent->setOrder(getOrder()+1);
+        updateTextureAndTxtColor();
     }
 
     void Button::setText(std::string const &text) {
@@ -88,15 +97,7 @@ namespace kick {
         }
     }
 
-    void Button::activated() {
-        Sprite::activated();
-        textComponent = panel->createText(text);
-        textComponent->getTransform()->setParent(getTransform());
-        textComponent->setText(text);
-        textComponent->setAnchor({0.5f,0.5f});
-        textComponent->setOrder(getOrder()+1);
-        updateTextureAndTxtColor();
-    }
+
 
     void Button::deactivated() {
         Sprite::deactivated();

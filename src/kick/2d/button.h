@@ -35,8 +35,6 @@ namespace kick {
         std::function<void(Button*)> const & getOnClick() const;
         void setOnClick(std::function<void(Button*)> const &onClick);
 
-        virtual void activated() override;
-
         virtual void deactivated() override;
         virtual void setOrder(int order) override;
 

@@ -22,7 +22,7 @@ namespace kick {
     public:
         MeshRenderer(GameObject *gameObject);
         ~MeshRenderer();
-        virtual void activated();
+
         virtual void render(EngineUniforms *engineUniforms, Material* replacementMaterial = nullptr);
         void setMesh(Mesh *mesh);
         Mesh*getMesh();

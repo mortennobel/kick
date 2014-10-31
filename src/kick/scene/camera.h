@@ -33,7 +33,6 @@ namespace kick {
     public:
         Camera(GameObject *gameObject);
         ~Camera();
-        virtual void activated();
         virtual void deactivated();
         virtual void render(EngineUniforms *engineUniforms);
 

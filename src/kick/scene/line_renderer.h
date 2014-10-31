@@ -20,7 +20,7 @@ namespace kick {
     public:
         LineRenderer(GameObject *gameObject);
         ~LineRenderer();
-        virtual void activated();
+
         virtual void render(EngineUniforms *engineUniforms, Material* replacementMaterial = nullptr) override;
 
         std::vector<glm::vec3> const & getPoints() const;

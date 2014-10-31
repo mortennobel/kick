@@ -10,9 +10,17 @@ using namespace std;
 
 namespace kick {
 
+    Component2D::Component2D(GameObject *gameObject) : Component(gameObject) {
+        panel = gameObject->getComponentInParent<Panel>();
+        if (panel){
+            panel->registerComponent2D(this);
+        }
+    }
+
     int Component2D::getOrder() const {
         return order;
     }
+
 
     void Component2D::setOrder(int order) {
         if (Component2D::order != order) {
@@ -21,13 +29,6 @@ namespace kick {
             if (panel){
                 panel->updateRenderOrder(this);
             }
-        }
-    }
-
-    void Component2D::activated() {
-        panel = gameObject->getComponentInParent<Panel>();
-        if (panel){
-            panel->registerComponent2D(this);
         }
     }
 
