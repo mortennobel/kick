@@ -50,6 +50,9 @@ namespace kick {
     void Engine::render(){
         instance->activeScene->render(&instance->engineUniforms);
         instance->context->swapBuffer();
+#ifdef DEBUG
+        printOpenGLError();
+#endif
     }
     
     Scene * Engine::createScene(const std::string & name){
