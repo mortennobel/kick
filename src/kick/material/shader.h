@@ -50,28 +50,28 @@ namespace kick {
         const UniformDescriptor* getShaderUniform(std::string name) const;
         Event<ShaderEvent> shaderChanged;
         void setBlend(bool b);
-        bool getBlend();
-        BlendType getBlendDFactorAlpha();
-        BlendType getBlendDFactorRGB();
-        BlendType getBlendSFactorAlpha();
-        BlendType getBlendSFactorRGB();
+        bool blend();
+        BlendType blendDFactorAlpha();
+        BlendType blendDFactorRGB();
+        BlendType blendSFactorAlpha();
+        BlendType blendSFactorRGB();
         void setBlendDFactorAlpha(BlendType blendDFactorAlpha);
         void setBlendDFactorRGB(BlendType blendDFactorRGB);
         void setBlendSFactorAlpha(BlendType blendSFactorAlpha);
         void setBlendSFactorRGB(BlendType blendSFactorRGB);
         void setDepthWrite(bool depthMask);
-        bool getDepthWrite();
+        bool depthWrite();
         void setFaceCulling(FaceCullingType faceCulling);
-        FaceCullingType getFaceCulling();
+        FaceCullingType faceCulling();
         void setPolygonOffsetEnabled(bool polygonOffsetEnabled);
-        bool getPolygonOffsetEnabled();
+        bool polygonOffsetEnabled();
         void setPolygonOffsetFactorAndUnit(glm::vec2 polygonOffsetFactorAndUnit);
-        glm::vec2 getPolygonOffsetFactorAndUnit();
+        glm::vec2 polygonOffsetFactorAndUnit();
         void setZTest(ZTestType zTest);
-        ZTestType getZTest();
-        const std::vector<AttributeDescriptor>& getShaderAttributes() { return shaderAttributes; }
+        ZTestType zTest();
+        const std::vector<AttributeDescriptor>&shaderAttributes() { return mShaderAttributes; }
         void bind_uniforms(Material *material, EngineUniforms *engineUniforms, Transform* transform);
-        GLuint getShaderProgram(){ return shaderProgram; }
+        GLuint shaderProgram(){ return mShaderProgram; }
 
         void setDefaultUniform(std::string name, int value);
         void setDefaultUniform(std::string name, float value);
@@ -98,23 +98,23 @@ namespace kick {
         bool linkProgram();
         /// throws ShaderBuildException if unsuccessfull
         ShaderObj compileShader(std::string source, ShaderType type);
-        GLuint shaderProgram = 0;
+        GLuint mShaderProgram = 0;
         std::map<ShaderType, std::string> shaderSources;
         std::string outputAttributeName = "fragColor";
-        std::vector<AttributeDescriptor> shaderAttributes;
+        std::vector<AttributeDescriptor> mShaderAttributes;
         std::vector<UniformDescriptor> shaderUniforms;
-        bool blend {false};
-        BlendType blendDFactorAlpha {BlendType::OneMinusSrcAlpha};
-        BlendType blendDFactorRGB {BlendType::OneMinusSrcAlpha};
-        BlendType blendSFactorAlpha {BlendType::SrcAlpha};
-        BlendType blendSFactorRGB {BlendType::SrcAlpha};
-        bool depthBufferWrite{true};
-        FaceCullingType faceCulling {FaceCullingType::Back};
-        bool polygonOffsetEnabled {false};
-        glm::vec2 polygonOffsetFactorAndUnit {2.5, 10};
-        ZTestType zTest {ZTestType::Less};
+        bool mBlend{false};
+        BlendType mBlendDFactorAlpha{BlendType::OneMinusSrcAlpha};
+        BlendType mBlendDFactorRGB{BlendType::OneMinusSrcAlpha};
+        BlendType mBlendSFactorAlpha{BlendType::SrcAlpha};
+        BlendType mBlendSFactorRGB{BlendType::SrcAlpha};
+        bool mDepthBufferWrite{true};
+        FaceCullingType mFaceCulling{FaceCullingType::Back};
+        bool mPolygonOffsetEnabled{false};
+        glm::vec2 mPolygonOffsetFactorAndUnit{2.5, 10};
+        ZTestType mZTest{ZTestType::Less};
         std::map<std::string, MaterialData> defaultUniformData;
-        int renderOrder = 1000;
+        int mDenderOrder = 1000;
         std::map<std::string, std::shared_ptr<Texture2D>> texture2DRef;
         std::map<std::string, std::shared_ptr<TextureCube>> textureCubeRef;
     };

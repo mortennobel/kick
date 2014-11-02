@@ -13,19 +13,19 @@ namespace kick {
     class CameraPerspective : public Camera {
     public:
         CameraPerspective(GameObject *gameObject);
-        float getNear() const;
+        float near() const;
         void setNear(float near);
-        float getFar() const;
+        float far() const;
         void setFar(float far);
-        float getFieldOfView() const;
+        float fieldOfView() const;
         void setFieldOfView(float fieldOfView);
         void set(float near, float far, float fieldOfView);
         virtual void resetProjectionMatrix() override;
     private:
         void update(glm::ivec2 viewportDimension);
-        float near = 0.1f;
-        float far = 1000.0f;
-        float fieldOfView = glm::radians(60.0f);
+        float mNear = 0.1f;
+        float mFar = 1000.0f;
+        float mFieldOfView = glm::radians(60.0f);
         EventListener<glm::ivec2> viewportListener;
     };
 }

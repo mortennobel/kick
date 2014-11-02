@@ -33,24 +33,24 @@ namespace kick {
     public:
         Light(GameObject *gameObject);
         void setColor(glm::vec3 color);
-        glm::vec3 getColor();
+        glm::vec3 color();
         void setIntensity(float intensity);
-        float getIntensity();
-        glm::vec3 getColorIntensity();
+        float intensity();
+        glm::vec3 colorIntensity();
         void setLightType(LightType lightType);
-        LightType getLightType();
-        glm::vec3 getAttenuation() const;
+        LightType lightType();
+        glm::vec3 attenuation() const;
         void setAttenuation(glm::vec3 attenuation);
         Event<Light*> lightTypeChanged;
-        ShadowType const & getShadowType() const;
+        ShadowType const &shadowType() const;
         void setShadowType(ShadowType const &shadowType);
     private:
         void updateIntensity();
-        glm::vec3 colorIntensity = glm::vec3(1,1,1);
-        glm::vec3 color = glm::vec3(1,1,1);
-        glm::vec3 attenuation = glm::vec3(1,0,0);
-        float intensity = 1;
-        LightType lightType = LightType::Uninitialized;
-        ShadowType shadowType = ShadowType::None;
+        glm::vec3 mColorIntensity = glm::vec3(1,1,1);
+        glm::vec3 mColor = glm::vec3(1,1,1);
+        glm::vec3 mAttenuation = glm::vec3(1,0,0);
+        float mIntensity = 1;
+        LightType mLightType = LightType::Uninitialized;
+        ShadowType mShadowType = ShadowType::None;
     };
 }

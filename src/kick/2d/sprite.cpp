@@ -122,7 +122,7 @@ namespace kick {
 
     Shader *Sprite::getShader() const {
         if (textureAtlas){
-            return textureAtlas->getShader().get();
+            return textureAtlas->shader().get();
         }
         return nullptr;
     }

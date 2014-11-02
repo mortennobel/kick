@@ -32,10 +32,10 @@ namespace kick {
 
     void Text::render(EngineUniforms *engineUniforms) {
         if (!font) return;
-        auto shader = material->getShader();
+        auto shader = material->shader();
         assert(shader);
         mesh->bind(shader.get());
-        shader->bind_uniforms(material, engineUniforms, getTransform());
+        shader->bind_uniforms(material, engineUniforms, transform());
         mesh->render(0);
     }
 
@@ -129,7 +129,7 @@ namespace kick {
     }
 
     int Text::getRenderOrder() {
-        return material->getRenderOrder();
+        return material->renderOrder();
     }
 
     void Text::setAnchor(glm::vec2 anchor) {
@@ -145,7 +145,7 @@ namespace kick {
 
     Shader *Text::getShader() const {
         if (material){
-            return material->getShader().get();
+            return material->shader().get();
         }
         return nullptr;
     }

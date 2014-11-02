@@ -26,8 +26,8 @@ namespace kick {
         if (directionalLight){
             // compute light direction
             vec3 lightDirection{0,0,-1};
-            auto transform = directionalLight->getGameObject()->getTransform();
-            mat3 rotation = mat3_cast(transform->getRotation());
+            auto transform = directionalLight->gameObject()->transform();
+            mat3 rotation = mat3_cast(transform->rotation());
             directionalLightWorld = rotation * lightDirection;
 
             // transform to eye space
@@ -38,19 +38,19 @@ namespace kick {
             directionalLightData[2] = -normalize(vec3(0,0,-1) + directionalLightDirection);
 
             // set color intensity
-            directionalLightData[1] = directionalLight->getColorIntensity();
+            directionalLightData[1] = directionalLight->colorIntensity();
         }  else {
             directionalLightData = mat3(0);
         }
         int i = 0;
         for (;i<std::min((size_t)KICK_MAX_POINT_LIGHTS, pointLights.size());i++){
             Light * light = pointLights[i];
-            Transform * transform = light->getGameObject()->getTransform();
+            Transform * transform = light->gameObject()->transform();
 
             // save eyespace position
-            pointLightData[i][0] = (vec3)(viewMatrix * vec4(transform->getPosition(),1.0f));
-            pointLightData[i][1] = light->getColorIntensity();
-            pointLightData[i][2] = light->getAttenuation();
+            pointLightData[i][0] = (vec3)(viewMatrix * vec4(transform->position(),1.0f));
+            pointLightData[i][1] = light->colorIntensity();
+            pointLightData[i][2] = light->attenuation();
         }
         // reset unused
         for (;i<KICK_MAX_POINT_LIGHTS;i++){

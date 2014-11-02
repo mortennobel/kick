@@ -19,62 +19,62 @@ namespace kick {
     }
     
     void Transform::markGlobalDirty(){
-        dirty.global = 1;
-        dirty.globalInv = 1;
-        dirty.globalPos = 1;
-        dirty.globalRot = 1;
-        for (auto c : children){
+        mDirty.global = 1;
+        mDirty.globalInv = 1;
+        mDirty.globalPos = 1;
+        mDirty.globalRot = 1;
+        for (auto c : mChildren){
             c->markGlobalDirty();
         }
     }
     
     void Transform::markLocalDirty(){
-        dirty.local = 1;
-        dirty.localInv = 1;
+        mDirty.local = 1;
+        mDirty.localInv = 1;
         markGlobalDirty();
     }
     
-    void Transform::setPosition(glm::vec3 position){
-        assert(!glm::any(glm::isnan(position)));
-        if (!parent){
-            setLocalPosition(position);
+    void Transform::setPosition(glm::vec3 position_){
+        assert(!glm::any(glm::isnan(position_)));
+        if (!mParent){
+            setLocalPosition(position_);
             return;
         }
-        vec3 currentPosition = getPosition();
-        setLocalPosition(currentPosition - position);
+        vec3 currentPosition = position();
+        setLocalPosition(currentPosition - position_);
         markLocalDirty();
     }
     
-    glm::vec3 Transform::getPosition(){
-        if (!parent){
-            return localPosition;
+    glm::vec3 Transform::position(){
+        if (!mParent){
+            return mLocalPosition;
         }
-        if (dirty.globalPos){
-            auto pos = getGlobalMatrix() * vec4(0,0,0,1);
-            globalPosition = vec3(pos);
+        if (mDirty.globalPos){
+            auto pos = globalMatrix() * vec4(0,0,0,1);
+            mGlobalPosition = vec3(pos);
         }
-        return globalPosition;
+        return mGlobalPosition;
     }
     
     void Transform::setLocalPosition(glm::vec3 position){
         assert(!glm::any(glm::isnan(position)));
-        localPosition = position;
+        mLocalPosition = position;
         markLocalDirty();
     }
     
-    glm::vec3 Transform::getLocalPosition(){
-        return localPosition;
+    glm::vec3 Transform::localPosition(){
+        return mLocalPosition;
     }
     
     void Transform::setLocalRotationEuler(glm::vec3 angles){
         assert(!glm::any(glm::isnan(angles)));
         mat4 rot = yawPitchRoll(angles.y, angles.x, angles.z);
-        localRotationQuat = quat_cast(rot);
+        mLocalRotationQuat = quat_cast(rot);
         markLocalDirty();
     }
     
-    glm::vec3 Transform::getLocalRotationEuler(){
-        return eulerAngles(localRotationQuat);
+    glm::vec3 Transform::localRotationEuler(){
+        return eulerAngles(mLocalRotationQuat);
     }
     
     void Transform::setRotationEuler(glm::vec3 angles){
@@ -83,163 +83,163 @@ namespace kick {
         setRotation(quat_cast(rot));
     }
     
-    glm::vec3 Transform::getRotationEuler(){
-        return eulerAngles(getRotation());
+    glm::vec3 Transform::rotationEuler(){
+        return eulerAngles(rotation());
     }
     
     void Transform::setRotation(glm::quat rot){
         assert(!glm::isnan(rot.w) && !glm::isnan(rot.x) && !glm::isnan(rot.y) && !glm::isnan(rot.z));
-        if (parent == nullptr ||
-                parent->globalRotationQuat == glm::quat{1,0,0,0}){ // if parent is identity rotation
+        if (mParent == nullptr ||
+                mParent->mGlobalRotationQuat == glm::quat{1,0,0,0}){ // if parent is identity rotation
             setLocalRotation(rot);
         } else {
-            quat diff = conjugate(rot) * getRotation();
-            setLocalRotation(localRotationQuat * diff);
+            quat diff = conjugate(rot) * rotation();
+            setLocalRotation(mLocalRotationQuat * diff);
         }
     }
     
-    glm::quat Transform::getRotation(){
-        if (parent == nullptr){
-            return localRotationQuat;
+    glm::quat Transform::rotation(){
+        if (mParent == nullptr){
+            return mLocalRotationQuat;
         }
-        if (dirty.globalRot){
-            globalRotationQuat = localRotationQuat;
-            Transform *parentIterator = this->parent;
+        if (mDirty.globalRot){
+            mGlobalRotationQuat = mLocalRotationQuat;
+            Transform *parentIterator = this->mParent;
             while (parentIterator != nullptr){
-                globalRotationQuat = parentIterator->localRotationQuat * globalRotationQuat;
-                parentIterator = parentIterator->parent;
+                mGlobalRotationQuat = parentIterator->mLocalRotationQuat * mGlobalRotationQuat;
+                parentIterator = parentIterator->mParent;
             }
         }
-        return globalRotationQuat;
+        return mGlobalRotationQuat;
     }
     
     void Transform::setLocalRotation(glm::quat rot){
         assert(!glm::isnan(rot.w) && !glm::isnan(rot.x) && !glm::isnan(rot.y) && !glm::isnan(rot.z));
-        localRotationQuat = rot;
+        mLocalRotationQuat = rot;
         markLocalDirty();
     }
     
-    glm::quat Transform::getLocalRotation(){
-        return localRotationQuat;
+    glm::quat Transform::localRotation(){
+        return mLocalRotationQuat;
     }
     
     void Transform::setLocalScale(glm::vec3 scale){
         assert(!glm::any(glm::isnan(scale)));
-        localScale = scale;
+        mLocalScale = scale;
         markLocalDirty();
     }
     
-    glm::vec3 Transform::getLocalScale(){
-        return localScale;
+    glm::vec3 Transform::localScale(){
+        return mLocalScale;
     }
     
     void Transform::setParent(Transform *parent){
         if (parent == this){
             return;
         }
-        if (this->parent){
-            auto pos = find(this->parent->children.begin(),this->parent->children.end(), this);
-            this->parent->children.erase(pos);
+        if (this->mParent){
+            auto pos = find(this->mParent->mChildren.begin(),this->mParent->mChildren.end(), this);
+            this->mParent->mChildren.erase(pos);
         }
-        this->parent = parent;
+        this->mParent = parent;
         if (parent){
-            parent->children.push_back(this);
+            parent->mChildren.push_back(this);
 
             // search for circularity
             while (parent != nullptr){
-                if (parent->parent == this){ // circularity found - break
+                if (parent->mParent == this){ // circularity found - break
                     parent->setParent(nullptr);
                 }
-                parent = parent->parent;
+                parent = parent->mParent;
             }
         }
     }
     
-    glm::mat4 Transform::getLocalTRSInverse(){
-        if (dirty.localInv){
-            localMatrixInverse = kick::TRSInverse(localPosition, localRotationQuat, localScale);
-            dirty.localInv = false;
+    glm::mat4 Transform::localTRSInverse(){
+        if (mDirty.localInv){
+            mLocalMatrixInverse = kick::TRSInverse(mLocalPosition, mLocalRotationQuat, mLocalScale);
+            mDirty.localInv = false;
         }
-        return localMatrixInverse;
+        return mLocalMatrixInverse;
     }
     
-    glm::mat4 Transform::getGlobalTRSInverse(){
-        if (dirty.globalInv){
-            globalMatrixInverse = getLocalTRSInverse();
-            auto transformIterator = parent;
+    glm::mat4 Transform::globalTRSInverse(){
+        if (mDirty.globalInv){
+            mGlobalMatrixInverse = localTRSInverse();
+            auto transformIterator = mParent;
             while (transformIterator){
-                globalMatrixInverse = globalMatrixInverse * transformIterator->getLocalTRSInverse();
-                transformIterator = transformIterator->parent;
+                mGlobalMatrixInverse = mGlobalMatrixInverse * transformIterator->localTRSInverse();
+                transformIterator = transformIterator->mParent;
             }
-            dirty.globalInv = false;
+            mDirty.globalInv = false;
         }
-        return globalMatrixInverse;
+        return mGlobalMatrixInverse;
     }
 
     void Transform::lookAt(vec3 center, glm::vec3 up){
         assert(!glm::any(glm::isnan(up)));
-        vec3 eye = getPosition();
+        vec3 eye = position();
         assert(glm::length(eye - center) > glm::epsilon<float>());
         auto rotation = kick::lookAt(eye, center, up);
         setRotation(conjugate(rotation));
     }
 
     void Transform::lookAt(Transform *target, glm::vec3 up){
-        vec3 center = target->getPosition();
+        vec3 center = target->position();
         lookAt(center, up);
     }
     
-    glm::mat4 Transform::getLocalMatrix(){
-        if (dirty.local) {
-            localMatrix = kick::TRS(localPosition, localRotationQuat, localScale);
-            dirty.local = false;
+    glm::mat4 Transform::localMatrix(){
+        if (mDirty.local) {
+            mLocalMatrix = kick::TRS(mLocalPosition, mLocalRotationQuat, mLocalScale);
+            mDirty.local = false;
         }
-        return localMatrix;
+        return mLocalMatrix;
     }
     
-    glm::mat4 Transform::getGlobalMatrix(){
-        if (dirty.global) {
-            globalMatrix = getLocalMatrix();
+    glm::mat4 Transform::globalMatrix(){
+        if (mDirty.global) {
+            mGlobalMatrix = localMatrix();
             
-            Transform * transformIterator = parent;
+            Transform * transformIterator = mParent;
             while (transformIterator) {
-                globalMatrix = transformIterator->getLocalMatrix() * globalMatrix;
-                transformIterator  = transformIterator->parent;
+                mGlobalMatrix = transformIterator->localMatrix() * mGlobalMatrix;
+                transformIterator  = transformIterator->mParent;
             }
-            dirty.global = false;
+            mDirty.global = false;
         }
-        return globalMatrix;
+        return mGlobalMatrix;
     }
     
     TransformIter Transform::begin(){
-        return children.begin();
+        return mChildren.begin();
     }
     
     TransformIter Transform::end(){
-        return children.end();
+        return mChildren.end();
     }
     
     ConstTransformIter Transform::begin() const {
-        return children.begin();
+        return mChildren.begin();
     }
     
     ConstTransformIter Transform::end() const {
-        return children.end();
+        return mChildren.end();
     }
 
-    Transform *Transform::getParent() {
-        return parent;
+    Transform *Transform::parent() {
+        return mParent;
     }
 
     vec3 Transform::forward() {
-        return mat3_cast(getRotation()) * vec3(0,0,-1);
+        return mat3_cast(rotation()) * vec3(0,0,-1);
     }
 
     vec3 Transform::up() {
-        return mat3_cast(getRotation()) * vec3(0,1,0);
+        return mat3_cast(rotation()) * vec3(0,1,0);
     }
 
     vec3 Transform::right() {
-        return mat3_cast(getRotation()) * vec3(1,0,0);
+        return mat3_cast(rotation()) * vec3(1,0,0);
     }
 }

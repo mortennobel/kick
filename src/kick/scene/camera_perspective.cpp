@@ -12,55 +12,55 @@ namespace kick {
 
     CameraPerspective::CameraPerspective(GameObject *gameObject)
             : Camera(gameObject),
-              viewportListener{Engine::getContext()->contextSurfaceSize.createListener([&](ivec2 viewport) {
+              viewportListener{Engine::context()->contextSurfaceSize.createListener([&](ivec2 viewport) {
                   resetProjectionMatrix();
               })}
     {
         resetProjectionMatrix();
     }
 
-    float CameraPerspective::getNear() const {
-        return near;
+    float CameraPerspective::near() const {
+        return mNear;
     }
 
     void CameraPerspective::setNear(float near) {
-        CameraPerspective::near = near;
+        CameraPerspective::mNear = near;
         resetProjectionMatrix();
     }
 
-    float CameraPerspective::getFar() const {
-        return far;
+    float CameraPerspective::far() const {
+        return mFar;
     }
 
     void CameraPerspective::setFar(float far) {
-        CameraPerspective::far = far;
+        CameraPerspective::mFar = far;
         resetProjectionMatrix();
     }
 
-    float CameraPerspective::getFieldOfView() const {
-        return fieldOfView;
+    float CameraPerspective::fieldOfView() const {
+        return mFieldOfView;
     }
 
     void CameraPerspective::setFieldOfView(float fieldOfView) {
-        CameraPerspective::fieldOfView = fieldOfView;
+        CameraPerspective::mFieldOfView = fieldOfView;
         resetProjectionMatrix();
     }
 
     void CameraPerspective::set(float near, float far, float fieldOfView) {
-        this->near = near;
-        this->far = far;
-        this->fieldOfView = fieldOfView;
+        this->mNear = near;
+        this->mFar = far;
+        this->mFieldOfView = fieldOfView;
         resetProjectionMatrix();
     }
 
     void CameraPerspective::update(ivec2 viewportDimension) {
-        vec2 dim = normalizedViewportDim * (vec2)viewportDimension;
+        vec2 dim = mNormalizedViewportDim * (vec2)viewportDimension;
         float aspect = dim.x/dim.y;
-        projectionMatrix = perspective(fieldOfView, aspect, near, far);
+        mProjectionMatrix = perspective(mFieldOfView, aspect, mNear, mFar);
     }
 
     void CameraPerspective::resetProjectionMatrix() {
-        ivec2 viewportDimension = Engine::getContext()->getContextSurfaceDim();
+        ivec2 viewportDimension = Engine::context()->getContextSurfaceDim();
         update(viewportDimension);
     }
 }

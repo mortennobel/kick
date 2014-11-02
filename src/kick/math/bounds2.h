@@ -16,56 +16,31 @@ namespace kick {
         glm::vec2 max = glm::vec2{ std::numeric_limits<float>::lowest() };
 
 
-        Bounds2() {
-        }
+        Bounds2();
 
-        Bounds2(glm::vec2 const &min, glm::vec2 const &max)
-                : min(min), max(max) {
-        }
+        Bounds2(glm::vec2 const &min, glm::vec2 const &max);
 
-        glm::vec2 dimension(){ return max-min; }
-        glm::vec2 center(){ return (max+min)*0.5f; }
+        glm::vec2 dimension();
 
-        void expand(glm::vec2 p){
-            min = glm::min(min, p);
-            max = glm::max(max, p);
-        }
+        glm::vec2 center();
 
-        void expand(Bounds2 b){
-            min = glm::min(min, b.min);
-            max = glm::max(max, b.max);
-        }
+        void expand(glm::vec2 p);
 
-        void reset(){
-            min = glm::vec2{ std::numeric_limits<float>::max() };
-            max = glm::vec2{ std::numeric_limits<float>::lowest() };
-        }
+        void expand(Bounds2 b);
 
-        glm::vec2 lowLeft(){
-            return min;
-        }
+        void reset();
 
-        glm::vec2 upperLeft(){
-            return {min.x, max.y};
-        }
+        glm::vec2 lowLeft();
 
-        glm::vec2 lowRight(){
-            return {max.x, min.y};
-        }
+        glm::vec2 upperLeft();
 
-        glm::vec2 upperRight(){
-            return {max.x, max.y};
-        }
+        glm::vec2 lowRight();
 
-        Bounds2 lerp(float f, Bounds2 b){
-            return Bounds2 {glm::mix(min, b.min, f), glm::mix(max, b.max, f)};
+        glm::vec2 upperRight();
 
-        }
+        Bounds2 lerp(float f, Bounds2 b);
 
-        bool contains(glm::vec2 point){
-            return min.x <= point.x && min.y <= point.y &&
-                   max.x >= point.x && max.y >= point.y;
-        }
+        bool contains(glm::vec2 point);
     };
 
     inline std::ostream& operator<<(std::ostream& out, const Bounds2 & f){

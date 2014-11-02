@@ -11,58 +11,58 @@ using namespace glm;
 
 namespace kick {
     LineRenderer::LineRenderer(GameObject *gameObject) : ComponentRenderable(gameObject) {
-        mesh = new Mesh();
-        meshData = new MeshData();
+        mMesh = new Mesh();
+        mMeshData = new MeshData();
         auto shader = Project::loadShader("assets/shaders/unlit.shader");
-        material = new Material();
-        material->setShader(shader);
-        mesh->setMeshData(meshData);
-        transform = gameObject->getTransform();
+        mMaterial = new Material();
+        mMaterial->setShader(shader);
+        mMesh->setMeshData(mMeshData);
+        mTransform = gameObject->transform();
     }
 
     LineRenderer::~LineRenderer() {
-        Project::destroyAsset(mesh);
-        Project::destroyAsset(meshData);
+        Project::destroyAsset(mMesh);
+        Project::destroyAsset(mMeshData);
     }
 
-    std::vector<glm::vec3> const &LineRenderer::getPoints() const {
-        return points;
+    std::vector<glm::vec3> const &LineRenderer::points() const {
+        return mPoints;
     }
     void LineRenderer::setPoints(std::vector<glm::vec3> const &points) {
-        LineRenderer::points = points;
+        LineRenderer::mPoints = points;
         rebuildMesh();
     }
 
     void LineRenderer::render(EngineUniforms *engineUniforms, Material* replacementMaterial) {
-        auto mat = replacementMaterial?replacementMaterial : material;
-        auto shader = mat->getShader().get();
-        mesh->bind(shader);
-        shader->bind_uniforms(mat, engineUniforms, transform);
-        glLineWidth(width);
-        mesh->render(0);
+        auto mat = replacementMaterial?replacementMaterial : mMaterial;
+        auto shader = mat->shader().get();
+        mMesh->bind(shader);
+        shader->bind_uniforms(mat, engineUniforms, mTransform);
+        glLineWidth(mWidth);
+        mMesh->render(0);
     }
 
     void LineRenderer::setMaterial(Material *material) {
-        this->material = material;
+        this->mMaterial = material;
     }
 
-    Material *LineRenderer::getMaterial() {
-        return material;
+    Material *LineRenderer::material() {
+        return mMaterial;
     }
 
-    int LineRenderer::getRenderOrder() {
-        return material->getRenderOrder();
+    int LineRenderer::renderOrder() {
+        return mMaterial->renderOrder();
     }
 
     void LineRenderer::rebuildMesh() {
-        meshData->setPosition(points);
+        mMeshData->setPosition(mPoints);
 
         vector<GLushort> idx;
-        for (int i=0;i<points.size()-1;i++){
+        for (int i=0;i< mPoints.size()-1;i++){
             idx.push_back(i);
             idx.push_back(i+1);
         }
-        meshData->setSubmesh(0, idx, MeshType::Lines);
-        mesh->setMeshData(meshData);
+        mMeshData->setSubmesh(0, idx, MeshType::Lines);
+        mMesh->setMeshData(mMeshData);
     }
 }

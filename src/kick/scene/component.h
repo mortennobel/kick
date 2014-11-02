@@ -33,16 +33,16 @@ namespace kick {
         // deprecated
         virtual void activated() final {}
         virtual void deactivated(){}
-        Transform* getTransform();
-        GameObject* getGameObject();
+        Transform* transform();
+        GameObject*gameObject();
 
-        bool isEnabled() const;
+        bool enabled() const;
         void setEnabled(bool enabled);
     protected:
-        GameObject* gameObject;
+        GameObject*mGameObject;
     private:
         Component(const Component& component) = delete;
-        bool enabled = true;
+        bool mEnabled = true;
     };
     
     typedef std::vector<Component*>::const_iterator ConstComponentIter;

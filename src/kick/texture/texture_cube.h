@@ -24,18 +24,18 @@ namespace kick {
         void setData(int width, int height, char* data, int cubemapIndex, const ImageFormat& imageFormat = {});
 
         void bind(int textureSlot);
-        int getWidth(){ return width; }
-        int getHeight(){ return height; }
+        int width(){ return mWidth; }
+        int height(){ return mHeight; }
         void setTextureSampler(const TextureSampler & textureSampler);
-        TextureSampler getTextureSampler() const;
-        ImageFormat getImageFormat() const;
+        TextureSampler textureSampler() const;
+        ImageFormat imageFormat() const;
     private:
-        GLuint textureid;
-        int width = -1;
-        int height = -1;
-        std::bitset<6> facesSet;
-        TextureSampler textureSampler;
-        ImageFormat imageFormat;
+        GLuint mTextureid;
+        int mWidth = -1;
+        int mHeight = -1;
+        std::bitset<6> mFacesSet;
+        TextureSampler mTextureSampler;
+        ImageFormat mImageFormat;
     };
 };
 

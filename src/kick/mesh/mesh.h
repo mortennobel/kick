@@ -28,9 +28,9 @@ namespace kick {
         ~Mesh();
         void bind(Shader * shader);
         void render(unsigned int submeshIndex);
-        std::string getName();
+        std::string name();
         void setName(std::string n);
-        MeshData *getMeshData();
+        MeshData *meshData();
         void setMeshData(MeshData *m);
     private:
         void updateArrayBufferStructure(Shader *shader);
@@ -38,7 +38,7 @@ namespace kick {
         std::unordered_map<Shader*, GLuint> vertexArrayObject;
         MeshData *mesh_data = nullptr;
         std::vector<InterleavedRecord> interleavedFormat;
-        std::string name;
+        std::string mName;
         std::vector<SubMeshData> submeshData;
         GLuint vertexBufferId;
         GLuint elementBufferId;

@@ -18,21 +18,21 @@ namespace kick {
     Engine* Engine::instance = nullptr;
 
     Engine::Engine(int &argc, char **argv,const WindowConfig& config)
-    :context(new SDL2Context()), tickStartTime{Time::get()} {
+    : mContext(new SDL2Context()), tickStartTime{Time::get()} {
         instance = this;
-        context->init(argc, argv);
-        context->showWindow(config);
+        mContext->init(argc, argv);
+        mContext->showWindow(config);
         printf("%s (%s)\n",
                 glGetString(GL_RENDERER),  // e.g. Intel HD Graphics 3000 OpenGL Engine
                 glGetString(GL_VERSION)    // e.g. 3.2  INTEL-8.0.61
         );
         createScene("defaultScene");
-        context->contextSurfaceSize.registerSyncValue(engineUniforms.viewportDimension);
-        engineUniforms.viewportDimension.setValue(context->getContextSurfaceDim());
+        mContext->contextSurfaceSize.registerSyncValue(engineUniforms.viewportDimension);
+        engineUniforms.viewportDimension.setValue(mContext->getContextSurfaceDim());
     }
 
     void Engine::startMainLoop(){
-        instance->context->mainLoop();
+        instance->mContext->mainLoop();
     }
 
     void Engine::update(){
@@ -43,13 +43,13 @@ namespace kick {
 
         instance->eventQueue.run();
 
-        instance->defaultKeyHandler.handleKeyPress(instance);
-        instance->activeScene->update();
+        instance->mDefaultKeyHandler.handleKeyPress(instance);
+        instance->mActiveScene->update();
     }
     
     void Engine::render(){
-        instance->activeScene->render(&instance->engineUniforms);
-        instance->context->swapBuffer();
+        instance->mActiveScene->render(&instance->engineUniforms);
+        instance->mContext->swapBuffer();
 #ifdef DEBUG
         printOpenGLError();
 #endif
@@ -58,8 +58,8 @@ namespace kick {
     Scene * Engine::createScene(const std::string & name){
         instance->scenes.push_back(Scene{name});
         Scene * scene = &(instance->scenes.back());;
-        if (!instance->activeScene){
-            instance->activeScene = scene;
+        if (!instance->mActiveScene){
+            instance->mActiveScene = scene;
         }
         return scene;
     }
@@ -71,8 +71,8 @@ namespace kick {
         return instance->scenes.end();
     }
     
-    Context* Engine::getContext(){
-        return instance->context;
+    Context* Engine::context(){
+        return instance->mContext;
     }
 
     void Engine::startFrame() {
@@ -81,8 +81,8 @@ namespace kick {
         TouchInput::reset();
     }
 
-    DefaultKeyHandler &Engine::getDefaultKeyHandler() {
-        return instance->defaultKeyHandler;
+    DefaultKeyHandler &Engine::defaultKeyHandler() {
+        return instance->mDefaultKeyHandler;
     }
 
     void Engine::init(int &argc, char **argv, WindowConfig const &config) {

@@ -45,8 +45,8 @@ namespace kick {
     }
     
     void Material::setShader(std::shared_ptr<Shader> shader){
-        if (this->shader == shader) return;
-        this->shader = shader;
+        if (this->mShader == shader) return;
+        this->mShader = shader;
         if (shader){
             using namespace std::placeholders;
             auto f = std::bind(&Material::shaderChanged, this, _1);
@@ -58,8 +58,8 @@ namespace kick {
         }
     }
 
-    std::shared_ptr<Shader> Material::getShader(){
-        return shader;
+    std::shared_ptr<Shader> Material::shader(){
+        return mShader;
     }
         
     void Material::shaderChanged(ShaderEvent se){
@@ -67,7 +67,7 @@ namespace kick {
             for (auto &pair : currentUniformData) {
                 updateShaderLocation(pair.first, pair.second);
             }
-            renderOrder = shader ? shader->getRenderOrder() : 0;
+            mRenderOrder = mShader ? mShader->getRenderOrder() : 0;
         }
         if (se.eventType == ShaderEventType::all || se.eventType == ShaderEventType::defaultUniform) {
             setDefaultUniforms();
@@ -75,11 +75,11 @@ namespace kick {
     }
     
     void Material::updateShaderLocation(std::string name, MaterialData& value){
-        if (shader == nullptr){
+        if (mShader == nullptr){
             value.shaderLocation = -1;
             return;
         }
-        auto descriptor = shader->getShaderUniform(name);
+        auto descriptor = mShader->getShaderUniform(name);
         if (descriptor == nullptr){
             value.shaderLocation = -1;
         } else {
@@ -201,7 +201,7 @@ namespace kick {
 
     void Material::setDefaultUniforms() {
         vector<string> unmappedOrDefaultUniforms;
-        for (auto& u : shader->getShaderUniforms()){
+        for (auto& u : mShader->getShaderUniforms()){
             bool isAutoMapped = u.name.length()>0 && u.name[0] == '_';
             if (isAutoMapped){
                 continue;
@@ -214,14 +214,14 @@ namespace kick {
         }
         for (auto & name : unmappedOrDefaultUniforms){
             MaterialData mat{0};
-            if (shader->tryGetDefaultUniform(name, mat)){
+            if (mShader->tryGetDefaultUniform(name, mat)){
                 setUniformData(name, move(mat));
             }
         }
     }
 
-    int Material::getRenderOrder() {
-        return renderOrder;
+    int Material::renderOrder() {
+        return mRenderOrder;
     }
 
     void Material::setUniform(std::string name, int value) {

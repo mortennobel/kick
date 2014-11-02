@@ -29,19 +29,19 @@ namespace kick {
         void setData(int width, int height, char* data, const ImageFormat& imageFormat = {});
         
         void bind(int textureSlot);
-        int getWidth(){ return width; }
-        int getHeight(){ return height; }
+        int width(){ return mWidth; }
+        int height(){ return mHeight; }
         void setTextureSampler(const TextureSampler & textureSampler);
-        TextureSampler getTextureSampler() const;
-        ImageFormat getImageFormat() const;
+        TextureSampler textureSampler() const;
+        ImageFormat imageFormat() const;
         friend class TextureRenderTarget;
 
         void saveBMPImage(std::string filename);
     private:
-        GLuint textureid;
-        int width = -1;
-        int height = -1;
-        TextureSampler textureSampler;
-        ImageFormat imageFormat;
+        GLuint mTextureid;
+        int mWidth = -1;
+        int mHeight = -1;
+        TextureSampler mTextureSampler;
+        ImageFormat mImageFormat;
     };
 }

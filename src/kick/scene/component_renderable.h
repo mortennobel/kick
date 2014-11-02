@@ -26,7 +26,7 @@ namespace kick {
         // 1000-1999 Opaque geometry (default)
         // 2000-2999 Transparent. This queue is sorted in a back to front order before rendering.
         // 3000-3999 Overlay
-        virtual int getRenderOrder() = 0;
+        virtual int renderOrder() = 0;
     };
 }
 

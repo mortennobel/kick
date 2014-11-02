@@ -17,7 +17,7 @@ kick::DefaultKeyHandler::DefaultKeyHandler()
 
 void kick::DefaultKeyHandler::handleKeyPress(kick::Engine *engine) {
     if (kick::KeyInput::down(fullScreen)){
-        auto context = engine->getContext();
+        auto context = engine->context();
         context->setFullscreen(!context->isFullscreen());
     }
 }

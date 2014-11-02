@@ -23,23 +23,23 @@ namespace kick {
 
         virtual void render(EngineUniforms *engineUniforms, Material* replacementMaterial = nullptr) override;
 
-        std::vector<glm::vec3> const & getPoints() const;
+        std::vector<glm::vec3> const &points() const;
         void setPoints(std::vector<glm::vec3> const &points);
 
         // set the material
         void setMaterial(Material *material);
         // get material
-        Material*getMaterial();
+        Material*material();
 
-        virtual int getRenderOrder();
+        virtual int renderOrder();
     private:
         void rebuildMesh();
-        std::vector<glm::vec3> points;
-        Mesh* mesh;
-        Transform* transform;
-        Material* material;
-        MeshData* meshData;
-        float width = 10.1f;
+        std::vector<glm::vec3> mPoints;
+        Mesh*mMesh;
+        Transform*mTransform;
+        Material*mMaterial;
+        MeshData*mMeshData;
+        float mWidth = 10.1f;
     };
 }
 

@@ -9,34 +9,34 @@ using namespace std;
 
 kick::Skybox::Skybox(GameObject *gameObject)
         : ComponentRenderable(gameObject),
-          meshRenderer{new MeshRenderer(gameObject)},
-          mesh{new Mesh()}
+          mMeshRenderer{new MeshRenderer(gameObject)},
+          mMesh{new Mesh()}
 
 {
-    mesh->setMeshData(MeshFactory::createCubeData(2));
-    meshRenderer->setMesh(mesh);
+    mMesh->setMeshData(MeshFactory::createCubeData(2));
+    mMeshRenderer->setMesh(mMesh);
 }
 
 kick::Skybox::~Skybox() {
-    delete meshRenderer;
+    delete mMeshRenderer;
 }
 
 void kick::Skybox::render(kick::EngineUniforms *engineUniforms, kick::Material *replacementMaterial) {
     if (!replacementMaterial){
         glDepthRange(0.99999f,1);
-        meshRenderer->render(engineUniforms, nullptr);
+        mMeshRenderer->render(engineUniforms, nullptr);
         glDepthRange(0,1);  // default
     }
 }
 
-int kick::Skybox::getRenderOrder() {
+int kick::Skybox::renderOrder() {
     return 1999;
 }
 
-kick::Material *kick::Skybox::getMaterial() const {
-    return meshRenderer->getMaterial();
+kick::Material *kick::Skybox::material() const {
+    return mMeshRenderer->material();
 }
 
 void kick::Skybox::setMaterial(kick::Material *material) {
-    meshRenderer->setMaterial(material);
+    mMeshRenderer->setMaterial(material);
 }

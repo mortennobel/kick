@@ -58,7 +58,7 @@ namespace kick {
         return true;
     }
     
-    ObjMaterial* ObjData::getMaterial(std::string name){
+    ObjMaterial* ObjData::material(std::string name){
         for (auto & mat : materials){
             if (mat.name == name){
                 return &mat;
@@ -67,7 +67,7 @@ namespace kick {
         return nullptr;
     }
 
-    std::vector<unsigned int> ObjData::getIndices() {
+    std::vector<unsigned int> ObjData::indices() {
         std::vector<unsigned int> res;
         for (auto & f : faces){
             assert (f.size()==3);
@@ -83,7 +83,7 @@ namespace kick {
         return res;
     }
 
-    MeshData *ObjData::getMeshData() {
+    MeshData *ObjData::meshData() {
         MeshData *meshData = new MeshData();
 
         struct tuple_hash

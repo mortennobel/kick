@@ -17,54 +17,54 @@ namespace kick {
     
     
     void Light::updateIntensity(){
-        colorIntensity = color * intensity;
+        mColorIntensity = mColor * mIntensity;
     }
     
     void Light::setColor(glm::vec3 color) {
-        this->color = color;
+        this->mColor = color;
         updateIntensity();
     }
     
-    glm::vec3 Light::getColor(){
-        return color;
+    glm::vec3 Light::color(){
+        return mColor;
     }
     
     void Light::setIntensity(float intensity){
-        this->intensity = intensity; updateIntensity();
+        this->mIntensity = intensity; updateIntensity();
     }
     
-    float Light::getIntensity() {
-        return intensity;
+    float Light::intensity() {
+        return mIntensity;
     }
     
     void Light::setLightType(LightType lightType) {
-        assert(this->lightType == LightType::Uninitialized);
-        this->lightType = lightType;
+        assert(this->mLightType == LightType::Uninitialized);
+        this->mLightType = lightType;
         lightTypeChanged.notifyListeners(this);
     };
     
-    LightType Light::getLightType(){
-        return lightType;
+    LightType Light::lightType(){
+        return mLightType;
     }
     
-    glm::vec3 Light::getColorIntensity(){
-        return colorIntensity;
+    glm::vec3 Light::colorIntensity(){
+        return mColorIntensity;
     }
 
-    glm::vec3 Light::getAttenuation() const {
-        return attenuation;
+    glm::vec3 Light::attenuation() const {
+        return mAttenuation;
     }
 
     void Light::setAttenuation(glm::vec3 attenuation) {
-        Light::attenuation = attenuation;
+        Light::mAttenuation = attenuation;
     }
 
-    ShadowType const &Light::getShadowType() const {
-        return shadowType;
+    ShadowType const &Light::shadowType() const {
+        return mShadowType;
     }
 
     void Light::setShadowType(ShadowType const &shadowType) {
-        Light::shadowType = shadowType;
+        Light::mShadowType = shadowType;
     }
 
 

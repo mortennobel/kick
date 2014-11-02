@@ -29,7 +29,7 @@ using namespace std;
 namespace kick {
     
     Scene::Scene(const std::string & name)
-    :name{name}
+    : mName{name}
     {
     }
     
@@ -37,66 +37,66 @@ namespace kick {
     }
     
     Scene::Scene(Scene&& scene)
-    :gameObjects(move(scene.gameObjects)),
-     cameras(move(scene.cameras)),
-     name(move(scene.name))
+    : mGameObjects(move(scene.mGameObjects)),
+     mCameras(move(scene.mCameras)),
+     mName(move(scene.mName))
     {}
     
     Scene& Scene::operator=(Scene&& other){
         if (this != &other){
-            gameObjects = move(other.gameObjects);
-            cameras = move(other.cameras);
-            name = move(other.name);
+            mGameObjects = move(other.mGameObjects);
+            mCameras = move(other.mCameras);
+            mName = move(other.mName);
         }
         return *this;
     }
     
     GameObject *Scene::createGameObject(const string &name){
-        auto res = new GameObject(name, this, ++uniqueIdGenerator);
+        auto res = new GameObject(name, this, ++mUniqueIdGenerator);
         EventListener<std::pair<Component*, ComponentUpdateStatus>> eventListener = res->componentEvent.createListener([&](std::pair<Component*, ComponentUpdateStatus> e){
             componentListener(e.first, e.second);
         });
 
-        gameObjects.push_back(unique_ptr<GameObject>(res));
-        componentListeners[res] = move(eventListener);
+        mGameObjects.push_back(unique_ptr<GameObject>(res));
+        mComponentListeners[res] = move(eventListener);
         return res;
     }
 
     void Scene::destroyGameObject(GameObject *gameObject){
-        for (int i=0;i<gameObjects.size();i++){
-            if (gameObjects[i].get() == gameObject){
-                componentListeners.erase(gameObject);
-                gameObjects.erase(gameObjects.begin()+i);
+        for (int i=0;i< mGameObjects.size();i++){
+            if (mGameObjects[i].get() == gameObject){
+                mComponentListeners.erase(gameObject);
+                mGameObjects.erase(mGameObjects.begin()+i);
                 return;
             }
         }
     }
     
-    std::string Scene::getName() const{
-        return name;
+    std::string Scene::name() const{
+        return mName;
     }
     
     void Scene::setName(std::string name){
-        this->name = name;
+        this->mName = name;
     }
     
     GameObjectIter Scene::begin() const {
-        return gameObjects.begin();
+        return mGameObjects.begin();
     }
     
     GameObjectIter Scene::end() const {
-        return gameObjects.end();
+        return mGameObjects.end();
     }
         
     void Scene::update(){
-        for (auto & component : updatable) {
+        for (auto & component : mUpdatable) {
             component->update();
         }
     }
     
     void Scene::render(EngineUniforms* engineUniforms){
-        engineUniforms->sceneLights = &sceneLights;
-        for (auto & camera : cameras) {
+        engineUniforms->sceneLights = &mSceneLights;
+        for (auto & camera : mCameras) {
             engineUniforms->currentCamera = camera;
             camera->render(engineUniforms);
         }
@@ -108,52 +108,52 @@ namespace kick {
         Light *light = dynamic_cast<Light*>(component);
         if (status == ComponentUpdateStatus::Created){
             if (camera){
-                cameras.push_back(camera);
+                mCameras.push_back(camera);
             } else if (light){
-                lights[light] = light->lightTypeChanged.createListener([&](Light* l){
+                mLights[light] = light->lightTypeChanged.createListener([&](Light* l){
                     rebuildSceneLights();
                 }, 0);
                 addLight(light);
             }
             auto updateable = dynamic_cast<Updatable *>(component);
             if (updateable){
-                updatable.push_back(updateable);
+                mUpdatable.push_back(updateable);
             }
         }
         if (status == ComponentUpdateStatus::Destroyed){
             if (camera){
-                auto pos = find(cameras.begin(), cameras.end(), camera);
-                if (pos != cameras.end()){
-                    cameras.erase(pos);
+                auto pos = find(mCameras.begin(), mCameras.end(), camera);
+                if (pos != mCameras.end()){
+                    mCameras.erase(pos);
                 }
             } else if (light){
                 // rebuild lights
-                auto lightPos = lights.find(light);
-                if (lightPos != lights.end()){
-                    lights.erase(lightPos);
+                auto lightPos = mLights.find(light);
+                if (lightPos != mLights.end()){
+                    mLights.erase(lightPos);
                     rebuildSceneLights();
                 }
             }
             auto updateable = dynamic_cast<Updatable *>(component);
             if (updateable){
-                auto pos = find(updatable.begin(), updatable.end(), updateable);
-                if (pos != updatable.end()){
-                    updatable.erase(pos);
+                auto pos = find(mUpdatable.begin(), mUpdatable.end(), updateable);
+                if (pos != mUpdatable.end()){
+                    mUpdatable.erase(pos);
                 }
             }
         }
     }
 
     void Scene::addLight(Light *light) {
-        switch (light->getLightType()){
+        switch (light->lightType()){
             case LightType::Ambient:
-                this->sceneLights.ambientLight = light;
+                this->mSceneLights.ambientLight = light;
                 break;
             case LightType::Directional:
-                this->sceneLights.directionalLight = light;
+                this->mSceneLights.directionalLight = light;
                 break;
             case LightType::Point:
-                this->sceneLights.pointLights.push_back(light);
+                this->mSceneLights.pointLights.push_back(light);
                 break;
             case LightType::Uninitialized:
                 break;
@@ -250,8 +250,8 @@ namespace kick {
     }
 
     void Scene::rebuildSceneLights() {
-        sceneLights.clear();
-        for (auto & l : lights){
+        mSceneLights.clear();
+        for (auto & l : mLights){
             addLight(l.first);
         }
     }
@@ -267,9 +267,9 @@ namespace kick {
         return panel;
     }
 
-    GameObject *Scene::getGameObjectByUID(int32_t uid) {
+    GameObject *Scene::gameObjectByUID(int32_t uid) {
         for (auto & gameObject : *this){
-            if (gameObject->getUniqueId() == uid){
+            if (gameObject->uniqueId() == uid){
                 return gameObject.get();
             }
         }

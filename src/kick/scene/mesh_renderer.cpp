@@ -15,63 +15,63 @@
 namespace kick {
     MeshRenderer::MeshRenderer(GameObject *gameObject)
     :ComponentRenderable{gameObject} {
-        transform = gameObject->getTransform();
+        mTransform = gameObject->transform();
     }
     
     MeshRenderer::~MeshRenderer(){
     }
 
     void MeshRenderer::render(EngineUniforms *engineUniforms, Material* replacementMaterial){
-        if (!isEnabled()){
+        if (!enabled()){
             return;
         }
-        if (mesh == nullptr){
+        if (mMesh == nullptr){
             logWarning("Cannot render mesh is null");
         }
-        for (unsigned int i=0;i<materials.size();i++){
-            auto material = replacementMaterial ? replacementMaterial : materials[i];
-            auto shader = material->getShader().get();
-            mesh->bind(shader);
-            shader->bind_uniforms(material, engineUniforms, transform);
-            mesh->render(i);
+        for (unsigned int i=0;i< mMaterials.size();i++){
+            auto material = replacementMaterial ? replacementMaterial : mMaterials[i];
+            auto shader = material->shader().get();
+            mMesh->bind(shader);
+            shader->bind_uniforms(material, engineUniforms, mTransform);
+            mMesh->render(i);
         }
     }
     
     void MeshRenderer::setMesh(Mesh *mesh){
-        this->mesh = mesh;
+        this->mMesh = mesh;
     }
     
-    Mesh* MeshRenderer::getMesh(){
-        return mesh;
+    Mesh* MeshRenderer::mesh(){
+        return mMesh;
     }
     
     void MeshRenderer::setMaterials(const std::vector<Material *> &mats){
-        this->materials = mats;
+        this->mMaterials = mats;
     }
     
-    const std::vector<Material*> & MeshRenderer::getMaterials(){
-        return materials;
+    const std::vector<Material*> & MeshRenderer::materials(){
+        return mMaterials;
     }
     
     void MeshRenderer::setMaterial(Material *material){
-        if (materials.size()==0){
-            materials.push_back(material);
+        if (mMaterials.size()==0){
+            mMaterials.push_back(material);
         } else {
-            materials[0] = material;
+            mMaterials[0] = material;
         }
     }
     
-    Material* MeshRenderer::getMaterial(){
-        if (materials.size()==0){
+    Material* MeshRenderer::material(){
+        if (mMaterials.size()==0){
             return nullptr;
         }
-        return materials[0];
+        return mMaterials[0];
     }
 
-    int MeshRenderer::getRenderOrder() {
-        if (materials.size() == 0){
+    int MeshRenderer::renderOrder() {
+        if (mMaterials.size() == 0){
             return 0;
         }
-        return materials[0]->getRenderOrder();
+        return mMaterials[0]->renderOrder();
     }
 }

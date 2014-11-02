@@ -30,46 +30,46 @@ namespace kick {
         template <typename C, typename... T>
         C *addComponent(T... t);
         template <typename C>
-        C* getComponent();
+        C* component();
         template <typename C>
-        std::vector<C*> getComponents();
+        std::vector<C*> components();
         template <typename C>
-        C* getComponentInParent();
+        C*componentInParent();
         template <typename C>
-        std::vector<C*> getComponentsInParent();
+        std::vector<C*> componentsInParent();
         template <typename C>
-        C* getComponentInChildren();
+        C*componentInChildren();
         template <typename C>
-        std::vector<C*> getComponentsInChildren();
+        std::vector<C*> componentsInChildren();
         bool destroyComponent(Component *component);
         ConstComponentIter begin() const;
         ConstComponentIter end() const;
         ComponentIter begin();
         ComponentIter end();
         Event<std::pair<Component*, ComponentUpdateStatus>> componentEvent;
-        std::string getName() const;
+        std::string name() const;
         void setName(std::string str);
 
-        Transform *getTransform(){ return transform; }
+        Transform *transform(){ return mTransform; }
         
-        Scene* getScene(){ return scene; }
+        Scene*scene(){ return mScene; }
 
-        int getLayer() const;
+        int layer() const;
         void setLayer(int layer);
         friend class Scene;
 
-        int32_t getUniqueId();
+        int32_t uniqueId();
     private:
         GameObject(const std::string &name, Scene *scene, int uniqueId);
-        Scene *scene;
-        int uniqueId;
-        std::string name;
-        int layer = 1;
-        bool destroyed = false;
-        std::vector<Component*> components;
+        Scene *mScene;
+        int mUniqueId;
+        std::string mName;
+        int mLayer = 1;
+        bool mDestroyed = false;
+        std::vector<Component*> mComponents;
         std::vector<Component*> newComponents;
         std::vector<std::function<void (Component*, ComponentUpdateStatus)>> componentListeners;
-        Transform *transform;
+        Transform *mTransform;
     };
 };
 

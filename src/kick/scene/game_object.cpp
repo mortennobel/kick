@@ -15,43 +15,43 @@ using namespace std;
 namespace kick {
     
     GameObject::GameObject(const string &name, Scene* scene, int uniqueId)
-    :name{name}, scene{scene}, uniqueId{uniqueId}, components{}, componentListeners{}
+    : mName{name}, mScene{scene}, mUniqueId{uniqueId}, mComponents{}, componentListeners{}
     {
-        transform = addComponent<Transform>();
+        mTransform = addComponent<Transform>();
     }
     
     GameObject::GameObject(const GameObject& other)
-        :name(other.name), components(other.components), componentListeners(other.componentListeners){
+        : mName(other.mName), mComponents(other.mComponents), componentListeners(other.componentListeners){
     }
  
     GameObject::~GameObject(){
-        for (auto p : components){
+        for (auto p : mComponents){
             delete p;
         }
     }
     
     GameObject::GameObject(GameObject&& other)
-    :name(move(other.name)), components(move(other.components)), componentListeners(move(other.componentListeners)){
-        other.destroyed = true;
+    : mName(move(other.mName)), mComponents(move(other.mComponents)), componentListeners(move(other.componentListeners)){
+        other.mDestroyed = true;
     }
     
     GameObject& GameObject::operator=(GameObject&& other) {
         if (this != &other)
         {
-            name = move(other.name);
-            components = move(other.components);
+            mName = move(other.mName);
+            mComponents = move(other.mComponents);
             componentListeners = move(other.componentListeners);
-            other.destroyed = true;
+            other.mDestroyed = true;
         }
         return *this;
     }
     
     bool GameObject::destroyComponent(Component *component){
-        auto pos = find(components.begin(), components.end(), component);
-        if (pos != components.end()){
+        auto pos = find(mComponents.begin(), mComponents.end(), component);
+        if (pos != mComponents.end()){
             component->deactivated();
             componentEvent.notifyListeners({component, ComponentUpdateStatus::Destroyed});
-            components.erase(pos);
+            mComponents.erase(pos);
             delete component;
             return true;
         }
@@ -59,43 +59,43 @@ namespace kick {
     }
     
     ComponentIter GameObject::begin() {
-        return components.begin();
+        return mComponents.begin();
     }
     
     ComponentIter GameObject::end() {
-        return components.end();
+        return mComponents.end();
     }
     
     ConstComponentIter GameObject::begin() const{
-        return components.begin();
+        return mComponents.begin();
     }
     
     ConstComponentIter GameObject::end() const{
-        return components.end();
+        return mComponents.end();
     }
     
-    std::string GameObject::getName() const {
-        return name;
+    std::string GameObject::name() const {
+        return mName;
     }
     
     void GameObject::setName(std::string str){
-        name = str;
+        mName = str;
     }
 
-    int GameObject::getLayer() const {
-        return layer;
+    int GameObject::layer() const {
+        return mLayer;
     }
 
     void GameObject::setLayer(int layer) {
-        if (GameObject::layer != layer){
-            GameObject::layer = layer;
-            for (auto c : components){
+        if (GameObject::mLayer != layer){
+            GameObject::mLayer = layer;
+            for (auto c : mComponents){
                 componentEvent.notifyListeners({c, ComponentUpdateStatus::Updated});
             }
         }
     }
 
-    int GameObject::getUniqueId() {
-        return uniqueId;
+    int GameObject::uniqueId() {
+        return mUniqueId;
     }
 };

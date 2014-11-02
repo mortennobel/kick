@@ -92,23 +92,23 @@ namespace kick {
         glDrawElements(mode, count, type, offset);
     }
     
-    std::string Mesh::getName(){
-        return name;
+    std::string Mesh::name(){
+        return mName;
     }
     
     void Mesh::setName(std::string n){
-        name = n;
+        mName = n;
     }
     
-    MeshData *Mesh::getMeshData() {
+    MeshData *Mesh::meshData() {
         return mesh_data;
     }
     
     void Mesh::setMeshData(MeshData *m){
         mesh_data = m;
         if (m != nullptr){
-            interleavedFormat = m->getInterleavedFormat();
-            submeshData = m->getIndicesFormat();
+            interleavedFormat = m->interleavedFormat();
+            submeshData = m->indicesFormat();
             updateMeshData();
         } else {
             interleavedFormat.clear();
@@ -117,13 +117,13 @@ namespace kick {
     
     void Mesh::updateMeshData(){
         glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
-        vector<float> data = mesh_data->getInterleavedData();
+        vector<float> data = mesh_data->interleavedData();
         GLsizeiptr vertexDataSize =data.size()*sizeof(float);
-        glBufferData(GL_ARRAY_BUFFER, vertexDataSize, data.data(), mesh_data->getMeshUsageVal());
+        glBufferData(GL_ARRAY_BUFFER, vertexDataSize, data.data(), mesh_data->meshUsageVal());
         
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
-        vector<GLushort> indices = mesh_data->getIndices();
+        vector<GLushort> indices = mesh_data->indices();
         GLsizeiptr indicesSize = indices.size()*sizeof(GLushort);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices.data(), mesh_data->getMeshUsageVal());
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices.data(), mesh_data->meshUsageVal());
     }
 };

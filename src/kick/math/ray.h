@@ -18,14 +18,14 @@ namespace kick {
         
         bool closestPoints(Ray otherRay, glm::vec3& outPoint1, glm::vec3& outPoint2);
         
-        glm::vec3 const & getOrigin() const;
+        glm::vec3 const &origin() const;
         void setOrigin(glm::vec3 const &origin);
-        glm::vec3 const & getDirection() const;
+        glm::vec3 const &direction() const;
         void setDirection(glm::vec3 const &direction);
 
-        glm::vec3 getPoint(float offset) const;
+        glm::vec3 point(float offset) const;
     private:
-        glm::vec3 origin;
-        glm::vec3 direction;
+        glm::vec3 mOrigin;
+        glm::vec3 mDirection;
     };
 }

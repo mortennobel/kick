@@ -28,21 +28,21 @@ using namespace glm;
 namespace kick {
     
     Camera::Camera(GameObject *gameObject)
-    :Component(gameObject), clearFlag(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT),
-     projectionMatrix{1}{
-        Scene* scene = gameObject->getScene();
+    :Component(gameObject), mClearFlag(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT),
+     mProjectionMatrix{1}{
+        Scene* scene = gameObject->scene();
         componentListener = scene->componentEvents.createListener([&](pair<Component*, ComponentUpdateStatus> value){
             if (value.second == ComponentUpdateStatus::Created){
                 auto r = includeComponent(value.first);
                 if (r){
-                    renderableComponents.push_back(r);
+                    mRenderableComponents.push_back(r);
                 }
             } else if (value.second == ComponentUpdateStatus::Destroyed){
                 auto r = includeComponent(value.first);
                 if (r) {
-                    auto iter = find(renderableComponents.begin(), renderableComponents.end(), value.first);
-                    if (iter != renderableComponents.end()) {
-                        renderableComponents.erase(iter);
+                    auto iter = find(mRenderableComponents.begin(), mRenderableComponents.end(), value.first);
+                    if (iter != mRenderableComponents.end()) {
+                        mRenderableComponents.erase(iter);
                     }
                 }
             }
@@ -52,18 +52,18 @@ namespace kick {
 
     Camera::~Camera() {
         destroyShadowMap();
-        delete pickingRenderTarget;
+        delete mPickingRenderTarget;
     }
     
 
     
     void Camera::rebuildComponentList(){
-        renderableComponents.clear();
-        for (auto & gameObject : *gameObject->getScene()) {
-            for (auto & component :  *gameObject){
+        mRenderableComponents.clear();
+        for (auto & gameObject_ : *gameObject()->scene()) {
+            for (auto & component :  *gameObject_){
                 auto r = includeComponent(component);
                 if (r){
-                    renderableComponents.push_back(r);
+                    mRenderableComponents.push_back(r);
                 }
             }
         }
@@ -86,12 +86,12 @@ namespace kick {
         componentListener = {};
     }
     
-    glm::vec4 Camera::getClearColor(){
-        return clearColor;
+    glm::vec4 Camera::clearColor(){
+        return mClearColor;
     }
     
     void Camera::setClearColor(glm::vec4 clearColor){
-        this->clearColor = clearColor;
+        this->mClearColor = clearColor;
     }
     
     void Camera::setupViewport(vec2 &offset, vec2 &dim){
@@ -108,23 +108,23 @@ namespace kick {
     void Camera::setupCamera(EngineUniforms *engineUniforms) {
 
         vec2 viewportDimension = (vec2)/*renderTarget? renderTarget.dimension : */ engineUniforms->viewportDimension.getValue();
-        vec2 offset = viewportDimension * normalizedViewportOffset;
-        vec2 dim = viewportDimension * normalizedViewportDim;
+        vec2 offset = viewportDimension * mNormalizedViewportOffset;
+        vec2 dim = viewportDimension * mNormalizedViewportDim;
         setupViewport(offset, dim);
-        if (clearFlag) {
-            if (isClearColor()) {
-                glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
+        if (mClearFlag) {
+            if (clearColorBuffer()) {
+                glClearColor(mClearColor.r, mClearColor.g, mClearColor.b, mClearColor.a);
             }
-            glClear(clearFlag);
+            glClear(mClearFlag);
         }
 
-        engineUniforms->viewMatrix = getViewMatrix();
-        engineUniforms->viewProjectionMatrix = projectionMatrix * engineUniforms->viewMatrix;
-        engineUniforms->projectionMatrix = projectionMatrix;
+        engineUniforms->viewMatrix = viewMatrix();
+        engineUniforms->viewProjectionMatrix = mProjectionMatrix * engineUniforms->viewMatrix;
+        engineUniforms->projectionMatrix = mProjectionMatrix;
     }
 
-    glm::mat4 Camera::getViewMatrix(){
-        return gameObject->getTransform()->getGlobalTRSInverse();
+    glm::mat4 Camera::viewMatrix(){
+        return mGameObject->transform()->globalTRSInverse();
     }
 
     void Camera::renderShadowMap(Light* directionalLight){
@@ -132,38 +132,38 @@ namespace kick {
     }
     
     void Camera::render(EngineUniforms *engineUniforms){
-        if (!isEnabled()){
+        if (!enabled()){
             return;
         }
         auto sceneLights = engineUniforms->sceneLights;
 
-        if (shadow && sceneLights->directionalLight && sceneLights->directionalLight->getShadowType() != ShadowType::None) {
+        if (mShadow && sceneLights->directionalLight && sceneLights->directionalLight->shadowType() != ShadowType::None) {
             renderShadowMap(sceneLights->directionalLight);
         }
 
-        if (target){
-            target->bind();
+        if (mTarget){
+            mTarget->bind();
         }
-        bool customViewport = normalizedViewportOffset != vec2{0} || normalizedViewportDim != vec2{1};
+        bool customViewport = mNormalizedViewportOffset != vec2{0} || mNormalizedViewportDim != vec2{1};
         if (customViewport){
             glEnable(GL_SCISSOR_TEST);
         }
         setupCamera(engineUniforms);
         engineUniforms->sceneLights->recomputeLight(engineUniforms->viewMatrix);
-        sort(renderableComponents.begin(), renderableComponents.end(), [](ComponentRenderable* r1, ComponentRenderable* r2){
-            return r1->getRenderOrder() < r2->getRenderOrder();
+        sort(mRenderableComponents.begin(), mRenderableComponents.end(), [](ComponentRenderable* r1, ComponentRenderable* r2){
+            return r1->renderOrder() < r2->renderOrder();
         });
 
-        for (auto c : renderableComponents){
-            if (c->getGameObject()->getLayer() & cullingMask) {
-                c->render(engineUniforms, replacementMaterial.get());
+        for (auto c : mRenderableComponents){
+            if (c->gameObject()->layer() & mCullingMask) {
+                c->render(engineUniforms, mReplacementMaterial.get());
             }
         }
-        if (target){
-            target->unbind();
+        if (mTarget){
+            mTarget->unbind();
         }
 
-        if (pickQueue.size() > 0){
+        if (mPickQueue.size() > 0){
             handleObjectPicking(engineUniforms);
         }
         if (customViewport){
@@ -173,12 +173,12 @@ namespace kick {
 
     void Camera::handleObjectPicking(EngineUniforms *engineUniforms) {
         auto viewportSize = engineUniforms->viewportDimension.getValue();
-        if (pickingRenderTarget == nullptr || viewportSize != pickingRenderTarget->getSize()){
-            delete pickingRenderTarget;
-            pickingRenderTarget = new TextureRenderTarget();
-            pickingRenderTarget->setSize(viewportSize);
-            if (pickingTexture == nullptr){
-                pickingTexture = make_shared<Texture2D>();
+        if (mPickingRenderTarget == nullptr || viewportSize != mPickingRenderTarget->size()){
+            delete mPickingRenderTarget;
+            mPickingRenderTarget = new TextureRenderTarget();
+            mPickingRenderTarget->setSize(viewportSize);
+            if (mPickingTexture == nullptr){
+                mPickingTexture = make_shared<Texture2D>();
             }
             ImageFormat imageFormat{};
             imageFormat.mipmap = Mipmap::None;
@@ -187,27 +187,27 @@ namespace kick {
             sampler.filterMin = TextureFilter::Nearest;
             sampler.wrapS = TextureWrap::ClampToEdge;
             sampler.wrapT = TextureWrap::ClampToEdge;
-            pickingTexture->setTextureSampler(sampler);
-            pickingTexture->setData(viewportSize.x, viewportSize.y, nullptr, imageFormat);
+            mPickingTexture->setTextureSampler(sampler);
+            mPickingTexture->setData(viewportSize.x, viewportSize.y, nullptr, imageFormat);
 
-            pickingRenderTarget->setColorTexture(0, pickingTexture);
-            if (pickingMaterial.get() == nullptr){
-                pickingMaterial = std::shared_ptr<Material>(new Material());
-                pickingMaterial->setShader(Project::loadShader("assets/shaders/__pick.shader"));
+            mPickingRenderTarget->setColorTexture(0, mPickingTexture);
+            if (mPickingMaterial.get() == nullptr){
+                mPickingMaterial = std::shared_ptr<Material>(new Material());
+                mPickingMaterial->setShader(Project::loadShader("assets/shaders/__pick.shader"));
             }
-            pickingRenderTarget->apply();
+            mPickingRenderTarget->apply();
             glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
             glPixelStorei(GL_PACK_ALIGNMENT, 1);
         }
-        pickingRenderTarget->bind();
+        mPickingRenderTarget->bind();
         glClearColor(0, 0, 0, 0);
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-        for (auto c : renderableComponents){
-            if (c->getGameObject()->getLayer() & cullingMask) {
-                c->render(engineUniforms, pickingMaterial.get());
+        for (auto c : mRenderableComponents){
+            if (c->gameObject()->layer() & mCullingMask) {
+                c->render(engineUniforms, mPickingMaterial.get());
             }
         }
-        for (auto q : pickQueue){
+        for (auto q : mPickQueue){
             vector<glm::u8vec4> data((int)(q.size.x * q.size.y));
             glReadPixels(q.point.x, q.point.y, q.size.x, q.size.y, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *) glm::value_ptr(*data.data()));
             std::map<int,int> gameObjectFrequency;
@@ -222,72 +222,72 @@ namespace kick {
                     }
                 }
             }
-            auto scene = gameObject->getScene();
+            auto scene = mGameObject->scene();
             for (auto uid : gameObjectFrequency){
-                auto hitGameObject = scene->getGameObjectByUID(uid.first);
+                auto hitGameObject = scene->gameObjectByUID(uid.first);
                 if (hitGameObject) {
                     q.onPicked(hitGameObject, uid.second);
                 }
             }
         }
-        pickingRenderTarget->unbind();
-        pickQueue.clear();
+        mPickingRenderTarget->unbind();
+        mPickQueue.clear();
     }
 
-    void Camera::setClearColor(bool clear){
+    void Camera::setClearColorBuffer(bool clear){
         if (clear){
-            clearFlag |= GL_COLOR_BUFFER_BIT;
+            mClearFlag |= GL_COLOR_BUFFER_BIT;
         } else {
-            clearFlag &= ~GL_COLOR_BUFFER_BIT;
+            mClearFlag &= ~GL_COLOR_BUFFER_BIT;
         }
     }
     
-    bool Camera::isClearColor(){
-        return (bool) (clearFlag & GL_COLOR_BUFFER_BIT);
+    bool Camera::clearColorBuffer(){
+        return (bool) (mClearFlag & GL_COLOR_BUFFER_BIT);
     }
     
-    void Camera::setClearDepth(bool clear){
+    void Camera::setClearDepthBuffer(bool clear){
         if (clear){
-            clearFlag |= GL_DEPTH_BUFFER_BIT;
+            mClearFlag |= GL_DEPTH_BUFFER_BIT;
         } else {
-            clearFlag &= ~GL_DEPTH_BUFFER_BIT;
+            mClearFlag &= ~GL_DEPTH_BUFFER_BIT;
         }
     }
     
-    bool Camera::isClearDepth(){
-        return (bool) (clearFlag & GL_DEPTH_BUFFER_BIT);
+    bool Camera::clearDepthBuffer(){
+        return (bool) (mClearFlag & GL_DEPTH_BUFFER_BIT);
     }
     
-    void Camera::setClearStencil(bool clear){
+    void Camera::setClearStencilBuffer(bool clear){
         if (clear){
-            clearFlag |= GL_STENCIL_BUFFER_BIT;
+            mClearFlag |= GL_STENCIL_BUFFER_BIT;
         } else {
-            clearFlag &= ~GL_STENCIL_BUFFER_BIT;
+            mClearFlag &= ~GL_STENCIL_BUFFER_BIT;
         }
     }
     
-    bool Camera::isClearStencil(){
-        return (bool) (clearFlag & GL_STENCIL_BUFFER_BIT);
+    bool Camera::clearStencilBuffer(){
+        return (bool) (mClearFlag & GL_STENCIL_BUFFER_BIT);
     }
 
-    glm::mat4 Camera::getProjectionMatrix() {
-        return projectionMatrix;
+    glm::mat4 Camera::projectionMatrix() {
+        return mProjectionMatrix;
     }
 
     void Camera::setProjectionMatrix(glm::mat4 projectionMatrix) {
-        this->projectionMatrix = projectionMatrix;
+        this->mProjectionMatrix = projectionMatrix;
     }
 
     void Camera::resetProjectionMatrix(){
     }
 
-    bool Camera::isShadow() const {
-        return shadow;
+    bool Camera::shadow() const {
+        return mShadow;
     }
 
     void Camera::setShadow(bool renderShadow) {
-        if (Camera::shadow != renderShadow) {
-            Camera::shadow = renderShadow;
+        if (Camera::mShadow != renderShadow) {
+            Camera::mShadow = renderShadow;
             if (renderShadow){
                 initShadowMap();
             } else {
@@ -297,55 +297,55 @@ namespace kick {
     }
 
     void Camera::initShadowMap() {
-        shadowMapShader = Project::loadShader("assets/shaders/__shadowmap.shader");
-        shadowMapMaterial = new Material();
-        shadowMapMaterial->setShader(shadowMapShader);
+        mShadowMapShader = Project::loadShader("assets/shaders/__shadowmap.shader");
+        mShadowMapMaterial = new Material();
+        mShadowMapMaterial->setShader(mShadowMapShader);
     }
 
     void Camera::destroyShadowMap() {
     }
 
-    int Camera::getCullingMask() const {
-        return cullingMask;
+    int Camera::cullingMask() const {
+        return mCullingMask;
     }
 
     void Camera::setCullingMask(int cullingMask) {
-        Camera::cullingMask = cullingMask;
+        Camera::mCullingMask = cullingMask;
     }
 
-    TextureRenderTarget *Camera::getTarget() const {
-        return target;
+    TextureRenderTarget *Camera::target() const {
+        return mTarget;
     }
 
     void Camera::setTarget(TextureRenderTarget *target) {
-        Camera::target = target;
+        Camera::mTarget = target;
     }
 
     void Camera::pick(glm::ivec2 point, std::function<void(GameObject*,int)> onPicked, glm::ivec2 size){
-        pickQueue.push_back({point, size, onPicked});
+        mPickQueue.push_back({point, size, onPicked});
     }
 
-    std::shared_ptr<Material> const &Camera::getReplacementMaterial() const {
-        return replacementMaterial;
+    std::shared_ptr<Material> const &Camera::replacementMaterial() const {
+        return mReplacementMaterial;
     }
 
     void Camera::setReplacementMaterial(std::shared_ptr<Material> const &replacementMaterial) {
-        Camera::replacementMaterial = replacementMaterial;
+        Camera::mReplacementMaterial = replacementMaterial;
     }
 
-    glm::vec2 const &Camera::getViewportOffset() const {
-        return normalizedViewportOffset;
+    glm::vec2 const &Camera::viewportOffset() const {
+        return mNormalizedViewportOffset;
     }
 
     void Camera::setViewportOffset(glm::vec2 const &normalizedViewportOffset) {
-        Camera::normalizedViewportOffset = normalizedViewportOffset;
+        Camera::mNormalizedViewportOffset = normalizedViewportOffset;
     }
 
-    glm::vec2 const &Camera::getViewportDim() const {
-        return normalizedViewportDim;
+    glm::vec2 const &Camera::viewportDim() const {
+        return mNormalizedViewportDim;
     }
 
     void Camera::setViewportDim(glm::vec2 const &normalizedViewportDim) {
-        Camera::normalizedViewportDim = normalizedViewportDim;
+        Camera::mNormalizedViewportDim = normalizedViewportDim;
     }
 }

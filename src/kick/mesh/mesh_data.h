@@ -82,50 +82,50 @@ namespace kick {
     public:
         MeshData();
         void setAabb(const AABB &aabb);
-        const AABB & getAabb();
+        const AABB &aabb();
 
-        GLenum getMeshUsageVal();
+        GLenum meshUsageVal();
 
         void setPosition(const std::vector<glm::vec3> &p);
-        const std::vector<glm::vec3>&getPosition();
+        const std::vector<glm::vec3>&position();
         void setNormal(const std::vector<glm::vec3> &n);
-        const std::vector<glm::vec3>&getNormal();
+        const std::vector<glm::vec3>&normal();
         void setTexCoord0(const std::vector<glm::vec2> &u1);
-        const std::vector<glm::vec2>&getTexCoord0();
+        const std::vector<glm::vec2>&texCoord0();
         void setTexCoord1(const std::vector<glm::vec2> &u2);
-        const std::vector<glm::vec2>&getTexCoord1();
+        const std::vector<glm::vec2>&texCoord1();
         void setTangent(const std::vector<glm::vec3> &t);
-        const std::vector<glm::vec3>&getTangent();
+        const std::vector<glm::vec3>&tangent();
         void setColor(const std::vector<glm::vec4> &c);
-        const std::vector<glm::vec4>&getColor();
+        const std::vector<glm::vec4>&color();
         
         void setSubmesh(unsigned int index, const std::vector<GLushort> &indices, MeshType meshType);
-        const std::vector<GLushort>&getSubmeshIndices(unsigned int index) const;
+        const std::vector<GLushort>&submeshIndices(unsigned int index) const;
 
-        const MeshType getSubmeshType(unsigned int index) const;
+        const MeshType submeshType(unsigned int index) const;
         
-        unsigned int getSubmeshesCount();
-        GLsizei getSubmeshSize(unsigned int index);
+        unsigned int submeshesCount();
+        GLsizei submeshSize(unsigned int index);
         
-        std::vector<float> getInterleavedData();
-        std::vector<InterleavedRecord> getInterleavedFormat();
-        std::vector<GLushort> getIndices();
-        std::vector<SubMeshData> getIndicesFormat();
+        std::vector<float> interleavedData();
+        std::vector<InterleavedRecord> interleavedFormat();
+        std::vector<GLushort> indices();
+        std::vector<SubMeshData> indicesFormat();
         
         // recomputing normals (using angle weighted normals)
         void recomputeNormals();
 
-        MeshUsage getMeshUsage() const;
+        MeshUsage meshUsage() const;
         void setMeshUsage(MeshUsage meshUsage);
     private:
-        AABB aabb;
-        MeshUsage meshUsage = MeshUsage::StaticDraw;
-        std::vector<glm::vec3> position;
-        std::vector<glm::vec3> normal;
-        std::vector<glm::vec2> texCoord0;
-        std::vector<glm::vec2> texCoord1;
-        std::vector<glm::vec3> tangent;
-        std::vector<glm::vec4> color;
+        AABB mAabb;
+        MeshUsage mMeshUsage = MeshUsage::StaticDraw;
+        std::vector<glm::vec3> mPosition;
+        std::vector<glm::vec3> mNormal;
+        std::vector<glm::vec2> mTexCoord0;
+        std::vector<glm::vec2> mTexCoord1;
+        std::vector<glm::vec3> mTangent;
+        std::vector<glm::vec4> mColor;
         
         struct SubMeshInternal {
             std::vector<GLushort> indices;

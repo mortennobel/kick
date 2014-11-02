@@ -17,7 +17,7 @@ namespace kick {
     {
         setAnchor({0.5f,0.5f});
         textComponent = panel->createText(text);
-        textComponent->getTransform()->setParent(getTransform());
+        textComponent->transform()->setParent(transform());
         textComponent->setText(text);
         textComponent->setAnchor({0.5f,0.5f});
         textComponent->setOrder(getOrder()+1);
@@ -101,7 +101,7 @@ namespace kick {
 
     void Button::deactivated() {
         Sprite::deactivated();
-        getGameObject()->getScene()->destroyGameObject(textComponent->getGameObject());
+        gameObject()->scene()->destroyGameObject(textComponent->gameObject());
     }
 
     void Button::down(int button) {

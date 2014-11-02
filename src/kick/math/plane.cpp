@@ -16,7 +16,7 @@ namespace kick {
     }
 
 
-    glm::vec3 Plane::getNormal() const {
+    glm::vec3 Plane::normal() const {
         return (glm::vec3)plane;
     }
 
@@ -26,7 +26,7 @@ namespace kick {
         }
     }
 
-    float Plane::getDistanceToOrigo() const {
+    float Plane::distanceToOrigo() const {
         return plane.z;
     }
 
@@ -34,30 +34,30 @@ namespace kick {
         plane.z = d;
     }
 
-    glm::vec3 Plane::getPointOnPlane() const {
-        return getNormal() * getDistanceToOrigo();
+    glm::vec3 Plane::pointOnPlane() const {
+        return normal() * distanceToOrigo();
     }
 
     float Plane::distanceToPlane(glm::vec3 point) const {
-        return glm::dot(getNormal(), point) - getDistanceToOrigo();
+        return glm::dot(normal(), point) - distanceToOrigo();
     }
 
     float Plane::intersection(const Ray& line) const {
         using namespace std;
-        glm::vec3 v0 = getPointOnPlane();
-        glm::vec3 n = getNormal();
-        glm::vec3 u = line.getPoint(1) - line.getOrigin();
+        glm::vec3 v0 = pointOnPlane();
+        glm::vec3 n = normal();
+        glm::vec3 u = line.point(1) - line.origin();
         const double epsilon = 1e-10;
         double uDotN = glm::dot(u, n);
         if (abs(uDotN) < epsilon){
             return NAN;
         }
 
-        return glm::dot(n, (v0-line.getOrigin())) / uDotN;
+        return glm::dot(n, (v0- line.origin())) / uDotN;
     }
 
     glm::vec3 Plane::intersectionPoint(const Ray& line) const {
         float res = intersection(line);
-        return line.getPoint(res);
+        return line.point(res);
     }
 }

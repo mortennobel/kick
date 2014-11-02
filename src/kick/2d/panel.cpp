@@ -28,7 +28,7 @@ namespace kick{
         meshData->setMeshUsage(MeshUsage::DynamicDraw);
         mesh->setMeshData(meshData);
         material = new Material();
-        for (auto c : gameObject->getComponentsInChildren<Component2D>()){
+        for (auto c : gameObject->componentsInChildren<Component2D>()){
             registerComponent2D(c);
         }
     }
@@ -76,10 +76,10 @@ namespace kick{
         unsigned short index = 0;
         for (unsigned short i=0;i<sprites.size();i++){
             Sprite * sprite = sprites[i];
-            Transform* transform = sprite->getTransform();
+            Transform* transform = sprite->transform();
 
-            vec2 size = (vec2)sprite->getTextureAtlas()->getTextureSize();
-            mat4 toWorld = transform->getGlobalMatrix();
+            vec2 size = (vec2) sprite->getTextureAtlas()->textureSize();
+            mat4 toWorld = transform->globalMatrix();
             vec2 scale = sprite->getScale();
 
 
@@ -168,21 +168,21 @@ namespace kick{
 
         auto mat = replacementMaterial ? replacementMaterial : material;
         if (!replacementMaterial ){
-            material->setShader(sprites[0]->getTextureAtlas()->getShader());
-            material->setUniform("mainTexture", sprites[0]->getTextureAtlas()->getTexture());
+            material->setShader(sprites[0]->getTextureAtlas()->shader());
+            material->setUniform("mainTexture", sprites[0]->getTextureAtlas()->texture());
         }
-        auto shader = mat->getShader();
+        auto shader = mat->shader();
         assert(shader);
         mesh->bind(shader.get());
 
-        shader->bind_uniforms(material, engineUniforms, getTransform());
+        shader->bind_uniforms(material, engineUniforms, transform());
 
         mesh->render(0);
 
         sprites.clear();
     }
 
-    int Panel::getRenderOrder() {
+    int Panel::renderOrder() {
         return 0;
     }
 
@@ -192,8 +192,8 @@ namespace kick{
 
     void Panel::setCamera(Camera *camera) {
         Panel::camera = camera;
-        int cullingMask = camera->getCullingMask();
-        gameObject->setLayer((int)round(log2((float)cullingMask))+1); // set to largest value
+        int cullingMask = camera->cullingMask();
+        mGameObject->setLayer((int)round(log2((float)cullingMask))+1); // set to largest value
     }
 
     void Panel::deactivated() {
@@ -228,9 +228,9 @@ namespace kick{
 
     Sprite *Panel::createSprite(std::shared_ptr<TextureAtlas> textureAtlas, std::string spriteName, glm::vec2 pos) {
 
-        GameObject *gameObject = getGameObject()->getScene()->createGameObject("Sprite");
-        gameObject->getTransform()->setParent(getTransform());
-        Sprite* sprite = gameObject->addComponent<Sprite>();
+        GameObject *gameObject_ = gameObject()->scene()->createGameObject("Sprite");
+        gameObject_->transform()->setParent(transform());
+        Sprite* sprite = gameObject_->addComponent<Sprite>();
         sprite->setTextureAtlas(textureAtlas);
         sprite->setSpriteName(spriteName);
         return sprite;
@@ -238,9 +238,9 @@ namespace kick{
 
     Button *Panel::createButton() {
         std::shared_ptr<TextureAtlas> textureAtlas = Project::loadTextureAtlas("assets/ui/ui.txt");
-        GameObject *gameObject = getGameObject()->getScene()->createGameObject("Button");
-        gameObject->getTransform()->setParent(getTransform());
-        Button* button = gameObject->addComponent<Button>();
+        GameObject *gameObject_ = gameObject()->scene()->createGameObject("Button");
+        gameObject_->transform()->setParent(transform());
+        Button* button = gameObject_->addComponent<Button>();
         button->setText("Button");
         button->setTextureAtlas(textureAtlas);
         button->setNormal("button-normal.png");
@@ -252,8 +252,8 @@ namespace kick{
     }
 
     Text *Panel::createText(std::string text) {
-        auto go = getGameObject()->getScene()->createGameObject("Font");
-        go->getTransform()->setParent(getTransform());
+        auto go = gameObject()->scene()->createGameObject("Font");
+        go->transform()->setParent(transform());
         Text* textComponent = go->addComponent<Text>();
 
         auto font = Project::loadFont();
@@ -273,16 +273,16 @@ namespace kick{
             return;
         }
         vec2 mousePosition = (vec2) MouseInput::position();
-        vec2 screensize = (vec2)Engine::getContext()->getContextSurfaceDim();
+        vec2 screensize = (vec2) Engine::context()->getContextSurfaceDim();
         vec2 mouseClipCoord = ((mousePosition / screensize)*2.0f-vec2{1.0})*vec2{1,-1}; // correct
 
-        mat4 viewProjection = inverse(camera->getProjectionMatrix() * camera->getViewMatrix());
+        mat4 viewProjection = inverse(camera->projectionMatrix() * camera->viewMatrix());
         vec2 mouseWorldCoord = (vec2)(viewProjection * vec4(mouseClipCoord, 0, 1));
 
         for (auto ml : mouseListeners){
             Sprite* sprite = dynamic_cast<Sprite*>(ml);
             Bounds2 bounds = sprite->getTrimmedBounds();
-            vec2 mouseLocalCoord = (vec2)(sprite->getTransform()->getGlobalTRSInverse() * vec4{mouseWorldCoord, 0, 1});
+            vec2 mouseLocalCoord = (vec2)(sprite->transform()->globalTRSInverse() * vec4{mouseWorldCoord, 0, 1});
 
             auto mouseOverIter = find(mouseOver.begin(), mouseOver.end(), ml);
             bool wasMouseOver = mouseOverIter != mouseOver.end();

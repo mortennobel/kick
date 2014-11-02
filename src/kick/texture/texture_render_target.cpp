@@ -12,17 +12,17 @@ using namespace std;
 namespace kick {
     TextureRenderTarget::TextureRenderTarget()
     {
-        glGenFramebuffers(1, &framebuffer);
+        glGenFramebuffers(1, &mFramebuffer);
     }
 
     TextureRenderTarget::~TextureRenderTarget() {
-        glDeleteFramebuffers(1, &framebuffer);
-        framebuffer = 0;
+        glDeleteFramebuffers(1, &mFramebuffer);
+        mFramebuffer = 0;
     }
 
     void TextureRenderTarget::bind() {
-        assert(renderBuffers.size() > 0); // probably missing TextureRenderTarget.apply
-        glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+        assert(mRenderBuffers.size() > 0); // probably missing TextureRenderTarget.apply
+        glBindFramebuffer(GL_FRAMEBUFFER, mFramebuffer);
     }
 
     void TextureRenderTarget::unbind() {
@@ -30,31 +30,31 @@ namespace kick {
     }
 
     void TextureRenderTarget::apply() {
-        if (renderBuffers.size()) {
-            glDeleteRenderbuffers(renderBuffers.size(), renderBuffers.data());
-            renderBuffers.clear();
+        if (mRenderBuffers.size()) {
+            glDeleteRenderbuffers(mRenderBuffers.size(), mRenderBuffers.data());
+            mRenderBuffers.clear();
         }
-        glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+        glBindFramebuffer(GL_FRAMEBUFFER, mFramebuffer);
 
         // bind color attachment
-        if (colorTextures.size() > 0){
-            for (int i=0;i<colorTextures.size();i++) {
-                Texture2D* colorTexture = colorTextures[i].get();
-                glFramebufferTexture2D(GL_FRAMEBUFFER, (GLenum) (GL_COLOR_ATTACHMENT0+i), GL_TEXTURE_2D, colorTexture->textureid, 0);
+        if (mColorTextures.size() > 0){
+            for (int i=0;i< mColorTextures.size();i++) {
+                Texture2D* colorTexture = mColorTextures[i].get();
+                glFramebufferTexture2D(GL_FRAMEBUFFER, (GLenum) (GL_COLOR_ATTACHMENT0+i), GL_TEXTURE_2D, colorTexture->mTextureid, 0);
             }
         } else {
             GLuint renderBuffer;
             glGenRenderbuffers(1, &renderBuffer);
-            renderBuffers.push_back(renderBuffer);
+            mRenderBuffers.push_back(renderBuffer);
             glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer);
-            glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA4, size.x, size.y);
+            glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA4, mSize.x, mSize.y);
             glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderBuffer);
         }
 
         // bind depth attachments
         GLuint renderBuffer;
         glGenRenderbuffers(1, &renderBuffer);
-        renderBuffers.push_back(renderBuffer);
+        mRenderBuffers.push_back(renderBuffer);
         glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer);
         glRenderbufferStorage(GL_RENDERBUFFER,
 #ifdef EMSCRIPTEN
@@ -63,7 +63,7 @@ namespace kick {
                 GL_DEPTH_COMPONENT32,
 #endif
 
-                size.x, size.y);
+                mSize.x, mSize.y);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, renderBuffer);
 
         checkStatus();
@@ -114,33 +114,33 @@ namespace kick {
     }
 
     void TextureRenderTarget::setSize(glm::ivec2 size) {
-        TextureRenderTarget::size = size;
+        TextureRenderTarget::mSize = size;
     }
 
-    glm::ivec2 TextureRenderTarget::getSize() const {
-        return size;
+    glm::ivec2 TextureRenderTarget::size() const {
+        return mSize;
     }
 
     void TextureRenderTarget::setColorTexture(size_t channel, std::shared_ptr<Texture2D> texture) {
-        if (colorTextures.size() <= channel){
-            colorTextures.resize(channel+1, nullptr);
+        if (mColorTextures.size() <= channel){
+            mColorTextures.resize(channel+1, nullptr);
         }
-        colorTextures[channel] = texture;
+        mColorTextures[channel] = texture;
     }
 
-    std::shared_ptr<Texture2D> TextureRenderTarget::getColorTexture(size_t channel) {
-        if (colorTextures.size() <= channel){
+    std::shared_ptr<Texture2D> TextureRenderTarget::colorTexture(size_t channel) {
+        if (mColorTextures.size() <= channel){
             return nullptr;
         }
-        return colorTextures[channel];
+        return mColorTextures[channel];
     }
 
     bool TextureRenderTarget::deleteColorTexture(size_t channel) {
-        if (colorTextures.size() <= channel){
+        if (mColorTextures.size() <= channel){
             return false;
         }
-        colorTextures[channel].reset();
-        colorTextures.erase(colorTextures.begin() + channel);
+        mColorTextures[channel].reset();
+        mColorTextures.erase(mColorTextures.begin() + channel);
         return true;
     }
 }

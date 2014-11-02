@@ -64,7 +64,7 @@ namespace kick {
         explicit Material(std::shared_ptr<Shader> shader = {});
         ~Material();
         void setShader(std::shared_ptr<Shader> shader);
-        std::shared_ptr<Shader> getShader();
+        std::shared_ptr<Shader> shader();
         void setUniform(std::string name, int value);
         void setUniform(std::string name, float value);
         void setUniform(std::string name, glm::vec4 value);
@@ -74,7 +74,7 @@ namespace kick {
         void setUniform(std::string name, std::shared_ptr<TextureCube> value);
 
         int bind();
-        int getRenderOrder();
+        int renderOrder();
     private:
         template <class E>
         void setUniformInternal(std::string name, E value);
@@ -84,9 +84,9 @@ namespace kick {
         void setUniformData(std::string name, MaterialData&& value);
         // current data (may misfit with current shader)
         std::map<std::string, MaterialData> currentUniformData;
-        std::shared_ptr<Shader> shader;
+        std::shared_ptr<Shader> mShader;
         EventListener<ShaderEvent> shaderChangedListener;
-        int renderOrder = 1000;
+        int mRenderOrder = 1000;
         std::map<std::string, std::shared_ptr<Texture2D>> texture2DRef;
         std::map<std::string, std::shared_ptr<TextureCube>> textureCubeRef;
     };

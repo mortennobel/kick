@@ -15,11 +15,11 @@ using namespace std;
 namespace kick {
     
     Component::Component(GameObject* gameObject)
-    :gameObject(gameObject)
+    : mGameObject(gameObject)
     {}
     
     Component::Component(Component&& component)
-    :gameObject(move(component.gameObject))
+    : mGameObject(move(component.mGameObject))
     {
     }
 
@@ -29,26 +29,26 @@ namespace kick {
 
     Component& Component::operator=(const Component& other){
         if (this != &other){
-            gameObject = move(other.gameObject);
+            mGameObject = move(other.mGameObject);
         }
         return *this;
     }
     
-    Transform* Component::getTransform(){
-        return gameObject->getTransform();
+    Transform* Component::transform(){
+        return mGameObject->transform();
     }
 
-    GameObject *Component::getGameObject() {
-        return gameObject;
+    GameObject *Component::gameObject() {
+        return mGameObject;
     }
 
-    bool Component::isEnabled() const {
-        return enabled;
+    bool Component::enabled() const {
+        return mEnabled;
     }
 
     void Component::setEnabled(bool enabled) {
-        if (Component::enabled != enabled){
-            Component::enabled = enabled;
+        if (Component::mEnabled != enabled){
+            Component::mEnabled = enabled;
 
         }
     }

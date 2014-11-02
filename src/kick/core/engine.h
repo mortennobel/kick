@@ -33,15 +33,15 @@ namespace kick {
         friend class Project;
     public:
         static void init(int &argc, char **argv, const WindowConfig& config = WindowConfig::plain);
-        static Scene *getActiveScene() { return instance->activeScene; }
-        static void setActiveScene(Scene *scene) { instance->activeScene = scene; }
+        static Scene *activeScene() { return instance->mActiveScene; }
+        static void setActiveScene(Scene *scene) { instance->mActiveScene = scene; }
         static Scene * createScene(const std::string &name);
         static std::vector<Scene>::const_iterator begin();
         static std::vector<Scene>::const_iterator end();
 
-        static EngineConfig& getConfig(){ return instance->config; }
-        static Context* getContext();
-        static DefaultKeyHandler & getDefaultKeyHandler();
+        static const EngineConfig& config(){ return instance->mConfig; }
+        static Context* context();
+        static DefaultKeyHandler &defaultKeyHandler();
         static void startMainLoop();
         static void startFrame();
         static void update();
@@ -51,7 +51,7 @@ namespace kick {
 
     private:
         static Engine* instance;
-        EngineConfig config;
+        EngineConfig mConfig;
         EventQueue eventQueue;
         Engine(int &argc, char **argv, const WindowConfig& config = WindowConfig::plain);
         float tickStartTime;
@@ -59,8 +59,8 @@ namespace kick {
         Project project;
         std::vector<Scene> scenes;
         EngineUniforms engineUniforms;
-        Scene *activeScene = nullptr;
-        Context* context = nullptr;
-        DefaultKeyHandler defaultKeyHandler;
+        Scene *mActiveScene = nullptr;
+        Context* mContext = nullptr;
+        DefaultKeyHandler mDefaultKeyHandler;
     };
 };

@@ -25,19 +25,19 @@ namespace kick {
 
         virtual void render(EngineUniforms *engineUniforms, Material* replacementMaterial = nullptr);
         void setMesh(Mesh *mesh);
-        Mesh*getMesh();
+        Mesh*mesh();
         // set the first material
         void setMaterial(Material *material);
         // get first material (no nullptr if no material added)
-        Material*getMaterial();
+        Material*material();
         void setMaterials(const std::vector<Material *> &mats);
-        const std::vector<Material*> &getMaterials();
+        const std::vector<Material*> &materials();
 
-        virtual int getRenderOrder();
+        virtual int renderOrder();
 
     private:
-        Mesh* mesh;
-        Transform* transform;
-        std::vector<Material*> materials;
+        Mesh*mMesh;
+        Transform*mTransform;
+        std::vector<Material*> mMaterials;
     };
 }

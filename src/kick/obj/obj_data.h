@@ -94,13 +94,13 @@ namespace kick {
         /// throws exception if invalid faces
         bool verifyFaces();
         
-        ObjMaterial* getMaterial(std::string name);
+        ObjMaterial*material(std::string name);
         
-        std::vector<float> getInterleavedVertexData(bool includeTextureCoords = true, bool includeNormals = true, int vertexPositionSize = 3, int texCoordinateSize = 2);
+        std::vector<float> interleavedVertexData(bool includeTextureCoords = true, bool includeNormals = true, int vertexPositionSize = 3, int texCoordinateSize = 2);
 
-        std::vector<unsigned int> getIndices();
+        std::vector<unsigned int> indices();
 
-        MeshData* getMeshData();
+        MeshData*meshData();
     };
 
 }

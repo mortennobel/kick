@@ -16,15 +16,15 @@ namespace kick {
 
         Plane(glm::vec3 direction, float dist);
 
-        glm::vec3 getNormal() const;
+        glm::vec3 normal() const;
 
         void setNormal(glm::vec3 p);
 
-        float getDistanceToOrigo() const;
+        float distanceToOrigo() const;
 
         void setDistanceToOrigo(float d);
 
-        glm::vec3 getPointOnPlane() const;
+        glm::vec3 pointOnPlane() const;
 
         float distanceToPlane(glm::vec3 point) const;
 

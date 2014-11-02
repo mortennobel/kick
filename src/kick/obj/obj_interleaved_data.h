@@ -36,7 +36,7 @@ namespace kick {
         int textureOffset = 0;
         int normalsOffset = 0;
         
-        int getVertexCount();
+        int vertexCount();
         glm::vec4 vertex(int index);
         void setVertex(int index, glm::vec4 value);
         glm::vec3 textureCoordinate(int index);

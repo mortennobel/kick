@@ -45,7 +45,7 @@ namespace kick {
         void destroyGameObject(GameObject * gameObject);
         GameObjectIter begin() const;
         GameObjectIter end() const;
-        std::string getName() const;
+        std::string name() const;
         void setName(std::string name);
         void update();
         void render(EngineUniforms* engineUniforms);
@@ -100,22 +100,22 @@ namespace kick {
         friend class Engine;
         friend class GameObject;
 
-        GameObject * getGameObjectByUID(int32_t uid);
+        GameObject *gameObjectByUID(int32_t uid);
 
     private:
         Scene(const std::string & name);
         Scene(const Scene& scene) = delete;
         void componentListener(Component* component, ComponentUpdateStatus status);
         void addLight(Light *light);
-        std::vector<std::unique_ptr<GameObject>> gameObjects;
-        std::map<GameObject*,EventListener<std::pair<Component*, ComponentUpdateStatus>>> componentListeners;
-        std::vector<Camera*> cameras;
-        std::vector<Updatable *> updatable;
-        std::unordered_map<Light*, EventListener<Light*>> lights;
-        SceneLights sceneLights;
-        std::string name = "";
+        std::vector<std::unique_ptr<GameObject>> mGameObjects;
+        std::map<GameObject*,EventListener<std::pair<Component*, ComponentUpdateStatus>>> mComponentListeners;
+        std::vector<Camera*> mCameras;
+        std::vector<Updatable *> mUpdatable;
+        std::unordered_map<Light*, EventListener<Light*>> mLights;
+        SceneLights mSceneLights;
+        std::string mName = "";
 
-        int32_t uniqueIdGenerator = 0;
+        int32_t mUniqueIdGenerator = 0;
 
         void rebuildSceneLights();
     };

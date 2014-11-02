@@ -26,27 +26,27 @@ namespace kick {
     public:
         Transform(GameObject *gameObject);
         void setPosition(glm::vec3 position);
-        glm::vec3 getPosition();
+        glm::vec3 position();
         void setLocalPosition(glm::vec3 position);
-        glm::vec3 getLocalPosition();
+        glm::vec3 localPosition();
         void setLocalRotationEuler(glm::vec3 rot);
-        glm::vec3 getLocalRotationEuler();
+        glm::vec3 localRotationEuler();
         void setRotationEuler(glm::vec3 rot);
-        glm::vec3 getRotationEuler();
+        glm::vec3 rotationEuler();
         void setRotation(glm::quat rot);
-        glm::quat getRotation();
+        glm::quat rotation();
         void setLocalRotation(glm::quat rot);
-        glm::quat getLocalRotation();
+        glm::quat localRotation();
         void setLocalScale(glm::vec3 scale);
-        glm::vec3 getLocalScale();
+        glm::vec3 localScale();
         void setParent(Transform *parent);
         void lookAt(glm::vec3 target, glm::vec3 up = glm::vec3{0,1,0});
         void lookAt(Transform *target, glm::vec3 up = glm::vec3{0,1,0});
-        glm::mat4 getLocalMatrix();
-        glm::mat4 getGlobalMatrix();
-        glm::mat4 getLocalTRSInverse();
-        glm::mat4 getGlobalTRSInverse();
-        Transform* getParent();
+        glm::mat4 localMatrix();
+        glm::mat4 globalMatrix();
+        glm::mat4 localTRSInverse();
+        glm::mat4 globalTRSInverse();
+        Transform* parent();
         TransformIter begin();
         TransformIter end();
         ConstTransformIter begin() const;
@@ -58,15 +58,15 @@ namespace kick {
     private:
         void markGlobalDirty();
         void markLocalDirty();
-        glm::mat4 localMatrix = glm::mat4(0);
-        glm::mat4 globalMatrix = glm::mat4(0);
-        glm::mat4 localMatrixInverse = glm::mat4(0);
-        glm::mat4 globalMatrixInverse = glm::mat4(0);
-        glm::vec3 localPosition = glm::vec3(0);
-        glm::vec3 globalPosition = glm::vec3(0);
-        glm::quat globalRotationQuat = glm::quat(1,0,0,0);
-        glm::quat localRotationQuat = glm::quat(1,0,0,0);
-        glm::vec3 localScale = glm::vec3(1);
+        glm::mat4 mLocalMatrix = glm::mat4(0);
+        glm::mat4 mGlobalMatrix = glm::mat4(0);
+        glm::mat4 mLocalMatrixInverse = glm::mat4(0);
+        glm::mat4 mGlobalMatrixInverse = glm::mat4(0);
+        glm::vec3 mLocalPosition = glm::vec3(0);
+        glm::vec3 mGlobalPosition = glm::vec3(0);
+        glm::quat mGlobalRotationQuat = glm::quat(1,0,0,0);
+        glm::quat mLocalRotationQuat = glm::quat(1,0,0,0);
+        glm::vec3 mLocalScale = glm::vec3(1);
         struct {
             bool local = true;
             bool localInv = true;
@@ -74,8 +74,8 @@ namespace kick {
             bool globalInv = true;
             bool globalPos = true;
             bool globalRot = true;
-        } dirty;
-        std::vector<Transform*> children;
-        Transform* parent = nullptr;
+        } mDirty;
+        std::vector<Transform*> mChildren;
+        Transform*mParent = nullptr;
     };
 }

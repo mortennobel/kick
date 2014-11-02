@@ -12,21 +12,21 @@ using namespace glm;
 
 namespace kick {
     Ray::Ray()
-    :origin{vec3(0,0,0)},direction{vec3(0,0,-1)}
+    : mOrigin{vec3(0,0,0)}, mDirection{vec3(0,0,-1)}
     {
     
     }
     
     Ray::Ray(vec3 origin, vec3 direction)
-    :origin{origin},direction{glm::normalize(direction)}
+    : mOrigin{origin}, mDirection{glm::normalize(direction)}
     {
     }
     
     bool Ray::closestPoints(Ray otherRay, glm::vec3& outPoint1, glm::vec3& outPoint2){
-        vec3 otherRayOrigin = otherRay.origin;
-        vec3 otherRayDirection = otherRay.direction;
+        vec3 otherRayOrigin = otherRay.mOrigin;
+        vec3 otherRayDirection = otherRay.mDirection;
         float epsilon = 1.401298E-45f;
-        bool isParallel = fabs(dot(direction, otherRayDirection)) >= 1 - epsilon;
+        bool isParallel = fabs(dot(mDirection, otherRayDirection)) >= 1 - epsilon;
         if (isParallel){
             outPoint1 = vec3{0};
             outPoint2 = vec3{0};
@@ -36,13 +36,13 @@ namespace kick {
         // loosely based on http://www.youtube.com/watch?v=HC5YikQxwZA
         // t is distance traveled at ray and s distance traveled at otherRay
         // PQ is vector between rays
-        vec3 PQT = -direction;
+        vec3 PQT = -mDirection;
         vec3 PQS = otherRayDirection;
-        vec3 PQVal = -origin + otherRayOrigin;
+        vec3 PQVal = -mOrigin + otherRayOrigin;
 
-        float PQu1S = dot(PQS, direction);
-        float PQu1T = dot(PQT, direction);
-        float PQu1Val = dot(PQVal, direction) * -1;
+        float PQu1S = dot(PQS, mDirection);
+        float PQu1T = dot(PQT, mDirection);
+        float PQu1Val = dot(PQVal, mDirection) * -1;
 
         float PQu2S = dot(PQS, otherRayDirection);
         float PQu2T = dot(PQT, otherRayDirection);
@@ -58,29 +58,29 @@ namespace kick {
         mat = inverse(mat);
         vec2 res = mat * vec2(PQu1Val, PQu2Val);
 
-        outPoint1 = origin + direction * res[1];
+        outPoint1 = mOrigin + mDirection * res[1];
         outPoint2 = otherRayOrigin + otherRayDirection * res[0];
 
         return true;
     }
     
     void Ray::setDirection(glm::vec3 const &direction) {
-        Ray::direction = glm::normalize(direction);
+        Ray::mDirection = glm::normalize(direction);
     }
 
-    glm::vec3 const &Ray::getDirection() const {
-        return direction;
+    glm::vec3 const &Ray::direction() const {
+        return mDirection;
     }
 
     void Ray::setOrigin(glm::vec3 const &origin) {
-        Ray::origin = origin;
+        Ray::mOrigin = origin;
     }
 
-    glm::vec3 const &Ray::getOrigin() const {
-        return origin;
+    glm::vec3 const &Ray::origin() const {
+        return mOrigin;
     }
 
-    glm::vec3 Ray::getPoint(float offset) const {
-        return origin + direction * offset;
+    glm::vec3 Ray::point(float offset) const {
+        return mOrigin + mDirection * offset;
     }
 }

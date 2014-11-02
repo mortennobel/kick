@@ -35,7 +35,7 @@ namespace kick {
 
         virtual void update() override;
 
-        virtual int getRenderOrder();
+        virtual int renderOrder();
 
         Camera * getCamera() const;
         void setCamera(Camera *camera);

@@ -27,17 +27,17 @@ namespace kick {
 
     TextureAtlas::TextureAtlas()
     {
-        shader = Project::loadShader("assets/shaders/sprite.shader");
+        mShader = Project::loadShader("assets/shaders/sprite.shader");
     }
 
     bool TextureAtlas::load(std::string filename, std::string texture) {
-        this->texture = Project::loadTexture2D(texture);
+        this->mTexture = Project::loadTexture2D(texture);
         string textureAtlas;
         if (!Project::loadTextResource(filename, textureAtlas)){
             return false;
         }
 
-        atlas.clear();
+        mAtlas.clear();
 
         rapidjson::Document d;
         d.Parse<0>(textureAtlas.c_str());
@@ -50,30 +50,30 @@ namespace kick {
             entry.frame = xywhToVec4(val["frame"]);
             entry.spriteSourceSize = xywhToVec4(val["spriteSourceSize"]);
             entry.sourceSize = whToVec2(val["sourceSize"]);
-            atlas[itr->name.GetString()] = entry;
+            mAtlas[itr->name.GetString()] = entry;
         }
         auto &meta = d["meta"];
-        textureSize = whToVec2(meta["size"]);
+        mTextureSize = whToVec2(meta["size"]);
         return true;
     }
 
-    shared_ptr<Texture2D> TextureAtlas::getTexture() const {
-        return texture;
+    shared_ptr<Texture2D> TextureAtlas::texture() const {
+        return mTexture;
     }
 
     TextureAtlasEntry TextureAtlas::get(std::string name) {
-        return atlas[name];
+        return mAtlas[name];
     }
 
-    glm::ivec2 TextureAtlas::getTextureSize() const {
-        return textureSize;
+    glm::ivec2 TextureAtlas::textureSize() const {
+        return mTextureSize;
     }
 
-    std::shared_ptr<Shader> TextureAtlas::getShader() const {
-        return shader;
+    std::shared_ptr<Shader> TextureAtlas::shader() const {
+        return mShader;
     }
 
     void TextureAtlas::setShader(std::shared_ptr<Shader> shader) {
-        TextureAtlas::shader = shader;
+        TextureAtlas::mShader = shader;
     }
 }

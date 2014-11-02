@@ -126,7 +126,7 @@ int TestShader() {
     TINYTEST_ASSERT(shaderUniforms[0].size == 1);
     TINYTEST_ASSERT(shaderUniforms[0].type == GL_FLOAT_VEC2);
 
-    auto shaderAttributes = shader->getShaderAttributes();
+    auto shaderAttributes = shader->shaderAttributes();
     TINYTEST_ASSERT(shaderAttributes.size() == 2);
     for (auto shaderAttribute:shaderAttributes){
         TINYTEST_ASSERT(shaderAttribute.name.compare("position") == 0 || shaderAttribute.name.compare("color") == 0);
@@ -194,19 +194,19 @@ int TestMeshData(){
             9,10,11
     }, MeshType::Triangles);
 
-    AABB aabb = meshData->getAabb();
+    AABB aabb = meshData->aabb();
     TINYTEST_ASSERT(aabb.min == p0);
     vec3 vec3max{1,std::sqrt(0.75f),std::sqrt(0.75f)};
     TINYTEST_ASSERT(aabb.max == vec3max);
 
     meshData->recomputeNormals();
-    TINYTEST_ASSERT(meshData->getNormal().size() == meshData->getPosition().size());
-    for (auto normal : meshData->getNormal()){
+    TINYTEST_ASSERT(meshData->normal().size() == meshData->position().size());
+    for (auto normal : meshData->normal()){
         TINYTEST_ASSERT(normal != vec3(0));
     }
 
-    auto interleavedData = meshData->getInterleavedData();
-    auto interleavedFormat = meshData->getInterleavedFormat();
+    auto interleavedData = meshData->interleavedData();
+    auto interleavedFormat = meshData->interleavedFormat();
     TINYTEST_ASSERT(interleavedFormat.size() == 2);
 
     //if (interleavedFormat[0].)
@@ -362,7 +362,7 @@ int TestShaderLoading(){
         TINYTEST_ASSERT(shader->getShaderSource(kick::ShaderType::VertexShader).length() > 0);
         TINYTEST_ASSERT(shader->getShaderSource(kick::ShaderType::FragmentShader).length() > 0);
         bool isTransparent = s.substr(0, 5) == "trans";
-        TINYTEST_ASSERT(isTransparent == shader->getBlend());
+        TINYTEST_ASSERT(isTransparent == shader->blend());
 
     }
     return 1;
@@ -505,14 +505,14 @@ bool equal(glm::mat4 m1, glm::mat4 m2, float eps = 0.001f){
 }
 
 int TestTransform(){
-    auto gameObject = Engine::getActiveScene()->createGameObject("SomeObject");
-    TINYTEST_EQUAL(gameObject->getTransform()->getLocalMatrix(), gameObject->getTransform()->getGlobalMatrix());
-    TINYTEST_EQUAL(gameObject->getTransform()->getLocalMatrix(), gameObject->getTransform()->getLocalTRSInverse());
-    TINYTEST_EQUAL(glm::mat4{1}, gameObject->getTransform()->getGlobalMatrix());
-    gameObject->getTransform()->setLocalPosition(vec3{1,2,3});
+    auto gameObject = Engine::activeScene()->createGameObject("SomeObject");
+    TINYTEST_EQUAL(gameObject->transform()->localMatrix(), gameObject->transform()->globalMatrix());
+    TINYTEST_EQUAL(gameObject->transform()->localMatrix(), gameObject->transform()->localTRSInverse());
+    TINYTEST_EQUAL(glm::mat4{1}, gameObject->transform()->globalMatrix());
+    gameObject->transform()->setLocalPosition(vec3{1,2,3});
     mat4 transformMatrix = glm::translate(vec3{1,2,3});
-    TINYTEST_EQUAL(transformMatrix, gameObject->getTransform()->getGlobalMatrix());
-    gameObject->getTransform()->setLocalPosition(vec3{0,0,0});
+    TINYTEST_EQUAL(transformMatrix, gameObject->transform()->globalMatrix());
+    gameObject->transform()->setLocalPosition(vec3{0,0,0});
 
     std::vector<vec3> rotations;
     rotations.push_back(vec3{glm::half_pi<float>(),0,0});
@@ -521,40 +521,40 @@ int TestTransform(){
     rotations.push_back(vec3{1,2,3});
 
     for (auto r : rotations){
-        gameObject->getTransform()->setRotationEuler(r);
+        gameObject->transform()->setRotationEuler(r);
         auto expected =  yawPitchRoll(r.y, r.x, r.z);
 //        cout <<glm::to_string(r) <<" becomes "<<glm::to_string(gameObject->getTransform()->getGlobalMatrix())<<" converted to euler "<<glm::to_string(eulerAngles(gameObject->getTransform()->getRotation()))<<endl;
-        bool isEqual = equal(expected, gameObject->getTransform()->getGlobalMatrix());
+        bool isEqual = equal(expected, gameObject->transform()->globalMatrix());
         TINYTEST_ASSERT_MSG(isEqual, (string{"error comparing matrices \n"}+
-                glm::to_string( gameObject->getTransform()->getGlobalMatrix())+"\n"+glm::to_string(expected)+"\n").c_str());
+                glm::to_string(gameObject->transform()->globalMatrix())+"\n"+glm::to_string(expected)+"\n").c_str());
     }
 
     return 1;
 }
 
 int TestGetComponent(){
-    auto gameObject = Engine::getActiveScene()->createGameObject("SomeObject");
+    auto gameObject = Engine::activeScene()->createGameObject("SomeObject");
 
     MeshRenderer *mr = gameObject->addComponent<MeshRenderer>();
-    TINYTEST_EQUAL(mr, gameObject->getComponent<MeshRenderer>());
-    TINYTEST_EQUAL(nullptr, gameObject->getComponent<Camera>());
+    TINYTEST_EQUAL(mr, gameObject->component<MeshRenderer>());
+    TINYTEST_EQUAL(nullptr, gameObject->component<Camera>());
     return 1;
 }
 
 int TestGetComponents(){
-    auto gameObject = Engine::getActiveScene()->createGameObject("SomeObject");
+    auto gameObject = Engine::activeScene()->createGameObject("SomeObject");
 
     MeshRenderer *mr = gameObject->addComponent<MeshRenderer>();
-    auto meshRenderers = gameObject->getComponents<MeshRenderer>();
+    auto meshRenderers = gameObject->components<MeshRenderer>();
     TINYTEST_EQUAL(1, meshRenderers.size());
     TINYTEST_EQUAL(mr, meshRenderers.front());
-    TINYTEST_EQUAL(nullptr, gameObject->getComponent<Camera>());
+    TINYTEST_EQUAL(nullptr, gameObject->component<Camera>());
     MeshRenderer *mr2 = gameObject->addComponent<MeshRenderer>();
     TINYTEST_ASSERT(mr2 != nullptr);
-    meshRenderers = gameObject->getComponents<MeshRenderer>();
+    meshRenderers = gameObject->components<MeshRenderer>();
     TINYTEST_EQUAL(2, meshRenderers.size());
     gameObject->destroyComponent(mr);
-    meshRenderers = gameObject->getComponents<MeshRenderer>();
+    meshRenderers = gameObject->components<MeshRenderer>();
     TINYTEST_EQUAL(1, meshRenderers.size());
     return 1;
 }
@@ -573,7 +573,7 @@ int TestDeleteComponent(){
 
     };
     static bool destroyedOnClassDestruction = false;
-    auto gameObject = Engine::getActiveScene()->createGameObject("SomeObject");
+    auto gameObject = Engine::activeScene()->createGameObject("SomeObject");
 
     static bool destroyed = false;
 
@@ -586,7 +586,7 @@ int TestDeleteComponent(){
     cout << "Post destroy component"<<endl;
     TINYTEST_ASSERT(destroyed);
     cout << "Pre destroy gameObject"<<endl;
-    Engine::getActiveScene()->destroyGameObject(gameObject);
+    Engine::activeScene()->destroyGameObject(gameObject);
     cout << "Post destroy gameObject"<<endl;
     TINYTEST_ASSERT(destroyedOnClassDestruction);
 
@@ -596,8 +596,8 @@ int TestDeleteComponent(){
 int TestTransformComponent(){
     vector<Transform*> transforms;
     for (int i=0;i<3;i++){
-        auto gameObject = Engine::getActiveScene()->createGameObject("SomeObject");
-        auto transform = gameObject->getTransform();
+        auto gameObject = Engine::activeScene()->createGameObject("SomeObject");
+        auto transform = gameObject->transform();
         if (i>0){
             transform->setParent(transforms[transforms.size()-1]);
         }
@@ -606,23 +606,23 @@ int TestTransformComponent(){
     glm::vec3 offset{1,2,3};
     transforms[0]->setLocalPosition(offset);
     glm::vec3 e{ 0.00001 };
-    TINYTEST_ASSERT(all(epsilonEqual(offset, transforms[1]->getPosition(),e)));
-    TINYTEST_ASSERT(all(epsilonEqual(offset, transforms[2]->getPosition(),e)));
+    TINYTEST_ASSERT(all(epsilonEqual(offset, transforms[1]->position(),e)));
+    TINYTEST_ASSERT(all(epsilonEqual(offset, transforms[2]->position(),e)));
     transforms[1]->setLocalPosition(offset);
-    TINYTEST_ASSERT(all(epsilonEqual(offset*2.0f, transforms[1]->getPosition(),e)));
-    TINYTEST_ASSERT(all(epsilonEqual(offset*2.0f, transforms[2]->getPosition(),e)));
+    TINYTEST_ASSERT(all(epsilonEqual(offset*2.0f, transforms[1]->position(),e)));
+    TINYTEST_ASSERT(all(epsilonEqual(offset*2.0f, transforms[2]->position(),e)));
     transforms[1]->setLocalPosition(vec3{0});
     transforms[0]->setRotationEuler(radians(vec3{0,90,0}));
-    TINYTEST_ASSERT(all(epsilonEqual(offset, transforms[1]->getPosition(),e)));
-    TINYTEST_ASSERT(all(epsilonEqual(offset, transforms[2]->getPosition(),e)));
+    TINYTEST_ASSERT(all(epsilonEqual(offset, transforms[1]->position(),e)));
+    TINYTEST_ASSERT(all(epsilonEqual(offset, transforms[2]->position(),e)));
     transforms[1]->setLocalPosition(vec3{1,0,0});
     auto expected = glm::vec3{1,2,3-1};
-    TINYTEST_ASSERT(all(epsilonEqual(expected, transforms[1]->getPosition(),e)));
-    TINYTEST_ASSERT(all(epsilonEqual(expected, transforms[2]->getPosition(),e)));
+    TINYTEST_ASSERT(all(epsilonEqual(expected, transforms[1]->position(),e)));
+    TINYTEST_ASSERT(all(epsilonEqual(expected, transforms[2]->position(),e)));
     transforms[0]->setLocalScale(vec3{10});
     expected = glm::vec3{1,2,3-10};
-    TINYTEST_ASSERT_MSG(all(epsilonEqual(expected, transforms[1]->getPosition(),e)), glm::to_string(transforms[1]->getPosition()).c_str());
-    TINYTEST_ASSERT_MSG(all(epsilonEqual(expected, transforms[2]->getPosition(),e)), glm::to_string(transforms[2]->getPosition()).c_str());
+    TINYTEST_ASSERT_MSG(all(epsilonEqual(expected, transforms[1]->position(),e)), glm::to_string(transforms[1]->position()).c_str());
+    TINYTEST_ASSERT_MSG(all(epsilonEqual(expected, transforms[2]->position(),e)), glm::to_string(transforms[2]->position()).c_str());
 
     return 1;
 }
@@ -642,8 +642,8 @@ bool isEqual_(glm::quat q1, glm::quat q2, float epsilon = 1e-4){
 int TestTransformRotationsComponent(){
     vector<Transform*> transforms;
     for (int i=0;i<3;i++){
-        auto gameObject = Engine::getActiveScene()->createGameObject("SomeObject");
-        auto transform = gameObject->getTransform();
+        auto gameObject = Engine::activeScene()->createGameObject("SomeObject");
+        auto transform = gameObject->transform();
         if (i>0){
             transform->setParent(transforms[transforms.size()-1]);
         }
@@ -654,36 +654,36 @@ int TestTransformRotationsComponent(){
     transforms[0]->setLocalRotation(q1);
     transforms[1]->setLocalRotation(inverse(q1));
 
-    TINYTEST_ASSERT(isEqual_(q0,transforms[1]->getRotation()));
+    TINYTEST_ASSERT(isEqual_(q0, transforms[1]->rotation()));
 
     transforms[1]->setLocalRotation(q1);
     q1 = q1*q1; // double rotation
-    TINYTEST_ASSERT(isEqual_(q1,transforms[1]->getRotation()));
+    TINYTEST_ASSERT(isEqual_(q1, transforms[1]->rotation()));
     return 1;
 }
 
 int TestTransformLookAt(){
-    auto transform1 = Engine::getActiveScene()->createGameObject()->getTransform();
-    auto transform2 = Engine::getActiveScene()->createGameObject()->getTransform();
+    auto transform1 = Engine::activeScene()->createGameObject()->transform();
+    auto transform2 = Engine::activeScene()->createGameObject()->transform();
 
     transform2->setLocalPosition(vec3{0,0,-10});
     transform1->lookAt(transform2);
 
     auto expected = quat_cast(yawPitchRoll(0.0f,radians(0.0f),0.0f));
-    TINYTEST_ASSERT(isEqual_(expected,transform1->getRotation()));
+    TINYTEST_ASSERT(isEqual_(expected, transform1->rotation()));
 
     transform2->setLocalPosition(vec3{10,0.0,0});
     transform1->lookAt(transform2);
 
     expected = quat_cast(yawPitchRoll(radians(-90.0f),0.0f,0.0f));
-    TINYTEST_ASSERT_MSG(isEqual_(expected,transform1->getRotation()), (glm::to_string(eulerAngles(expected))+" was "+glm::to_string(transform1->getLocalRotationEuler())+" "+glm::to_string(transform1->getRotationEuler())).c_str());
+    TINYTEST_ASSERT_MSG(isEqual_(expected, transform1->rotation()), (glm::to_string(eulerAngles(expected))+" was "+glm::to_string(transform1->localRotationEuler())+" "+glm::to_string(transform1->rotationEuler())).c_str());
 
     // different up axis
     transform1->lookAt(transform2, vec3(0,0,-1));
     expected = quat_cast(yawPitchRoll(radians(-90.0f),0.0f,radians(90.0f)));
-    quat q3 = inverse(transform1->getRotation()) * expected;
+    quat q3 = inverse(transform1->rotation()) * expected;
     float a = angle(q3);
-    TINYTEST_ASSERT_MSG(isEqual_(expected,transform1->getRotation()), (glm::to_string(eulerAngles(expected))+" was "+glm::to_string(transform1->getLocalRotationEuler())+" "+glm::to_string(transform1->getRotationEuler())+" error "+std::to_string(a)).c_str());
+    TINYTEST_ASSERT_MSG(isEqual_(expected, transform1->rotation()), (glm::to_string(eulerAngles(expected))+" was "+glm::to_string(transform1->localRotationEuler())+" "+glm::to_string(transform1->rotationEuler())+" error "+std::to_string(a)).c_str());
 
     return 1;
 }
@@ -695,10 +695,10 @@ int TestLoadCubemap(){
 
 int TestComponentListener(){
     static set<ComponentUpdateStatus> events;
-    auto listener = Engine::getActiveScene()->componentEvents.createListener([&](std::pair<Component*, ComponentUpdateStatus> e){
+    auto listener = Engine::activeScene()->componentEvents.createListener([&](std::pair<Component*, ComponentUpdateStatus> e){
         events.insert(e.second);
     });
-    auto gameObject = Engine::getActiveScene()->createGameObject("SomeObject");
+    auto gameObject = Engine::activeScene()->createGameObject("SomeObject");
     TINYTEST_EQUAL(0, events.size());
     auto camera = gameObject->addComponent<CameraPerspective>();
     TINYTEST_EQUAL(1, events.size());
@@ -730,7 +730,7 @@ int TestSprite(){
     auto textureAtlas = std::shared_ptr<TextureAtlas>{new TextureAtlas()};
     textureAtlas->load("unittest/sprites/sprites.txt", "unittest/sprites/sprites.png");
 
-    auto scene = Engine::getActiveScene();
+    auto scene = Engine::activeScene();
     auto res = scene->createPanel()->createSprite(textureAtlas, "Character Boy.png");
 
     return 1;
@@ -738,38 +738,38 @@ int TestSprite(){
 
 
 int TestComponentHierachy(){
-    auto gameObject = Engine::getActiveScene()->createGameObject("SomeObject");
+    auto gameObject = Engine::activeScene()->createGameObject("SomeObject");
 
-    auto gameObject2 = Engine::getActiveScene()->createGameObject("SomeObject2");
+    auto gameObject2 = Engine::activeScene()->createGameObject("SomeObject2");
     auto camera2 = gameObject2->addComponent<Camera>();
 
-    auto gameObject3 = Engine::getActiveScene()->createGameObject("SomeObject3");
+    auto gameObject3 = Engine::activeScene()->createGameObject("SomeObject3");
     auto camera3 = gameObject3->addComponent<Camera>();
 
-    TINYTEST_ASSERT(gameObject->getComponent<Camera>()==nullptr);
-    TINYTEST_ASSERT(gameObject->getComponents<Camera>().size()==0);
+    TINYTEST_ASSERT(gameObject->component<Camera>()==nullptr);
+    TINYTEST_ASSERT(gameObject->components<Camera>().size()==0);
 
-    TINYTEST_ASSERT(gameObject->getComponentInParent<Camera>()==nullptr);
-    TINYTEST_ASSERT(gameObject->getComponentsInParent<Camera>().size()==0);
+    TINYTEST_ASSERT(gameObject->componentInParent<Camera>()==nullptr);
+    TINYTEST_ASSERT(gameObject->componentsInParent<Camera>().size()==0);
 
-    TINYTEST_ASSERT(gameObject->getComponentInChildren<Camera>()==nullptr);
-    TINYTEST_ASSERT(gameObject->getComponentsInChildren<Camera>().size()==0);
+    TINYTEST_ASSERT(gameObject->componentInChildren<Camera>()==nullptr);
+    TINYTEST_ASSERT(gameObject->componentsInChildren<Camera>().size()==0);
 
-    gameObject->getTransform()->setParent(gameObject3->getTransform());
-    gameObject2->getTransform()->setParent(gameObject->getTransform());
+    gameObject->transform()->setParent(gameObject3->transform());
+    gameObject2->transform()->setParent(gameObject->transform());
 
-    TINYTEST_ASSERT(gameObject->getComponent<Camera>()==nullptr);
-    TINYTEST_ASSERT(gameObject->getComponents<Camera>().size()==0);
+    TINYTEST_ASSERT(gameObject->component<Camera>()==nullptr);
+    TINYTEST_ASSERT(gameObject->components<Camera>().size()==0);
 
-    TINYTEST_ASSERT(gameObject->getComponentInParent<Camera>()==camera3);
-    TINYTEST_ASSERT(gameObject->getComponentsInParent<Camera>().size()==1);
+    TINYTEST_ASSERT(gameObject->componentInParent<Camera>()==camera3);
+    TINYTEST_ASSERT(gameObject->componentsInParent<Camera>().size()==1);
 
-    TINYTEST_ASSERT(gameObject->getComponentInChildren<Camera>()==camera2);
-    TINYTEST_ASSERT(gameObject->getComponentsInChildren<Camera>().size()==1);
+    TINYTEST_ASSERT(gameObject->componentInChildren<Camera>()==camera2);
+    TINYTEST_ASSERT(gameObject->componentsInChildren<Camera>().size()==1);
 
-    gameObject3->getTransform()->setParent(gameObject2->getTransform());
+    gameObject3->transform()->setParent(gameObject2->transform());
 
-    TINYTEST_ASSERT(gameObject->getComponentsInChildren<Camera>().size()==2);
+    TINYTEST_ASSERT(gameObject->componentsInChildren<Camera>().size()==2);
 
     return 1;
 }

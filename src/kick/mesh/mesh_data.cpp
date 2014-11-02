@@ -54,85 +54,85 @@ namespace kick {
     }
     
     void MeshData::setAabb(const AABB &a){
-        aabb = a;
+        mAabb = a;
     }
  
     void MeshData::setPosition(const std::vector<glm::vec3> &p) {
-        aabb.clear();
-        position = p;
+        mAabb.clear();
+        mPosition = p;
         for (auto v : p) {
-            aabb.addPoint(v);
+            mAabb.addPoint(v);
         }
     }
     
-    const std::vector<glm::vec3>& MeshData::getPosition() {
-        return position;
+    const std::vector<glm::vec3>& MeshData::position() {
+        return mPosition;
     }
     
     void MeshData::setNormal(const std::vector<glm::vec3> &n) {
-        normal = n;
+        mNormal = n;
     }
     
-    const std::vector<glm::vec3>& MeshData::getNormal() {
-        return normal;
+    const std::vector<glm::vec3>& MeshData::normal() {
+        return mNormal;
     }
     
     void MeshData::setTexCoord0(const std::vector<glm::vec2> &u1) {
-        texCoord0 = u1;
+        mTexCoord0 = u1;
     }
     
-    const std::vector<glm::vec2>& MeshData::getTexCoord0() {
-        return texCoord0;
+    const std::vector<glm::vec2>& MeshData::texCoord0() {
+        return mTexCoord0;
     }
     
     void MeshData::setTexCoord1(const std::vector<glm::vec2> &u2) {
-        texCoord1 = u2;
+        mTexCoord1 = u2;
     }
     
-    const std::vector<glm::vec2>& MeshData::getTexCoord1() {
-        return texCoord1;
+    const std::vector<glm::vec2>& MeshData::texCoord1() {
+        return mTexCoord1;
     }
     
     void MeshData::setTangent(const std::vector<glm::vec3> &t) {
-        tangent = t;
+        mTangent = t;
     }
     
-    const std::vector<glm::vec3>& MeshData::getTangent() {
-        return tangent;
+    const std::vector<glm::vec3>& MeshData::tangent() {
+        return mTangent;
     }
     
     void MeshData::setColor(const std::vector<glm::vec4> &c) {
-        color = c;
+        mColor = c;
     }
     
-    const std::vector<glm::vec4>& MeshData::getColor(){
-        return color;
+    const std::vector<glm::vec4>& MeshData::color(){
+        return mColor;
     }
     
-    GLsizei MeshData::getSubmeshSize(unsigned int index){
+    GLsizei MeshData::submeshSize(unsigned int index){
         return static_cast<GLsizei>(subMeshes[index].indices.size());
     }
     
-    unsigned int MeshData::getSubmeshesCount(){
+    unsigned int MeshData::submeshesCount(){
         return static_cast<unsigned int>(subMeshes.size());
     }
 
     size_t MeshData::computeInterleavedDataSize(){
-        size_t numberOfElements = static_cast<int>(position.size());
+        size_t numberOfElements = static_cast<int>(mPosition.size());
         size_t vertexSize = 3;
-        if (normal.size() > 0) {
+        if (mNormal.size() > 0) {
             vertexSize += 3;
         }
-        if (texCoord0.size() > 0) {
+        if (mTexCoord0.size() > 0) {
             vertexSize += 2;
         }
-        if (texCoord1.size() > 0) {
+        if (mTexCoord1.size() > 0) {
             vertexSize += 2;
         }
-        if (tangent.size() > 0) {
+        if (mTangent.size() > 0) {
             vertexSize += 4;
         }
-        if (color.size() > 0) {
+        if (mColor.size() > 0) {
             vertexSize += 4;
         }
         return vertexSize * numberOfElements;
@@ -157,30 +157,30 @@ namespace kick {
         return offset + vectorLength;
     }
     
-    vector<float> MeshData::getInterleavedData(){
+    vector<float> MeshData::interleavedData(){
         const size_t floatElements = computeInterleavedDataSize();
         vector<float> res(floatElements);
         if (floatElements == 0){
             return res;
         }
-        const int stride = floatElements / position.size();
-        size_t offset = add_data(position, res, 0, stride);
-        offset = add_data(normal, res, offset, stride);
-        offset = add_data(texCoord0, res, offset, stride);
-        offset = add_data(texCoord1, res, offset, stride);
-        offset = add_data(tangent, res, offset, stride);
-        offset = add_data(color, res, offset, stride);
+        const int stride = floatElements / mPosition.size();
+        size_t offset = add_data(mPosition, res, 0, stride);
+        offset = add_data(mNormal, res, offset, stride);
+        offset = add_data(mTexCoord0, res, offset, stride);
+        offset = add_data(mTexCoord1, res, offset, stride);
+        offset = add_data(mTangent, res, offset, stride);
+        offset = add_data(mColor, res, offset, stride);
         return res;
     }
 
-    vector<InterleavedRecord> MeshData::getInterleavedFormat() {
+    vector<InterleavedRecord> MeshData::interleavedFormat() {
         vector<InterleavedRecord> res;
-        size_t offset = add_interleaved_record(position, res, 0, VertexAttributeSemantic::Position);
-        offset = add_interleaved_record(normal, res, offset, VertexAttributeSemantic::Normal);
-        offset = add_interleaved_record(texCoord0, res, offset, VertexAttributeSemantic::Uv1);
-        offset = add_interleaved_record(texCoord1, res, offset, VertexAttributeSemantic::Uv2);
-        offset = add_interleaved_record(tangent, res, offset, VertexAttributeSemantic::Tangent);
-        offset = add_interleaved_record(color, res, offset, VertexAttributeSemantic::Color);
+        size_t offset = add_interleaved_record(mPosition, res, 0, VertexAttributeSemantic::Position);
+        offset = add_interleaved_record(mNormal, res, offset, VertexAttributeSemantic::Normal);
+        offset = add_interleaved_record(mTexCoord0, res, offset, VertexAttributeSemantic::Uv1);
+        offset = add_interleaved_record(mTexCoord1, res, offset, VertexAttributeSemantic::Uv2);
+        offset = add_interleaved_record(mTangent, res, offset, VertexAttributeSemantic::Tangent);
+        offset = add_interleaved_record(mColor, res, offset, VertexAttributeSemantic::Color);
         
         for (auto & record : res){
             record.stride = static_cast<GLsizei>(offset);
@@ -189,7 +189,7 @@ namespace kick {
         return res;
     }
     
-    vector<GLushort> MeshData::getIndices(){
+    vector<GLushort> MeshData::indices(){
         vector<GLushort> res;
         for (auto & v : subMeshes){
             res.insert(res.end(), v.indices.begin(), v.indices.end());
@@ -197,7 +197,7 @@ namespace kick {
         return res;
     }
     
-    vector<SubMeshData> MeshData::getIndicesFormat(){
+    vector<SubMeshData> MeshData::indicesFormat(){
         vector<SubMeshData> res;
         size_t offset = 0;
         for (auto & v : subMeshes){
@@ -222,19 +222,19 @@ namespace kick {
         subMeshes[index].meshType = meshType;
     }
     
-    const vector<GLushort>& MeshData::getSubmeshIndices(unsigned int index) const {
+    const vector<GLushort>& MeshData::submeshIndices(unsigned int index) const {
         return subMeshes.at(index).indices;
     }
     
-    const MeshType MeshData::getSubmeshType(unsigned int index) const{
+    const MeshType MeshData::submeshType(unsigned int index) const{
         return subMeshes.at(index).meshType;
     }
     
     void MeshData::recomputeNormals(){
         // empty
-        normal.resize(position.size());
-        for (int i=0;i<normal.size();i++){
-            normal[i] = vec3{0};
+        mNormal.resize(mPosition.size());
+        for (int i=0;i< mNormal.size();i++){
+            mNormal[i] = vec3{0};
         }
         
         for (auto & v : subMeshes){
@@ -250,9 +250,9 @@ namespace kick {
                 GLuint i2 = submesh[a * 3 + 1];
                 GLuint i3 = submesh[a * 3 + 2];
                 
-                vec3 v1 = position[i1];
-                vec3 v2 = position[i2];
-                vec3 v3 = position[i3];
+                vec3 v1 = mPosition[i1];
+                vec3 v2 = mPosition[i2];
+                vec3 v3 = mPosition[i3];
                 
                 vec3 v1v2 = normalize(v2 - v1);
                 vec3 v1v3 = normalize(v3 - v1);
@@ -263,21 +263,21 @@ namespace kick {
                 vec3 v2v3 = normalize(v3 - v2);
                 float weight2 = (float) (M_PI - acos(std::max(-1.0f, std::min(1.0f, dot(v1v2, v2v3)))));
                 float weight3 = (float) (M_PI - weight1 - weight2);
-                normal[i1] += weight1 * faceNormal;
-                normal[i2] += weight2 * faceNormal;
-                normal[i3] += weight3 * faceNormal;
+                mNormal[i1] += weight1 * faceNormal;
+                mNormal[i2] += weight2 * faceNormal;
+                mNormal[i3] += weight3 * faceNormal;
             }
         }
-        for (int i=0;i<normal.size();i++){
-            if (normal[i] != vec3{0}){
-                normal[i] = normalize(normal[i]);
+        for (int i=0;i< mNormal.size();i++){
+            if (mNormal[i] != vec3{0}){
+                mNormal[i] = normalize(mNormal[i]);
             }
         }
     }
 
-    const AABB &MeshData::getAabb() { return aabb; }
+    const AABB &MeshData::aabb() { return mAabb; }
 
-    GLenum MeshData::getMeshUsageVal() { return static_cast<GLenum>(meshUsage); }
+    GLenum MeshData::meshUsageVal() { return static_cast<GLenum>(mMeshUsage); }
 
 
 #define RETURN_IF_EQUAL(X) if (to_lower(name) == to_lower(#X)) return VertexAttributeSemantic::X;
@@ -314,12 +314,12 @@ namespace kick {
         }
     }
 
-    MeshUsage MeshData::getMeshUsage() const {
-        return meshUsage;
+    MeshUsage MeshData::meshUsage() const {
+        return mMeshUsage;
     }
 
     void MeshData::setMeshUsage(MeshUsage meshUsage) {
-        MeshData::meshUsage = meshUsage;
+        MeshData::mMeshUsage = meshUsage;
     }
 }
 

@@ -38,39 +38,39 @@ namespace kick {
 
         // reset matrix if used parameters (if any)
         virtual void resetProjectionMatrix();
-        glm::vec4 getClearColor();
+        glm::vec4 clearColor();
         void setClearColor(glm::vec4 clearColor);
-        void setClearColor(bool clear);
-        bool isClearColor();
-        void setClearDepth(bool clear);
-        bool isClearDepth();
-        void setClearStencil(bool clear);
-        bool isClearStencil();
+        void setClearColorBuffer(bool clear);
+        bool clearColorBuffer();
+        void setClearDepthBuffer(bool clear);
+        bool clearDepthBuffer();
+        void setClearStencilBuffer(bool clear);
+        bool clearStencilBuffer();
         void setupCamera(EngineUniforms *engineUniforms);
-        glm::mat4 getProjectionMatrix();
-        glm::mat4 getViewMatrix();
+        glm::mat4 projectionMatrix();
+        glm::mat4 viewMatrix();
         // override projection matrix
         void setProjectionMatrix(glm::mat4 projectionMatrix);
-        bool isShadow() const;
+        bool shadow() const;
         void setShadow(bool renderShadow);
-        int getCullingMask() const;
+        int cullingMask() const;
         void setCullingMask(int cullingMask);
-        TextureRenderTarget * getTarget() const;
+        TextureRenderTarget *target() const;
         void setTarget(TextureRenderTarget *target);
 
         void pick(glm::ivec2 point, std::function<void(GameObject*,int)> onPicked, glm::ivec2 size = glm::ivec2{1,1});
 
-        std::shared_ptr<Material> const & getReplacementMaterial() const;
+        std::shared_ptr<Material> const &replacementMaterial() const;
         void setReplacementMaterial(std::shared_ptr<Material> const &replacementMaterial);
 
-        glm::vec2 const &getViewportOffset() const;
+        glm::vec2 const &viewportOffset() const;
         void setViewportOffset(glm::vec2 const &normalizedViewportOffset);
-        glm::vec2 const &getViewportDim() const;
+        glm::vec2 const &viewportDim() const;
         void setViewportDim(glm::vec2 const &normalizedViewportDim);
     protected:
-        glm::mat4 projectionMatrix;
-        glm::vec2 normalizedViewportOffset = glm::vec2(0,0);
-        glm::vec2 normalizedViewportDim = glm::vec2(1,1);
+        glm::mat4 mProjectionMatrix;
+        glm::vec2 mNormalizedViewportOffset = glm::vec2(0,0);
+        glm::vec2 mNormalizedViewportDim = glm::vec2(1,1);
     private:
         void initShadowMap();
         void destroyShadowMap();
@@ -78,21 +78,21 @@ namespace kick {
         void rebuildComponentList();
         void handleObjectPicking(EngineUniforms *engineUniforms);
         ComponentRenderable *includeComponent(Component* comp);
-        TextureRenderTarget* pickingRenderTarget = nullptr;
-        std::shared_ptr<Texture2D> pickingTexture;
-        std::shared_ptr<Material> pickingMaterial;
-        std::shared_ptr<Shader> shadowMapShader;
-        std::shared_ptr<Material> replacementMaterial;
-        Material* shadowMapMaterial;
+        TextureRenderTarget*mPickingRenderTarget = nullptr;
+        std::shared_ptr<Texture2D> mPickingTexture;
+        std::shared_ptr<Material> mPickingMaterial;
+        std::shared_ptr<Shader> mShadowMapShader;
+        std::shared_ptr<Material> mReplacementMaterial;
+        Material*mShadowMapMaterial;
         EventListener<std::pair<Component*, ComponentUpdateStatus>> componentListener;
         void setupViewport(glm::vec2 &offset, glm::vec2 &dim);
-        std::vector<ComponentRenderable*> renderableComponents;
-        glm::vec4 clearColor = glm::vec4(0,0,0,1);
-        int cullingMask = 0xffffffff;
-        int clearFlag; // default clear color clear depth
-        bool shadow = false;
-        TextureRenderTarget* target = nullptr;
-        std::vector<PickEntry> pickQueue;
+        std::vector<ComponentRenderable*> mRenderableComponents;
+        glm::vec4 mClearColor = glm::vec4(0,0,0,1);
+        int mCullingMask = 0xffffffff;
+        int mClearFlag; // default clear color clear depth
+        bool mShadow = false;
+        TextureRenderTarget*mTarget = nullptr;
+        std::vector<PickEntry> mPickQueue;
 
     };
 }

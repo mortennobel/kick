@@ -153,25 +153,25 @@ break;
     }
     
     Shader& Shader::operator=(Shader&& o){
-        swap(shaderProgram, o.shaderProgram);
+        swap(mShaderProgram, o.mShaderProgram);
         swap(shaderSources, o.shaderSources);
         swap(outputAttributeName, o.outputAttributeName);
-        swap(shaderAttributes, o.shaderAttributes);
+        swap(mShaderAttributes, o.mShaderAttributes);
         swap(shaderUniforms, o.shaderUniforms);
-        swap(blendDFactorAlpha, o.blendDFactorAlpha);
-        swap(blendDFactorRGB, o.blendDFactorRGB);
-        swap(blendSFactorAlpha, o.blendSFactorAlpha);
-        swap(blendSFactorRGB, o.blendSFactorRGB);
-        swap(depthBufferWrite, o.depthBufferWrite);
-        swap(faceCulling, o.faceCulling);
-        swap(polygonOffsetEnabled, o.polygonOffsetEnabled);
-        swap(polygonOffsetFactorAndUnit, o.polygonOffsetFactorAndUnit);
-        swap(zTest, o.zTest);
+        swap(mBlendDFactorAlpha, o.mBlendDFactorAlpha);
+        swap(mBlendDFactorRGB, o.mBlendDFactorRGB);
+        swap(mBlendSFactorAlpha, o.mBlendSFactorAlpha);
+        swap(mBlendSFactorRGB, o.mBlendSFactorRGB);
+        swap(mDepthBufferWrite, o.mDepthBufferWrite);
+        swap(mFaceCulling, o.mFaceCulling);
+        swap(mPolygonOffsetEnabled, o.mPolygonOffsetEnabled);
+        swap(mPolygonOffsetFactorAndUnit, o.mPolygonOffsetFactorAndUnit);
+        swap(mZTest, o.mZTest);
         return *this;
     }
     
     Shader::Shader(string vertexShader, string fragmentShader, string geometryShader)
-    :shaderProgram(0)
+    : mShaderProgram(0)
     {
         setShaderSource(ShaderType::VertexShader, vertexShader);
         setShaderSource(ShaderType::FragmentShader, fragmentShader);
@@ -184,8 +184,8 @@ break;
     }
     
     Shader::~Shader(){
-        if (shaderProgram != 0){
-            glDeleteProgram(shaderProgram);
+        if (mShaderProgram != 0){
+            glDeleteProgram(mShaderProgram);
         }
     }
     
@@ -345,8 +345,8 @@ break;
 
         source = version + "\n" +
                 precisionSpecifier+
-        "#define SHADOWS " + (Engine::getConfig().shadows?"true":"false") + "\n" +
-        "#define LIGHTS " + std::to_string((int)Engine::getConfig().maxNumerOfLights) + "\n" +
+        "#define SHADOWS " + (Engine::config().shadows?"true":"false") + "\n" +
+        "#define LIGHTS " + std::to_string((int) Engine::config().maxNumerOfLights) + "\n" +
         "#line " + std::to_string(2) + "\n" +
                 source;
 
@@ -354,10 +354,10 @@ break;
     }
     
     bool Shader::apply(){
-        if (shaderProgram){
-            glDeleteShader(shaderProgram);
+        if (mShaderProgram){
+            glDeleteShader(mShaderProgram);
         }
-        shaderProgram = glCreateProgram();
+        mShaderProgram = glCreateProgram();
         vector<ShaderObj> shaderObjects;
         vector<ShaderType> requiredTypes{ShaderType::VertexShader, ShaderType::FragmentShader};
         for (auto & element : shaderSources) {
@@ -369,7 +369,7 @@ break;
                 shaderObjects.push_back(compileShader(precompiledSource, shaderType));
                 // remove element from vector
                 requiredTypes.erase(std::remove(requiredTypes.begin(), requiredTypes.end(), shaderType), requiredTypes.end());
-                glAttachShader( shaderProgram,  shaderObjects.back());
+                glAttachShader(mShaderProgram,  shaderObjects.back());
             }
         }
         if (requiredTypes.size()>0){
@@ -382,16 +382,16 @@ break;
             return false;
         }
         // shaderObjects deleted when goes out of scope (which is ok as long as program is not deleted)
-        glUseProgram(shaderProgram);
+        glUseProgram(mShaderProgram);
 
         // clean up
         for (auto & shaderObject : shaderObjects){
-            shaderObject.detach(shaderProgram);
+            shaderObject.detach(mShaderProgram);
         }
         shaderObjects.clear();
 
-        shaderAttributes = getActiveShaderAttributes(shaderProgram);
-        shaderUniforms = getActiveShaderUniforms(shaderProgram);
+        mShaderAttributes = getActiveShaderAttributes(mShaderProgram);
+        shaderUniforms = getActiveShaderUniforms(mShaderProgram);
 
         updateDefaultShaderLocation();
 
@@ -401,17 +401,17 @@ break;
     
     bool Shader::linkProgram(){
 #ifndef GL_ES_VERSION_2_0
-        glBindFragDataLocation(shaderProgram, 0, outputAttributeName.c_str());
+        glBindFragDataLocation(mShaderProgram, 0, outputAttributeName.c_str());
 #endif
-		glLinkProgram(shaderProgram);
+		glLinkProgram(mShaderProgram);
         
 		GLint  linked;
-		glGetProgramiv( shaderProgram, GL_LINK_STATUS, &linked );
+		glGetProgramiv(mShaderProgram, GL_LINK_STATUS, &linked );
 		if (linked == GL_FALSE) {
 			GLint  logSize;
-			glGetProgramiv( shaderProgram, GL_INFO_LOG_LENGTH, &logSize);
+			glGetProgramiv(mShaderProgram, GL_INFO_LOG_LENGTH, &logSize);
             vector<char> errorLog((size_t) logSize);
-			glGetProgramInfoLog( shaderProgram, logSize, NULL, errorLog.data() );
+			glGetProgramInfoLog(mShaderProgram, logSize, NULL, errorLog.data() );
 //            throw ShaderBuildException{, ShaderErrorType::Linker};
             logError(errorLog.data());
             return false;
@@ -452,10 +452,10 @@ break;
     }
     
     void Shader::bind(){
-        glUseProgram(shaderProgram);
-        updateFaceCulling(faceCulling);
-        updateDepthProperties(zTest, depthBufferWrite);
-        updateBlending(blend, blendDFactorAlpha, blendDFactorRGB, blendSFactorAlpha, blendSFactorRGB);
+        glUseProgram(mShaderProgram);
+        updateFaceCulling(mFaceCulling);
+        updateDepthProperties(mZTest, mDepthBufferWrite);
+        updateBlending(mBlend, mBlendDFactorAlpha, mBlendDFactorRGB, mBlendSFactorAlpha, mBlendSFactorRGB);
     }
     
     ShaderObj Shader::compileShader(std::string source, ShaderType type){
@@ -488,7 +488,7 @@ break;
     }
 
     const std::vector<AttributeDescriptor >& Shader::getShaderAttributes() const  {
-        return shaderAttributes;
+        return mShaderAttributes;
     }
     
     const std::vector<UniformDescriptor >& Shader::getShaderUniforms() const {
@@ -496,9 +496,9 @@ break;
     }
     
     const AttributeDescriptor* Shader::getShaderAttribute(VertexAttributeSemantic semantic) const{
-        for (int i=0;i<shaderAttributes.size();i++){
-            if (shaderAttributes[i].semantic == semantic){
-                return &shaderAttributes[i];
+        for (int i=0;i< mShaderAttributes.size();i++){
+            if (mShaderAttributes[i].semantic == semantic){
+                return &mShaderAttributes[i];
             }
         }
         return nullptr;
@@ -566,39 +566,39 @@ break;
         logError(string{errorLog.data()}+"\n"+ typeStr +" error\n"+ errorLines);
     }
     
-    void Shader::setBlend(bool b){ blend = b; }
-    bool Shader::getBlend() { return blend; }
-    BlendType Shader::getBlendDFactorAlpha() { return blendDFactorAlpha; }
-    BlendType Shader::getBlendDFactorRGB() { return blendDFactorRGB; }
-    BlendType Shader::getBlendSFactorAlpha() { return blendSFactorAlpha; }
-    BlendType Shader::getBlendSFactorRGB() { return blendSFactorRGB; }
-    void Shader::setBlendDFactorAlpha(BlendType blendDFactorAlpha) { this->blendDFactorAlpha=blendDFactorAlpha; }
-    void Shader::setBlendDFactorRGB(BlendType blendDFactorRGB) { this->blendDFactorRGB=blendDFactorRGB; }
-    void Shader::setBlendSFactorAlpha(BlendType blendSFactorAlpha) { this->blendSFactorAlpha = blendSFactorAlpha; }
-    void Shader::setBlendSFactorRGB(BlendType blendSFactorRGB) { this->blendSFactorRGB = blendSFactorRGB; }
-    void Shader::setDepthWrite(bool depthMask) { this->depthBufferWrite = depthMask;}
-    bool Shader::getDepthWrite() { return depthBufferWrite; }
-    void Shader::setFaceCulling(FaceCullingType faceCulling) { this->faceCulling = faceCulling; }
-    FaceCullingType Shader::getFaceCulling() { return faceCulling; }
-    void Shader::setPolygonOffsetEnabled(bool polygonOffsetEnabled) { this->polygonOffsetEnabled = polygonOffsetEnabled; }
-    bool Shader::getPolygonOffsetEnabled() { return polygonOffsetEnabled; }
-    void Shader::setPolygonOffsetFactorAndUnit(glm::vec2 polygonOffsetFactorAndUnit) { this->polygonOffsetFactorAndUnit = polygonOffsetFactorAndUnit; }
-    glm::vec2 Shader::getPolygonOffsetFactorAndUnit() { return polygonOffsetFactorAndUnit; }
-    void Shader::setZTest(ZTestType zTest) { this->zTest = zTest; }
-    ZTestType Shader::getZTest() { return zTest; }
+    void Shader::setBlend(bool b){ mBlend = b; }
+    bool Shader::blend() { return mBlend; }
+    BlendType Shader::blendDFactorAlpha() { return mBlendDFactorAlpha; }
+    BlendType Shader::blendDFactorRGB() { return mBlendDFactorRGB; }
+    BlendType Shader::blendSFactorAlpha() { return mBlendSFactorAlpha; }
+    BlendType Shader::blendSFactorRGB() { return mBlendSFactorRGB; }
+    void Shader::setBlendDFactorAlpha(BlendType blendDFactorAlpha) { this->mBlendDFactorAlpha =blendDFactorAlpha; }
+    void Shader::setBlendDFactorRGB(BlendType blendDFactorRGB) { this->mBlendDFactorRGB =blendDFactorRGB; }
+    void Shader::setBlendSFactorAlpha(BlendType blendSFactorAlpha) { this->mBlendSFactorAlpha = blendSFactorAlpha; }
+    void Shader::setBlendSFactorRGB(BlendType blendSFactorRGB) { this->mBlendSFactorRGB = blendSFactorRGB; }
+    void Shader::setDepthWrite(bool depthMask) { this->mDepthBufferWrite = depthMask;}
+    bool Shader::depthWrite() { return mDepthBufferWrite; }
+    void Shader::setFaceCulling(FaceCullingType faceCulling) { this->mFaceCulling = faceCulling; }
+    FaceCullingType Shader::faceCulling() { return mFaceCulling; }
+    void Shader::setPolygonOffsetEnabled(bool polygonOffsetEnabled) { this->mPolygonOffsetEnabled = polygonOffsetEnabled; }
+    bool Shader::polygonOffsetEnabled() { return mPolygonOffsetEnabled; }
+    void Shader::setPolygonOffsetFactorAndUnit(glm::vec2 polygonOffsetFactorAndUnit) { this->mPolygonOffsetFactorAndUnit = polygonOffsetFactorAndUnit; }
+    glm::vec2 Shader::polygonOffsetFactorAndUnit() { return mPolygonOffsetFactorAndUnit; }
+    void Shader::setZTest(ZTestType zTest) { this->mZTest = zTest; }
+    ZTestType Shader::zTest() { return mZTest; }
 
     void Shader::bind_uniforms(Material *material, EngineUniforms *engineUniforms, Transform* transform){
         material->bind();
         SceneLights * sceneLights = engineUniforms->sceneLights;
         for (auto& uniform : shaderUniforms){
             if (uniform.name == UniformNames::modelMatrix){
-                auto globalMatrix = transform->getGlobalMatrix();
+                auto globalMatrix = transform->globalMatrix();
                 glUniformMatrix4fv(uniform.index, 1, GL_FALSE, glm::value_ptr(globalMatrix));
             } else if (uniform.name == UniformNames::mv){
-                auto modelView = engineUniforms->viewMatrix * transform->getGlobalMatrix();
+                auto modelView = engineUniforms->viewMatrix * transform->globalMatrix();
                 glUniformMatrix4fv(uniform.index, 1, GL_FALSE, glm::value_ptr(modelView));
             } else if (uniform.name == UniformNames::norm) {
-                auto modelView = engineUniforms->viewMatrix * transform->getGlobalMatrix();
+                auto modelView = engineUniforms->viewMatrix * transform->globalMatrix();
                 auto normal = glm::inverseTranspose(glm::mat3(modelView));
                 glUniformMatrix3fv(uniform.index, 1, GL_FALSE, glm::value_ptr(normal));
             } else if (uniform.name == UniformNames::v) {
@@ -607,16 +607,16 @@ break;
             } else if (uniform.name == UniformNames::proj){
                 glUniformMatrix4fv(uniform.index, 1, GL_FALSE, glm::value_ptr(engineUniforms->projectionMatrix));
             } else if (uniform.name == UniformNames::worldCamPos){
-                auto cameraPos = engineUniforms->currentCameraTransform->getPosition();
+                auto cameraPos = engineUniforms->currentCameraTransform->position();
                 glUniform3fv(uniform.index, 1, glm::value_ptr(cameraPos));
             } else if (uniform.name == UniformNames::world2object){
-                auto world2object = transform->getGlobalTRSInverse();
+                auto world2object = transform->globalTRSInverse();
                 glUniformMatrix4fv(uniform.index, 1, GL_FALSE, glm::value_ptr(world2object));
             } else if (uniform.name == UniformNames::mvProj){
-                auto mvProj = engineUniforms->viewProjectionMatrix * transform->getGlobalMatrix();
+                auto mvProj = engineUniforms->viewProjectionMatrix * transform->globalMatrix();
                 glUniformMatrix4fv(uniform.index, 1, GL_FALSE, glm::value_ptr(mvProj));
             } else if (uniform.name == UniformNames::gameObjectUID){
-                int32_t uid = transform->getGameObject()->getUniqueId();
+                int32_t uid = transform->gameObject()->uniqueId();
                 glm::vec4 packedInt = uint32ToVec4(uid);
                 glUniform4fv(uniform.index, 1, glm::value_ptr(packedInt ));
             } else if (uniform.name == UniformNames::shadowMapTexture) {
@@ -624,10 +624,10 @@ break;
                 cout <<"shadowMapTexture not yet implemented\n"; // todo
                 logWarning("\"shadowMapTexture not yet implemented");
             } else if (uniform.name == UniformNames::lightMat){
-                auto lightMatrix = engineUniforms->lightMatrix * transform->getGlobalMatrix();
+                auto lightMatrix = engineUniforms->lightMatrix * transform->globalMatrix();
                 glUniformMatrix4fv(uniform.index, 1, GL_FALSE, glm::value_ptr(lightMatrix));
             } else if (uniform.name == UniformNames::ambient){
-                glm::vec3 ambientLight = sceneLights->ambientLight ? sceneLights->ambientLight->getColorIntensity() : glm::vec3{0};
+                glm::vec3 ambientLight = sceneLights->ambientLight ? sceneLights->ambientLight->colorIntensity() : glm::vec3{0};
                 glUniform3fv(uniform.index, 1, glm::value_ptr(ambientLight));
             } else if (uniform.name == UniformNames::pointLight){
                 glUniformMatrix3fv(uniform.index, KICK_MAX_POINT_LIGHTS, GL_FALSE, glm::value_ptr(sceneLights->pointLightData[0]));
@@ -696,12 +696,12 @@ break;
     }
 
     int Shader::getRenderOrder() const {
-        return renderOrder;
+        return mDenderOrder;
     }
 
     void Shader::setRenderOrder(int renderOrder) {
-        if (renderOrder != Shader::renderOrder){
-            Shader::renderOrder = renderOrder;
+        if (renderOrder != Shader::mDenderOrder){
+            Shader::mDenderOrder = renderOrder;
             shaderChanged.notifyListeners({this, ShaderEventType::shader });
         }
     }

@@ -9,16 +9,16 @@
 
 namespace kick {
     class Skybox : public ComponentRenderable {
-        MeshRenderer* meshRenderer;
-        Mesh* mesh;
+        MeshRenderer*mMeshRenderer;
+        Mesh*mMesh;
     public:
         Skybox(GameObject *gameObject);
         virtual ~Skybox();
         virtual void render(EngineUniforms *engineUniforms, Material *replacementMaterial);
 
-        virtual int getRenderOrder();
+        virtual int renderOrder();
 
-        Material * getMaterial() const;
+        Material *material() const;
 
         void setMaterial(Material *material);
     };

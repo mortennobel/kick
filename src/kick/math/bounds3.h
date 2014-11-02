@@ -18,38 +18,19 @@ namespace kick {
         glm::vec3 dimension(){ return max-min; }
         glm::vec3 center(){ return (max+min)*0.5f; }
 
-        Bounds3() {
-        }
+        Bounds3();
 
-        Bounds3(glm::vec3 const &min, glm::vec3 const &max)
-        : min(min), max(max) {
-        }
+        Bounds3(glm::vec3 const &min, glm::vec3 const &max);
 
-        void expand(glm::vec3 p){
-            min = glm::min(min, p);
-            max = glm::max(max, p);
-        }
+        void expand(glm::vec3 p);
 
-        void expand(Bounds3 b){
-            min = glm::min(min, b.min);
-            max = glm::max(max, b.max);
-        }
+        void expand(Bounds3 b);
 
-        void reset(){
-            min = glm::vec3{ std::numeric_limits<float>::max() };
-            max = glm::vec3{ std::numeric_limits<float>::lowest() };
-        }
+        void reset();
 
-        Bounds3 lerp(float f, Bounds3 b){
-            return Bounds3 {glm::mix(min, b.min, f), glm::mix(max, b.max, f)};
+        Bounds3 lerp(float f, Bounds3 b);
 
-        }
-
-        bool contains(glm::vec3 point){
-            return min.x <= point.x && min.y <= point.y && min.z <= point.z &&
-                    max.x >= point.x && max.y >= point.y && max.z >= point.z
-                    ;
-        }
+        bool contains(glm::vec3 point);
     };
 
     inline std::ostream& operator<<(std::ostream& out, const Bounds3 & f){

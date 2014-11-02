@@ -16,73 +16,73 @@ namespace kick {
     }
 
     float CameraOrthographic::getNear() const {
-        return near;
+        return mNear;
     }
 
     void CameraOrthographic::setNear(float near) {
-        CameraOrthographic::near = near;
+        CameraOrthographic::mNear = near;
         resetProjectionMatrix();
     }
 
     float CameraOrthographic::getFar() const {
-        return far;
+        return mFar;
     }
 
     void CameraOrthographic::setFar(float far) {
-        CameraOrthographic::far = far;
+        CameraOrthographic::mFar = far;
         resetProjectionMatrix();
     }
 
     float CameraOrthographic::getLeft() const {
-        return left;
+        return mLeft;
     }
 
     void CameraOrthographic::setLeft(float left) {
-        CameraOrthographic::left = left;
+        CameraOrthographic::mLeft = left;
         resetProjectionMatrix();
     }
 
     float CameraOrthographic::getRight() const {
-        return right;
+        return mRight;
     }
 
     void CameraOrthographic::setRight(float right) {
-        CameraOrthographic::right = right;
+        CameraOrthographic::mRight = right;
         resetProjectionMatrix();
     }
 
     float CameraOrthographic::getBottom() const {
-        return bottom;
+        return mBottom;
     }
 
     void CameraOrthographic::setBottom(float bottom) {
-        CameraOrthographic::bottom = bottom;
+        CameraOrthographic::mBottom = bottom;
         resetProjectionMatrix();
     }
 
     float CameraOrthographic::getTop() const {
-        return top;
+        return mTop;
     }
 
     void CameraOrthographic::setTop(float top) {
-        CameraOrthographic::top = top;
+        CameraOrthographic::mTop = top;
         resetProjectionMatrix();
     }
 
     void CameraOrthographic::resetProjectionMatrix() {
-        projectionMatrix = ortho(
-                left, right,
-                bottom, top,
-                near, far);
+        mProjectionMatrix = ortho(
+                mLeft, mRight,
+                mBottom, mTop,
+                mNear, mFar);
     }
 
     void CameraOrthographic::set(float near, float far, float left, float right, float bottom, float top) {
-        this->near = near;
-        this->far = far;
-        this->left = left;
-        this->right = right;
-        this->bottom = bottom;
-        this->top = top;
+        this->mNear = near;
+        this->mFar = far;
+        this->mLeft = left;
+        this->mRight = right;
+        this->mBottom = bottom;
+        this->mTop = top;
         resetProjectionMatrix();
     }
 }

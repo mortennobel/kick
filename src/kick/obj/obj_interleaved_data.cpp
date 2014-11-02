@@ -125,7 +125,7 @@ namespace kick {
                    indices.end());
     }
     
-    int ObjInterleavedData::getVertexCount(){
+    int ObjInterleavedData::vertexCount(){
         return (int)(interleavedData.size() / vertexLength);
     }
     

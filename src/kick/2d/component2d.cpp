@@ -11,7 +11,7 @@ using namespace std;
 namespace kick {
 
     Component2D::Component2D(GameObject *gameObject) : Component(gameObject) {
-        panel = gameObject->getComponentInParent<Panel>();
+        panel = gameObject->componentInParent<Panel>();
         if (panel){
             panel->registerComponent2D(this);
         }
