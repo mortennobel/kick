@@ -109,7 +109,7 @@ namespace kick {
         
         std::vector<float> interleavedData();
         std::vector<InterleavedRecord> interleavedFormat();
-        std::vector<GLushort> indices();
+        std::vector<GLushort> indicesConcat();
         std::vector<SubMeshData> indicesFormat();
         
         // recomputing normals (using angle weighted normals)
