@@ -19,13 +19,11 @@ using namespace kick;
 using namespace std;
 using namespace glm;
 
-Engine *engine;
-
 void initEngine(int& argc, char** argv){
     // Manually create engine instance
     //GLUTContext cont;
 
-    ::engine = Engine::init(argc, argv);
+    Engine::init(argc, argv);
     kick::Log::disable();
 }
 
@@ -506,7 +504,7 @@ bool equal(glm::mat4 m1, glm::mat4 m2, float eps = 0.001f){
 }
 
 int TestTransform(){
-    auto gameObject = Engine::instance->getActiveScene()->createGameObject("SomeObject");
+    auto gameObject = Engine::getActiveScene()->createGameObject("SomeObject");
     TINYTEST_EQUAL(gameObject->getTransform()->getLocalMatrix(), gameObject->getTransform()->getGlobalMatrix());
     TINYTEST_EQUAL(gameObject->getTransform()->getLocalMatrix(), gameObject->getTransform()->getLocalTRSInverse());
     TINYTEST_EQUAL(glm::mat4{1}, gameObject->getTransform()->getGlobalMatrix());
@@ -534,7 +532,7 @@ int TestTransform(){
 }
 
 int TestGetComponent(){
-    auto gameObject = Engine::instance->getActiveScene()->createGameObject("SomeObject");
+    auto gameObject = Engine::getActiveScene()->createGameObject("SomeObject");
 
     MeshRenderer *mr = gameObject->addComponent<MeshRenderer>();
     TINYTEST_EQUAL(mr, gameObject->getComponent<MeshRenderer>());
@@ -543,7 +541,7 @@ int TestGetComponent(){
 }
 
 int TestGetComponents(){
-    auto gameObject = Engine::instance->getActiveScene()->createGameObject("SomeObject");
+    auto gameObject = Engine::getActiveScene()->createGameObject("SomeObject");
 
     MeshRenderer *mr = gameObject->addComponent<MeshRenderer>();
     auto meshRenderers = gameObject->getComponents<MeshRenderer>();
@@ -574,7 +572,7 @@ int TestDeleteComponent(){
 
     };
     static bool destroyedOnClassDestruction = false;
-    auto gameObject = Engine::instance->getActiveScene()->createGameObject("SomeObject");
+    auto gameObject = Engine::getActiveScene()->createGameObject("SomeObject");
 
     static bool destroyed = false;
 
@@ -587,7 +585,7 @@ int TestDeleteComponent(){
     cout << "Post destroy component"<<endl;
     TINYTEST_ASSERT(destroyed);
     cout << "Pre destroy gameObject"<<endl;
-    Engine::instance->getActiveScene()->destroyGameObject(gameObject);
+    Engine::getActiveScene()->destroyGameObject(gameObject);
     cout << "Post destroy gameObject"<<endl;
     TINYTEST_ASSERT(destroyedOnClassDestruction);
 
@@ -597,7 +595,7 @@ int TestDeleteComponent(){
 int TestTransformComponent(){
     vector<Transform*> transforms;
     for (int i=0;i<3;i++){
-        auto gameObject = Engine::instance->getActiveScene()->createGameObject("SomeObject");
+        auto gameObject = Engine::getActiveScene()->createGameObject("SomeObject");
         auto transform = gameObject->getTransform();
         if (i>0){
             transform->setParent(transforms[transforms.size()-1]);
@@ -643,7 +641,7 @@ bool isEqual_(glm::quat q1, glm::quat q2, float epsilon = 1e-4){
 int TestTransformRotationsComponent(){
     vector<Transform*> transforms;
     for (int i=0;i<3;i++){
-        auto gameObject = Engine::instance->getActiveScene()->createGameObject("SomeObject");
+        auto gameObject = Engine::getActiveScene()->createGameObject("SomeObject");
         auto transform = gameObject->getTransform();
         if (i>0){
             transform->setParent(transforms[transforms.size()-1]);
@@ -664,8 +662,8 @@ int TestTransformRotationsComponent(){
 }
 
 int TestTransformLookAt(){
-    auto transform1 = Engine::instance->getActiveScene()->createGameObject()->getTransform();
-    auto transform2 = Engine::instance->getActiveScene()->createGameObject()->getTransform();
+    auto transform1 = Engine::getActiveScene()->createGameObject()->getTransform();
+    auto transform2 = Engine::getActiveScene()->createGameObject()->getTransform();
 
     transform2->setLocalPosition(vec3{0,0,-10});
     transform1->lookAt(transform2);
@@ -696,10 +694,10 @@ int TestLoadCubemap(){
 
 int TestComponentListener(){
     static set<ComponentUpdateStatus> events;
-    auto listener = Engine::instance->getActiveScene()->componentEvents.createListener([&](std::pair<Component*, ComponentUpdateStatus> e){
+    auto listener = Engine::getActiveScene()->componentEvents.createListener([&](std::pair<Component*, ComponentUpdateStatus> e){
         events.insert(e.second);
     });
-    auto gameObject = Engine::instance->getActiveScene()->createGameObject("SomeObject");
+    auto gameObject = Engine::getActiveScene()->createGameObject("SomeObject");
     TINYTEST_EQUAL(0, events.size());
     auto camera = gameObject->addComponent<CameraPerspective>();
     TINYTEST_EQUAL(1, events.size());
@@ -731,7 +729,7 @@ int TestSprite(){
     auto textureAtlas = std::shared_ptr<TextureAtlas>{new TextureAtlas()};
     textureAtlas->load("unittest/sprites/sprites.txt", "unittest/sprites/sprites.png");
 
-    auto scene = Engine::instance->getActiveScene();
+    auto scene = Engine::getActiveScene();
     auto res = scene->createPanel()->createSprite(textureAtlas, "Character Boy.png");
 
     return 1;
@@ -739,12 +737,12 @@ int TestSprite(){
 
 
 int TestComponentHierachy(){
-    auto gameObject = Engine::instance->getActiveScene()->createGameObject("SomeObject");
+    auto gameObject = Engine::getActiveScene()->createGameObject("SomeObject");
 
-    auto gameObject2 = Engine::instance->getActiveScene()->createGameObject("SomeObject2");
+    auto gameObject2 = Engine::getActiveScene()->createGameObject("SomeObject2");
     auto camera2 = gameObject2->addComponent<Camera>();
 
-    auto gameObject3 = Engine::instance->getActiveScene()->createGameObject("SomeObject3");
+    auto gameObject3 = Engine::getActiveScene()->createGameObject("SomeObject3");
     auto camera3 = gameObject3->addComponent<Camera>();
 
     TINYTEST_ASSERT(gameObject->getComponent<Camera>()==nullptr);

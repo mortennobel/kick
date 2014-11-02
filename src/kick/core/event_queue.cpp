@@ -12,7 +12,7 @@ using namespace std;
 namespace kick{
     int EventQueue::scheduleEvent(std::function<void(int)> &&fn, float timeStart, float timeEnd) {
         assert(timeEnd >= timeStart);
-        float time = Time::getTime();
+        float time = Time::get();
         int id = ++queueCounter;
         if (updating){
             updatingQueue.emplace_back(std::move(fn), time+timeStart, time+timeEnd,id);
@@ -35,7 +35,7 @@ namespace kick{
 
     void EventQueue::run() {
         updating = true;
-        float time = Time::getTime();
+        float time = Time::get();
 
         for (auto e : queue){
             if (e.timeStart < time && !e.cancelled){

@@ -18,7 +18,7 @@ namespace kick {
     Engine* Engine::instance = nullptr;
 
     Engine::Engine(int &argc, char **argv,const WindowConfig& config)
-    :context(new SDL2Context()), tickStartTime{Time::getTime()} {
+    :context(new SDL2Context()), tickStartTime{Time::get()} {
         instance = this;
         context->init(argc, argv);
         context->showWindow(config);
@@ -39,7 +39,7 @@ namespace kick {
     }
 
     void Engine::update(){
-        float now = Time::getTime();
+        float now = Time::get();
         Time::deltaTime = now - instance->tickStartTime;
         instance->tickStartTime = now;
         Time::frame++;

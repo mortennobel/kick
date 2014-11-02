@@ -12,11 +12,11 @@ namespace kick {
     class Time {
     public:
         // return time since startup
-        static float getTime();
+        static float get();
         // return time since startup
-        static float getDeltaTime();
+        static float delta();
         // return frame count since startup
-        static long getFrame();
+        static long frameCount();
         friend class Engine;
     private:
         static long frame;
