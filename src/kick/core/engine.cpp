@@ -28,9 +28,6 @@ namespace kick {
         );
         createScene("defaultScene");
         context->contextSurfaceSize.registerSyncValue(engineUniforms.viewportDimension);
-        context->setKeyInput(&keyInput);
-        context->setTouchInput(&touchInput);
-        context->setMouseInput(&mouseInput);
         engineUniforms.viewportDimension.setValue(context->getContextSurfaceDim());
     }
 
@@ -46,7 +43,7 @@ namespace kick {
 
         instance->eventQueue.run();
 
-        instance->defaultKeyHandler.handleKeyPress(instance, instance->keyInput);
+        instance->defaultKeyHandler.handleKeyPress(instance);
         instance->activeScene->update();
     }
     
@@ -75,18 +72,10 @@ namespace kick {
         return instance->context;
     }
 
-    const MouseInput& Engine::getMouseInput(){
-        return instance->mouseInput;
-    }
-
     void Engine::startFrame() {
-        instance->keyInput.reset();
-        instance->mouseInput.reset();
-        instance->touchInput.reset();
-    }
-
-    const KeyInput &Engine::getKeyInput() {
-        return instance->keyInput;
+        KeyInput::reset();
+        MouseInput::reset();
+        TouchInput::reset();
     }
 
     DefaultKeyHandler &Engine::getDefaultKeyHandler() {

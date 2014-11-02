@@ -16,47 +16,44 @@
 namespace kick {
     class MouseInput {
     public:
-        MouseInput();
-        MouseInput(const MouseInput&) = delete;
         // returns true if mouse button was pressed down in this frame
-        bool down(int button) const;
+        static bool down(int button);
         // returns true if mouse button is down is this frame
-        bool pressed(int button)  const;
+        static bool pressed(int button);
         // returns true if mouse button is released in this frame
-        bool up(int button) const;
-        void buttonPressStarted(int button);
-        void buttonPressEnded(int button);
+        static bool up(int button);
+        static void buttonPressStarted(int button);
+        static void buttonPressEnded(int button);
 
+        static glm::ivec2 position();
 
-        glm::ivec2 getPosition() const;
+        static void setPosition(glm::ivec2 position);
 
-        void setPosition(glm::ivec2 position);
+        static glm::ivec2 positionDelta();
 
-        glm::ivec2 getPositionDelta() const;
+        static void setPositionDelta(glm::ivec2 positionDelta);
 
-        void setPositionDelta(glm::ivec2 positionDelta);
+        static glm::ivec2 mouseWheelDelta();
 
-        glm::ivec2 getMouseWheelDelta() const;
+        static void setMouseWheelDelta(glm::ivec2 mouseWheelDelta);
 
-        void setMouseWheelDelta(glm::ivec2 mouseWheelDelta);
-
-/// clear the frame specific properties
-        void reset();
+        /// clear the frame specific properties
+        static void reset();
         static const int mouseButtons = 5;
 
-        int getClicks() const;
+        static int clicks();
 
-        void setClicks(int clicks);
-
+        static void setClicks(int clicks);
     private:
+        MouseInput() = delete;
         // absolute mouse position (relative to upper left corner)
-        glm::ivec2 position;
-        glm::ivec2 positionDelta;
-        glm::ivec2 mouseWheelDelta;
-        int clicks = 0;
+        static glm::ivec2 mPosition;
+        static glm::ivec2 mPositionDelta;
+        static glm::ivec2 mMouseWheelDelta;
+        static int mClicks;
 
-        bool buttonDown[mouseButtons];
-        bool buttonPressed[mouseButtons];
-        bool buttonUp[mouseButtons];
+        static bool mButtonDown[mouseButtons];
+        static bool mButtonPressed[mouseButtons];
+        static bool mButtonUp[mouseButtons];
     };
 }

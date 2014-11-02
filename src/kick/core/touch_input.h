@@ -21,14 +21,15 @@ namespace kick {
 
     class TouchInput {
     public:
-        void setTouchStarted(int64_t fingerid, glm::ivec2 pos, float pressure);
-        void setTouchMoved(int64_t fingerid, glm::ivec2 pos, float pressure);
-        void setTouchEnded(int64_t fingerid, glm::ivec2 pos);
-        void reset();
-        std::map<int64_t,Touch>::const_iterator begin() const;
-        std::map<int64_t,Touch>::const_iterator end() const;
+        static void setTouchStarted(int64_t fingerid, glm::ivec2 pos, float pressure);
+        static void setTouchMoved(int64_t fingerid, glm::ivec2 pos, float pressure);
+        static void setTouchEnded(int64_t fingerid, glm::ivec2 pos);
+        static void reset();
+        static std::map<int64_t,Touch>::const_iterator begin();
+        static std::map<int64_t,Touch>::const_iterator end();
     private:
-        std::map<int64_t,Touch> touches;
+        TouchInput() = delete;
+        static std::map<int64_t,Touch> touches;
     };
 }
 

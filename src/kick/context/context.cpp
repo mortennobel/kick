@@ -28,16 +28,4 @@ namespace kick {
     std::string Context::getBasePath(){
         return "./";
     }
-    
-    void Context::setMouseInput(MouseInput* mouseInput) {
-        this->mouseInput = mouseInput;
-    }
-    
-    void Context::setKeyInput(KeyInput* keyInput){
-        this->keyInput = keyInput;
-    }
-
-    void Context::setTouchInput(TouchInput *touchInput) {
-        this->touchInput = touchInput;
-    }
 }

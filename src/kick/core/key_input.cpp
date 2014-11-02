@@ -9,34 +9,36 @@
 #include "key_input.h"
 
 namespace kick {
-    KeyInput::KeyInput(){}
-    
+    std::set<Key> KeyInput::buttonDown;
+    std::set<Key> KeyInput::buttonPressed;
+    std::set<Key> KeyInput::buttonUp;
+
     void KeyInput::reset(){
         buttonDown.clear();
         buttonUp.clear();
     }
 
-    bool KeyInput::down(Key button) const {
+    bool KeyInput::down(Key button) {
         return buttonDown.find(button) != buttonDown.end();
     }
 
-    bool KeyInput::anyDown() const {
+    bool KeyInput::anyDown() {
         return !buttonDown.empty();
     }
 
-    bool KeyInput::pressed(Key button) const {
+    bool KeyInput::pressed(Key button) {
         return buttonPressed.find(button) != buttonPressed.end();
     }
 
-    bool KeyInput::anyPressed() const {
+    bool KeyInput::anyPressed() {
         return !buttonPressed.empty();
     }
 
-    bool KeyInput::up(Key button) const {
+    bool KeyInput::up(Key button) {
         return buttonUp.find(button) != buttonUp.end();
     }
 
-    bool KeyInput::anyUp() const {
+    bool KeyInput::anyUp() {
         return !buttonUp.empty();
     }
 
@@ -62,7 +64,7 @@ namespace kick {
         }
     }
 
-    bool KeyInput::pressed(const KeyMapping &mapping) const {
+    bool KeyInput::pressed(const KeyMapping &mapping) {
         if (mapping.alternatives.size()>0){
             for (auto & k : mapping.alternatives){
                 bool res = pressed(k);
@@ -80,7 +82,7 @@ namespace kick {
         return true;
     }
 
-    bool KeyInput::down(const KeyMapping &mapping) const {
+    bool KeyInput::down(const KeyMapping &mapping) {
         if (mapping.alternatives.size()>0){
             for (auto & k : mapping.alternatives){
                 bool res = down(k);
@@ -102,9 +104,9 @@ namespace kick {
     }
 
 
-    const std::set<Key> &KeyInput::getButtonDown() const { return buttonDown;}
+    const std::set<Key> &KeyInput::buttonsDown() { return buttonDown;}
 
-    const std::set<Key> &KeyInput::getButtonPressed() const { return buttonPressed;}
+    const std::set<Key> &KeyInput::buttonsPressed() { return buttonPressed;}
 
-    const std::set<Key> &KeyInput::getButtonUp() const {return buttonUp;}
+    const std::set<Key> &KeyInput::buttonsUp() {return buttonUp;}
 }

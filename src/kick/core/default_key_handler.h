@@ -16,7 +16,7 @@ namespace kick {
         DefaultKeyHandler();
         KeyMapping fullScreen;
 
-        void handleKeyPress(Engine *pEngine, KeyInput& input);
+        void handleKeyPress(Engine *pEngine);
     };
 
 }

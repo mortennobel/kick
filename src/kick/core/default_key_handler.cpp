@@ -15,8 +15,8 @@ kick::DefaultKeyHandler::DefaultKeyHandler()
 {
 }
 
-void kick::DefaultKeyHandler::handleKeyPress(kick::Engine *engine, kick::KeyInput& input) {
-    if (input.down(fullScreen)){
+void kick::DefaultKeyHandler::handleKeyPress(kick::Engine *engine) {
+    if (kick::KeyInput::down(fullScreen)){
         auto context = engine->getContext();
         context->setFullscreen(!context->isFullscreen());
     }

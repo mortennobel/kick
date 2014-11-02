@@ -289,30 +289,29 @@ namespace kick {
 
     class KeyInput {
     public:
-        KeyInput();
-        KeyInput(const KeyInput&) = delete;
         /// clear the frame specific properties
-        void reset();
-        bool down(Key button) const;
-        bool pressed(Key button)  const;
-        bool up(Key button) const;
-        bool down(const KeyMapping& mapping) const;
+        static void reset();
+        static bool down(Key button);
+        static bool pressed(Key button);
+        static bool up(Key button);
+        static bool down(const KeyMapping& mapping);
         // if all keys in keymapping is pressed and at least one key is pressed down this frame)
-        bool pressed(const KeyMapping& mapping)  const;
-        bool anyDown() const;
-        bool anyUp() const;
-        bool anyPressed() const;
+        static bool pressed(const KeyMapping& mapping);
+        static bool anyDown();
+        static bool anyUp();
+        static bool anyPressed();
 
-        void pressBegin(Key k);
-        void pressEnd(Key k);
+        static void pressBegin(Key k);
+        static void pressEnd(Key k);
 
-        const std::set<Key> & getButtonDown() const;
-        const std::set<Key> & getButtonPressed() const;
-        const std::set<Key> & getButtonUp() const;
+        static const std::set<Key> & buttonsDown();
+        static const std::set<Key> & buttonsPressed();
+        static const std::set<Key> & buttonsUp();
     private:
-        std::set<Key> buttonDown;
-        std::set<Key> buttonPressed;
-        std::set<Key> buttonUp;
+        KeyInput() = delete;
+        static std::set<Key> buttonDown;
+        static std::set<Key> buttonPressed;
+        static std::set<Key> buttonUp;
 
 
     };

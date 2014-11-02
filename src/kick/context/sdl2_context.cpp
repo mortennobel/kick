@@ -315,29 +315,29 @@ namespace kick {
             if (event.repeat){
                 return;
             }
-            keyInput->pressBegin(key);
+            KeyInput::pressBegin(key);
         } else {
-            keyInput->pressEnd(key);
+            KeyInput::pressEnd(key);
         }
     }
     void SDL2Context::handleMouseMotion(SDL_MouseMotionEvent event){
-        mouseInput->setPosition(ivec2(event.x,event.y));
-        mouseInput->setPositionDelta(ivec2(event.xrel,event.yrel));
+        MouseInput::setPosition(ivec2(event.x,event.y));
+        MouseInput::setPositionDelta(ivec2(event.xrel,event.yrel));
     }
     
     void SDL2Context::handleMouseButton(SDL_MouseButtonEvent event, bool buttonDown){
         if (buttonDown){
-            mouseInput->buttonPressStarted(event.button-1);
+            MouseInput::buttonPressStarted(event.button-1);
         } else {
-            mouseInput->buttonPressEnded(event.button-1);
+            MouseInput::buttonPressEnded(event.button-1);
         }
 #ifndef EMSCRIPTEN
-        mouseInput->setClicks(event.clicks);
+        MouseInput::setClicks(event.clicks);
 #endif
     }
     
     void  SDL2Context::handleMouseWheel(SDL_MouseWheelEvent event){
-        mouseInput->setMouseWheelDelta(ivec2(event.x, event.y));
+        MouseInput::setMouseWheelDelta(ivec2(event.x, event.y));
     }
 
     bool SDL2Context::isFullscreen() {
@@ -390,13 +390,13 @@ namespace kick {
         ivec2 pos{(int)round(contextSurfaceDim.x * event.x), (int)round(contextSurfaceDim.y * event.y)};
         switch (event.type){
             case SDL_FINGERDOWN:
-                touchInput->setTouchStarted(event.fingerId, pos, event.pressure);
+                TouchInput::setTouchStarted(event.fingerId, pos, event.pressure);
                 break;
             case SDL_FINGERMOTION:
-                touchInput->setTouchMoved(event.fingerId, pos, event.pressure);
+                TouchInput::setTouchMoved(event.fingerId, pos, event.pressure);
                 break;
             case SDL_FINGERUP:
-                touchInput->setTouchEnded(event.fingerId, pos);
+                TouchInput::setTouchEnded(event.fingerId, pos);
                 break;
             default:
                 cout << "Unknown event type "<<event.type<<endl;

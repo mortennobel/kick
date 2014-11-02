@@ -41,8 +41,6 @@ namespace kick {
 
         static EngineConfig& getConfig(){ return instance->config; }
         static Context* getContext();
-        static const MouseInput& getMouseInput();
-        static const KeyInput& getKeyInput();
         static DefaultKeyHandler & getDefaultKeyHandler();
         static void startMainLoop();
         static void startFrame();
@@ -63,9 +61,6 @@ namespace kick {
         EngineUniforms engineUniforms;
         Scene *activeScene = nullptr;
         Context* context = nullptr;
-        MouseInput mouseInput;
-        KeyInput keyInput;
-        TouchInput touchInput;
         DefaultKeyHandler defaultKeyHandler;
     };
 };

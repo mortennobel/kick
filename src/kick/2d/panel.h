@@ -62,6 +62,5 @@ namespace kick {
         Mesh *mesh = nullptr;
         MeshData* meshData = nullptr;
         Material* material = nullptr;
-        const MouseInput* mouseInput;
     };
 }

@@ -369,30 +369,31 @@ int TestShaderLoading(){
 }
 
 int TestKeyInputButton(){
-    KeyInput keyInput;
-    TINYTEST_EQUAL(false, keyInput.pressed(Key::x));
-    TINYTEST_EQUAL(false, keyInput.down(Key::x));
-    TINYTEST_EQUAL(false, keyInput.up(Key::x));
 
-    keyInput.pressBegin(Key::x);
-    TINYTEST_EQUAL(true, keyInput.pressed(Key::x));
-    TINYTEST_EQUAL(true, keyInput.down(Key::x));
-    TINYTEST_EQUAL(false, keyInput.up(Key::x));
+    KeyInput::reset();
+    TINYTEST_EQUAL(false, KeyInput::pressed(Key::x));
+    TINYTEST_EQUAL(false, KeyInput::down(Key::x));
+    TINYTEST_EQUAL(false, KeyInput::up(Key::x));
 
-    keyInput.reset();
-    TINYTEST_EQUAL(true, keyInput.pressed(Key::x));
-    TINYTEST_EQUAL(false, keyInput.down(Key::x));
-    TINYTEST_EQUAL(false, keyInput.up(Key::x));
+    KeyInput::pressBegin(Key::x);
+    TINYTEST_EQUAL(true, KeyInput::pressed(Key::x));
+    TINYTEST_EQUAL(true, KeyInput::down(Key::x));
+    TINYTEST_EQUAL(false, KeyInput::up(Key::x));
 
-    keyInput.pressEnd(Key::x);
-    TINYTEST_EQUAL(false, keyInput.pressed(Key::x));
-    TINYTEST_EQUAL(false, keyInput.down(Key::x));
-    TINYTEST_EQUAL(true, keyInput.up(Key::x));
+    KeyInput::reset();
+    TINYTEST_EQUAL(true, KeyInput::pressed(Key::x));
+    TINYTEST_EQUAL(false, KeyInput::down(Key::x));
+    TINYTEST_EQUAL(false, KeyInput::up(Key::x));
 
-    keyInput.reset();
-    TINYTEST_EQUAL(false, keyInput.pressed(Key::x));
-    TINYTEST_EQUAL(false, keyInput.down(Key::x));
-    TINYTEST_EQUAL(false, keyInput.up(Key::x));
+    KeyInput::pressEnd(Key::x);
+    TINYTEST_EQUAL(false, KeyInput::pressed(Key::x));
+    TINYTEST_EQUAL(false, KeyInput::down(Key::x));
+    TINYTEST_EQUAL(true, KeyInput::up(Key::x));
+
+    KeyInput::reset();
+    TINYTEST_EQUAL(false, KeyInput::pressed(Key::x));
+    TINYTEST_EQUAL(false, KeyInput::down(Key::x));
+    TINYTEST_EQUAL(false, KeyInput::up(Key::x));
 
     return 1;
 }
@@ -400,25 +401,25 @@ int TestKeyInputButton(){
 int TestKeyMapping(){
     KeyMapping keyMappingX{Key::x};
 
-    KeyInput keyInput;
-    TINYTEST_EQUAL(false, keyInput.pressed(keyMappingX));
-    TINYTEST_EQUAL(false, keyInput.down(keyMappingX));
+    KeyInput::reset();
+    TINYTEST_EQUAL(false, KeyInput::pressed(keyMappingX));
+    TINYTEST_EQUAL(false, KeyInput::down(keyMappingX));
 
-    keyInput.pressBegin(Key::x);
-    TINYTEST_EQUAL(true, keyInput.pressed(keyMappingX));
-    TINYTEST_EQUAL(true, keyInput.down(keyMappingX));
+    KeyInput::pressBegin(Key::x);
+    TINYTEST_EQUAL(true, KeyInput::pressed(keyMappingX));
+    TINYTEST_EQUAL(true, KeyInput::down(keyMappingX));
 
-    keyInput.reset();
-    TINYTEST_EQUAL(true, keyInput.pressed(keyMappingX));
-    TINYTEST_EQUAL(false, keyInput.down(keyMappingX));
+    KeyInput::reset();
+    TINYTEST_EQUAL(true, KeyInput::pressed(keyMappingX));
+    TINYTEST_EQUAL(false, KeyInput::down(keyMappingX));
 
-    keyInput.pressEnd(Key::x);
-    TINYTEST_EQUAL(false, keyInput.pressed(keyMappingX));
-    TINYTEST_EQUAL(false, keyInput.down(keyMappingX));
+    KeyInput::pressEnd(Key::x);
+    TINYTEST_EQUAL(false, KeyInput::pressed(keyMappingX));
+    TINYTEST_EQUAL(false, KeyInput::down(keyMappingX));
 
-    keyInput.reset();
-    TINYTEST_EQUAL(false, keyInput.pressed(keyMappingX));
-    TINYTEST_EQUAL(false, keyInput.down(keyMappingX));
+    KeyInput::reset();
+    TINYTEST_EQUAL(false, KeyInput::pressed(keyMappingX));
+    TINYTEST_EQUAL(false, KeyInput::down(keyMappingX));
 
     return 1;
 }
@@ -426,67 +427,67 @@ int TestKeyMapping(){
 int TestKeyMappingMulti(){
     KeyMapping keyMappingXY{Key::x, Key::y};
 
-    KeyInput keyInput;
-    TINYTEST_EQUAL(false, keyInput.pressed(keyMappingXY));
-    TINYTEST_EQUAL(false, keyInput.down(keyMappingXY));
+    KeyInput::reset();
+    TINYTEST_EQUAL(false, KeyInput::pressed(keyMappingXY));
+    TINYTEST_EQUAL(false, KeyInput::down(keyMappingXY));
 
-    keyInput.pressBegin(Key::x);
-    TINYTEST_EQUAL(false, keyInput.pressed(keyMappingXY));
-    TINYTEST_EQUAL(false, keyInput.down(keyMappingXY));
+    KeyInput::pressBegin(Key::x);
+    TINYTEST_EQUAL(false, KeyInput::pressed(keyMappingXY));
+    TINYTEST_EQUAL(false, KeyInput::down(keyMappingXY));
 
-    keyInput.reset();
-    TINYTEST_EQUAL(false, keyInput.pressed(keyMappingXY));
-    TINYTEST_EQUAL(false, keyInput.down(keyMappingXY));
+    KeyInput::reset();
+    TINYTEST_EQUAL(false, KeyInput::pressed(keyMappingXY));
+    TINYTEST_EQUAL(false, KeyInput::down(keyMappingXY));
 
-    keyInput.reset();
+    KeyInput::reset();
 
-    keyInput.pressBegin(Key::y);
-    TINYTEST_EQUAL(true, keyInput.pressed(keyMappingXY));
-    TINYTEST_EQUAL(true, keyInput.down(keyMappingXY));
+    KeyInput::pressBegin(Key::y);
+    TINYTEST_EQUAL(true, KeyInput::pressed(keyMappingXY));
+    TINYTEST_EQUAL(true, KeyInput::down(keyMappingXY));
 
-    keyInput.reset();
-    TINYTEST_EQUAL(true, keyInput.pressed(keyMappingXY));
-    TINYTEST_EQUAL(false, keyInput.down(keyMappingXY));
+    KeyInput::reset();
+    TINYTEST_EQUAL(true, KeyInput::pressed(keyMappingXY));
+    TINYTEST_EQUAL(false, KeyInput::down(keyMappingXY));
 
-    keyInput.pressEnd(Key::x);
-    TINYTEST_EQUAL(false, keyInput.pressed(keyMappingXY));
-    TINYTEST_EQUAL(false, keyInput.down(keyMappingXY));
+    KeyInput::pressEnd(Key::x);
+    TINYTEST_EQUAL(false, KeyInput::pressed(keyMappingXY));
+    TINYTEST_EQUAL(false, KeyInput::down(keyMappingXY));
 
-    keyInput.reset();
-    TINYTEST_EQUAL(false, keyInput.pressed(keyMappingXY));
-    TINYTEST_EQUAL(false, keyInput.down(keyMappingXY));
+    KeyInput::reset();
+    TINYTEST_EQUAL(false, KeyInput::pressed(keyMappingXY));
+    TINYTEST_EQUAL(false, KeyInput::down(keyMappingXY));
 
     return 1;
 }
 
 
 int TestMouseInputButton(){
-    MouseInput mouseInput;
-    TINYTEST_EQUAL(false, mouseInput.pressed(0));
-    TINYTEST_EQUAL(false, mouseInput.down(1));
-    TINYTEST_EQUAL(false, mouseInput.up(2));
-    TINYTEST_EQUAL(false, mouseInput.up(3));
-    TINYTEST_EQUAL(false, mouseInput.up(4));
 
-    mouseInput.buttonPressStarted(0);
-    TINYTEST_EQUAL(true, mouseInput.pressed(0));
-    TINYTEST_EQUAL(true, mouseInput.down(0));
-    TINYTEST_EQUAL(false, mouseInput.up(0));
+    TINYTEST_EQUAL(false, MouseInput::pressed(0));
+    TINYTEST_EQUAL(false, MouseInput::down(1));
+    TINYTEST_EQUAL(false, MouseInput::up(2));
+    TINYTEST_EQUAL(false, MouseInput::up(3));
+    TINYTEST_EQUAL(false, MouseInput::up(4));
 
-    mouseInput.reset();
-    TINYTEST_EQUAL(true, mouseInput.pressed(0));
-    TINYTEST_EQUAL(false, mouseInput.down(0));
-    TINYTEST_EQUAL(false, mouseInput.up(0));
+    MouseInput::buttonPressStarted(0);
+    TINYTEST_EQUAL(true, MouseInput::pressed(0));
+    TINYTEST_EQUAL(true, MouseInput::down(0));
+    TINYTEST_EQUAL(false, MouseInput::up(0));
 
-    mouseInput.buttonPressEnded(0);
-    TINYTEST_EQUAL(false, mouseInput.pressed(0));
-    TINYTEST_EQUAL(false, mouseInput.down(0));
-    TINYTEST_EQUAL(true, mouseInput.up(0));
+    MouseInput::reset();
+    TINYTEST_EQUAL(true, MouseInput::pressed(0));
+    TINYTEST_EQUAL(false, MouseInput::down(0));
+    TINYTEST_EQUAL(false, MouseInput::up(0));
 
-    mouseInput.reset();
-    TINYTEST_EQUAL(false, mouseInput.pressed(0));
-    TINYTEST_EQUAL(false, mouseInput.down(0));
-    TINYTEST_EQUAL(false, mouseInput.up(0));
+    MouseInput::buttonPressEnded(0);
+    TINYTEST_EQUAL(false, MouseInput::pressed(0));
+    TINYTEST_EQUAL(false, MouseInput::down(0));
+    TINYTEST_EQUAL(true, MouseInput::up(0));
+
+    MouseInput::reset();
+    TINYTEST_EQUAL(false, MouseInput::pressed(0));
+    TINYTEST_EQUAL(false, MouseInput::down(0));
+    TINYTEST_EQUAL(false, MouseInput::up(0));
 
     return 1;
 }

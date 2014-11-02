@@ -28,7 +28,6 @@ namespace kick{
         meshData->setMeshUsage(MeshUsage::DynamicDraw);
         mesh->setMeshData(meshData);
         material = new Material();
-        mouseInput = &Engine::getMouseInput();
         for (auto c : gameObject->getComponentsInChildren<Component2D>()){
             registerComponent2D(c);
         }
@@ -273,7 +272,7 @@ namespace kick{
         if (camera==nullptr) {
             return;
         }
-        vec2 mousePosition = (vec2)mouseInput->getPosition();
+        vec2 mousePosition = (vec2) MouseInput::position();
         vec2 screensize = (vec2)Engine::getContext()->getContextSurfaceDim();
         vec2 mouseClipCoord = ((mousePosition / screensize)*2.0f-vec2{1.0})*vec2{1,-1}; // correct
 
@@ -293,7 +292,7 @@ namespace kick{
                     mouseOver.push_back(ml);
                 }
                 for (int i=0;i<3;i++){
-                    if (mouseInput->down(i)){
+                    if (MouseInput::down(i)){
                         ml->down(i);
                         mousePressed.push_back({ml, i});
                     }
@@ -308,7 +307,7 @@ namespace kick{
         }
         for (int i=mousePressed.size()-1;i>=0;i--){
             int button = mousePressed[i].second;
-            if (mouseInput->pressed(button)){
+            if (MouseInput::pressed(button)){
                 mousePressed[i].first->pressed(button);
             } else {
                 mousePressed[i].first->up(button);

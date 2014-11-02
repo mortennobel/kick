@@ -41,14 +41,8 @@ namespace kick {
         glm::ivec2 getContextSurfaceDim();
         Event<glm::ivec2> contextSurfaceSize;
         std::string getGLSLPrefix();
-        void setMouseInput(MouseInput* mouseInput);
-        void setKeyInput(KeyInput* keyInput);
-        void setTouchInput(TouchInput* touchInput);
+
     protected:
         glm::ivec2 contextSurfaceDim = glm::ivec2{512, 512};
-
-        MouseInput* mouseInput = nullptr;
-        KeyInput* keyInput = nullptr;
-        TouchInput* touchInput = nullptr;
     };
 };

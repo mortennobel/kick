@@ -14,79 +14,81 @@ using namespace glm;
 #define validButton(button) assert(button >=0); assert(button < mouseButtons);
 
 namespace kick {
-    MouseInput::MouseInput(){
-        for (int i=0;i<mouseButtons;i++){
-            buttonDown[i] = false;
-            buttonPressed[i] = false;
-            buttonUp[i] = false;
-        }
-    }
-    
+
+    glm::ivec2 MouseInput::mPosition{0};
+    glm::ivec2 MouseInput::mPositionDelta{0};
+    glm::ivec2 MouseInput::mMouseWheelDelta{0};
+    int MouseInput::mClicks {0};
+
+    bool MouseInput::mButtonDown[] = {false, false, false, false};
+    bool MouseInput::mButtonPressed[] = {false, false, false, false};
+    bool MouseInput::mButtonUp[] = {false, false, false, false};
+
     void MouseInput::reset(){
-        positionDelta = ivec2(0);
-        mouseWheelDelta = ivec2(0);
+        mPositionDelta = ivec2(0);
+        mMouseWheelDelta = ivec2(0);
         for (int i=0;i<mouseButtons;i++){
-            buttonDown[i] = false;
-            buttonUp[i] = false;
+            mButtonDown[i] = false;
+            mButtonUp[i] = false;
         }
     }
 
-    bool MouseInput::down(int button) const {
+    bool MouseInput::down(int button) {
         validButton(button);
-        return buttonDown[button];
+        return mButtonDown[button];
     }
 
-    bool MouseInput::pressed(int button) const {
+    bool MouseInput::pressed(int button) {
         validButton(button);
-        return buttonPressed[button];
+        return mButtonPressed[button];
     }
 
-    bool MouseInput::up(int button) const {
+    bool MouseInput::up(int button) {
         validButton(button);
-        return buttonUp[button];
+        return mButtonUp[button];
     }
 
     void MouseInput::buttonPressStarted(int button) {
         validButton(button);
-        buttonDown[button] = true;
-        buttonPressed[button] = true;
+        mButtonDown[button] = true;
+        mButtonPressed[button] = true;
     }
 
     void MouseInput::buttonPressEnded(int button) {
         validButton(button);
-        buttonUp[button] = true;
-        buttonPressed[button] = false;
+        mButtonUp[button] = true;
+        mButtonPressed[button] = false;
     }
 
     void MouseInput::setMouseWheelDelta(glm::ivec2 mouseWheelDelta) {
-        MouseInput::mouseWheelDelta = mouseWheelDelta;
+        MouseInput::mMouseWheelDelta = mouseWheelDelta;
     }
 
-    glm::ivec2 MouseInput::getMouseWheelDelta() const {
-        return mouseWheelDelta;
+    glm::ivec2 MouseInput::mouseWheelDelta() {
+        return mMouseWheelDelta;
     }
 
     void MouseInput::setPositionDelta(glm::ivec2 positionDelta) {
-        MouseInput::positionDelta = positionDelta;
+        MouseInput::mPositionDelta = positionDelta;
     }
 
-    glm::ivec2 MouseInput::getPositionDelta() const {
-        return positionDelta;
+    glm::ivec2 MouseInput::positionDelta() {
+        return mPositionDelta;
     }
 
     void MouseInput::setPosition(glm::ivec2 position) {
-        MouseInput::position = position;
+        MouseInput::mPosition = position;
     }
 
-    glm::ivec2 MouseInput::getPosition() const {
-        return position;
+    glm::ivec2 MouseInput::position() {
+        return mPosition;
     }
 
-    int MouseInput::getClicks() const {
-        return clicks;
+    int MouseInput::clicks() {
+        return mClicks;
     }
 
     void MouseInput::setClicks(int clicks) {
-        MouseInput::clicks = clicks;
+        MouseInput::mClicks = clicks;
     }
 }

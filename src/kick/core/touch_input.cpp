@@ -12,6 +12,8 @@ using namespace std;
 using namespace glm;
 
 namespace kick{
+    std::map<int64_t,Touch> TouchInput::touches;
+
     void TouchInput::setTouchStarted(int64_t fingerid, glm::ivec2 pos, float pressure) {
         Touch touch;
         touch.down = true;
@@ -54,11 +56,11 @@ namespace kick{
         }
     }
 
-    std::map<int64_t, Touch>::const_iterator TouchInput::begin() const {
+    std::map<int64_t, Touch>::const_iterator TouchInput::begin() {
         return touches.begin();
     }
 
-    map<int64_t, Touch>::const_iterator TouchInput::end() const {
+    map<int64_t, Touch>::const_iterator TouchInput::end() {
         return touches.end();
     }
 }
