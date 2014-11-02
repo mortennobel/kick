@@ -12,7 +12,7 @@ namespace kick {
     class Time {
     public:
         // return time since startup
-        static float get();
+        static float total();
         // return time since startup
         static float delta();
         // return frame count since startup
