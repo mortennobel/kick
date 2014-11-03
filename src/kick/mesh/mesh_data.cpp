@@ -189,7 +189,7 @@ namespace kick {
         return res;
     }
     
-    vector<GLushort> MeshData::indices(){
+    vector<GLushort> MeshData::indicesConcat(){
         vector<GLushort> res;
         for (auto & v : subMeshes){
             res.insert(res.end(), v.indices.begin(), v.indices.end());

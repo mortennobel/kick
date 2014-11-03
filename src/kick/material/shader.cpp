@@ -636,7 +636,7 @@ break;
             } else if (uniform.name == UniformNames::directionalLightWorld){
                 glUniform3fv(uniform.index, 1, glm::value_ptr(sceneLights->directionalLightWorld));
             } else if (uniform.name == UniformNames::time){
-                float time = Time::get();
+                float time = Time::total();
                 glUniform1f(uniform.index, time);
             } else if (uniform.name == UniformNames::viewport){
                 glm::vec2 viewportSize = (glm::vec2)engineUniforms->viewportDimension.getValue();
