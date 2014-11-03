@@ -13,7 +13,6 @@
 #include "kick/mesh/mesh_data.h"
 #include "glm/glm.hpp"
 #include "kick/core/engine.h"
-#include "log.h"
 #include <algorithm>
 #include <iostream>
 
@@ -210,10 +209,6 @@ namespace kick{
         SpriteMouseListener *sml = dynamic_cast<SpriteMouseListener*>(comp);
         if (sml){
             mouseListeners.push_back(sml);
-        } else {
-            logWarning("Not mouse listener ");
-            Log::printStacktrace();
-
         }
     }
 
