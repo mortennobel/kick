@@ -13,6 +13,7 @@
 #include "kick/mesh/mesh_data.h"
 #include "glm/glm.hpp"
 #include "kick/core/engine.h"
+#include "log.h"
 #include <algorithm>
 #include <iostream>
 
@@ -209,6 +210,10 @@ namespace kick{
         SpriteMouseListener *sml = dynamic_cast<SpriteMouseListener*>(comp);
         if (sml){
             mouseListeners.push_back(sml);
+        } else {
+            logWarning("Not mouse listener ");
+            Log::printStacktrace();
+
         }
     }
 
@@ -227,10 +232,10 @@ namespace kick{
     }
 
     Sprite *Panel::createSprite(std::shared_ptr<TextureAtlas> textureAtlas, std::string spriteName, glm::vec2 pos) {
-
         GameObject *gameObject_ = gameObject()->scene()->createGameObject("Sprite");
         gameObject_->transform()->setParent(transform());
         Sprite* sprite = gameObject_->addComponent<Sprite>();
+        registerComponent2D(sprite);
         sprite->setTextureAtlas(textureAtlas);
         sprite->setSpriteName(spriteName);
         return sprite;
@@ -241,6 +246,7 @@ namespace kick{
         GameObject *gameObject_ = gameObject()->scene()->createGameObject("Button");
         gameObject_->transform()->setParent(transform());
         Button* button = gameObject_->addComponent<Button>();
+        registerComponent2D(button);
         button->setText("Button");
         button->setTextureAtlas(textureAtlas);
         button->setNormal("button-normal.png");
@@ -255,6 +261,8 @@ namespace kick{
         auto go = gameObject()->scene()->createGameObject("Font");
         go->transform()->setParent(transform());
         Text* textComponent = go->addComponent<Text>();
+
+        registerComponent2D(textComponent);
 
         auto font = Project::loadFont();
         textComponent->setFont(font);
@@ -273,6 +281,7 @@ namespace kick{
             return;
         }
         vec2 mousePosition = (vec2) MouseInput::position();
+
         vec2 screensize = (vec2) Engine::context()->getContextSurfaceDim();
         vec2 mouseClipCoord = ((mousePosition / screensize)*2.0f-vec2{1.0})*vec2{1,-1}; // correct
 

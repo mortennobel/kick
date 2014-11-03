@@ -12,9 +12,6 @@ namespace kick {
 
     Component2D::Component2D(GameObject *gameObject) : Component(gameObject) {
         panel = gameObject->componentInParent<Panel>();
-        if (panel){
-            panel->registerComponent2D(this);
-        }
     }
 
     int Component2D::getOrder() const {
