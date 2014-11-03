@@ -1,7 +1,7 @@
 kick
 ====
 
-Simple game engine for C++ 11 / OpenGL 3.x +.
+Simple game engine for C++ 14 / OpenGL 3.x +.
 
 ## Cross platform
  - Desktop OpenGL 3.x and 4.x
@@ -25,18 +25,18 @@ http://mortennobel.github.io/kick/
 
 ## Example usage
     #include "kick/kick.h"
-    
+
     using namespace kick;
-    
+
     int main(int argc, char * argv[])
     {
-        Engine* engine = Engine::init(argc, argv);
-        auto scene = engine->getActiveScene();
+        Engine::init(argc, argv);
+        auto scene = Engine::activeScene();
         auto camera = scene->createPerspectiveCamera();
-        camera->getGameObject()->getTransform()->setLocalPosition({0,0,10});
+        camera->gameObject()->transform()->setLocalPosition({0,0,10});
         scene->createSphere();
         scene->createDirectionalLight();
-        engine->startMainLoop();
-    
+        Engine::startMainLoop();
+
         return 0;
     }

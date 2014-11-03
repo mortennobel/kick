@@ -6,7 +6,7 @@ project "kick"
   language "C++"
   files    { "src/**.h","src/**.cpp","src/**.inl", "assets/**" }
   includedirs { "src", "libs/include" }
-  buildoptions "-std=c++11 -stdlib=libc++ -fno-exceptions"
+  buildoptions "-std=c++1y -stdlib=libc++ -fno-exceptions"
   links { "Cocoa.framework", "OpenGL.framework",  "/Library/Frameworks/SDL2.framework", "/Library/Frameworks/SDL2_image.framework"  }
   buildoptions { "-F/Library/Frameworks/" }
   
@@ -30,7 +30,7 @@ project "kick_unittest"
   language "C++"
   files    { "src/**.h","src/**.cpp", "src/**.inl", "unittest/**.cpp","unittest/**.h", "assets/**" }
   includedirs { "src", "unittest", "libs/include" }
-  buildoptions "-std=c++11 -stdlib=libc++ -fno-exceptions"
+  buildoptions "-std=c++1y -stdlib=libc++ -fno-exceptions"
   links { "Cocoa.framework", "GLUT.framework", "OpenGL.framework", "/Library/Frameworks/SDL2.framework", "/Library/Frameworks/SDL2_image.framework" }
 
   buildoptions { "-F/Library/Frameworks/" }
