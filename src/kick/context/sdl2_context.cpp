@@ -273,7 +273,7 @@ namespace kick {
 
 #ifdef EMSCRIPTEN
     void kick_emscripten_tick(){
-        SDL2Context *c = (SDL2Context*)Engine::instance->getContext();
+        SDL2Context *c = (SDL2Context*)Engine::context();
         c->tick();
     }
 #endif

@@ -23,9 +23,17 @@ kick::Skybox::~Skybox() {
 
 void kick::Skybox::render(kick::EngineUniforms *engineUniforms, kick::Material *replacementMaterial) {
     if (!replacementMaterial){
+#if defined(KICK_CONTEXT_ES2) || defined(EMSCRIPTEN)
+        glDepthRangef(0.99999f,1);
+#else
         glDepthRange(0.99999f,1);
+#endif
         mMeshRenderer->render(engineUniforms, nullptr);
+#if defined(KICK_CONTEXT_ES2) || defined(EMSCRIPTEN)
+        glDepthRangef(0,1);  // default
+#else
         glDepthRange(0,1);  // default
+#endif
     }
 }
 

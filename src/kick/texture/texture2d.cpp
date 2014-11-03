@@ -7,8 +7,10 @@
 //
 
 #include "texture2d.h"
-
+#include "kick/core/log.h"
+#ifndef EMSCRIPTEN
 #include <SDL2/SDL_surface.h>
+#endif
 using namespace std;
 
 namespace kick {

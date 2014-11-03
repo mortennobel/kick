@@ -159,7 +159,7 @@ namespace kick {
         vector<vec3> vertexPos;
         vector<vec3> normals;
         vector<vec4> colors;
-        vector<ushort> indices;
+        vector<unsigned short> indices;
 
         vector<VertexMapping> mapping;
 
