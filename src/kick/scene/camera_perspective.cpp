@@ -37,30 +37,37 @@ namespace kick {
         resetProjectionMatrix();
     }
 
-    float CameraPerspective::fieldOfView() const {
-        return mFieldOfView;
+    float CameraPerspective::fieldOfViewY() const {
+        return mFieldOfViewY;
     }
 
-    void CameraPerspective::setFieldOfView(float fieldOfView) {
-        CameraPerspective::mFieldOfView = fieldOfView;
+    void CameraPerspective::setFieldOfViewY(float fieldOfViewY) {
+        CameraPerspective::mFieldOfViewY = fieldOfViewY;
         resetProjectionMatrix();
     }
 
     void CameraPerspective::set(float near, float far, float fieldOfView) {
         this->mNear = near;
         this->mFar = far;
-        this->mFieldOfView = fieldOfView;
+        this->mFieldOfViewY = fieldOfView;
         resetProjectionMatrix();
     }
 
     void CameraPerspective::update(ivec2 viewportDimension) {
         vec2 dim = mNormalizedViewportDim * (vec2)viewportDimension;
         float aspect = dim.x/dim.y;
-        mProjectionMatrix = perspective(mFieldOfView, aspect, mNear, mFar);
+        mProjectionMatrix = perspective(mFieldOfViewY, aspect, mNear, mFar);
     }
 
     void CameraPerspective::resetProjectionMatrix() {
         ivec2 viewportDimension = Engine::context()->getContextSurfaceDim();
         update(viewportDimension);
+    }
+
+    float CameraPerspective::fieldOfViewX() const {
+        ivec2 screenSize = Engine::context()->getContextSurfaceDim();
+        vec2 viewport = ((vec2 )screenSize)*mNormalizedViewportDim;
+        float aspect = viewport.x / viewport.y;
+        return mFieldOfViewY * aspect;
     }
 }
