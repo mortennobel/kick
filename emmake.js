@@ -15,6 +15,8 @@ var makefile = require(makefileName);
 
 var verbose = false;
 
+var globalId = 0;
+
 for (var i=0;i<process.argv.length;i++){
     if (process.argv[i] === '-f' && i+1 < process.argv.length){
         makefileName = process.argv[i+1];
@@ -285,10 +287,12 @@ var BuildEM = function(project){
         for (var j=0;j<files.length;j++) {
             var file = files[j];
             var filename = file.split(pathSep).slice(-1)[0];
-            var bcfile = objectfiledir+pathSep + filename+".bc";
+            var bcfilename = globalId+"___"+filename+".bc";
+            globalId++;
+            var bcfile = objectfiledir+pathSep + bcfilename;
             var command = "emcc " + options +buildoptions+ defines + file + " -o " + bcfile;
             allCommands.push(command);
-            bcfiles.push(filename +".bc");
+            bcfiles.push(bcfilename);
         }
     }
 
