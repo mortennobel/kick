@@ -7,6 +7,7 @@
 //
 
 #include "kick/obj/obj_load.h"
+#include "kick/core/project.h"
 #include <fstream>
 #include <string>
 #include <cstring>
@@ -20,7 +21,7 @@ using namespace glm;
 
 namespace kick {
     // from http://stackoverflow.com/questions/2602013/read-whole-ascii-file-into-c-stdstring
-    string getFileContents(string filename)
+    /*string getFileContents(string filename)
     {
         ifstream in{filename, ios::in | ios::binary};
         if (in)
@@ -35,7 +36,7 @@ namespace kick {
         }
         logError(string{"Error loading file "}+filename+" error "+std::to_string(errno));
         return "";
-    }
+    } */
     
     vec4 toVec4(vector<string> &tokens){
         vec4 res{0,0,0,1};
@@ -214,9 +215,12 @@ namespace kick {
     
     ObjData loadObjData(std::string path, std::string filename){
         path = fixPathEnd(path);
-        string file = getFileContents(path+filename);
+        string file;
+        Project::loadTextResource(path+filename,file);
         std::function<std::string (std::string)>  materialLoader = [&](string filename){
-            return getFileContents(path+filename);
+            string mat;
+            Project::loadTextResource(path+filename,file);
+            return mat;
         };
         return loadObjData(file, materialLoader);
     }
