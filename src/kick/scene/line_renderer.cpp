@@ -5,6 +5,7 @@
 #include "line_renderer.h"
 #include "kick/core/project.h"
 #include "kick/mesh/mesh.h"
+#include "log.h"
 
 using namespace std;
 using namespace glm;
@@ -28,17 +29,33 @@ namespace kick {
     std::vector<glm::vec3> const &LineRenderer::points() const {
         return mPoints;
     }
-    void LineRenderer::setPoints(std::vector<glm::vec3> const &points) {
+    void LineRenderer::setPoints(std::vector<glm::vec3> const &points, MeshType meshType, const std::vector<GLushort> &indices) {
+        if (meshType != MeshType::Lines && meshType != MeshType::LineLoop && meshType != MeshType::LineStrip){
+            logWarning("Invalid MeshType for line.");
+        }
+        LineRenderer::mMeshType = meshType;
         LineRenderer::mPoints = points;
+
+        LineRenderer::mIndices = indices;
+        if (mIndices.empty()){
+            for (unsigned short i=0;i< mPoints.size();i++){
+                mIndices.push_back(i);
+            }
+        }
+
         rebuildMesh();
     }
 
     void LineRenderer::render(EngineUniforms *engineUniforms, Material* replacementMaterial) {
+        if (mSmoothLine){
+            glEnable(GL_LINE_SMOOTH);
+        } else {
+            glDisable(GL_LINE_SMOOTH);
+        }
         auto mat = replacementMaterial?replacementMaterial : mMaterial;
         auto shader = mat->shader().get();
         mMesh->bind(shader);
         shader->bind_uniforms(mat, engineUniforms, mTransform);
-        glLineWidth(mWidth);
         mMesh->render(0);
     }
 
@@ -56,13 +73,17 @@ namespace kick {
 
     void LineRenderer::rebuildMesh() {
         mMeshData->setPosition(mPoints);
-
-        vector<GLushort> idx;
-        for (int i=0;i< mPoints.size()-1;i++){
-            idx.push_back(i);
-            idx.push_back(i+1);
-        }
-        mMeshData->setSubmesh(0, idx, MeshType::Lines);
+        mMeshData->setSubmesh(0, mIndices, mMeshType);
         mMesh->setMeshData(mMeshData);
     }
+
+    bool LineRenderer::smoothLine() const {
+        return mSmoothLine;
+    }
+
+    void LineRenderer::setSmoothLine(bool smoothLine) {
+        mSmoothLine = smoothLine;
+    }
+
+    std::vector<GLushort> const &LineRenderer::indices() const { return mIndices; }
 }

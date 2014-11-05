@@ -9,7 +9,7 @@
 #pragma once
 
 #include "kick/core/project_asset.h"
-#include "kick/math/aabb.h"
+#include "kick/math/bounds3.h"
 #include "kick/core/kickgl.h"
 #include <vector>
 #include <unordered_map>
@@ -24,7 +24,9 @@ namespace kick {
         TriangleFan = GL_TRIANGLE_FAN,
         TriangleStrip = GL_TRIANGLE_STRIP,
         Points = GL_POINTS,
-        Lines = GL_LINES
+        Lines = GL_LINES,
+        LineLoop = GL_LINE_LOOP,
+        LineStrip = GL_LINE_STRIP,
     };
     
     enum class MeshUsage {
@@ -81,8 +83,8 @@ namespace kick {
     class MeshData : public ProjectAsset {
     public:
         MeshData();
-        void setAabb(const AABB &aabb);
-        const AABB &aabb();
+        void setBounds(const Bounds3 &mBounds);
+        const Bounds3 &bounds();
 
         GLenum meshUsageVal();
 
@@ -115,10 +117,11 @@ namespace kick {
         // recomputing normals (using angle weighted normals)
         void recomputeNormals();
 
+        void recomputeBounds();
         MeshUsage meshUsage() const;
         void setMeshUsage(MeshUsage meshUsage);
     private:
-        AABB mAabb;
+        Bounds3 mBounds;
         MeshUsage mMeshUsage = MeshUsage::StaticDraw;
         std::vector<glm::vec3> mPosition;
         std::vector<glm::vec3> mNormal;

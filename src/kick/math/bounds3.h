@@ -15,8 +15,12 @@ namespace kick {
     public:
         glm::vec3 min = glm::vec3{ std::numeric_limits<float>::max() };
         glm::vec3 max = glm::vec3{ std::numeric_limits<float>::lowest() };
-        glm::vec3 dimension(){ return max-min; }
-        glm::vec3 center(){ return (max+min)*0.5f; }
+
+        glm::vec3 dimension();
+
+        glm::vec3 center();
+
+        glm::vec3 diagonal();
 
         Bounds3();
 

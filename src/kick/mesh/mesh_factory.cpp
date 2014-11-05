@@ -19,6 +19,7 @@ namespace kick {
         auto meshData = new MeshData();
         meshData->setPosition({vec3{0,0,0}});
         meshData->setSubmesh(0, {0}, MeshType::Points);
+        meshData->recomputeBounds();
         return meshData;
     }
     
@@ -46,6 +47,7 @@ namespace kick {
             vec4{0,0,1,1}
         });
         meshData->setSubmesh(0, {0,1,2}, MeshType::Triangles);
+        meshData->recomputeBounds();
         return meshData;
     }
     
@@ -72,6 +74,7 @@ namespace kick {
         meshData->setNormal(normals);
         meshData->setColor(colors);
         meshData->setSubmesh(0, indices, MeshType::TriangleFan);
+        meshData->recomputeBounds();
         return meshData;
     }
     
@@ -103,6 +106,7 @@ namespace kick {
             vec4{1, 1, 1, 1}
         });
         meshData->setSubmesh(0, {0, 1, 2, 2, 1, 3}, MeshType::Triangles);
+        meshData->recomputeBounds();
         
         return meshData;
     }
@@ -157,7 +161,7 @@ namespace kick {
         meshData->setNormal(normals);
         meshData->setColor(colors);
         meshData->setSubmesh(0, indices, MeshType::TriangleStrip);
-        
+        meshData->recomputeBounds();
         return meshData;
     }
     
@@ -288,6 +292,7 @@ namespace kick {
             20, 21, 22,
             20, 22, 23},
             MeshType::Triangles);
+        meshData->recomputeBounds();
         return meshData;
     }
 }

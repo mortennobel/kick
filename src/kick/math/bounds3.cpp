@@ -37,4 +37,10 @@ bool Bounds3::contains(glm::vec3 point) {
             max.x >= point.x && max.y >= point.y && max.z >= point.z
             ;
 }
+
+    glm::vec3 Bounds3::dimension() { return max-min; }
+
+    glm::vec3 Bounds3::center() { return (max+min)*0.5f; }
+
+    glm::vec3 Bounds3::diagonal() { return (max-min); }
 }

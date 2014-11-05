@@ -12,7 +12,7 @@
 using namespace glm;
 
 namespace kick {
-    FrustumIntersection Frustum::intersectAabb(AABB aabb){
+    FrustumIntersection Frustum::intersectAabb(Bounds3 aabb){
         vec3 center = aabb.center();
         vec3 halfVector = aabb.diagonal() * 0.5f;
         FrustumIntersection result = FrustumIntersection::Inside;

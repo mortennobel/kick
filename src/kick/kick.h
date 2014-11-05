@@ -13,6 +13,8 @@
 #include "kick/material/shader.h"
 #include "kick/math/aabb.h"
 #include "kick/math/frustum.h"
+#include "kick/math/bounds2.h"
+#include "kick/math/bounds3.h"
 #include "kick/math/glm_ext.h"
 #include "kick/math/misc.h"
 #include "kick/math/ray.h"

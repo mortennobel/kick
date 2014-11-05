@@ -53,16 +53,8 @@ namespace kick {
         setSubmesh(0, {}, MeshType::Triangles);
     }
     
-    void MeshData::setAabb(const AABB &a){
-        mAabb = a;
-    }
- 
     void MeshData::setPosition(const std::vector<glm::vec3> &p) {
-        mAabb.clear();
         mPosition = p;
-        for (auto v : p) {
-            mAabb.addPoint(v);
-        }
     }
     
     const std::vector<glm::vec3>& MeshData::position() {
@@ -275,8 +267,6 @@ namespace kick {
         }
     }
 
-    const AABB &MeshData::aabb() { return mAabb; }
-
     GLenum MeshData::meshUsageVal() { return static_cast<GLenum>(mMeshUsage); }
 
 
@@ -320,6 +310,13 @@ namespace kick {
 
     void MeshData::setMeshUsage(MeshUsage meshUsage) {
         MeshData::mMeshUsage = meshUsage;
+    }
+
+    void MeshData::recomputeBounds() {
+        mBounds.reset();
+        for (auto p:mPosition){
+            mBounds.expand(p);
+        }
     }
 }
 

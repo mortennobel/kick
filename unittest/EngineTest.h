@@ -194,7 +194,7 @@ int TestMeshData(){
             9,10,11
     }, MeshType::Triangles);
 
-    AABB aabb = meshData->aabb();
+    Bounds3 aabb = meshData->bounds();
     TINYTEST_ASSERT(aabb.min == p0);
     vec3 vec3max{1,std::sqrt(0.75f),std::sqrt(0.75f)};
     TINYTEST_ASSERT(aabb.max == vec3max);

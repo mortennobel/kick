@@ -24,6 +24,8 @@ namespace kick {
 
         glm::vec2 center();
 
+        glm::vec2 diagonal();
+
         void expand(glm::vec2 p);
 
         void expand(Bounds2 b);

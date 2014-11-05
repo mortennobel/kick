@@ -56,4 +56,8 @@ bool Bounds2::contains(glm::vec2 point) {
     return min.x <= point.x && min.y <= point.y &&
             max.x >= point.x && max.y >= point.y;
 }
+
+glm::vec2 Bounds2::diagonal() {
+    return max-min;
+}
 }

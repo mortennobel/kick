@@ -5,8 +5,10 @@
 #include "kick/scene/camera_perspective.h"
 #include "kick/core/engine.h"
 #include "kick/scene/transform.h"
+#include <iostream>
 
 using namespace glm;
+using namespace std;
 
 namespace kick {
 
@@ -76,8 +78,10 @@ namespace kick {
         vec3 zoomDirection = transform()->forward();
         float fovY = fieldOfViewY();
         float fovX = fieldOfViewX();
+        cout << "fovY "<<degrees(fovY)<<" fovX "<<degrees(fovX)<<endl;
         // pixel perfect rays
         vec2 mousePosNormalized{vec2(0.5f + point) / (vec2)(Engine::context()->getContextSurfaceDim()-ivec2(1))};
+//        vec2 mousePosNormalized{vec2(point) / (vec2)(Engine::context()->getContextSurfaceDim())};
         vec2 mousePosClip{mousePosNormalized*2.0f - vec2{1}};
 
         vec2 mousePosRotationFromCenter{mousePosClip*vec2{fovX/2,fovY/2}};

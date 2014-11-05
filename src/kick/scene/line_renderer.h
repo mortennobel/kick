@@ -24,7 +24,9 @@ namespace kick {
         virtual void render(EngineUniforms *engineUniforms, Material* replacementMaterial = nullptr) override;
 
         std::vector<glm::vec3> const &points() const;
-        void setPoints(std::vector<glm::vec3> const &points);
+        std::vector<GLushort> const & indices() const;
+
+        void setPoints(std::vector<glm::vec3> const &points, MeshType meshType = MeshType::Lines, const std::vector<GLushort> &indices = std::vector<GLushort>{});
 
         // set the material
         void setMaterial(Material *material);
@@ -32,14 +34,21 @@ namespace kick {
         Material*material();
 
         virtual int renderOrder();
+
+        bool smoothLine() const;
+
+        void setSmoothLine(bool smoothLine);
+
     private:
         void rebuildMesh();
+        MeshType mMeshType;
         std::vector<glm::vec3> mPoints;
+        std::vector<GLushort> mIndices;
         Mesh*mMesh;
         Transform*mTransform;
         Material*mMaterial;
         MeshData*mMeshData;
-        float mWidth = 10.1f;
+        bool mSmoothLine = true;
     };
 }
 

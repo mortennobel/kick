@@ -9,7 +9,7 @@
 #pragma once
 
 #include "glm/glm.hpp"
-#include "kick/math/aabb.h"
+#include "kick/math/bounds3.h"
 
 namespace kick {
     enum class FrustumIntersection {
@@ -26,7 +26,7 @@ namespace kick {
     /// http://www.cs.otago.ac.nz/postgrads/alexis/planeExtraction.pdf
     class Frustum {
     public:
-        FrustumIntersection intersectAabb(AABB aabb);
+        FrustumIntersection intersectAabb(Bounds3 bounds);
         void extractPlanes(glm::mat4 viewProjectionMatrix, bool normalizePlaneNormals = false);
     private:
         glm::vec4 planes[6];
