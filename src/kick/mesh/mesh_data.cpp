@@ -318,5 +318,13 @@ namespace kick {
             mBounds.expand(p);
         }
     }
+
+    void MeshData::setBounds(const Bounds3 &bounds) {
+        mBounds = bounds;
+    }
+
+    const Bounds3 &MeshData::bounds() {
+        return mBounds;
+    }
 }
 
