@@ -26,7 +26,7 @@ namespace kick {
         std::vector<glm::vec3> const &points() const;
         std::vector<GLushort> const & indices() const;
 
-        void setPoints(std::vector<glm::vec3> const &points, MeshType meshType = MeshType::Lines, const std::vector<GLushort> &indices = std::vector<GLushort>{});
+        void setPoints(const std::vector<glm::vec3>  &points, MeshType meshType = MeshType::Lines, const std::vector<GLushort> &indices = std::vector<GLushort>{});
 
         // set the material
         void setMaterial(Material *material);

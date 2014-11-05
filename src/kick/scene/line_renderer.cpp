@@ -29,7 +29,8 @@ namespace kick {
     std::vector<glm::vec3> const &LineRenderer::points() const {
         return mPoints;
     }
-    void LineRenderer::setPoints(std::vector<glm::vec3> const &points, MeshType meshType, const std::vector<GLushort> &indices) {
+
+    void LineRenderer::setPoints(const std::vector<glm::vec3> &points, MeshType meshType, const std::vector<GLushort> &indices) {
         if (meshType != MeshType::Lines && meshType != MeshType::LineLoop && meshType != MeshType::LineStrip){
             logWarning("Invalid MeshType for line.");
         }
@@ -73,6 +74,7 @@ namespace kick {
 
     void LineRenderer::rebuildMesh() {
         mMeshData->setPosition(mPoints);
+        mMeshData->recomputeBounds();
         mMeshData->setSubmesh(0, mIndices, mMeshType);
         mMesh->setMeshData(mMeshData);
     }
@@ -85,5 +87,7 @@ namespace kick {
         mSmoothLine = smoothLine;
     }
 
-    std::vector<GLushort> const &LineRenderer::indices() const { return mIndices; }
+    std::vector<GLushort> const &LineRenderer::indices() const {
+        return mIndices;
+    }
 }
