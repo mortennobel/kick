@@ -28,6 +28,7 @@ namespace kick {
         void setTop(float top);
         void set(float near, float far, float left, float right, float bottom, float top);
         virtual void resetProjectionMatrix() override;
+        virtual Ray screenPointToRay(glm::vec2 point) override;
     private:
         float mNear = -1;
         float mFar = 1;

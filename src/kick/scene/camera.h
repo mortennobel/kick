@@ -12,6 +12,7 @@
 
 #include <glm/glm.hpp>
 #include "kick/core/event_listener.h"
+#include "kick/math/ray.h"
 #include "component_renderable.h"
 #include <utility>
 #include <functional>
@@ -67,6 +68,7 @@ namespace kick {
         void setViewportOffset(glm::vec2 const &normalizedViewportOffset);
         glm::vec2 const &viewportDim() const;
         void setViewportDim(glm::vec2 const &normalizedViewportDim);
+        virtual Ray screenPointToRay(glm::vec2 point) = 0;
     protected:
         glm::mat4 mProjectionMatrix;
         glm::vec2 mNormalizedViewportOffset = glm::vec2(0,0);

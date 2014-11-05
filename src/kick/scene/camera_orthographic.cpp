@@ -5,6 +5,7 @@
 #include "camera_orthographic.h"
 
 #include "kick/scene/transform.h"
+#include "log.h"
 
 using namespace glm;
 
@@ -84,5 +85,10 @@ namespace kick {
         this->mBottom = bottom;
         this->mTop = top;
         resetProjectionMatrix();
+    }
+
+    Ray CameraOrthographic::screenPointToRay(glm::vec2 point) {
+        logError("CameraOrthographic::screenPointToRay Not implemented");// todo
+        return Ray();
     }
 }

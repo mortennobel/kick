@@ -22,6 +22,7 @@ namespace kick {
         void setFieldOfViewY(float fieldOfViewY);
         void set(float near, float far, float fieldOfView);
         virtual void resetProjectionMatrix() override;
+        virtual Ray screenPointToRay(glm::vec2 point) override;
     private:
         void update(glm::ivec2 viewportDimension);
         float mNear = 0.1f;

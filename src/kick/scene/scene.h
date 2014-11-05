@@ -79,19 +79,19 @@ namespace kick {
         }
 
         // Creates a gameobject and attaches a perspective camera to it
-        CameraPerspective* createPerspectiveCamera();
+        CameraPerspective* createPerspectiveCamera(GameObject *go = nullptr);
         // Creates a gameobject and attaches an orthographic camera to it
-        CameraOrthographic* createOrthographicCamera();
+        CameraOrthographic* createOrthographicCamera(GameObject *go = nullptr);
         // Creates a gameobject and attaches a cube with diffuse renderer
-        MeshRenderer* createCube();
+        MeshRenderer* createCube(GameObject *go = nullptr);
         // Creates a gameobject and attaches a sphere with diffuse renderer
-        MeshRenderer* createSphere();
+        MeshRenderer* createSphere(GameObject *go = nullptr);
         // Creates a gameobject and attaches a plane with diffuse renderer
-        MeshRenderer* createPlane();
+        MeshRenderer* createPlane(GameObject *go = nullptr);
         // Creates a gameobject and attaches a point light
-        Light* createPointLight();
+        Light* createPointLight(GameObject *go = nullptr);
         // Creates a gameobject and attaches a directional light
-        Light* createDirectionalLight();
+        Light* createDirectionalLight(GameObject *go = nullptr);
         // Creates a gameobject and attaches an ambient light
         Light* createAmbientLight(float intensity = 0.3f, glm::vec3 color = glm::vec3(1));
         // create a Panel

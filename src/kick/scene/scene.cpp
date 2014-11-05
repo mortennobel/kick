@@ -160,8 +160,10 @@ namespace kick {
         }
     }
 
-    CameraPerspective* Scene::createPerspectiveCamera(){
-        GameObject *cameraObject = createGameObject("PerspectiveCamera");
+    CameraPerspective* Scene::createPerspectiveCamera(GameObject *cameraObject){
+        if (!cameraObject ){
+            cameraObject = createGameObject("PerspectiveCamera");
+        }
         CameraPerspective *cam = cameraObject->addComponent<CameraPerspective>();
         cam->setNear(0.1f);
         cam->setFar(100);
@@ -170,21 +172,26 @@ namespace kick {
         return cam;
     }
 
-    CameraOrthographic *Scene::createOrthographicCamera() {
-        GameObject *cameraObject = createGameObject("OrthographicCamera");
+    CameraOrthographic *Scene::createOrthographicCamera(GameObject *cameraObject) {
+        if (!cameraObject ) {
+            cameraObject = createGameObject("OrthographicCamera");
+        }
         CameraOrthographic *cam = cameraObject->addComponent<CameraOrthographic>();
+        glm::ivec2 dim = Engine::context()->getContextSurfaceDim();
         cam->setNear(-10);
         cam->setFar(10);
-        cam->setLeft(-10);
-        cam->setRight(10);
-        cam->setBottom(-10);
-        cam->setTop(10);
+        cam->setLeft(-dim.x/2);
+        cam->setRight(dim.x/2);
+        cam->setBottom(-dim.y/2);
+        cam->setTop(dim.y/2);
         cam->setClearColor(glm::vec4(0,0,0,1));
         return cam;
     }
 
-    MeshRenderer* Scene::createCube(){
-        GameObject *gameObject = createGameObject("Cube");
+    MeshRenderer* Scene::createCube(GameObject *gameObject){
+        if (!gameObject) {
+            gameObject = createGameObject("Cube");
+        }
         MeshRenderer *meshRenderer = gameObject->addComponent<MeshRenderer>();
         Mesh* mesh = new Mesh();
         mesh->setMeshData(MeshFactory::createCubeData());
@@ -197,8 +204,10 @@ namespace kick {
         return meshRenderer;
     }
 
-    MeshRenderer* Scene::createSphere(){
-        GameObject *gameObject = createGameObject("Sphere");
+    MeshRenderer* Scene::createSphere(GameObject *gameObject){
+        if (!gameObject ) {
+            gameObject = createGameObject("Sphere");
+        }
         MeshRenderer *meshRenderer = gameObject->addComponent<MeshRenderer>();
         Mesh* mesh = new Mesh();
         mesh->setMeshData(MeshFactory::createUVSphereData());
@@ -211,8 +220,10 @@ namespace kick {
         return meshRenderer;
     }
 
-    MeshRenderer* Scene::createPlane(){
-        GameObject *gameObject = createGameObject("Plane");
+    MeshRenderer* Scene::createPlane(GameObject *gameObject){
+        if (!gameObject) {
+            gameObject = createGameObject("Plane");
+        }
         MeshRenderer *meshRenderer = gameObject->addComponent<MeshRenderer>();
         Mesh* mesh = new Mesh();
         mesh->setMeshData(MeshFactory::createPlaneData());
@@ -225,15 +236,19 @@ namespace kick {
         return meshRenderer;
     }
 
-    Light* Scene::createPointLight(){
-        GameObject *gameObject = createGameObject("PointLight");
+    Light* Scene::createPointLight(GameObject *gameObject){
+        if (!gameObject) {
+            gameObject = createGameObject("PointLight");
+        }
         Light* light = gameObject->addComponent<Light>();
         light->setLightType(LightType::Point);
         return light;
     }
 
-    Light* Scene::createDirectionalLight(){
-        GameObject *gameObject = createGameObject("DirectionalLight");
+    Light* Scene::createDirectionalLight(GameObject *gameObject){
+        if (!gameObject){
+            gameObject = createGameObject("DirectionalLight");
+        }
         Light* light = gameObject->addComponent<Light>();
         light->setLightType(LightType::Directional);
         return light;
@@ -260,7 +275,7 @@ namespace kick {
         GameObject *gameObject = createGameObject("Panel");
         Panel* panel = gameObject->addComponent<Panel>();
         if (includeUICamera){
-            Camera* camera = gameObject->addComponent<Camera>();
+            Camera* camera = createOrthographicCamera(gameObject);
             camera->setCullingMask(256);
             panel->setCamera(camera);
         }
