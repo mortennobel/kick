@@ -7,6 +7,7 @@
 //
 
 #include "kick/ply/ply_load.h"
+#include "kick/core/project.h"
 #include <fstream>
 #include <string>
 #include <cstring>
@@ -75,7 +76,7 @@ namespace kick {
         };
 
         // from http://stackoverflow.com/questions/2602013/read-whole-ascii-file-into-c-stdstring
-        string getFileContents(string filename)
+        /*string getFileContents(string filename)
         {
             ifstream in{filename, ios::in | ios::binary};
             if (in)
@@ -90,7 +91,7 @@ namespace kick {
             }
             logError(string{"Error loading file "}+filename+" error "+std::to_string(errno));
             return "";
-        }
+        }  */
 
         std::string fixPathEnd(std::string &path){
             if (path.length() == 0){
@@ -254,8 +255,14 @@ namespace kick {
 
 
     MeshData *loadPlyData(std::string path, std::string filename){
+        cout << "Ply load "<<path<<"/"<<filename<<endl;
         path = fixPathEnd(path);
-        string fileSrc = getFileContents(path+filename);
-        return loadPlyData(fileSrc);
+
+        string fileSrc;// = getFileContents(path+filename);
+        Project::loadTextResource(path+filename,fileSrc);
+        cout << "Ply load "<<path<<"/"<<filename<<" filecontent"<<endl;
+        auto res = loadPlyData(fileSrc);
+        cout << "Ply load "<<path<<"/"<<filename<<" data"<<endl;
+        return res;
     }
 }
