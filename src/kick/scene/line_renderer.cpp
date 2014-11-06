@@ -38,11 +38,6 @@ namespace kick {
         LineRenderer::mPoints = points;
 
         LineRenderer::mIndices = indices;
-        if (mIndices.empty()){
-            for (unsigned short i=0;i< mPoints.size();i++){
-                mIndices.push_back(i);
-            }
-        }
 
         rebuildMesh();
     }
