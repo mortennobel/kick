@@ -8,7 +8,6 @@
 
 #include "kick/scene/camera.h"
 #include <iostream>
-#include "kick/core/kickgl.h"
 #include <glm/ext.hpp>
 #include <cmath>
 #include <algorithm>
@@ -21,6 +20,7 @@
 #include "kick/scene/light.h"
 #include "kick/math/misc.h"
 #include "kick/material/material.h"
+#include "kick/core/log.h"
 
 using namespace std;
 using namespace glm;
@@ -28,8 +28,7 @@ using namespace glm;
 namespace kick {
     
     Camera::Camera(GameObject *gameObject)
-    :Component(gameObject), mClearFlag(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT),
-     mProjectionMatrix{1}{
+    :Component(gameObject){
         Scene* scene = gameObject->scene();
         componentListener = scene->componentEvents.createListener([&](pair<Component*, ComponentUpdateStatus> value){
             if (value.second == ComponentUpdateStatus::Created){
@@ -347,5 +346,10 @@ namespace kick {
 
     void Camera::setViewportDim(glm::vec2 const &normalizedViewportDim) {
         Camera::mNormalizedViewportDim = normalizedViewportDim;
+    }
+
+    Ray Camera::screenPointToRay(glm::vec2 point) {
+        logError("Camera::screenPointToRay Not implemented");// todo
+        return Ray();
     }
 }

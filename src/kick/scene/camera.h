@@ -16,6 +16,7 @@
 #include "component_renderable.h"
 #include <utility>
 #include <functional>
+#include "kick/core/kickgl.h"
 
 namespace kick {
     class GameObject;
@@ -68,9 +69,9 @@ namespace kick {
         void setViewportOffset(glm::vec2 const &normalizedViewportOffset);
         glm::vec2 const &viewportDim() const;
         void setViewportDim(glm::vec2 const &normalizedViewportDim);
-        virtual Ray screenPointToRay(glm::vec2 point) = 0;
+        virtual Ray screenPointToRay(glm::vec2 point);
     protected:
-        glm::mat4 mProjectionMatrix;
+        glm::mat4 mProjectionMatrix = glm::mat4{1};
         glm::vec2 mNormalizedViewportOffset = glm::vec2(0,0);
         glm::vec2 mNormalizedViewportDim = glm::vec2(1,1);
     private:
@@ -91,7 +92,7 @@ namespace kick {
         std::vector<ComponentRenderable*> mRenderableComponents;
         glm::vec4 mClearColor = glm::vec4(0,0,0,1);
         int mCullingMask = 0xffffffff;
-        int mClearFlag; // default clear color clear depth
+        int mClearFlag  = GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT; // default clear color clear depth
         bool mShadow = false;
         TextureRenderTarget*mTarget = nullptr;
         std::vector<PickEntry> mPickQueue;
