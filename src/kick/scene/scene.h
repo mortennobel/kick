@@ -21,6 +21,7 @@
 #include "kick/core/event.h"
 #include "kick/scene/scene_lights.h"
 #include "kick/scene/camera_perspective.h"
+#include "kick/scene/line_renderer.h"
 #include "kick/scene/camera_orthographic.h"
 #include "kick/2d/text.h"
 
@@ -82,6 +83,8 @@ namespace kick {
         CameraPerspective* createPerspectiveCamera(GameObject *go = nullptr);
         // Creates a gameobject and attaches an orthographic camera to it
         CameraOrthographic* createOrthographicCamera(GameObject *go = nullptr);
+        // Creates a gameobject and attaches a line renderer with diffuse renderer
+        LineRenderer* createLine(GameObject *go = nullptr, const std::vector<glm::vec3> &points = std::vector<glm::vec3>(), MeshType meshType = MeshType::Lines, const std::vector<GLushort> &indices = std::vector<GLushort>{});
         // Creates a gameobject and attaches a cube with diffuse renderer
         MeshRenderer* createCube(GameObject *go = nullptr);
         // Creates a gameobject and attaches a sphere with diffuse renderer

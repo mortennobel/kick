@@ -220,6 +220,18 @@ namespace kick {
         return meshRenderer;
     }
 
+
+    LineRenderer *Scene::createLine(GameObject *gameObject, const vector<glm::vec3> &points, kick::MeshType meshType, const std::vector<GLushort> &indices) {
+        if (!gameObject) {
+            gameObject = createGameObject("Plane");
+        }
+        LineRenderer *lineRenderer = gameObject->addComponent<LineRenderer>();
+        if (points.size()){
+            lineRenderer->setPoints(points, meshType, indices);
+        }
+        return lineRenderer;
+    }
+
     MeshRenderer* Scene::createPlane(GameObject *gameObject){
         if (!gameObject) {
             gameObject = createGameObject("Plane");
