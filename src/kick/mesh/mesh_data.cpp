@@ -193,8 +193,12 @@ namespace kick {
         vector<SubMeshData> res;
         size_t offset = 0;
         for (auto & v : subMeshes){
+            int indexCount =v.indices.size();
+            if (indexCount == 0){
+                indexCount = -mPosition.size();
+            }
             SubMeshData record{
-                static_cast<GLsizei>(v.indices.size()),
+                static_cast<GLsizei>(indexCount),
                 BUFFER_OFFSET(offset),
                 static_cast<GLenum>(v.meshType),
                 GL_UNSIGNED_SHORT

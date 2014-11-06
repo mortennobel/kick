@@ -100,7 +100,8 @@ namespace kick {
         const std::vector<glm::vec3>&tangent();
         void setColor(const std::vector<glm::vec4> &c);
         const std::vector<glm::vec4>&color();
-        
+
+        // Note indices of size 0 means draw all vertices sequentially
         void setSubmesh(unsigned int index, const std::vector<GLushort> &indices, MeshType meshType);
         const std::vector<GLushort>&submeshIndices(unsigned int index) const;
 

@@ -89,7 +89,11 @@ namespace kick {
         GLsizei count = data.indexCount;
         GLenum type = data.type;
         const GLvoid * offset = data.dataOffset;
-        glDrawElements(mode, count, type, offset);
+        if (count <= 0){
+            glDrawArrays(mode, 0, -count);
+        } else {
+            glDrawElements(mode, count, type, offset);
+        }
     }
     
     std::string Mesh::name(){
