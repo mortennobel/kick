@@ -57,7 +57,6 @@ namespace kick {
                 GLuint vertexArrayObject = iter->second;
                 glBindVertexArray(vertexArrayObject);
             }
-
         } else
 #endif
         {
@@ -89,9 +88,10 @@ namespace kick {
         GLsizei count = data.indexCount;
         GLenum type = data.type;
         const GLvoid * offset = data.dataOffset;
-        if (count <= 0){
+
+        if (count < 0) {
             glDrawArrays(mode, 0, -count);
-        } else {
+        } else if (count > 0) {
             glDrawElements(mode, count, type, offset);
         }
     }
@@ -120,14 +120,17 @@ namespace kick {
     }
     
     void Mesh::updateMeshData(){
-        glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
         vector<float> data = mesh_data->interleavedData();
-        GLsizeiptr vertexDataSize =data.size()*sizeof(float);
-        glBufferData(GL_ARRAY_BUFFER, vertexDataSize, data.data(), mesh_data->meshUsageVal());
-        
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
+        GLsizeiptr vertexDataSize = data.size() * sizeof(float);
+        if (vertexDataSize >0){
+            glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
+            glBufferData(GL_ARRAY_BUFFER, vertexDataSize, data.data(), mesh_data->meshUsageVal());
+        }
         vector<GLushort> indices = mesh_data->indicesConcat();
-        GLsizeiptr indicesSize = indices.size()*sizeof(GLushort);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices.data(), mesh_data->meshUsageVal());
+        if (indices.size()>0){
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
+            GLsizeiptr indicesSize = indices.size()*sizeof(GLushort);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices.data(), mesh_data->meshUsageVal());
+        }
     }
 };
