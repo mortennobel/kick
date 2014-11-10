@@ -116,7 +116,7 @@ namespace kick {
 
         /* Create our window centered at 512x512 resolution */
         window = SDL_CreateWindow(windowName, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                  width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+                                  width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
         if (!window)
             return false;
@@ -153,8 +153,15 @@ namespace kick {
                 case SDL_QUIT:
                     quit = 1;
                     break;
-                case SDL_WINDOWEVENT_RESIZED:
-                    break;
+                case SDL_WINDOWEVENT:
+                    if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED || event.window.event == SDL_WINDOWEVENT_RESIZED ){
+                        if (contextSurfaceDim.x != event.window.data1 || contextSurfaceDim.y != event.window.data2){
+                            contextSurfaceDim.x = event.window.data1;
+                            contextSurfaceDim.y = event.window.data2;
+                            contextSurfaceSize.notifyListeners(contextSurfaceDim);
+                        }
+                    }
+                break;
 #ifndef EMSCRIPTEN
                 case SDL_APP_TERMINATING: /**< The application is being terminated by the OS
                                           Called on iOS in applicationWillTerminate()
@@ -185,8 +192,6 @@ namespace kick {
                                                   Called on iOS in applicationDidBecomeActive()
                                                   Called on Android in onResume()
                                                   */
-                    break;
-                case SDL_WINDOWEVENT: /**< Window state change */
                     break;
                 case SDL_SYSWMEVENT: /**< System specific event */
                     break;
@@ -360,10 +365,10 @@ namespace kick {
                 return;
             }
 
-            Engine::getEventQueue().scheduleEvent([&](int eventid){
+            /*Engine::getEventQueue().scheduleEvent([&](int eventid){
                 SDL_GL_GetDrawableSize(window, &contextSurfaceDim.x, &contextSurfaceDim.y);
                 contextSurfaceSize.notifyListeners(contextSurfaceDim);
-            });
+            });*/
 
             this->fullscreen = fullscreen;
         }
