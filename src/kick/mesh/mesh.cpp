@@ -28,7 +28,9 @@ namespace kick {
                 array.push_back(keyValue.second);
             }
 #ifndef GL_ES_VERSION_2_0
-            glDeleteVertexArrays((GLsizei)array.size(), array.data());
+            if (openglUsingVao()) {
+                glDeleteVertexArrays((GLsizei) array.size(), array.data());
+            }
 #endif
         }
         glDeleteBuffers(1, &vertexBufferId);
@@ -48,11 +50,9 @@ namespace kick {
                 glGenVertexArrays(1, &vertexArrayObjectIdx);
                 glBindVertexArray(vertexArrayObjectIdx);
 
-                // reassign buffers
-                glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
-
                 updateArrayBufferStructure(shader);
                 vertexArrayObject[shader] = vertexArrayObjectIdx;
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
             } else {
                 GLuint vertexArrayObject = iter->second;
                 glBindVertexArray(vertexArrayObject);
@@ -61,9 +61,11 @@ namespace kick {
         } else
 #endif
         {
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
             updateArrayBufferStructure(shader);
         }
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
+        // reassign buffers
+        glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
     }
     
     void Mesh::updateArrayBufferStructure(Shader *shader){
@@ -89,9 +91,10 @@ namespace kick {
         GLsizei count = data.indexCount;
         GLenum type = data.type;
         const GLvoid * offset = data.dataOffset;
-        if (count <= 0){
+
+        if (count < 0){
             glDrawArrays(mode, 0, -count);
-        } else {
+        } else if (count > 0) {
             glDrawElements(mode, count, type, offset);
         }
     }
@@ -120,14 +123,19 @@ namespace kick {
     }
     
     void Mesh::updateMeshData(){
-        glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
         vector<float> data = mesh_data->interleavedData();
-        GLsizeiptr vertexDataSize =data.size()*sizeof(float);
-        glBufferData(GL_ARRAY_BUFFER, vertexDataSize, data.data(), mesh_data->meshUsageVal());
-        
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
+
+        if (data.size()){
+            GLsizeiptr vertexDataSize =data.size()*sizeof(float);
+            glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
+            glBufferData(GL_ARRAY_BUFFER, vertexDataSize, data.data(), mesh_data->meshUsageVal());
+        }
+
         vector<GLushort> indices = mesh_data->indicesConcat();
-        GLsizeiptr indicesSize = indices.size()*sizeof(GLushort);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices.data(), mesh_data->meshUsageVal());
+        if (indices.size()){
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
+            GLsizeiptr indicesSize = indices.size()*sizeof(GLushort);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices.data(), mesh_data->meshUsageVal());
+        }
     }
 };
