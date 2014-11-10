@@ -5,7 +5,7 @@
 #include "camera_orthographic.h"
 
 #include "kick/scene/transform.h"
-#include "log.h"
+#include "kick/core/log.h"
 
 using namespace glm;
 

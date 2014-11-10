@@ -5,7 +5,7 @@
 #include "line_renderer.h"
 #include "kick/core/project.h"
 #include "kick/mesh/mesh.h"
-#include "log.h"
+#include "kick/core/log.h"
 
 using namespace std;
 using namespace glm;
@@ -43,11 +43,13 @@ namespace kick {
     }
 
     void LineRenderer::render(EngineUniforms *engineUniforms, Material* replacementMaterial) {
+#ifndef KICK_CONTEXT_ES2
         if (mSmoothLine){
             glEnable(GL_LINE_SMOOTH);
         } else {
             glDisable(GL_LINE_SMOOTH);
         }
+#endif
         auto mat = replacementMaterial?replacementMaterial : mMaterial;
         auto shader = mat->shader().get();
         mMesh->bind(shader);
@@ -70,6 +72,7 @@ namespace kick {
     void LineRenderer::rebuildMesh() {
         mMeshData->setPosition(mPoints);
         mMeshData->recomputeBounds();
+        cout << "Bounds: "<<mMeshData->bounds() << endl;
         mMeshData->setSubmesh(0, mIndices, mMeshType);
         mMesh->setMeshData(mMeshData);
     }

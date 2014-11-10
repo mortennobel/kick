@@ -57,7 +57,7 @@ namespace kick {
         mRenderBuffers.push_back(renderBuffer);
         glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer);
         glRenderbufferStorage(GL_RENDERBUFFER,
-#ifdef EMSCRIPTEN
+#ifdef KICK_CONTEXT_ES2
                 GL_DEPTH_COMPONENT16,
 #else
                 GL_DEPTH_COMPONENT32,

@@ -9,8 +9,11 @@
 #pragma once
 
 #if defined(KICK_CONTEXT_ES2)
-#include <GLES2/gl2.h>
+#   include <GLES2/gl2.h>
 #elif defined(EMSCRIPTEN)
+#   ifndef KICK_CONTEXT_ES2
+#       define KICK_CONTEXT_ES2 1
+#   endif
 #   include <GLES2/gl2.h>
 #else
 #   include <OpenGL/gl3.h>
