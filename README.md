@@ -1,7 +1,7 @@
 kick
 ====
 
-Simple game engine for C++ 14 / OpenGL 3.x +.
+Simple game engine for C++ 11 / OpenGL 3.x +.
 
 ## Cross platform
  - Desktop OpenGL 3.x and 4.x
