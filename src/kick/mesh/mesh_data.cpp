@@ -134,15 +134,19 @@ namespace kick {
      * Add data to interleaved data and return the new offset (in float elements)
      */
     template<typename T>
-    size_t add_data(const std::vector<T>& data, vector<float>& interleaved, size_t offset, int stride){
+    size_t add_data(const std::vector<T>& data, vector<float>& interleaved, size_t offset, int stride, int elements){
         if (data.size() == 0){
             return offset;
         }
         size_t vectorLength = data[0].length();
         size_t index = offset;
-        for (int i=0;i<data.size();i++){
+        for (int i=0;i<elements;i++){
             for (int j=0;j<vectorLength;j++){
-                interleaved[index+j] = data[i][j];
+                if (i < data.size()){
+                    interleaved[index+j] = data[i][j];
+                } else {
+                    interleaved[index+j] = 0;
+                }
             }
             index += stride;
         }
@@ -155,13 +159,14 @@ namespace kick {
         if (floatElements == 0){
             return res;
         }
-        const int stride = floatElements / mPosition.size();
-        size_t offset = add_data(mPosition, res, 0, stride);
-        offset = add_data(mNormal, res, offset, stride);
-        offset = add_data(mTexCoord0, res, offset, stride);
-        offset = add_data(mTexCoord1, res, offset, stride);
-        offset = add_data(mTangent, res, offset, stride);
-        offset = add_data(mColor, res, offset, stride);
+        int elements = mPosition.size();
+        const int stride = floatElements / elements;
+        size_t offset = add_data(mPosition, res, 0, stride, elements);
+        offset = add_data(mNormal, res, offset, stride, elements);
+        offset = add_data(mTexCoord0, res, offset, stride, elements);
+        offset = add_data(mTexCoord1, res, offset, stride, elements);
+        offset = add_data(mTangent, res, offset, stride, elements);
+        offset = add_data(mColor, res, offset, stride, elements);
         return res;
     }
 

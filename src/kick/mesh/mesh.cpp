@@ -57,7 +57,6 @@ namespace kick {
                 GLuint vertexArrayObject = iter->second;
                 glBindVertexArray(vertexArrayObject);
             }
-
         } else
 #endif
         {
@@ -92,7 +91,7 @@ namespace kick {
         GLenum type = data.type;
         const GLvoid * offset = data.dataOffset;
 
-        if (count < 0){
+        if (count < 0) {
             glDrawArrays(mode, 0, -count);
         } else if (count > 0) {
             glDrawElements(mode, count, type, offset);
