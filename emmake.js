@@ -9,6 +9,8 @@ var pathSep = require('path').sep;
 var util = require('util'),
     exec = require('child_process').exec;
 
+var start = new Date().getTime();
+
 var makefileName = '.'+pathSep+'Makefile';
 
 var makefile = require(makefileName);
@@ -215,7 +217,23 @@ function fixPath(path){
 
 
 function queueExecs(commands, onEnd, cwd){
+    var maxSimultaniously = 16;
     var executed = 0;
+    var totalCommands = commands.length;
+    if (commands.length>maxSimultaniously){
+        var lastCommands = commands.slice(maxSimultaniously);
+        var oldOnEnd = onEnd;
+        var newOnEnd = function () {
+            queueExecs(lastCommands, oldOnEnd, cwd);
+        }
+        onEnd = newOnEnd;
+        commands = commands.slice(0,maxSimultaniously);
+    }
+    if (verbose){
+        console.log("Batching "+commands.length+" new jobs to queue");
+    }
+    console.log(commands.length+"/"+totalCommands);
+
     for (var i=0;i<commands.length;i++){
         (function(){
             var command = commands[i];
@@ -260,8 +278,35 @@ function updatePaths(project){
 }
 
 var BuildEM = function(project){
+    // http://stackoverflow.com/a/12761924/420250
+    var deleteFolderRecursive = function(path) {
+        if (verbose){
+            console.log("delete folder "+path);
+        }
+        var files = [];
+        if( fs.existsSync(path) ) {
+            files = fs.readdirSync(path);
+            files.forEach(function(file,index){
+                var curPath = path + pathSep + file;
+                if(fs.lstatSync(curPath).isDirectory()) { // recurse
+                    deleteFolderRecursive(curPath);
+                } else { // delete file
+                    fs.unlinkSync(curPath);
+                }
+            });
+            fs.rmdirSync(path);
+        }
+    };
+
+
     updatePaths(project);
     var objectfiledir = fixPath(project.targetdir) + pathSep + "tmp";
+
+    var clean = function(){
+        deleteFolderRecursive(objectfiledir);
+    }
+    clean();
+
     var target = project.targetdir + pathSep + project.target;
     mkdir(objectfiledir);
     var allCommands = [];
@@ -296,30 +341,7 @@ var BuildEM = function(project){
         }
     }
 
-    // http://stackoverflow.com/a/12761924/420250
-    var deleteFolderRecursive = function(path) {
-        var files = [];
-        if( fs.existsSync(path) ) {
-            files = fs.readdirSync(path);
-            files.forEach(function(file,index){
-                var curPath = path + pathSep + file;
-                if(fs.lstatSync(curPath).isDirectory()) { // recurse
-                    deleteFolderRecursive(curPath);
-                } else { // delete file
-                    fs.unlinkSync(curPath);
-                }
-            });
-            fs.rmdirSync(path);
-        }
-    };
 
-    var clean = function(){
-        if (verbose){
-            console.log("Keeping object directory "+objectfiledir);
-        } else {
-            deleteFolderRecursive(objectfiledir);
-        }
-    }
     var link = function(){
         var command = "emcc " + options + buildoptions;
         for (var i=0;i<bcfiles.length;i++){
@@ -330,7 +352,13 @@ var BuildEM = function(project){
                 console.log("Linking");
             }
             command += " -o " + target;
-            queueExecs([command], clean, objectfiledir);
+            var onExit = function(){
+                clean();
+                var end = new Date().getTime();
+                var time = end - start;
+                console.log("Finished at "+new Date()+" in "+Math.floor(time/(1000*60))+" minutes "+Math.floor((time/1000)%60)+" seconds");
+            };
+            queueExecs([command], onExit , objectfiledir);
         }
 
         var skipEmbedFiles = [];
