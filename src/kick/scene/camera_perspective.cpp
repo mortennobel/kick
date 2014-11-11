@@ -78,7 +78,7 @@ namespace kick {
         vec3 zoomDirection = transform()->forward();
         float fovY = fieldOfViewY();
         float fovX = fieldOfViewX();
-        cout << "fovY "<<degrees(fovY)<<" fovX "<<degrees(fovX)<<endl;
+
         // pixel perfect rays
         vec2 mousePosNormalized{vec2(0.5f + point) / (vec2)(Engine::context()->getContextSurfaceDim()-ivec2(1))};
 //        vec2 mousePosNormalized{vec2(point) / (vec2)(Engine::context()->getContextSurfaceDim())};
