@@ -11,7 +11,7 @@
 using namespace glm;
 
 namespace kick {
-    const AABB AABB::uninitialized{};
+    const AABB AABB::mUninitialized{};
     
     AABB::AABB(vec3 min, vec3 max)
     :min(min), max(max){
@@ -62,17 +62,78 @@ namespace kick {
         max = other.max;
     }
     
-    bool AABB::IsUninitialized(){
-        return *this == uninitialized;
+    bool AABB::uninitialized(){
+        return *this == mUninitialized;
     }
     
-    bool AABB::IsEmpty(){
+    bool AABB::empty(){
         return min == max;
     }
     
     void AABB::clear(){
-        *this = uninitialized;
+        *this = mUninitialized;
     }
-    
-    
+
+
+    bool AABB::intersect(const Ray &r, float &tNear, float &tFar, int &nearAxis, int &farAxis){
+        // http://www.siggraph.org/education/materials/HyperGraph/raytrace/rtinter3.htm
+        tNear = -std::numeric_limits<float>::infinity( ) ;
+        tFar = std::numeric_limits<float>::infinity( ) ;
+
+        for (int i=0;i<3;i++){
+            if (r.direction()[i]==0){
+                // the ray is parallel to the X planes
+                // origin Xo is not between the slabs ( Xo < Xl or Xo > Xh) then return false
+                if (r.origin()[i] < min[i] || r.origin()[i] > max[i]){
+                    return false;
+                }
+            } else {
+                float reciprocal = 1.0f / r.direction()[i];
+                // if the ray is not parallel to the plane then
+                // compute the intersection distance of the planes
+                float t1 = (min[i]-r.origin()[i])*reciprocal;
+                float t2 = (max[i]-r.origin()[i])*reciprocal;
+                if (t1 > t2){
+                    // swap since T1 intersection with near plane
+                    float tmp = t1;
+                    t1 = t2;
+                    t2 = tmp;
+                }
+                if (t1 > tNear){
+                    tNear = t1; /* want largest Tnear */
+                    nearAxis = i;
+                }
+                if (t2 < tFar){
+                    tFar = t2; /* want largest Tnear */
+                    farAxis = i;
+                }
+                if (tNear > tFar){
+                    return false; /*  box is missed */
+                }
+                if (tFar < 0){
+                    return false; /* box is behind ray return false end */
+                }
+            }
+        }
+        return true;
+
+    }
+
+    bool AABB::contains(glm::vec3 point) {
+        for (int i=0;i<3;i++){
+            if (min[i]>point[i] || point[i] > max[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool AABB::intersect(const AABB &box) {
+        for (int i=0;i<3;i++){
+            if (min[i]>box.max[i] || max[i]<box.min[i]){
+                return false;
+            }
+        }
+        return true;
+    }
 }

@@ -16,6 +16,7 @@
 #include "kick/math/bounds2.h"
 #include "kick/math/bounds3.h"
 #include "kick/math/glm_ext.h"
+#include "kick/math/kd_tree.h"
 #include "kick/math/misc.h"
 #include "kick/math/ray.h"
 #include "kick/mesh/mesh.h"

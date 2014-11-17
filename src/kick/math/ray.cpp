@@ -22,7 +22,7 @@ namespace kick {
     {
     }
     
-    bool Ray::closestPoints(Ray otherRay, glm::vec3& outPoint1, glm::vec3& outPoint2){
+    bool Ray::closestPoints(Ray otherRay, glm::vec3& outPoint1, glm::vec3& outPoint2) const {
         vec3 otherRayOrigin = otherRay.mOrigin;
         vec3 otherRayDirection = otherRay.mDirection;
         float epsilon = 1.401298E-45f;
@@ -82,5 +82,29 @@ namespace kick {
 
     glm::vec3 Ray::point(float offset) const {
         return mOrigin + mDirection * offset;
+    }
+
+    bool Ray::intersect(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2, glm::vec3 &intersectionPoint) const {
+        // based on RTR 3ed page 750
+        vec3 e1 = v1 - v0;
+        vec3 e2 = v2 - v0;
+        vec3 q = cross(mDirection, e2);
+        float a = dot(e1, q);
+        float eps = 1e-10;
+        if (a > -eps && a < eps) return false;
+        float f = 1 / a;
+        vec3 s = mOrigin - v0;
+        float u = f * dot(s, q);
+        if (u < 0.0) return false;
+        vec3 r = cross(s, e1);
+        float v = f * dot(mDirection, r);
+        if (v < 0.0 || u + v > 1.0) return false;
+        float t = f * dot(e2, r);
+        if (t < 0){
+            return false;
+        }
+        intersectionPoint = point(t);
+
+        return true;
     }
 }

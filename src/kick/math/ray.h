@@ -16,8 +16,8 @@ namespace kick {
         Ray();
         Ray(glm::vec3 origin, glm::vec3 direction);
         
-        bool closestPoints(Ray otherRay, glm::vec3& outPoint1, glm::vec3& outPoint2);
-        
+        bool closestPoints(Ray otherRay, glm::vec3& outPoint1, glm::vec3& outPoint2) const;
+        bool intersect(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2, glm::vec3 &intersectionPoint) const;
         glm::vec3 const &origin() const;
         void setOrigin(glm::vec3 const &origin);
         glm::vec3 const &direction() const;

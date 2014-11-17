@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "kick/math/ray.h"
 #include "glm/glm.hpp"
 #include <limits>
 
@@ -38,14 +39,19 @@ namespace kick {
         /**
          * Returns true if min = vec3(FLT_MAX) and max = vec3(-FLT_MAX)
          */
-        bool IsUninitialized();
+        bool uninitialized();
         
         /**
          * Returns true if min == max
          */
-        bool IsEmpty();
-        
-        static const AABB uninitialized;
+        bool empty();
+
+        bool intersect(const Ray &r, float &tNear, float &tFar, int &nearAxis, int &farAxis);
+        bool intersect(const AABB &aabb);
+
+        bool contains(glm::vec3 point);
+    private:
+        static const AABB mUninitialized;
     };
 };
 
