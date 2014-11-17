@@ -144,6 +144,16 @@ namespace kick {
     }
 
     bool SDL2Context::tick(){
+#ifdef EMSCRIPTEN
+        // ugly hack - checks size each frame (since no events is fired)
+        int w, h;
+        SDL_GetWindowSize(window, &w, &h);
+        if (contextSurfaceDim.x != w || contextSurfaceDim.y != h){
+            contextSurfaceDim.x = w;
+            contextSurfaceDim.y = h;
+            contextSurfaceSize.notifyListeners(contextSurfaceDim);
+        }
+#endif
         bool quit = false;
         SDL_Event event;
         Engine::startFrame();
