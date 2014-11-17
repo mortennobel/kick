@@ -19,6 +19,9 @@ using namespace std;
 
 TINYTEST_START_SUITE(ObjSuite);
 TINYTEST_ADD_TEST(TestShader);
+TINYTEST_ADD_TEST(TestAABB);
+TINYTEST_ADD_TEST(TestKDTree);
+TINYTEST_ADD_TEST(TestRay);
 TINYTEST_ADD_TEST(TestMaterial);
 TINYTEST_ADD_TEST(TestLoadTextFile);
 TINYTEST_ADD_TEST(TestLoadBinaryFile);

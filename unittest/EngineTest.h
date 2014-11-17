@@ -193,7 +193,7 @@ int TestMeshData(){
             6,7,8,
             9,10,11
     }, MeshType::Triangles);
-
+    meshData->recomputeBounds();
     Bounds3 aabb = meshData->bounds();
     TINYTEST_ASSERT(aabb.min == p0);
     vec3 vec3max{1,std::sqrt(0.75f),std::sqrt(0.75f)};
@@ -774,3 +774,70 @@ int TestComponentHierachy(){
     return 1;
 }
 
+int TestAABB(){
+    AABB aabb1{vec3{3},vec3{5}};
+    AABB aabb2{vec3{4},vec3{6}};
+    AABB aabb3{vec3{7},vec3{8}};
+    TINYTEST_ASSERT(aabb1.intersect(aabb2));
+    TINYTEST_ASSERT(!aabb1.intersect(aabb3));
+    return 1;
+}
+
+int TestKDTree(){
+    KDTreeNaive kdTree;
+    MeshData * meshData = MeshFactory::createUVSphereData(32, 32, 1);
+    std::vector<KDTreeNodeRef> objectList;
+    AABB aabb;
+    for (int i=2;i<meshData->submeshSize(0);i++){
+
+        KDTreeNodeRef ref;
+        for (int j=0;j<3;j++){
+            int index = meshData->submeshIndices(0)[i-j];
+            ref.triangle[j] = meshData->position()[index];
+            aabb.addPoint(meshData->position()[index]);
+            //cout << (i-2)<<" "<< glm::to_string(meshData->position()[index])<<endl;
+        }
+        ref.id = i-2;
+        objectList.push_back(ref);
+    }
+
+    kdTree.init(objectList, aabb);
+    
+    for (float x=-0.1;x<=0.1;x+=0.01f){
+        for (float y=-0.1;y<=0.1;y+=0.01f){
+            Ray ray{{0,0,10}, {0.00,0.00,-1}};
+            KDTreeHitInfo hitInfo;
+            bool res = kdTree.first_intersection(ray, hitInfo);
+            if (res){
+                float len = length(hitInfo.collisionPoint);
+                TINYTEST_ASSERT(fabs(len-1.0) < 0.05f);
+            }
+        }
+    }
+    
+    delete meshData;
+    return 1;
+}
+
+
+int TestRay(){
+    Ray ray{vec3{0,0,10},vec3{0,0,-1}};
+    vec3 intersectionPoint;
+    bool res;
+    res = ray.intersect(vec3(-1,-1,0), vec3(-1,3,0), vec3(3,-1,0), intersectionPoint);
+    TINYTEST_ASSERT(res);
+    res = ray.intersect(vec3(0), vec3(0,1,0), vec3(1,0,0), intersectionPoint);
+    TINYTEST_ASSERT(res);
+    TINYTEST_ASSERT(intersectionPoint == vec3(0,0,0));
+    res = ray.intersect(vec3(0,1,0), vec3(0), vec3(1,0,0), intersectionPoint);
+    TINYTEST_ASSERT(res);
+    TINYTEST_ASSERT(intersectionPoint == vec3(0,0,0));
+    res = ray.intersect(vec3(0,1,0), vec3(1,0,0), vec3(0), intersectionPoint);
+    TINYTEST_ASSERT(res);
+    TINYTEST_ASSERT(intersectionPoint == vec3(0,0,0));
+    ray = Ray{{1,1,10},{0,0,-1}};
+    res = ray.intersect(vec3(0,0,0), vec3(2,0,0), vec3(0,2,0), intersectionPoint);
+    TINYTEST_ASSERT(res);
+    TINYTEST_ASSERT(intersectionPoint == vec3(1,1,0));
+    return 1;
+}
