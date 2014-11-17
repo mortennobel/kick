@@ -255,14 +255,10 @@ namespace kick {
 
 
     MeshData *loadPlyData(std::string path, std::string filename){
-        cout << "Ply load "<<path<<"/"<<filename<<endl;
         path = fixPathEnd(path);
 
         string fileSrc;// = getFileContents(path+filename);
         Project::loadTextResource(path+filename,fileSrc);
-        cout << "Ply load "<<path<<"/"<<filename<<" filecontent"<<endl;
-        auto res = loadPlyData(fileSrc);
-        cout << "Ply load "<<path<<"/"<<filename<<" data"<<endl;
-        return res;
+        return loadPlyData(fileSrc);
     }
 }
