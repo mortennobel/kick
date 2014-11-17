@@ -348,8 +348,30 @@ namespace kick {
         Camera::mNormalizedViewportDim = normalizedViewportDim;
     }
 
-    Ray Camera::screenPointToRay(glm::vec2 point) {
-        logError("Camera::screenPointToRay Not implemented");// todo
-        return Ray();
+    Ray Camera::screenPointToRay(glm::vec2 point){
+
+        vec3 zoomDirection = transform()->forward();
+
+        vec2 surfaceDim = (vec2)(Engine::context()->getContextSurfaceDim());
+        vec3 mousePosNormalizedNear{(vec2(point) / surfaceDim)*2.0f-vec2(1.0f),1.0f};
+        vec3 mousePosNormalizedFar{(vec2(point) / surfaceDim)*2.0f-vec2(1.0f),-1.0f};
+        // inverse
+        mousePosNormalizedNear.y *=-1;
+        mousePosNormalizedFar.y *=-1;
+
+        mat4 invProjection = inverse(projectionMatrix());
+        mat4 invView = transform()->globalMatrix();
+
+        vec4 mousePosViewNear = invProjection * vec4(mousePosNormalizedNear, 1.0);
+        vec4 mousePosViewFar = invProjection * vec4(mousePosNormalizedFar, 1.0);
+        mousePosViewNear /= 1.0f/mousePosViewNear.w;
+        mousePosViewFar /= 1.0f/mousePosViewFar.w;
+        mousePosViewNear.w = 1;
+        mousePosViewFar.w = 1;
+
+        vec4 mousePosWorldNear = invView * mousePosViewNear;
+        vec4 mousePosWorldFar = invView * mousePosViewFar;
+
+        return Ray{(vec3)mousePosWorldNear, normalize((vec3)mousePosWorldFar - (vec3)mousePosWorldNear)};
     }
 }

@@ -86,9 +86,4 @@ namespace kick {
         this->mTop = top;
         resetProjectionMatrix();
     }
-
-    Ray CameraOrthographic::screenPointToRay(glm::vec2 point) {
-        logError("CameraOrthographic::screenPointToRay Not implemented");// todo
-        return Ray();
-    }
 }
