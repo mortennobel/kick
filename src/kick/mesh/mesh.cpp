@@ -41,7 +41,6 @@ namespace kick {
         shader->bind();
 #ifndef GL_ES_VERSION_2_0
         if (openglUsingVao()){
-
             auto iter = vertexArrayObject.find(shader);
             if (iter == vertexArrayObject.end()){
                 // create and bind object
@@ -52,7 +51,7 @@ namespace kick {
 
                 updateArrayBufferStructure(shader);
                 vertexArrayObject[shader] = vertexArrayObjectIdx;
-                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
+                glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
             } else {
                 GLuint vertexArrayObject = iter->second;
                 glBindVertexArray(vertexArrayObject);
@@ -60,11 +59,11 @@ namespace kick {
         } else
 #endif
         {
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
+            glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
             updateArrayBufferStructure(shader);
         }
         // reassign buffers
-        glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
     }
     
     void Mesh::updateArrayBufferStructure(Shader *shader){
@@ -105,23 +104,18 @@ namespace kick {
     void Mesh::setName(std::string n){
         mName = n;
     }
-    
-    MeshData *Mesh::meshData() {
-        return mesh_data;
-    }
-    
+
     void Mesh::setMeshData(MeshData *m){
-        mesh_data = m;
         if (m != nullptr){
             interleavedFormat = m->interleavedFormat();
             submeshData = m->indicesFormat();
-            updateMeshData();
+            updateMeshData(m);
         } else {
             interleavedFormat.clear();
         }
     }
     
-    void Mesh::updateMeshData(){
+    void Mesh::updateMeshData(MeshData *mesh_data){
         vector<float> data = mesh_data->interleavedData();
 
         if (data.size()){
