@@ -188,13 +188,13 @@ namespace kick {
         return cam;
     }
 
-    MeshRenderer* Scene::createCube(GameObject *gameObject){
+    MeshRenderer* Scene::createCube(GameObject *gameObject, float length){
         if (!gameObject) {
             gameObject = createGameObject("Cube");
         }
         MeshRenderer *meshRenderer = gameObject->addComponent<MeshRenderer>();
         Mesh* mesh = new Mesh();
-        mesh->setMeshData(MeshFactory::createCubeData());
+        mesh->setMeshData(MeshFactory::createCubeData(length*0.5f));
         meshRenderer->setMesh(mesh);
 
         auto shader = Project::loadShader("assets/shaders/diffuse.shader");

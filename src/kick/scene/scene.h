@@ -86,7 +86,7 @@ namespace kick {
         // Creates a gameobject and attaches a line renderer with diffuse renderer
         LineRenderer* createLine(GameObject *go = nullptr, const std::vector<glm::vec3> &points = std::vector<glm::vec3>(), MeshType meshType = MeshType::Lines, const std::vector<GLushort> &indices = std::vector<GLushort>{});
         // Creates a gameobject and attaches a cube with diffuse renderer
-        MeshRenderer* createCube(GameObject *go = nullptr);
+        MeshRenderer* createCube(GameObject *go = nullptr, float length = 1);
         // Creates a gameobject and attaches a sphere with diffuse renderer
         MeshRenderer* createSphere(GameObject *go = nullptr);
         // Creates a gameobject and attaches a plane with diffuse renderer
