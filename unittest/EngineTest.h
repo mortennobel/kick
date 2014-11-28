@@ -10,7 +10,7 @@
 
 #include "EngineTest.h"
 #include "tinytest/tinytest.h"
-#include "kick.h"
+#include "kick/kick.h"
 
 #include "glm/gtx/string_cast.hpp"
 
@@ -186,6 +186,7 @@ int TestMeshData(){
             p2,p1,p3,
             p0,p3,p1
     });
+    meshData->recomputeBounds();
 
     meshData->setSubmesh(0, {
             0,1,2,
