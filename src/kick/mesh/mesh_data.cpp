@@ -210,7 +210,7 @@ namespace kick {
             };
             
             res.push_back(record);
-            offset += sizeof(GLuint) * v.indices.size();
+            offset += sizeof(GLushort) * v.indices.size();
         }
         return res;
     }
