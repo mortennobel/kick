@@ -15,7 +15,7 @@ for (var i=2;i<process.argv.length;i++){
 }
 
 var project = {
-    "options": [(target=="debug"?"-O0":"-O3"), "-Werror", (target==debug)?"-s GL_ASSERTIONS=1":"", (target==debug)?"-s GL_DEBUG=1":""  /*, "-s USE_SDL=2"*/],
+    "options": [(target=="debug"?"-O0":"-O3"), "-Werror", (target=="debug"?"-s GL_ASSERTIONS=1":""), (target=="debug"?"-s GL_DEBUG=1":"" )/*, "-s USE_SDL=2", "-s USE_SDL_IMAGE=2"*/],
     "buildoptions": ["-std=c++11", "-stdlib=libc++", "-fno-exceptions"],
     "defines": ["GLM_FORCE_RADIANS",(target=="debug"?"DEBUG":"NDEBUG")],
     "targetdir": "../build-emscripten",
