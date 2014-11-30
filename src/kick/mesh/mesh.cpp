@@ -39,6 +39,7 @@ namespace kick {
     
     void Mesh::bind(Shader * shader){
         shader->bind();
+
 #ifndef GL_ES_VERSION_2_0
         if (openglUsingVao()){
             auto iter = vertexArrayObject.find(shader);
@@ -48,10 +49,8 @@ namespace kick {
 
                 glGenVertexArrays(1, &vertexArrayObjectIdx);
                 glBindVertexArray(vertexArrayObjectIdx);
-
                 updateArrayBufferStructure(shader);
                 vertexArrayObject[shader] = vertexArrayObjectIdx;
-                glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
             } else {
                 GLuint vertexArrayObject = iter->second;
                 glBindVertexArray(vertexArrayObject);
@@ -59,7 +58,6 @@ namespace kick {
         } else
 #endif
         {
-            glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
             updateArrayBufferStructure(shader);
         }
         // reassign buffers
@@ -68,13 +66,27 @@ namespace kick {
     
     void Mesh::updateArrayBufferStructure(Shader *shader){
         glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
+        static int maxAtrrSizes = -1;
+        if (maxAtrrSizes == -1){
+            glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxAtrrSizes);
+            if (maxAtrrSizes>32){
+                maxAtrrSizes = 32;
+            }
+        }
+        bitset<32> enabledArrays;
+
         for (InterleavedRecord format_record : interleavedFormat) {
             const AttributeDescriptor * desc = shader->getShaderAttribute(format_record.semantic);
             if (desc){
                 glEnableVertexAttribArray(desc->index);
                 glVertexAttribPointer(desc->index, format_record.size,
                                        format_record.type, (GLboolean) format_record.normalized, format_record.stride, format_record.offset);
-                
+                enabledArrays[desc->index] = true;
+            }
+        }
+        for (int i=0;i<maxAtrrSizes;i++){
+            if (enabledArrays[i] == false){
+                glDisableVertexAttribArray(i);
             }
         }
     }
