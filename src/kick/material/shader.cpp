@@ -384,18 +384,19 @@ break;
         // shaderObjects deleted when goes out of scope (which is ok as long as program is not deleted)
         glUseProgram(mShaderProgram);
 
-        // clean up
-        for (auto & shaderObject : shaderObjects){
-            shaderObject.detach(mShaderProgram);
-        }
-        shaderObjects.clear();
-
         mShaderAttributes = getActiveShaderAttributes(mShaderProgram);
         shaderUniforms = getActiveShaderUniforms(mShaderProgram);
 
         updateDefaultShaderLocation();
 
         shaderChanged.notifyListeners({this, ShaderEventType::shader });
+
+        // clean up
+        for (auto & shaderObject : shaderObjects){
+            shaderObject.detach(mShaderProgram);
+        }
+        shaderObjects.clear();
+
         return true;
     }
     
@@ -459,6 +460,7 @@ break;
     }
     
     ShaderObj Shader::compileShader(std::string source, ShaderType type){
+        cout << "Compiling shader "<<(type==ShaderType::VertexShader?" vertex ":" fragment ")<<"\n"<<source<<endl;
         ShaderObj shader(type);
         const GLchar* sourceArray[1];
         sourceArray[0] = source.c_str();
