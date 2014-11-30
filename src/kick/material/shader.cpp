@@ -460,7 +460,6 @@ break;
     }
     
     ShaderObj Shader::compileShader(std::string source, ShaderType type){
-        cout << "Compiling shader "<<(type==ShaderType::VertexShader?" vertex ":" fragment ")<<"\n"<<source<<endl;
         ShaderObj shader(type);
         const GLchar* sourceArray[1];
         sourceArray[0] = source.c_str();
