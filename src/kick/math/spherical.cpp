@@ -2,7 +2,7 @@
 // Created by Morten Nobel-Jørgensen on 29/10/14.
 //
 
-#include "spherical_.h"
+#include "spherical.h"
 
 namespace kick{
 

@@ -19,7 +19,7 @@
 #include "kick/math/glm_ext.h"
 #include "kick/math/kd_tree.h"
 #include "kick/math/misc.h"
-#include "kick/math/spherical_.h"
+#include "kick/math/spherical.h"
 #include "kick/math/ray.h"
 #include "kick/mesh/mesh.h"
 #include "kick/mesh/mesh_data.h"
