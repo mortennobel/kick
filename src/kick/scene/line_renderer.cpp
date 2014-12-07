@@ -12,18 +12,16 @@ using namespace glm;
 
 namespace kick {
     LineRenderer::LineRenderer(GameObject *gameObject) : ComponentRenderable(gameObject) {
-        mMesh = new Mesh();
-        mMeshData = new MeshData();
+        mMesh = make_shared<Mesh>();
+        auto meshData = make_shared<MeshData>();
         auto shader = Project::loadShader("assets/shaders/unlit.shader");
         mMaterial = new Material();
         mMaterial->setShader(shader);
-        mMesh->setMeshData(mMeshData);
+        mMesh->setMeshData(meshData);
         mTransform = gameObject->transform();
     }
 
     LineRenderer::~LineRenderer() {
-        Project::destroyAsset(mMesh);
-        Project::destroyAsset(mMeshData);
     }
 
     std::vector<glm::vec3> const &LineRenderer::points() const {
@@ -70,11 +68,11 @@ namespace kick {
     }
 
     void LineRenderer::rebuildMesh() {
-        mMeshData->setPosition(mPoints);
-        mMeshData->recomputeBounds();
-        cout << "Bounds: "<<mMeshData->bounds() << endl;
-        mMeshData->setSubmesh(0, mIndices, mMeshType);
-        mMesh->setMeshData(mMeshData);
+        auto meshData = mMesh->meshData();
+        meshData->setPosition(mPoints);
+        meshData->recomputeBounds();
+        meshData->setSubmesh(0, mIndices, mMeshType);
+        mMesh->setMeshData(meshData);
     }
 
     bool LineRenderer::smoothLine() const {

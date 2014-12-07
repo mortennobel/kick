@@ -15,6 +15,6 @@
 #include <string>
 
 namespace kick {
-    MeshData *loadPlyData(std::string objSource);
-    MeshData *loadPlyData(std::string path, std::string filename);
+    std::shared_ptr<MeshData> loadPlyData(std::string objSource);
+    std::shared_ptr<MeshData> loadPlyData(std::string path, std::string filename);
 }

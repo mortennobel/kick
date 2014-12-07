@@ -83,8 +83,8 @@ namespace kick {
         return res;
     }
 
-    MeshData *ObjData::meshData() {
-        MeshData *meshData = new MeshData();
+    std::shared_ptr<MeshData> ObjData::meshData() {
+        auto meshData = make_shared<MeshData>();
 
         struct tuple_hash
         {

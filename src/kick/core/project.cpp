@@ -451,10 +451,6 @@ namespace kick {
         return ref;
     }
 
-    void Project::destroyAsset(ProjectAsset* asset) {
-        // todo implement
-    }
-
     std::shared_ptr<TextureAtlas> Project::loadTextureAtlas(std::string filename) {
         std::string texture = filename.substr(0, filename.size()-4) + ".png";
 

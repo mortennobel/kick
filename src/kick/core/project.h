@@ -28,7 +28,6 @@ namespace kick {
 
     class Project {
     public:
-        static void destroyAsset(ProjectAsset* asset);
 
         static bool loadTextResource(std::string uri, std::string &outText);
         static bool loadBinaryResource(std::string uri, std::vector<char> &outResource);

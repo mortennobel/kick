@@ -24,8 +24,8 @@ namespace kick {
         ~MeshRenderer();
 
         virtual void render(EngineUniforms *engineUniforms, Material* replacementMaterial = nullptr);
-        void setMesh(Mesh *mesh);
-        Mesh*mesh();
+        void setMesh(std::shared_ptr<Mesh> mesh);
+        std::shared_ptr<Mesh> mesh();
         // set the first material
         void setMaterial(Material *material);
         // get first material (no nullptr if no material added)
@@ -36,8 +36,8 @@ namespace kick {
         virtual int renderOrder();
 
     private:
-        Mesh*mMesh;
-        Transform*mTransform;
+        std::shared_ptr<Mesh> mMesh;
+        Transform* mTransform;
         std::vector<Material*> mMaterials;
     };
 }

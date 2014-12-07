@@ -16,7 +16,7 @@ namespace kick {
             : Component2D(gameObject),
               bounds{vec2{0,0},vec2{0,0}} {
         mesh = new Mesh();
-        meshData = new MeshData();
+        meshData = make_shared<MeshData>();
         material = new Material();
         mesh->setMeshData(meshData);
     }

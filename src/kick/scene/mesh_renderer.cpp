@@ -37,11 +37,11 @@ namespace kick {
         }
     }
     
-    void MeshRenderer::setMesh(Mesh *mesh){
+    void MeshRenderer::setMesh(std::shared_ptr<Mesh> mesh){
         this->mMesh = mesh;
     }
-    
-    Mesh* MeshRenderer::mesh(){
+
+    std::shared_ptr<Mesh>  MeshRenderer::mesh(){
         return mMesh;
     }
     

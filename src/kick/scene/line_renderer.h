@@ -44,10 +44,9 @@ namespace kick {
         MeshType mMeshType;
         std::vector<glm::vec3> mPoints;
         std::vector<GLushort> mIndices;
-        Mesh*mMesh;
-        Transform*mTransform;
-        Material*mMaterial;
-        MeshData*mMeshData;
+        std::shared_ptr<Mesh> mMesh;
+        Transform* mTransform;
+        Material* mMaterial;
         bool mSmoothLine = true;
     };
 }

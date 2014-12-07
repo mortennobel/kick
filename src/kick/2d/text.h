@@ -39,7 +39,7 @@ namespace kick {
         void updateVertexBuffer();
         std::shared_ptr<Font> font = nullptr;
         Mesh *mesh = nullptr;
-        MeshData *meshData = nullptr;
+        std::shared_ptr<MeshData> meshData;
         std::string text;
         glm::vec2 anchor{0,0};
         Material* material = nullptr;

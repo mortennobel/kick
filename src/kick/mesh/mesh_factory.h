@@ -14,12 +14,12 @@
 namespace kick {
     class MeshFactory {
     public:
-        static MeshData *createPointData();
-        static MeshData *createTriangleData();
-        static MeshData *createDiscData(unsigned short slices = 20);
-        static MeshData *createPlaneData();
-        static MeshData *createUVSphereData(unsigned short slices = 64,unsigned short stacks = 32,float radius = 1.0f);
-        static MeshData *createCubeData(float length = 1.0f);
+        static std::shared_ptr<MeshData> createPointData();
+        static std::shared_ptr<MeshData> createTriangleData();
+        static std::shared_ptr<MeshData> createDiscData(unsigned short slices = 20);
+        static std::shared_ptr<MeshData> createPlaneData();
+        static std::shared_ptr<MeshData> createUVSphereData(unsigned short slices = 64,unsigned short stacks = 32,float radius = 1.0f);
+        static std::shared_ptr<MeshData> createCubeData(float length = 1.0f);
         
     };
 };

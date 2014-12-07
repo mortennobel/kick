@@ -60,7 +60,7 @@ namespace kick {
         std::vector<SpriteMouseListener*> mouseOver;
         std::vector<std::pair<SpriteMouseListener*, int>> mousePressed;
         Mesh *mesh = nullptr;
-        MeshData* meshData = nullptr;
+        std::shared_ptr<MeshData> meshData;
         Material* material = nullptr;
     };
 }

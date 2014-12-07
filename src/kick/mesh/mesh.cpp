@@ -17,14 +17,14 @@ using namespace std;
 namespace kick {
     Mesh::Mesh()
     {
-        glGenBuffers(1, &vertexBufferId);
-        glGenBuffers(1, &elementBufferId);
+        glGenBuffers(1, &mVertexBufferId);
+        glGenBuffers(1, &mElementBufferId);
     }
     
     Mesh::~Mesh(){
-        if (vertexArrayObject.size()>0){
-            vector<GLuint> array(vertexArrayObject.size());
-            for (auto keyValue : vertexArrayObject){
+        if (mVertexArrayObject.size()>0){
+            vector<GLuint> array(mVertexArrayObject.size());
+            for (auto keyValue : mVertexArrayObject){
                 array.push_back(keyValue.second);
             }
 #ifndef GL_ES_VERSION_2_0
@@ -33,8 +33,8 @@ namespace kick {
             }
 #endif
         }
-        glDeleteBuffers(1, &vertexBufferId);
-        glDeleteBuffers(1, &elementBufferId);
+        glDeleteBuffers(1, &mVertexBufferId);
+        glDeleteBuffers(1, &mElementBufferId);
     }
     
     void Mesh::bind(Shader * shader){
@@ -42,15 +42,15 @@ namespace kick {
 
 #ifndef GL_ES_VERSION_2_0
         if (openglUsingVao()){
-            auto iter = vertexArrayObject.find(shader);
-            if (iter == vertexArrayObject.end()){
+            auto iter = mVertexArrayObject.find(shader);
+            if (iter == mVertexArrayObject.end()){
                 // create and bind object
                 GLuint vertexArrayObjectIdx;
 
                 glGenVertexArrays(1, &vertexArrayObjectIdx);
                 glBindVertexArray(vertexArrayObjectIdx);
                 updateArrayBufferStructure(shader);
-                vertexArrayObject[shader] = vertexArrayObjectIdx;
+                mVertexArrayObject[shader] = vertexArrayObjectIdx;
             } else {
                 GLuint vertexArrayObject = iter->second;
                 glBindVertexArray(vertexArrayObject);
@@ -61,11 +61,11 @@ namespace kick {
             updateArrayBufferStructure(shader);
         }
         // reassign buffers
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mElementBufferId);
     }
     
     void Mesh::updateArrayBufferStructure(Shader *shader){
-        glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
+        glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferId);
         static int maxAtrrSizes = -1;
         if (maxAtrrSizes == -1){
             glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxAtrrSizes);
@@ -75,7 +75,7 @@ namespace kick {
         }
         bitset<32> enabledArrays;
 
-        for (InterleavedRecord format_record : interleavedFormat) {
+        for (InterleavedRecord format_record : mInterleavedFormat) {
             const AttributeDescriptor * desc = shader->getShaderAttribute(format_record.semantic);
             if (desc){
                 glEnableVertexAttribArray(desc->index);
@@ -92,11 +92,11 @@ namespace kick {
     }
     
     void Mesh::render(unsigned int submeshIndex){
-        if (submeshIndex >= submeshData.size()){
+        if (submeshIndex >= mSubmeshData.size()){
             logWarning("submesh not found");
             return;
         }
-        auto data = submeshData[submeshIndex];
+        auto data = mSubmeshData[submeshIndex];
         GLenum mode = data.mode;
         GLsizei count = data.indexCount;
         GLenum type = data.type;
@@ -117,13 +117,13 @@ namespace kick {
         mName = n;
     }
 
-    void Mesh::setMeshData(MeshData *m){
+    void Mesh::setMeshData(shared_ptr<MeshData> m){
         if (m != nullptr){
-            interleavedFormat = m->interleavedFormat();
-            submeshData = m->indicesFormat();
-            updateMeshData(m);
+            mInterleavedFormat = m->interleavedFormat();
+            mSubmeshData = m->indicesFormat();
+            updateMeshData(m.get());
         } else {
-            interleavedFormat.clear();
+            mInterleavedFormat.clear();
         }
     }
     
@@ -132,15 +132,19 @@ namespace kick {
 
         if (data.size()){
             GLsizeiptr vertexDataSize =data.size()*sizeof(float);
-            glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
+            glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferId);
             glBufferData(GL_ARRAY_BUFFER, vertexDataSize, data.data(), mesh_data->meshUsageVal());
         }
 
         vector<GLushort> indices = mesh_data->indicesConcat();
         if (indices.size()){
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mElementBufferId);
             GLsizeiptr indicesSize = indices.size()*sizeof(GLushort);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices.data(), mesh_data->meshUsageVal());
         }
+    }
+
+    std::shared_ptr<MeshData> Mesh::meshData() {
+        return mMeshData;
     }
 };

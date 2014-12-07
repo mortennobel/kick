@@ -100,7 +100,7 @@ namespace kick {
 
         std::vector<unsigned int> indices();
 
-        MeshData*meshData();
+        std::shared_ptr<MeshData> meshData();
     };
 
 }

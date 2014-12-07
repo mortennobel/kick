@@ -15,16 +15,16 @@ using namespace std;
 using namespace glm;
 
 namespace kick {
-    MeshData* MeshFactory::createPointData(){
-        auto meshData = new MeshData();
+    shared_ptr<MeshData> MeshFactory::createPointData(){
+        auto meshData = make_shared<MeshData>();
         meshData->setPosition({vec3{0,0,0}});
         meshData->setSubmesh(0, {0}, MeshType::Points);
         meshData->recomputeBounds();
         return meshData;
     }
-    
-    MeshData* MeshFactory::createTriangleData(){
-        auto meshData = new MeshData();
+
+    shared_ptr<MeshData> MeshFactory::createTriangleData(){
+        auto meshData = make_shared<MeshData>();
         float sqrt75 = glm::sqrt(0.75f);
         meshData->setPosition({
             vec3{0,1,0},
@@ -50,9 +50,9 @@ namespace kick {
         meshData->recomputeBounds();
         return meshData;
     }
-    
-    MeshData *MeshFactory::createDiscData(unsigned short slices){
-        auto meshData = new MeshData();
+
+    shared_ptr<MeshData> MeshFactory::createDiscData(unsigned short slices){
+        auto meshData = make_shared<MeshData>();
         size_t vertexCount = slices+1;
         vector<vec3> vertices{vertexCount};
         vector<vec2> uvs{vertexCount};
@@ -77,9 +77,9 @@ namespace kick {
         meshData->recomputeBounds();
         return meshData;
     }
-    
-    MeshData *MeshFactory::createPlaneData(){
-        auto meshData = new MeshData();
+
+    shared_ptr<MeshData> MeshFactory::createPlaneData(){
+        auto meshData = make_shared<MeshData>();
         
         meshData->setPosition({
             vec3{1, -1, 0},
@@ -110,9 +110,9 @@ namespace kick {
         
         return meshData;
     }
-    
-    MeshData * MeshFactory::createUVSphereData(unsigned short slices, unsigned short stacks, float radius){
-        auto meshData = new MeshData();
+
+    shared_ptr<MeshData> MeshFactory::createUVSphereData(unsigned short slices, unsigned short stacks, float radius){
+        auto meshData = make_shared<MeshData>();
         size_t vertexCount = (stacks+1) * (slices + 1);
         vector<vec3> vertices{vertexCount};
         vector<vec2> uvs{vertexCount};
@@ -164,9 +164,9 @@ namespace kick {
         meshData->recomputeBounds();
         return meshData;
     }
-    
-    MeshData * MeshFactory::createCubeData(float length){
-        auto meshData = new MeshData();
+
+    shared_ptr<MeshData> MeshFactory::createCubeData(float length){
+        auto meshData = make_shared<MeshData>();
         //    v6----- v5
         //   /|      /|
         //  v1------v0|

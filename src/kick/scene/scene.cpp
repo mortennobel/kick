@@ -193,7 +193,7 @@ namespace kick {
             gameObject = createGameObject("Cube");
         }
         MeshRenderer *meshRenderer = gameObject->addComponent<MeshRenderer>();
-        Mesh* mesh = new Mesh();
+        auto mesh = make_shared<Mesh>();
         mesh->setMeshData(MeshFactory::createCubeData(length*0.5f));
         meshRenderer->setMesh(mesh);
 
@@ -209,7 +209,7 @@ namespace kick {
             gameObject = createGameObject("Sphere");
         }
         MeshRenderer *meshRenderer = gameObject->addComponent<MeshRenderer>();
-        Mesh* mesh = new Mesh();
+        auto mesh = make_shared<Mesh>();
         mesh->setMeshData(MeshFactory::createUVSphereData());
         meshRenderer->setMesh(mesh);
 
@@ -237,7 +237,7 @@ namespace kick {
             gameObject = createGameObject("Plane");
         }
         MeshRenderer *meshRenderer = gameObject->addComponent<MeshRenderer>();
-        Mesh* mesh = new Mesh();
+        auto mesh = make_shared<Mesh>();
         mesh->setMeshData(MeshFactory::createPlaneData());
         meshRenderer->setMesh(mesh);
 

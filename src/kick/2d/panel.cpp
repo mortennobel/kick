@@ -24,7 +24,7 @@ namespace kick{
 
     Panel::Panel(GameObject *gameObject) : ComponentRenderable(gameObject) {
         mesh = new Mesh();
-        meshData = new MeshData();
+        meshData = make_shared<MeshData>();
         meshData->setMeshUsage(MeshUsage::DynamicDraw);
         mesh->setMeshData(meshData);
         material = new Material();

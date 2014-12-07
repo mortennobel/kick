@@ -146,8 +146,8 @@ namespace kick {
 
     }
 
-    MeshData *loadPlyData(std::string objSource){
-        MeshData *res = new MeshData();
+    std::shared_ptr<MeshData> loadPlyData(std::string objSource){
+        auto res = make_shared<MeshData>();
         stringstream ss{objSource};
         const int bufferSize = 256;
         char buffer[bufferSize];
@@ -254,7 +254,7 @@ namespace kick {
     }
 
 
-    MeshData *loadPlyData(std::string path, std::string filename){
+    std::shared_ptr<MeshData> loadPlyData(std::string path, std::string filename){
         path = fixPathEnd(path);
 
         string fileSrc;// = getFileContents(path+filename);
