@@ -786,7 +786,7 @@ int TestAABB(){
 
 int TestKDTree(){
     KDTreeNaive kdTree;
-    MeshData * meshData = MeshFactory::createUVSphereData(32, 32, 1);
+    auto meshData = MeshFactory::createUVSphereData(32, 32, 1);
     std::vector<KDTreeNodeRef> objectList;
     AABB aabb;
     for (int i=2;i<meshData->submeshSize(0);i++){
@@ -816,7 +816,7 @@ int TestKDTree(){
         }
     }
     
-    delete meshData;
+
     return 1;
 }
 
