@@ -65,10 +65,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#friends">Friends</a>  </div>
   <div class="headertitle">
 <div class="title">kick::Engine Class Reference</div>  </div>
@@ -77,48 +74,38 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <!-- doxytag: class="kick::Engine" -->
 <p><a href="classkick_1_1_engine-members.html">List of all members.</a></p>
 <table class="memberdecls">
-<tr><td colspan="2"><h2><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a705a0e71cf73c5231e4fa7a33443dae1"></a><!-- doxytag: member="kick::Engine::getActiveScene" ref="a705a0e71cf73c5231e4fa7a33443dae1" args="()" -->
-<a class="el" href="classkick_1_1_scene.html">Scene</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getActiveScene</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab60e2ab1841ffec827289d05afbab9d0"></a><!-- doxytag: member="kick::Engine::setActiveScene" ref="ab60e2ab1841ffec827289d05afbab9d0" args="(Scene *scene)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setActiveScene</b> (<a class="el" href="classkick_1_1_scene.html">Scene</a> *scene)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a991beb812ab8a3e36da67bb132e5fab5"></a><!-- doxytag: member="kick::Engine::createScene" ref="a991beb812ab8a3e36da67bb132e5fab5" args="(const std::string &amp;name)" -->
-<a class="el" href="classkick_1_1_scene.html">Scene</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>createScene</b> (const std::string &amp;name)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab854c99c286a6c79a9ac1a565beb900b"></a><!-- doxytag: member="kick::Engine::begin" ref="ab854c99c286a6c79a9ac1a565beb900b" args="() const " -->
-std::vector&lt; <a class="el" href="classkick_1_1_scene.html">Scene</a> &gt;<br class="typebreak"/>
-::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>begin</b> () const </td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a47b1eca76240a29894a8d71767a19255"></a><!-- doxytag: member="kick::Engine::end" ref="a47b1eca76240a29894a8d71767a19255" args="() const " -->
-std::vector&lt; <a class="el" href="classkick_1_1_scene.html">Scene</a> &gt;<br class="typebreak"/>
-::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>end</b> () const </td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1c5151df3744a7696e8713183005f506"></a><!-- doxytag: member="kick::Engine::getContext" ref="a1c5151df3744a7696e8713183005f506" args="()" -->
-<a class="el" href="classkick_1_1_context.html">Context</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getContext</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a40679f0bb786d1cbe13181f541430659"></a><!-- doxytag: member="kick::Engine::getMouseInput" ref="a40679f0bb786d1cbe13181f541430659" args="()" -->
-const <a class="el" href="classkick_1_1_mouse_input.html">MouseInput</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getMouseInput</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a138cb69b02296735dc65012180daae42"></a><!-- doxytag: member="kick::Engine::getKeyInput" ref="a138cb69b02296735dc65012180daae42" args="()" -->
-const <a class="el" href="classkick_1_1_key_input.html">KeyInput</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getKeyInput</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a09ad6bcdb4b1a2f125b23c0a03e2b38e"></a><!-- doxytag: member="kick::Engine::getDefaultKeyHandler" ref="a09ad6bcdb4b1a2f125b23c0a03e2b38e" args="()" -->
-<a class="el" href="classkick_1_1_default_key_handler.html">DefaultKeyHandler</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getDefaultKeyHandler</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a39695df81bf307c337f2f883f5858162"></a><!-- doxytag: member="kick::Engine::startMainLoop" ref="a39695df81bf307c337f2f883f5858162" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>startMainLoop</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5663cedca488be80312d8acb5a6405ca"></a><!-- doxytag: member="kick::Engine::startFrame" ref="a5663cedca488be80312d8acb5a6405ca" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>startFrame</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab4bfce4c7810c55ac199f76104e8d61e"></a><!-- doxytag: member="kick::Engine::update" ref="ab4bfce4c7810c55ac199f76104e8d61e" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>update</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa6ab18dcd2d55f56b41cdbf73f423522"></a><!-- doxytag: member="kick::Engine::render" ref="aa6ab18dcd2d55f56b41cdbf73f423522" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>render</b> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa03a84301f4271d2db48dd916883031f"></a><!-- doxytag: member="kick::Engine::init" ref="aa03a84301f4271d2db48dd916883031f" args="(int &amp;argc, char **argv, const WindowConfig &amp;config=WindowConfig::plain)" -->
-static <a class="el" href="classkick_1_1_engine.html">Engine</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> (int &amp;argc, char **argv, const <a class="el" href="structkick_1_1_window_config.html">WindowConfig</a> &amp;config=WindowConfig::plain)</td></tr>
-<tr><td colspan="2"><h2><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a70c3f6ea73f12d86286c7eecd6208d37"></a><!-- doxytag: member="kick::Engine::config" ref="a70c3f6ea73f12d86286c7eecd6208d37" args="" -->
-<a class="el" href="structkick_1_1_engine_config.html">EngineConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><b>config</b></td></tr>
-<tr><td colspan="2"><h2><a name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af4bb0187999143dd9ccdb37a905bd2de"></a><!-- doxytag: member="kick::Engine::instance" ref="af4bb0187999143dd9ccdb37a905bd2de" args="" -->
-static <a class="el" href="classkick_1_1_engine.html">Engine</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>instance</b> = nullptr</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a77f1347c9ae39052706e9e4931aae7a1"></a><!-- doxytag: member="kick::Engine::init" ref="a77f1347c9ae39052706e9e4931aae7a1" args="(int &amp;argc, char **argv, const WindowConfig &amp;config=WindowConfig::plain)" -->
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> (int &amp;argc, char **argv, const <a class="el" href="structkick_1_1_window_config.html">WindowConfig</a> &amp;config=WindowConfig::plain)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a30b4cabe61a4641ba19b818b3f0afcca"></a><!-- doxytag: member="kick::Engine::activeScene" ref="a30b4cabe61a4641ba19b818b3f0afcca" args="()" -->
+static <a class="el" href="classkick_1_1_scene.html">Scene</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>activeScene</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae90b5a6cf2ef801a4a34c50fdd7b9e92"></a><!-- doxytag: member="kick::Engine::setActiveScene" ref="ae90b5a6cf2ef801a4a34c50fdd7b9e92" args="(Scene *scene)" -->
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>setActiveScene</b> (<a class="el" href="classkick_1_1_scene.html">Scene</a> *scene)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1899c99f27bdb0a5e880cf681d79e6ff"></a><!-- doxytag: member="kick::Engine::createScene" ref="a1899c99f27bdb0a5e880cf681d79e6ff" args="(const std::string &amp;name)" -->
+static <a class="el" href="classkick_1_1_scene.html">Scene</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>createScene</b> (const std::string &amp;name)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a26ccd68cc3db1b5efb742ec596b10ae0"></a><!-- doxytag: member="kick::Engine::begin" ref="a26ccd68cc3db1b5efb742ec596b10ae0" args="()" -->
+static std::vector&lt; <a class="el" href="classkick_1_1_scene.html">Scene</a> &gt;<br class="typebreak"/>
+::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>begin</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3e7bf42728ad0bd0ca0a882e739c5b93"></a><!-- doxytag: member="kick::Engine::end" ref="a3e7bf42728ad0bd0ca0a882e739c5b93" args="()" -->
+static std::vector&lt; <a class="el" href="classkick_1_1_scene.html">Scene</a> &gt;<br class="typebreak"/>
+::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>end</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acdded8a48bf56e3150d7f56dd4cc7d40"></a><!-- doxytag: member="kick::Engine::config" ref="acdded8a48bf56e3150d7f56dd4cc7d40" args="()" -->
+static const <a class="el" href="structkick_1_1_engine_config.html">EngineConfig</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>config</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa20ee1c3edc629bb153fac3b3758429a"></a><!-- doxytag: member="kick::Engine::context" ref="aa20ee1c3edc629bb153fac3b3758429a" args="()" -->
+static <a class="el" href="classkick_1_1_context.html">Context</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>context</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5399c10156f794c98efc2b490d2f6a31"></a><!-- doxytag: member="kick::Engine::defaultKeyHandler" ref="a5399c10156f794c98efc2b490d2f6a31" args="()" -->
+static <a class="el" href="classkick_1_1_default_key_handler.html">DefaultKeyHandler</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>defaultKeyHandler</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab13370218edd44c425f4ad19c5d03b0e"></a><!-- doxytag: member="kick::Engine::startMainLoop" ref="ab13370218edd44c425f4ad19c5d03b0e" args="()" -->
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>startMainLoop</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a483397c15769777105ab367982704720"></a><!-- doxytag: member="kick::Engine::startFrame" ref="a483397c15769777105ab367982704720" args="()" -->
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>startFrame</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a57f942a4b035e944689f1f5f870541e2"></a><!-- doxytag: member="kick::Engine::update" ref="a57f942a4b035e944689f1f5f870541e2" args="()" -->
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>update</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aef0dfa62e93068ee57fcf0b37caf0138"></a><!-- doxytag: member="kick::Engine::render" ref="aef0dfa62e93068ee57fcf0b37caf0138" args="()" -->
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>render</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ade1f0bbb639c3b21b0fd6673e396571b"></a><!-- doxytag: member="kick::Engine::getEventQueue" ref="ade1f0bbb639c3b21b0fd6673e396571b" args="()" -->
+static <a class="el" href="classkick_1_1_event_queue.html">EventQueue</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getEventQueue</b> ()</td></tr>
 <tr><td colspan="2"><h2><a name="friends"></a>
 Friends</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7aa96bc4f81b0d0c023b6d0cbf31f944"></a><!-- doxytag: member="kick::Engine::Project" ref="a7aa96bc4f81b0d0c023b6d0cbf31f944" args="" -->
@@ -126,7 +113,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Project</b></td></tr
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="engine_8h_source.html#l00031">31</a> of file <a class="el" href="engine_8h_source.html">engine.h</a>.</p>
+<p>Definition at line <a class="el" href="engine_8h_source.html#l00032">32</a> of file <a class="el" href="engine_8h_source.html">engine.h</a>.</p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>/Users/morten/Programmering/cpp/kick/src/kick/core/<a class="el" href="engine_8h_source.html">engine.h</a></li>
 <li>/Users/morten/Programmering/cpp/kick/src/kick/core/<a class="el" href="engine_8cpp_source.html">engine.cpp</a></li>
@@ -146,7 +133,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Project</b></td></tr
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

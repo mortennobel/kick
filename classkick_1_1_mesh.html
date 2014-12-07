@@ -90,14 +90,14 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>bind</b> (<a class="el" href="classkick_1_1_shader.html">Shader</a> *shader)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aad883ccf7060c06049a3223f76ffb643"></a><!-- doxytag: member="kick::Mesh::render" ref="aad883ccf7060c06049a3223f76ffb643" args="(unsigned int submeshIndex)" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>render</b> (unsigned int submeshIndex)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a514fe783a1992fa6eeb3985221cf3290"></a><!-- doxytag: member="kick::Mesh::getName" ref="a514fe783a1992fa6eeb3985221cf3290" args="()" -->
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getName</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6a8d0a2689dd0252d63c4dfa2920bcee"></a><!-- doxytag: member="kick::Mesh::name" ref="a6a8d0a2689dd0252d63c4dfa2920bcee" args="()" -->
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab18aa310e0ee520376d32574adeccda0"></a><!-- doxytag: member="kick::Mesh::setName" ref="ab18aa310e0ee520376d32574adeccda0" args="(std::string n)" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setName</b> (std::string n)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af751f56dfd36f11cf1a8735a440e812c"></a><!-- doxytag: member="kick::Mesh::getMeshData" ref="af751f56dfd36f11cf1a8735a440e812c" args="()" -->
-<a class="el" href="classkick_1_1_mesh_data.html">MeshData</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getMeshData</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeeea9f9789a4cc44ebd5c672b4f3e3c1"></a><!-- doxytag: member="kick::Mesh::setMeshData" ref="aeeea9f9789a4cc44ebd5c672b4f3e3c1" args="(MeshData *m)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setMeshData</b> (<a class="el" href="classkick_1_1_mesh_data.html">MeshData</a> *m)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6c418ea9be6e9ff4adb09b8f9397d5c1"></a><!-- doxytag: member="kick::Mesh::setMeshData" ref="a6c418ea9be6e9ff4adb09b8f9397d5c1" args="(std::shared_ptr&lt; MeshData &gt; m)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setMeshData</b> (std::shared_ptr&lt; <a class="el" href="classkick_1_1_mesh_data.html">MeshData</a> &gt; m)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac7cabd1ed8b41b51ae3b52c066f048c6"></a><!-- doxytag: member="kick::Mesh::meshData" ref="ac7cabd1ed8b41b51ae3b52c066f048c6" args="()" -->
+std::shared_ptr&lt; <a class="el" href="classkick_1_1_mesh_data.html">MeshData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>meshData</b> ()</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Represents <a class="el" href="classkick_1_1_mesh.html">Mesh</a> data on the GPU. Whenever mesh data is updated, then <a class="el" href="classkick_1_1_mesh_data.html">MeshData</a> needs to be reassigned (future update would be using observer pattern to make this update automatically). </p>
@@ -122,7 +122,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setMeshData</b> (<a c
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

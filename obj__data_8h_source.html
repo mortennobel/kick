@@ -153,13 +153,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00093"></a>00093         
 <a name="l00095"></a>00095         <span class="keywordtype">bool</span> <a class="code" href="structkick_1_1_obj_data.html#a457c6ca80e054f7322f9789993c65110" title="throws exception if invalid faces">verifyFaces</a>();
 <a name="l00096"></a>00096         
-<a name="l00097"></a>00097         <a class="code" href="structkick_1_1_obj_material.html">ObjMaterial</a>* getMaterial(std::string name);
+<a name="l00097"></a>00097         <a class="code" href="structkick_1_1_obj_material.html">ObjMaterial</a>*material(std::string name);
 <a name="l00098"></a>00098         
-<a name="l00099"></a>00099         std::vector&lt;float&gt; getInterleavedVertexData(<span class="keywordtype">bool</span> includeTextureCoords = <span class="keyword">true</span>, <span class="keywordtype">bool</span> includeNormals = <span class="keyword">true</span>, <span class="keywordtype">int</span> vertexPositionSize = 3, <span class="keywordtype">int</span> texCoordinateSize = 2);
+<a name="l00099"></a>00099         std::vector&lt;float&gt; interleavedVertexData(<span class="keywordtype">bool</span> includeTextureCoords = <span class="keyword">true</span>, <span class="keywordtype">bool</span> includeNormals = <span class="keyword">true</span>, <span class="keywordtype">int</span> vertexPositionSize = 3, <span class="keywordtype">int</span> texCoordinateSize = 2);
 <a name="l00100"></a>00100 
-<a name="l00101"></a>00101         std::vector&lt;unsigned int&gt; getIndices();
+<a name="l00101"></a>00101         std::vector&lt;unsigned int&gt; indices();
 <a name="l00102"></a>00102 
-<a name="l00103"></a>00103         <a class="code" href="classkick_1_1_mesh_data.html">MeshData</a>* getMeshData();
+<a name="l00103"></a>00103         std::shared_ptr&lt;MeshData&gt; meshData();
 <a name="l00104"></a>00104     };
 <a name="l00105"></a>00105 
 <a name="l00106"></a>00106 }
@@ -179,7 +179,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

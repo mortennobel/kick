@@ -76,49 +76,46 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00016"></a>00016 <span class="keyword">namespace </span>kick {
 <a name="l00017"></a><a class="code" href="classkick_1_1_mouse_input.html">00017</a>     <span class="keyword">class </span><a class="code" href="classkick_1_1_mouse_input.html">MouseInput</a> {
 <a name="l00018"></a>00018     <span class="keyword">public</span>:
-<a name="l00019"></a>00019         <a class="code" href="classkick_1_1_mouse_input.html">MouseInput</a>();
-<a name="l00020"></a>00020         <a class="code" href="classkick_1_1_mouse_input.html">MouseInput</a>(<span class="keyword">const</span> <a class="code" href="classkick_1_1_mouse_input.html">MouseInput</a>&amp;) = <span class="keyword">delete</span>;
-<a name="l00021"></a>00021         <span class="comment">// returns true if mouse button was pressed down in this frame</span>
-<a name="l00022"></a>00022         <span class="keywordtype">bool</span> down(<span class="keywordtype">int</span> button) <span class="keyword">const</span>;
-<a name="l00023"></a>00023         <span class="comment">// returns true if mouse button is down is this frame</span>
-<a name="l00024"></a>00024         <span class="keywordtype">bool</span> pressed(<span class="keywordtype">int</span> button)  <span class="keyword">const</span>;
-<a name="l00025"></a>00025         <span class="comment">// returns true if mouse button is released in this frame</span>
-<a name="l00026"></a>00026         <span class="keywordtype">bool</span> up(<span class="keywordtype">int</span> button) <span class="keyword">const</span>;
-<a name="l00027"></a>00027         <span class="keywordtype">void</span> buttonPressStarted(<span class="keywordtype">int</span> button);
-<a name="l00028"></a>00028         <span class="keywordtype">void</span> buttonPressEnded(<span class="keywordtype">int</span> button);
+<a name="l00019"></a>00019         <span class="comment">// returns true if mouse button was pressed down in this frame</span>
+<a name="l00020"></a>00020         <span class="keyword">static</span> <span class="keywordtype">bool</span> down(<span class="keywordtype">int</span> button);
+<a name="l00021"></a>00021         <span class="comment">// returns true if mouse button is down is this frame</span>
+<a name="l00022"></a>00022         <span class="keyword">static</span> <span class="keywordtype">bool</span> pressed(<span class="keywordtype">int</span> button);
+<a name="l00023"></a>00023         <span class="comment">// returns true if mouse button is released in this frame</span>
+<a name="l00024"></a>00024         <span class="keyword">static</span> <span class="keywordtype">bool</span> up(<span class="keywordtype">int</span> button);
+<a name="l00025"></a>00025         <span class="keyword">static</span> <span class="keywordtype">void</span> buttonPressStarted(<span class="keywordtype">int</span> button);
+<a name="l00026"></a>00026         <span class="keyword">static</span> <span class="keywordtype">void</span> buttonPressEnded(<span class="keywordtype">int</span> button);
+<a name="l00027"></a>00027 
+<a name="l00028"></a>00028         <span class="keyword">static</span> glm::ivec2 position();
 <a name="l00029"></a>00029 
-<a name="l00030"></a>00030 
-<a name="l00031"></a>00031         glm::ivec2 getPosition() <span class="keyword">const</span>;
-<a name="l00032"></a>00032 
-<a name="l00033"></a>00033         <span class="keywordtype">void</span> setPosition(glm::ivec2 position);
-<a name="l00034"></a>00034 
-<a name="l00035"></a>00035         glm::ivec2 getPositionDelta() <span class="keyword">const</span>;
-<a name="l00036"></a>00036 
-<a name="l00037"></a>00037         <span class="keywordtype">void</span> setPositionDelta(glm::ivec2 positionDelta);
-<a name="l00038"></a>00038 
-<a name="l00039"></a>00039         glm::ivec2 getMouseWheelDelta() <span class="keyword">const</span>;
-<a name="l00040"></a>00040 
-<a name="l00041"></a>00041         <span class="keywordtype">void</span> setMouseWheelDelta(glm::ivec2 mouseWheelDelta);
-<a name="l00042"></a>00042 
-<a name="l00044"></a>00044         <span class="keywordtype">void</span> <a class="code" href="classkick_1_1_mouse_input.html#a81baf70dee613f0c1cfab7436eaaa1f6" title="clear the frame specific properties">reset</a>();
-<a name="l00045"></a>00045         <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> mouseButtons = 5;
-<a name="l00046"></a>00046 
-<a name="l00047"></a>00047         <span class="keywordtype">int</span> getClicks() <span class="keyword">const</span>;
-<a name="l00048"></a>00048 
-<a name="l00049"></a>00049         <span class="keywordtype">void</span> setClicks(<span class="keywordtype">int</span> clicks);
-<a name="l00050"></a>00050 
-<a name="l00051"></a>00051     <span class="keyword">private</span>:
-<a name="l00052"></a>00052         <span class="comment">// absolute mouse position (relative to upper left corner)</span>
-<a name="l00053"></a>00053         glm::ivec2 position;
-<a name="l00054"></a>00054         glm::ivec2 positionDelta;
-<a name="l00055"></a>00055         glm::ivec2 mouseWheelDelta;
-<a name="l00056"></a>00056         <span class="keywordtype">int</span> clicks = 0;
-<a name="l00057"></a>00057 
-<a name="l00058"></a>00058         <span class="keywordtype">bool</span> buttonDown[mouseButtons];
-<a name="l00059"></a>00059         <span class="keywordtype">bool</span> buttonPressed[mouseButtons];
-<a name="l00060"></a>00060         <span class="keywordtype">bool</span> buttonUp[mouseButtons];
-<a name="l00061"></a>00061     };
-<a name="l00062"></a>00062 }
+<a name="l00030"></a>00030         <span class="keyword">static</span> <span class="keywordtype">void</span> setPosition(glm::ivec2 position);
+<a name="l00031"></a>00031 
+<a name="l00032"></a>00032         <span class="keyword">static</span> glm::ivec2 positionDelta();
+<a name="l00033"></a>00033 
+<a name="l00034"></a>00034         <span class="keyword">static</span> <span class="keywordtype">void</span> setPositionDelta(glm::ivec2 positionDelta);
+<a name="l00035"></a>00035 
+<a name="l00036"></a>00036         <span class="keyword">static</span> glm::ivec2 mouseWheelDelta();
+<a name="l00037"></a>00037 
+<a name="l00038"></a>00038         <span class="keyword">static</span> <span class="keywordtype">void</span> setMouseWheelDelta(glm::ivec2 mouseWheelDelta);
+<a name="l00039"></a>00039 
+<a name="l00041"></a>00041         <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classkick_1_1_mouse_input.html#a81baf70dee613f0c1cfab7436eaaa1f6" title="clear the frame specific properties">reset</a>();
+<a name="l00042"></a>00042         <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> mouseButtons = 5;
+<a name="l00043"></a>00043 
+<a name="l00044"></a>00044         <span class="keyword">static</span> <span class="keywordtype">int</span> clicks();
+<a name="l00045"></a>00045 
+<a name="l00046"></a>00046         <span class="keyword">static</span> <span class="keywordtype">void</span> setClicks(<span class="keywordtype">int</span> clicks);
+<a name="l00047"></a>00047     <span class="keyword">private</span>:
+<a name="l00048"></a>00048         <a class="code" href="classkick_1_1_mouse_input.html">MouseInput</a>() = <span class="keyword">delete</span>;
+<a name="l00049"></a>00049         <span class="comment">// absolute mouse position (relative to upper left corner)</span>
+<a name="l00050"></a>00050         <span class="keyword">static</span> glm::ivec2 mPosition;
+<a name="l00051"></a>00051         <span class="keyword">static</span> glm::ivec2 mPositionDelta;
+<a name="l00052"></a>00052         <span class="keyword">static</span> glm::ivec2 mMouseWheelDelta;
+<a name="l00053"></a>00053         <span class="keyword">static</span> <span class="keywordtype">int</span> mClicks;
+<a name="l00054"></a>00054 
+<a name="l00055"></a>00055         <span class="keyword">static</span> <span class="keywordtype">bool</span> mButtonDown[mouseButtons];
+<a name="l00056"></a>00056         <span class="keyword">static</span> <span class="keywordtype">bool</span> mButtonPressed[mouseButtons];
+<a name="l00057"></a>00057         <span class="keyword">static</span> <span class="keywordtype">bool</span> mButtonUp[mouseButtons];
+<a name="l00058"></a>00058     };
+<a name="l00059"></a>00059 }
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -135,7 +132,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:39 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

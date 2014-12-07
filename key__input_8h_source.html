@@ -349,24 +349,32 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00289"></a>00289 
 <a name="l00290"></a><a class="code" href="classkick_1_1_key_input.html">00290</a>     <span class="keyword">class </span><a class="code" href="classkick_1_1_key_input.html">KeyInput</a> {
 <a name="l00291"></a>00291     <span class="keyword">public</span>:
-<a name="l00292"></a>00292         <a class="code" href="classkick_1_1_key_input.html">KeyInput</a>();
-<a name="l00293"></a>00293         <a class="code" href="classkick_1_1_key_input.html">KeyInput</a>(<span class="keyword">const</span> <a class="code" href="classkick_1_1_key_input.html">KeyInput</a>&amp;) = <span class="keyword">delete</span>;
-<a name="l00295"></a>00295         <span class="keywordtype">void</span> <a class="code" href="classkick_1_1_key_input.html#a53a3312ca09908dd8ea07c4dcd4519ed" title="clear the frame specific properties">reset</a>();
-<a name="l00296"></a>00296         <span class="keywordtype">bool</span> down(Key button) <span class="keyword">const</span>;
-<a name="l00297"></a>00297         <span class="keywordtype">bool</span> pressed(Key button)  <span class="keyword">const</span>;
-<a name="l00298"></a>00298         <span class="keywordtype">bool</span> up(Key button) <span class="keyword">const</span>;
-<a name="l00299"></a>00299         <span class="keywordtype">bool</span> down(<span class="keyword">const</span> <a class="code" href="structkick_1_1_key_mapping.html">KeyMapping</a>&amp; mapping) <span class="keyword">const</span>;
-<a name="l00300"></a>00300         <span class="comment">// if all keys in keymapping is pressed and at least one key is pressed down this frame)</span>
-<a name="l00301"></a>00301         <span class="keywordtype">bool</span> pressed(<span class="keyword">const</span> <a class="code" href="structkick_1_1_key_mapping.html">KeyMapping</a>&amp; mapping)  <span class="keyword">const</span>;
-<a name="l00302"></a>00302 
-<a name="l00303"></a>00303         <span class="keywordtype">void</span> pressBegin(Key k);
-<a name="l00304"></a>00304         <span class="keywordtype">void</span> pressEnd(Key k);
-<a name="l00305"></a>00305     <span class="keyword">private</span>:
-<a name="l00306"></a>00306         std::set&lt;Key&gt; buttonDown;
-<a name="l00307"></a>00307         std::set&lt;Key&gt; buttonPressed;
-<a name="l00308"></a>00308         std::set&lt;Key&gt; buttonUp;
-<a name="l00309"></a>00309     };
-<a name="l00310"></a>00310 }
+<a name="l00293"></a>00293         <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classkick_1_1_key_input.html#a53a3312ca09908dd8ea07c4dcd4519ed" title="clear the frame specific properties">reset</a>();
+<a name="l00294"></a>00294         <span class="keyword">static</span> <span class="keywordtype">bool</span> down(Key button);
+<a name="l00295"></a>00295         <span class="keyword">static</span> <span class="keywordtype">bool</span> pressed(Key button);
+<a name="l00296"></a>00296         <span class="keyword">static</span> <span class="keywordtype">bool</span> up(Key button);
+<a name="l00297"></a>00297         <span class="keyword">static</span> <span class="keywordtype">bool</span> down(<span class="keyword">const</span> <a class="code" href="structkick_1_1_key_mapping.html">KeyMapping</a>&amp; mapping);
+<a name="l00298"></a>00298         <span class="comment">// if all keys in keymapping is pressed and at least one key is pressed down this frame)</span>
+<a name="l00299"></a>00299         <span class="keyword">static</span> <span class="keywordtype">bool</span> pressed(<span class="keyword">const</span> <a class="code" href="structkick_1_1_key_mapping.html">KeyMapping</a>&amp; mapping);
+<a name="l00300"></a>00300         <span class="keyword">static</span> <span class="keywordtype">bool</span> anyDown();
+<a name="l00301"></a>00301         <span class="keyword">static</span> <span class="keywordtype">bool</span> anyUp();
+<a name="l00302"></a>00302         <span class="keyword">static</span> <span class="keywordtype">bool</span> anyPressed();
+<a name="l00303"></a>00303 
+<a name="l00304"></a>00304         <span class="keyword">static</span> <span class="keywordtype">void</span> pressBegin(Key k);
+<a name="l00305"></a>00305         <span class="keyword">static</span> <span class="keywordtype">void</span> pressEnd(Key k);
+<a name="l00306"></a>00306 
+<a name="l00307"></a>00307         <span class="keyword">static</span> <span class="keyword">const</span> std::set&lt;Key&gt; &amp; buttonsDown();
+<a name="l00308"></a>00308         <span class="keyword">static</span> <span class="keyword">const</span> std::set&lt;Key&gt; &amp; buttonsPressed();
+<a name="l00309"></a>00309         <span class="keyword">static</span> <span class="keyword">const</span> std::set&lt;Key&gt; &amp; buttonsUp();
+<a name="l00310"></a>00310     <span class="keyword">private</span>:
+<a name="l00311"></a>00311         <a class="code" href="classkick_1_1_key_input.html">KeyInput</a>() = <span class="keyword">delete</span>;
+<a name="l00312"></a>00312         <span class="keyword">static</span> std::set&lt;Key&gt; buttonDown;
+<a name="l00313"></a>00313         <span class="keyword">static</span> std::set&lt;Key&gt; buttonPressed;
+<a name="l00314"></a>00314         <span class="keyword">static</span> std::set&lt;Key&gt; buttonUp;
+<a name="l00315"></a>00315 
+<a name="l00316"></a>00316 
+<a name="l00317"></a>00317     };
+<a name="l00318"></a>00318 }
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -383,7 +391,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:39 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

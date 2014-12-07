@@ -76,10 +76,11 @@ Inheritance diagram for kick::ComponentRenderable:</div>
  <div class="center">
   <img src="classkick_1_1_component_renderable.png" usemap="#kick::ComponentRenderable_map" alt=""/>
   <map id="kick::ComponentRenderable_map" name="kick::ComponentRenderable_map">
-<area href="classkick_1_1_component.html" alt="kick::Component" shape="rect" coords="178,0,346,24"/>
+<area href="classkick_1_1_component.html" alt="kick::Component" shape="rect" coords="267,0,435,24"/>
 <area href="classkick_1_1_line_renderer.html" alt="kick::LineRenderer" shape="rect" coords="0,112,168,136"/>
 <area href="classkick_1_1_mesh_renderer.html" alt="kick::MeshRenderer" shape="rect" coords="178,112,346,136"/>
 <area href="classkick_1_1_panel.html" alt="kick::Panel" shape="rect" coords="356,112,524,136"/>
+<area href="classkick_1_1_skybox.html" alt="kick::Skybox" shape="rect" coords="534,112,702,136"/>
 </map>
  </div></div>
 
@@ -91,8 +92,8 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ComponentRenderable</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *gameObject)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8310bd3d0f835e40897b84e092796603"></a><!-- doxytag: member="kick::ComponentRenderable::render" ref="a8310bd3d0f835e40897b84e092796603" args="(EngineUniforms *engineUniforms, Material *replacementMaterial=nullptr)=0" -->
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>render</b> (<a class="el" href="structkick_1_1_engine_uniforms.html">EngineUniforms</a> *engineUniforms, <a class="el" href="classkick_1_1_material.html">Material</a> *replacementMaterial=nullptr)=0</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acbc88376d051b621a239e0aea4b10863"></a><!-- doxytag: member="kick::ComponentRenderable::getRenderOrder" ref="acbc88376d051b621a239e0aea4b10863" args="()=0" -->
-virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>getRenderOrder</b> ()=0</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="addc52ebe93442199bcf1f8251b3091dd"></a><!-- doxytag: member="kick::ComponentRenderable::renderOrder" ref="addc52ebe93442199bcf1f8251b3091dd" args="()=0" -->
+virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>renderOrder</b> ()=0</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
@@ -115,7 +116,7 @@ virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>getRenderOrder
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

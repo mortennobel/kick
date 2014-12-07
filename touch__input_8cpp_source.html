@@ -72,56 +72,58 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00012"></a>00012 <span class="keyword">using namespace </span>glm;
 <a name="l00013"></a>00013 
 <a name="l00014"></a>00014 <span class="keyword">namespace </span>kick{
-<a name="l00015"></a>00015     <span class="keywordtype">void</span> TouchInput::setTouchStarted(int64_t fingerid, glm::ivec2 pos, <span class="keywordtype">float</span> pressure) {
-<a name="l00016"></a>00016         Touch touch;
-<a name="l00017"></a>00017         touch.down = <span class="keyword">true</span>;
-<a name="l00018"></a>00018         touch.up   = <span class="keyword">false</span>;
-<a name="l00019"></a>00019         touch.fingerId   = fingerid;
-<a name="l00020"></a>00020         touch.pos   = pos;
-<a name="l00021"></a>00021         touch.delta   = {0,0};
-<a name="l00022"></a>00022         touch.pressure   = pressure;
-<a name="l00023"></a>00023         touches[fingerid] = touch;
-<a name="l00024"></a>00024     }
-<a name="l00025"></a>00025 
-<a name="l00026"></a>00026     <span class="keywordtype">void</span> TouchInput::setTouchMoved(int64_t fingerid, glm::ivec2 pos, <span class="keywordtype">float</span> pressure) {
-<a name="l00027"></a>00027         <span class="keyword">auto</span> &amp; touch = touches[fingerid];
-<a name="l00028"></a>00028 
-<a name="l00029"></a>00029         touch.delta = pos - touch.pos;
-<a name="l00030"></a>00030         touch.pos = pos;
-<a name="l00031"></a>00031         touch.pressure = pressure;
-<a name="l00032"></a>00032     }
-<a name="l00033"></a>00033 
-<a name="l00034"></a>00034     <span class="keywordtype">void</span> TouchInput::setTouchEnded(int64_t fingerid, glm::ivec2 pos) {
-<a name="l00035"></a>00035         <span class="keyword">auto</span> &amp; touch = touches[fingerid];
-<a name="l00036"></a>00036         touch.delta = pos - touch.pos;
-<a name="l00037"></a>00037         touch.pos = pos;
-<a name="l00038"></a>00038         touch.pressure = 0;
-<a name="l00039"></a>00039         touch.up = <span class="keyword">true</span>;
-<a name="l00040"></a>00040     }
-<a name="l00041"></a>00041 
-<a name="l00042"></a>00042     <span class="keywordtype">void</span> TouchInput::reset() {
-<a name="l00043"></a>00043         vector&lt;long&gt; deleteKeys;
-<a name="l00044"></a>00044         <span class="keywordflow">for</span> (<span class="keyword">auto</span> keyVal : touches){
-<a name="l00045"></a>00045             keyVal.second.down = <span class="keyword">false</span>;
-<a name="l00046"></a>00046             keyVal.second.delta = ivec2{0};
-<a name="l00047"></a>00047             <span class="keywordflow">if</span> (keyVal.second.up){
-<a name="l00048"></a>00048                 deleteKeys.push_back(keyVal.first);
-<a name="l00049"></a>00049             }
-<a name="l00050"></a>00050         }
-<a name="l00051"></a>00051 
-<a name="l00052"></a>00052         <span class="keywordflow">for</span> (<span class="keywordtype">long</span> del : deleteKeys){
-<a name="l00053"></a>00053             touches.erase(del);
-<a name="l00054"></a>00054         }
-<a name="l00055"></a>00055     }
-<a name="l00056"></a>00056 
-<a name="l00057"></a>00057     std::map&lt;int64_t, Touch&gt;::const_iterator TouchInput::begin()<span class="keyword"> const </span>{
-<a name="l00058"></a>00058         <span class="keywordflow">return</span> touches.begin();
-<a name="l00059"></a>00059     }
-<a name="l00060"></a>00060 
-<a name="l00061"></a>00061     map&lt;int64_t, Touch&gt;::const_iterator TouchInput::end()<span class="keyword"> const </span>{
-<a name="l00062"></a>00062         <span class="keywordflow">return</span> touches.end();
-<a name="l00063"></a>00063     }
-<a name="l00064"></a>00064 }
+<a name="l00015"></a>00015     std::map&lt;int64_t,Touch&gt; TouchInput::touches;
+<a name="l00016"></a>00016 
+<a name="l00017"></a>00017     <span class="keywordtype">void</span> TouchInput::setTouchStarted(int64_t fingerid, glm::ivec2 pos, <span class="keywordtype">float</span> pressure) {
+<a name="l00018"></a>00018         Touch touch;
+<a name="l00019"></a>00019         touch.down = <span class="keyword">true</span>;
+<a name="l00020"></a>00020         touch.up   = <span class="keyword">false</span>;
+<a name="l00021"></a>00021         touch.fingerId   = fingerid;
+<a name="l00022"></a>00022         touch.pos   = pos;
+<a name="l00023"></a>00023         touch.delta   = {0,0};
+<a name="l00024"></a>00024         touch.pressure   = pressure;
+<a name="l00025"></a>00025         touches[fingerid] = touch;
+<a name="l00026"></a>00026     }
+<a name="l00027"></a>00027 
+<a name="l00028"></a>00028     <span class="keywordtype">void</span> TouchInput::setTouchMoved(int64_t fingerid, glm::ivec2 pos, <span class="keywordtype">float</span> pressure) {
+<a name="l00029"></a>00029         <span class="keyword">auto</span> &amp; touch = touches[fingerid];
+<a name="l00030"></a>00030 
+<a name="l00031"></a>00031         touch.delta = pos - touch.pos;
+<a name="l00032"></a>00032         touch.pos = pos;
+<a name="l00033"></a>00033         touch.pressure = pressure;
+<a name="l00034"></a>00034     }
+<a name="l00035"></a>00035 
+<a name="l00036"></a>00036     <span class="keywordtype">void</span> TouchInput::setTouchEnded(int64_t fingerid, glm::ivec2 pos) {
+<a name="l00037"></a>00037         <span class="keyword">auto</span> &amp; touch = touches[fingerid];
+<a name="l00038"></a>00038         touch.delta = pos - touch.pos;
+<a name="l00039"></a>00039         touch.pos = pos;
+<a name="l00040"></a>00040         touch.pressure = 0;
+<a name="l00041"></a>00041         touch.up = <span class="keyword">true</span>;
+<a name="l00042"></a>00042     }
+<a name="l00043"></a>00043 
+<a name="l00044"></a>00044     <span class="keywordtype">void</span> TouchInput::reset() {
+<a name="l00045"></a>00045         vector&lt;long&gt; deleteKeys;
+<a name="l00046"></a>00046         <span class="keywordflow">for</span> (<span class="keyword">auto</span> keyVal : touches){
+<a name="l00047"></a>00047             keyVal.second.down = <span class="keyword">false</span>;
+<a name="l00048"></a>00048             keyVal.second.delta = ivec2{0};
+<a name="l00049"></a>00049             <span class="keywordflow">if</span> (keyVal.second.up){
+<a name="l00050"></a>00050                 deleteKeys.push_back(keyVal.first);
+<a name="l00051"></a>00051             }
+<a name="l00052"></a>00052         }
+<a name="l00053"></a>00053 
+<a name="l00054"></a>00054         <span class="keywordflow">for</span> (<span class="keywordtype">long</span> del : deleteKeys){
+<a name="l00055"></a>00055             touches.erase(del);
+<a name="l00056"></a>00056         }
+<a name="l00057"></a>00057     }
+<a name="l00058"></a>00058 
+<a name="l00059"></a>00059     std::map&lt;int64_t, Touch&gt;::const_iterator TouchInput::begin() {
+<a name="l00060"></a>00060         <span class="keywordflow">return</span> touches.begin();
+<a name="l00061"></a>00061     }
+<a name="l00062"></a>00062 
+<a name="l00063"></a>00063     map&lt;int64_t, Touch&gt;::const_iterator TouchInput::end() {
+<a name="l00064"></a>00064         <span class="keywordflow">return</span> touches.end();
+<a name="l00065"></a>00065     }
+<a name="l00066"></a>00066 }
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -138,7 +140,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

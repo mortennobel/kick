@@ -63,6 +63,64 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00003"></a>00003 <span class="comment">//</span>
 <a name="l00004"></a>00004 
 <a name="l00005"></a>00005 <span class="preprocessor">#include &quot;bounds2.h&quot;</span>
+<a name="l00006"></a>00006 
+<a name="l00007"></a>00007 
+<a name="l00008"></a>00008 <span class="keyword">namespace  </span>kick{
+<a name="l00009"></a>00009 Bounds2::Bounds2() {
+<a name="l00010"></a>00010 }
+<a name="l00011"></a>00011 
+<a name="l00012"></a>00012 Bounds2::Bounds2(glm::vec2 <span class="keyword">const</span> &amp;min, glm::vec2 <span class="keyword">const</span> &amp;max) : min(min), max(max) {
+<a name="l00013"></a>00013         }
+<a name="l00014"></a>00014 
+<a name="l00015"></a>00015 glm::vec2 Bounds2::dimension() { <span class="keywordflow">return</span> max-min; }
+<a name="l00016"></a>00016 
+<a name="l00017"></a>00017 glm::vec2 Bounds2::center() { <span class="keywordflow">return</span> (max+min)*0.5f; }
+<a name="l00018"></a>00018 
+<a name="l00019"></a>00019 <span class="keywordtype">void</span> Bounds2::expand(glm::vec2 p) {
+<a name="l00020"></a>00020     min = glm::min(min, p);
+<a name="l00021"></a>00021     max = glm::max(max, p);
+<a name="l00022"></a>00022 }
+<a name="l00023"></a>00023 
+<a name="l00024"></a>00024 <span class="keywordtype">void</span> Bounds2::expand(Bounds2 b) {
+<a name="l00025"></a>00025     min = glm::min(min, b.min);
+<a name="l00026"></a>00026     max = glm::max(max, b.max);
+<a name="l00027"></a>00027 }
+<a name="l00028"></a>00028 
+<a name="l00029"></a>00029 <span class="keywordtype">void</span> Bounds2::reset() {
+<a name="l00030"></a>00030     min = glm::vec2{ std::numeric_limits&lt;float&gt;::max() };
+<a name="l00031"></a>00031     max = glm::vec2{ std::numeric_limits&lt;float&gt;::lowest() };
+<a name="l00032"></a>00032 }
+<a name="l00033"></a>00033 
+<a name="l00034"></a>00034 glm::vec2 Bounds2::lowLeft() {
+<a name="l00035"></a>00035     <span class="keywordflow">return</span> min;
+<a name="l00036"></a>00036 }
+<a name="l00037"></a>00037 
+<a name="l00038"></a>00038 glm::vec2 Bounds2::upperLeft() {
+<a name="l00039"></a>00039     <span class="keywordflow">return</span> {min.x, max.y};
+<a name="l00040"></a>00040 }
+<a name="l00041"></a>00041 
+<a name="l00042"></a>00042 glm::vec2 Bounds2::lowRight() {
+<a name="l00043"></a>00043     <span class="keywordflow">return</span> {max.x, min.y};
+<a name="l00044"></a>00044 }
+<a name="l00045"></a>00045 
+<a name="l00046"></a>00046 glm::vec2 Bounds2::upperRight() {
+<a name="l00047"></a>00047     <span class="keywordflow">return</span> {max.x, max.y};
+<a name="l00048"></a>00048 }
+<a name="l00049"></a>00049 
+<a name="l00050"></a>00050 Bounds2 Bounds2::lerp(<span class="keywordtype">float</span> f, Bounds2 b) {
+<a name="l00051"></a>00051     <span class="keywordflow">return</span> Bounds2 {glm::mix(min, b.min, f), glm::mix(max, b.max, f)};
+<a name="l00052"></a>00052 
+<a name="l00053"></a>00053 }
+<a name="l00054"></a>00054 
+<a name="l00055"></a>00055 <span class="keywordtype">bool</span> Bounds2::contains(glm::vec2 point) {
+<a name="l00056"></a>00056     <span class="keywordflow">return</span> min.x &lt;= point.x &amp;&amp; min.y &lt;= point.y &amp;&amp;
+<a name="l00057"></a>00057             max.x &gt;= point.x &amp;&amp; max.y &gt;= point.y;
+<a name="l00058"></a>00058 }
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060 glm::vec2 Bounds2::diagonal() {
+<a name="l00061"></a>00061     <span class="keywordflow">return</span> max-min;
+<a name="l00062"></a>00062 }
+<a name="l00063"></a>00063 }
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -79,7 +137,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -82,23 +82,23 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00022"></a>00022     <span class="keyword">public</span>:
 <a name="l00023"></a>00023         <a class="code" href="classkick_1_1_mesh_renderer.html">MeshRenderer</a>(<a class="code" href="classkick_1_1_game_object.html">GameObject</a> *gameObject);
 <a name="l00024"></a>00024         ~<a class="code" href="classkick_1_1_mesh_renderer.html">MeshRenderer</a>();
-<a name="l00025"></a>00025         <span class="keyword">virtual</span> <span class="keywordtype">void</span> activated();
+<a name="l00025"></a>00025 
 <a name="l00026"></a>00026         <span class="keyword">virtual</span> <span class="keywordtype">void</span> render(<a class="code" href="structkick_1_1_engine_uniforms.html">EngineUniforms</a> *engineUniforms, <a class="code" href="classkick_1_1_material.html">Material</a>* replacementMaterial = <span class="keyword">nullptr</span>);
-<a name="l00027"></a>00027         <span class="keywordtype">void</span> setMesh(<a class="code" href="classkick_1_1_mesh.html">Mesh</a> *mesh);
-<a name="l00028"></a>00028         <a class="code" href="classkick_1_1_mesh.html">Mesh</a>*getMesh();
+<a name="l00027"></a>00027         <span class="keywordtype">void</span> setMesh(std::shared_ptr&lt;Mesh&gt; mesh);
+<a name="l00028"></a>00028         std::shared_ptr&lt;Mesh&gt; mesh();
 <a name="l00029"></a>00029         <span class="comment">// set the first material</span>
 <a name="l00030"></a>00030         <span class="keywordtype">void</span> setMaterial(<a class="code" href="classkick_1_1_material.html">Material</a> *material);
 <a name="l00031"></a>00031         <span class="comment">// get first material (no nullptr if no material added)</span>
-<a name="l00032"></a>00032         <a class="code" href="classkick_1_1_material.html">Material</a>*getMaterial();
+<a name="l00032"></a>00032         <a class="code" href="classkick_1_1_material.html">Material</a>*material();
 <a name="l00033"></a>00033         <span class="keywordtype">void</span> setMaterials(<span class="keyword">const</span> std::vector&lt;Material *&gt; &amp;mats);
-<a name="l00034"></a>00034         <span class="keyword">const</span> std::vector&lt;Material*&gt; &amp;getMaterials();
+<a name="l00034"></a>00034         <span class="keyword">const</span> std::vector&lt;Material*&gt; &amp;materials();
 <a name="l00035"></a>00035 
-<a name="l00036"></a>00036         <span class="keyword">virtual</span> <span class="keywordtype">int</span> getRenderOrder();
+<a name="l00036"></a>00036         <span class="keyword">virtual</span> <span class="keywordtype">int</span> renderOrder();
 <a name="l00037"></a>00037 
 <a name="l00038"></a>00038     <span class="keyword">private</span>:
-<a name="l00039"></a>00039         <a class="code" href="classkick_1_1_mesh.html">Mesh</a>* mesh;
-<a name="l00040"></a>00040         <a class="code" href="classkick_1_1_transform.html">Transform</a>* transform;
-<a name="l00041"></a>00041         std::vector&lt;Material*&gt; materials;
+<a name="l00039"></a>00039         std::shared_ptr&lt;Mesh&gt; mMesh;
+<a name="l00040"></a>00040         <a class="code" href="classkick_1_1_transform.html">Transform</a>* mTransform;
+<a name="l00041"></a>00041         std::vector&lt;Material*&gt; mMaterials;
 <a name="l00042"></a>00042     };
 <a name="l00043"></a>00043 }
 </pre></div></div>
@@ -117,7 +117,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

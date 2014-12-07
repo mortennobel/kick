@@ -66,8 +66,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a>  </div>
+<a href="#pub-attribs">Public Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">kick::AABB Struct Reference</div>  </div>
 </div>
@@ -93,22 +92,24 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator!=</b> (const <a class="el" href="structkick_1_1_a_a_b_b.html">AABB</a> &amp;other) const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5177c7edd2de235ee0103c9b69507f04"></a><!-- doxytag: member="kick::AABB::operator=" ref="a5177c7edd2de235ee0103c9b69507f04" args="(const AABB &amp;other)" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="structkick_1_1_a_a_b_b.html">AABB</a> &amp;other)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkick_1_1_a_a_b_b.html#acd93e5c2993b1cffd196524620a8cfd3">IsUninitialized</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkick_1_1_a_a_b_b.html#acbca74c3f39e6ae6c3afeb00ce93eb08">IsEmpty</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkick_1_1_a_a_b_b.html#aa6c116a56ea003ccdf889e65d366055a">uninitialized</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structkick_1_1_a_a_b_b.html#a8cf4018f305186d888a96b23013c1b8a">empty</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a414dcb6d13bca60c716a0554756e519f"></a><!-- doxytag: member="kick::AABB::intersect" ref="a414dcb6d13bca60c716a0554756e519f" args="(const Ray &amp;r, float &amp;tNear, float &amp;tFar, int &amp;nearAxis, int &amp;farAxis)" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>intersect</b> (const <a class="el" href="classkick_1_1_ray.html">Ray</a> &amp;r, float &amp;tNear, float &amp;tFar, int &amp;nearAxis, int &amp;farAxis)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3eb90c9c862fc1203176f91487dfb212"></a><!-- doxytag: member="kick::AABB::intersect" ref="a3eb90c9c862fc1203176f91487dfb212" args="(const AABB &amp;aabb)" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>intersect</b> (const <a class="el" href="structkick_1_1_a_a_b_b.html">AABB</a> &amp;aabb)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2bf9cb5f628d354b79e8e9520baf5eb9"></a><!-- doxytag: member="kick::AABB::contains" ref="a2bf9cb5f628d354b79e8e9520baf5eb9" args="(glm::vec3 point)" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>contains</b> (glm::vec3 point)</td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5e6409bc312fff5e185fc846859e745c"></a><!-- doxytag: member="kick::AABB::min" ref="a5e6409bc312fff5e185fc846859e745c" args="" -->
 glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>min</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aba496cd1b54f8a9d7e4ce25710d5ed77"></a><!-- doxytag: member="kick::AABB::max" ref="aba496cd1b54f8a9d7e4ce25710d5ed77" args="" -->
 glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>max</b></td></tr>
-<tr><td colspan="2"><h2><a name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a523698ebcaf20cdc19969763f60328eb"></a><!-- doxytag: member="kick::AABB::uninitialized" ref="a523698ebcaf20cdc19969763f60328eb" args="" -->
-static const <a class="el" href="structkick_1_1_a_a_b_b.html">AABB</a>&#160;</td><td class="memItemRight" valign="bottom"><b>uninitialized</b></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="aabb_8h_source.html#l00015">15</a> of file <a class="el" href="aabb_8h_source.html">aabb.h</a>.</p>
+<p>Definition at line <a class="el" href="aabb_8h_source.html#l00016">16</a> of file <a class="el" href="aabb_8h_source.html">aabb.h</a>.</p>
 </div><hr/><h2>Member Function Documentation</h2>
 <a class="anchor" id="a168acf57fa9391d5b7fa443ff7bc3bba"></a><!-- doxytag: member="kick::AABB::clear" ref="a168acf57fa9391d5b7fa443ff7bc3bba" args="()" -->
 <div class="memitem">
@@ -129,12 +130,12 @@ static const <a class="el" href="structkick_1_1_a_a_b_b.html">AABB</a>&#160;</td
 
 </div>
 </div>
-<a class="anchor" id="acbca74c3f39e6ae6c3afeb00ce93eb08"></a><!-- doxytag: member="kick::AABB::IsEmpty" ref="acbca74c3f39e6ae6c3afeb00ce93eb08" args="()" -->
+<a class="anchor" id="a8cf4018f305186d888a96b23013c1b8a"></a><!-- doxytag: member="kick::AABB::empty" ref="a8cf4018f305186d888a96b23013c1b8a" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool kick::AABB::IsEmpty </td>
+          <td class="memname">bool kick::AABB::empty </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -145,25 +146,6 @@ static const <a class="el" href="structkick_1_1_a_a_b_b.html">AABB</a>&#160;</td
 <p>Returns true if min == max </p>
 
 <p>Definition at line <a class="el" href="aabb_8cpp_source.html#l00069">69</a> of file <a class="el" href="aabb_8cpp_source.html">aabb.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="acd93e5c2993b1cffd196524620a8cfd3"></a><!-- doxytag: member="kick::AABB::IsUninitialized" ref="acd93e5c2993b1cffd196524620a8cfd3" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool kick::AABB::IsUninitialized </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Returns true if min = vec3(FLT_MAX) and max = vec3(-FLT_MAX) </p>
-
-<p>Definition at line <a class="el" href="aabb_8cpp_source.html#l00065">65</a> of file <a class="el" href="aabb_8cpp_source.html">aabb.cpp</a>.</p>
 
 </div>
 </div>
@@ -183,7 +165,24 @@ static const <a class="el" href="structkick_1_1_a_a_b_b.html">AABB</a>&#160;</td
 <div class="memdoc">
 <p>Transforms the eight points of the Axis-Aligned Bounding Box into a new <a class="el" href="structkick_1_1_a_a_b_b.html">AABB</a> </p>
 
-<p>Definition at line <a class="el" href="aabb_8cpp_source.html#l00020">20</a> of file <a class="el" href="aabb_8cpp_source.html">aabb.cpp</a>.</p>
+</div>
+</div>
+<a class="anchor" id="aa6c116a56ea003ccdf889e65d366055a"></a><!-- doxytag: member="kick::AABB::uninitialized" ref="aa6c116a56ea003ccdf889e65d366055a" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kick::AABB::uninitialized </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Returns true if min = vec3(FLT_MAX) and max = vec3(-FLT_MAX) </p>
+
+<p>Definition at line <a class="el" href="aabb_8cpp_source.html#l00065">65</a> of file <a class="el" href="aabb_8cpp_source.html">aabb.cpp</a>.</p>
 
 </div>
 </div>
@@ -206,7 +205,7 @@ static const <a class="el" href="structkick_1_1_a_a_b_b.html">AABB</a>&#160;</td
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

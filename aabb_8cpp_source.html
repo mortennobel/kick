@@ -71,15 +71,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00011"></a>00011 <span class="keyword">using namespace </span>glm;
 <a name="l00012"></a>00012 
 <a name="l00013"></a>00013 <span class="keyword">namespace </span>kick {
-<a name="l00014"></a>00014     <span class="keyword">const</span> AABB AABB::uninitialized{};
+<a name="l00014"></a>00014     <span class="keyword">const</span> AABB AABB::mUninitialized{};
 <a name="l00015"></a>00015     
 <a name="l00016"></a>00016     AABB::AABB(vec3 min, vec3 max)
 <a name="l00017"></a>00017     :min(min), max(max){
 <a name="l00018"></a>00018     }
 <a name="l00019"></a>00019     
-<a name="l00020"></a><a class="code" href="structkick_1_1_a_a_b_b.html#aa302f4552b040d4666fde2a3232dbd13">00020</a>     <a class="code" href="structkick_1_1_a_a_b_b.html">AABB</a> <a class="code" href="structkick_1_1_a_a_b_b.html#aa302f4552b040d4666fde2a3232dbd13">AABB::transform</a>(mat4 mat)<span class="keyword">  const</span>{
+<a name="l00020"></a>00020     AABB <a class="code" href="structkick_1_1_a_a_b_b.html#aa302f4552b040d4666fde2a3232dbd13">AABB::transform</a>(mat4 mat)<span class="keyword">  const</span>{
 <a name="l00021"></a>00021         glm::vec4 point(1,1,1,1);
-<a name="l00022"></a>00022         <a class="code" href="structkick_1_1_a_a_b_b.html">AABB</a> res;
+<a name="l00022"></a>00022         AABB res;
 <a name="l00023"></a>00023         <span class="keywordtype">float</span> aabbIn[6] = {min.x, min.y, min.z, max.x, max.y, max.z};
 <a name="l00024"></a>00024         
 <a name="l00025"></a>00025         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 2; i++) {
@@ -122,20 +122,81 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00062"></a>00062         max = other.max;
 <a name="l00063"></a>00063     }
 <a name="l00064"></a>00064     
-<a name="l00065"></a><a class="code" href="structkick_1_1_a_a_b_b.html#acd93e5c2993b1cffd196524620a8cfd3">00065</a>     <span class="keywordtype">bool</span> <a class="code" href="structkick_1_1_a_a_b_b.html#acd93e5c2993b1cffd196524620a8cfd3">AABB::IsUninitialized</a>(){
-<a name="l00066"></a>00066         <span class="keywordflow">return</span> *<span class="keyword">this</span> == uninitialized;
+<a name="l00065"></a><a class="code" href="structkick_1_1_a_a_b_b.html#aa6c116a56ea003ccdf889e65d366055a">00065</a>     <span class="keywordtype">bool</span> <a class="code" href="structkick_1_1_a_a_b_b.html#aa6c116a56ea003ccdf889e65d366055a">AABB::uninitialized</a>(){
+<a name="l00066"></a>00066         <span class="keywordflow">return</span> *<span class="keyword">this</span> == mUninitialized;
 <a name="l00067"></a>00067     }
 <a name="l00068"></a>00068     
-<a name="l00069"></a><a class="code" href="structkick_1_1_a_a_b_b.html#acbca74c3f39e6ae6c3afeb00ce93eb08">00069</a>     <span class="keywordtype">bool</span> <a class="code" href="structkick_1_1_a_a_b_b.html#acbca74c3f39e6ae6c3afeb00ce93eb08">AABB::IsEmpty</a>(){
+<a name="l00069"></a><a class="code" href="structkick_1_1_a_a_b_b.html#a8cf4018f305186d888a96b23013c1b8a">00069</a>     <span class="keywordtype">bool</span> <a class="code" href="structkick_1_1_a_a_b_b.html#a8cf4018f305186d888a96b23013c1b8a">AABB::empty</a>(){
 <a name="l00070"></a>00070         <span class="keywordflow">return</span> min == max;
 <a name="l00071"></a>00071     }
 <a name="l00072"></a>00072     
 <a name="l00073"></a><a class="code" href="structkick_1_1_a_a_b_b.html#a168acf57fa9391d5b7fa443ff7bc3bba">00073</a>     <span class="keywordtype">void</span> <a class="code" href="structkick_1_1_a_a_b_b.html#a168acf57fa9391d5b7fa443ff7bc3bba">AABB::clear</a>(){
-<a name="l00074"></a>00074         *<span class="keyword">this</span> = uninitialized;
+<a name="l00074"></a>00074         *<span class="keyword">this</span> = mUninitialized;
 <a name="l00075"></a>00075     }
-<a name="l00076"></a>00076     
-<a name="l00077"></a>00077     
-<a name="l00078"></a>00078 }
+<a name="l00076"></a>00076 
+<a name="l00077"></a>00077 
+<a name="l00078"></a>00078     <span class="keywordtype">bool</span> AABB::intersect(<span class="keyword">const</span> <a class="code" href="classkick_1_1_ray.html">Ray</a> &amp;r, <span class="keywordtype">float</span> &amp;tNear, <span class="keywordtype">float</span> &amp;tFar, <span class="keywordtype">int</span> &amp;nearAxis, <span class="keywordtype">int</span> &amp;farAxis){
+<a name="l00079"></a>00079         <span class="comment">// http://www.siggraph.org/education/materials/HyperGraph/raytrace/rtinter3.htm</span>
+<a name="l00080"></a>00080         tNear = -std::numeric_limits&lt;float&gt;::infinity( ) ;
+<a name="l00081"></a>00081         tFar = std::numeric_limits&lt;float&gt;::infinity( ) ;
+<a name="l00082"></a>00082 
+<a name="l00083"></a>00083         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=0;i&lt;3;i++){
+<a name="l00084"></a>00084             <span class="keywordflow">if</span> (r.direction()[i]==0){
+<a name="l00085"></a>00085                 <span class="comment">// the ray is parallel to the X planes</span>
+<a name="l00086"></a>00086                 <span class="comment">// origin Xo is not between the slabs ( Xo &lt; Xl or Xo &gt; Xh) then return false</span>
+<a name="l00087"></a>00087                 <span class="keywordflow">if</span> (r.origin()[i] &lt; min[i] || r.origin()[i] &gt; max[i]){
+<a name="l00088"></a>00088                     <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00089"></a>00089                 }
+<a name="l00090"></a>00090             } <span class="keywordflow">else</span> {
+<a name="l00091"></a>00091                 <span class="keywordtype">float</span> reciprocal = 1.0f / r.direction()[i];
+<a name="l00092"></a>00092                 <span class="comment">// if the ray is not parallel to the plane then</span>
+<a name="l00093"></a>00093                 <span class="comment">// compute the intersection distance of the planes</span>
+<a name="l00094"></a>00094                 <span class="keywordtype">float</span> t1 = (min[i]-r.origin()[i])*reciprocal;
+<a name="l00095"></a>00095                 <span class="keywordtype">float</span> t2 = (max[i]-r.origin()[i])*reciprocal;
+<a name="l00096"></a>00096                 <span class="keywordflow">if</span> (t1 &gt; t2){
+<a name="l00097"></a>00097                     <span class="comment">// swap since T1 intersection with near plane</span>
+<a name="l00098"></a>00098                     <span class="keywordtype">float</span> tmp = t1;
+<a name="l00099"></a>00099                     t1 = t2;
+<a name="l00100"></a>00100                     t2 = tmp;
+<a name="l00101"></a>00101                 }
+<a name="l00102"></a>00102                 <span class="keywordflow">if</span> (t1 &gt; tNear){
+<a name="l00103"></a>00103                     tNear = t1; <span class="comment">/* want largest Tnear */</span>
+<a name="l00104"></a>00104                     nearAxis = i;
+<a name="l00105"></a>00105                 }
+<a name="l00106"></a>00106                 <span class="keywordflow">if</span> (t2 &lt; tFar){
+<a name="l00107"></a>00107                     tFar = t2; <span class="comment">/* want largest Tnear */</span>
+<a name="l00108"></a>00108                     farAxis = i;
+<a name="l00109"></a>00109                 }
+<a name="l00110"></a>00110                 <span class="keywordflow">if</span> (tNear &gt; tFar){
+<a name="l00111"></a>00111                     <span class="keywordflow">return</span> <span class="keyword">false</span>; <span class="comment">/*  box is missed */</span>
+<a name="l00112"></a>00112                 }
+<a name="l00113"></a>00113                 <span class="keywordflow">if</span> (tFar &lt; 0){
+<a name="l00114"></a>00114                     <span class="keywordflow">return</span> <span class="keyword">false</span>; <span class="comment">/* box is behind ray return false end */</span>
+<a name="l00115"></a>00115                 }
+<a name="l00116"></a>00116             }
+<a name="l00117"></a>00117         }
+<a name="l00118"></a>00118         <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00119"></a>00119 
+<a name="l00120"></a>00120     }
+<a name="l00121"></a>00121 
+<a name="l00122"></a>00122     <span class="keywordtype">bool</span> AABB::contains(glm::vec3 point) {
+<a name="l00123"></a>00123         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=0;i&lt;3;i++){
+<a name="l00124"></a>00124             <span class="keywordflow">if</span> (min[i]&gt;point[i] || point[i] &gt; max[i]){
+<a name="l00125"></a>00125                 <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00126"></a>00126             }
+<a name="l00127"></a>00127         }
+<a name="l00128"></a>00128         <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00129"></a>00129     }
+<a name="l00130"></a>00130 
+<a name="l00131"></a>00131     <span class="keywordtype">bool</span> AABB::intersect(<span class="keyword">const</span> AABB &amp;box) {
+<a name="l00132"></a>00132         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=0;i&lt;3;i++){
+<a name="l00133"></a>00133             <span class="keywordflow">if</span> (min[i]&gt;box.max[i] || max[i]&lt;box.min[i]){
+<a name="l00134"></a>00134                 <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00135"></a>00135             }
+<a name="l00136"></a>00136         }
+<a name="l00137"></a>00137         <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00138"></a>00138     }
+<a name="l00139"></a>00139 }
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -152,7 +213,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

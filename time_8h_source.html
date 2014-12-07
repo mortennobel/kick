@@ -72,11 +72,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00012"></a><a class="code" href="classkick_1_1_time.html">00012</a>     <span class="keyword">class </span><a class="code" href="classkick_1_1_time.html">Time</a> {
 <a name="l00013"></a>00013     <span class="keyword">public</span>:
 <a name="l00014"></a>00014         <span class="comment">// return time since startup</span>
-<a name="l00015"></a>00015         <span class="keyword">static</span> <span class="keywordtype">float</span> getTime();
+<a name="l00015"></a>00015         <span class="keyword">static</span> <span class="keywordtype">float</span> total();
 <a name="l00016"></a>00016         <span class="comment">// return time since startup</span>
-<a name="l00017"></a>00017         <span class="keyword">static</span> <span class="keywordtype">float</span> getDeltaTime();
+<a name="l00017"></a>00017         <span class="keyword">static</span> <span class="keywordtype">float</span> delta();
 <a name="l00018"></a>00018         <span class="comment">// return frame count since startup</span>
-<a name="l00019"></a>00019         <span class="keyword">static</span> <span class="keywordtype">long</span> getFrame();
+<a name="l00019"></a>00019         <span class="keyword">static</span> <span class="keywordtype">long</span> frameCount();
 <a name="l00020"></a>00020         <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classkick_1_1_engine.html">Engine</a>;
 <a name="l00021"></a>00021     <span class="keyword">private</span>:
 <a name="l00022"></a>00022         <span class="keyword">static</span> <span class="keywordtype">long</span> frame;
@@ -99,7 +99,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

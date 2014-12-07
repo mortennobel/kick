@@ -87,20 +87,24 @@ Inheritance diagram for kick::LineRenderer:</div>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a316a2e853e26e3e226dc80dc062f6a90"></a><!-- doxytag: member="kick::LineRenderer::LineRenderer" ref="a316a2e853e26e3e226dc80dc062f6a90" args="(GameObject *gameObject)" -->
 &#160;</td><td class="memItemRight" valign="bottom"><b>LineRenderer</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *gameObject)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aae3c648701e82412daec643a9221d6e1"></a><!-- doxytag: member="kick::LineRenderer::activated" ref="aae3c648701e82412daec643a9221d6e1" args="()" -->
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>activated</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a74ef497704da5c39a28b0bb64de9b291"></a><!-- doxytag: member="kick::LineRenderer::render" ref="a74ef497704da5c39a28b0bb64de9b291" args="(EngineUniforms *engineUniforms, Material *replacementMaterial=nullptr) override" -->
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>render</b> (<a class="el" href="structkick_1_1_engine_uniforms.html">EngineUniforms</a> *engineUniforms, <a class="el" href="classkick_1_1_material.html">Material</a> *replacementMaterial=nullptr) override</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaa7a4bb9acaabb984ce5e5dcc2c1211f"></a><!-- doxytag: member="kick::LineRenderer::getPoints" ref="aaa7a4bb9acaabb984ce5e5dcc2c1211f" args="() const " -->
-std::vector&lt; glm::vec3 &gt; const &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getPoints</b> () const </td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac7f0bacf60691e3bb634786f49894fcc"></a><!-- doxytag: member="kick::LineRenderer::setPoints" ref="ac7f0bacf60691e3bb634786f49894fcc" args="(std::vector&lt; glm::vec3 &gt; const &amp;points)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setPoints</b> (std::vector&lt; glm::vec3 &gt; const &amp;points)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3684e3b45a237288f9e3550756a2c418"></a><!-- doxytag: member="kick::LineRenderer::points" ref="a3684e3b45a237288f9e3550756a2c418" args="() const " -->
+std::vector&lt; glm::vec3 &gt; const &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>points</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac8d6bbd118b56cd7d29dd623f5ac9857"></a><!-- doxytag: member="kick::LineRenderer::indices" ref="ac8d6bbd118b56cd7d29dd623f5ac9857" args="() const " -->
+std::vector&lt; GLushort &gt; const &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>indices</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5c4ec0ca6db8163a324eee5e1a76871f"></a><!-- doxytag: member="kick::LineRenderer::setPoints" ref="a5c4ec0ca6db8163a324eee5e1a76871f" args="(const std::vector&lt; glm::vec3 &gt; &amp;points, MeshType meshType=MeshType::Lines, const std::vector&lt; GLushort &gt; &amp;indices=std::vector&lt; GLushort &gt;{})" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setPoints</b> (const std::vector&lt; glm::vec3 &gt; &amp;points, MeshType meshType=MeshType::Lines, const std::vector&lt; GLushort &gt; &amp;indices=std::vector&lt; GLushort &gt;{})</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abf1e2a2de557f90942eb6370813da5d6"></a><!-- doxytag: member="kick::LineRenderer::setMaterial" ref="abf1e2a2de557f90942eb6370813da5d6" args="(Material *material)" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setMaterial</b> (<a class="el" href="classkick_1_1_material.html">Material</a> *material)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5483c4dc35d8c30010cd7a1a59ababf5"></a><!-- doxytag: member="kick::LineRenderer::getMaterial" ref="a5483c4dc35d8c30010cd7a1a59ababf5" args="()" -->
-<a class="el" href="classkick_1_1_material.html">Material</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getMaterial</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab6de5f00e125bef85bc400f0cc63d0da"></a><!-- doxytag: member="kick::LineRenderer::getRenderOrder" ref="ab6de5f00e125bef85bc400f0cc63d0da" args="()" -->
-virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>getRenderOrder</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1cc8532b3887e0da190a312d7198b0da"></a><!-- doxytag: member="kick::LineRenderer::material" ref="a1cc8532b3887e0da190a312d7198b0da" args="()" -->
+<a class="el" href="classkick_1_1_material.html">Material</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>material</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8fc2e997a03e9d06893f03ae771d8302"></a><!-- doxytag: member="kick::LineRenderer::renderOrder" ref="a8fc2e997a03e9d06893f03ae771d8302" args="()" -->
+virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>renderOrder</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1fba7c5f0e3fa0ddaf68b382e4886569"></a><!-- doxytag: member="kick::LineRenderer::smoothLine" ref="a1fba7c5f0e3fa0ddaf68b382e4886569" args="() const " -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>smoothLine</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a205bc957b2f0b822f59ba627157a8706"></a><!-- doxytag: member="kick::LineRenderer::setSmoothLine" ref="a205bc957b2f0b822f59ba627157a8706" args="(bool smoothLine)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setSmoothLine</b> (bool smoothLine)</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
@@ -124,7 +128,7 @@ virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>getRenderOrder
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

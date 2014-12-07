@@ -84,18 +84,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00024"></a>00024         <span class="keywordtype">void</span> setData(<span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height, <span class="keywordtype">char</span>* data, <span class="keywordtype">int</span> cubemapIndex, <span class="keyword">const</span> <a class="code" href="structkick_1_1_image_format.html">ImageFormat</a>&amp; imageFormat = {});
 <a name="l00025"></a>00025 
 <a name="l00026"></a>00026         <span class="keywordtype">void</span> bind(<span class="keywordtype">int</span> textureSlot);
-<a name="l00027"></a>00027         <span class="keywordtype">int</span> getWidth(){ <span class="keywordflow">return</span> width; }
-<a name="l00028"></a>00028         <span class="keywordtype">int</span> getHeight(){ <span class="keywordflow">return</span> height; }
+<a name="l00027"></a>00027         <span class="keywordtype">int</span> width(){ <span class="keywordflow">return</span> mWidth; }
+<a name="l00028"></a>00028         <span class="keywordtype">int</span> height(){ <span class="keywordflow">return</span> mHeight; }
 <a name="l00029"></a>00029         <span class="keywordtype">void</span> setTextureSampler(<span class="keyword">const</span> <a class="code" href="structkick_1_1_texture_sampler.html">TextureSampler</a> &amp; textureSampler);
-<a name="l00030"></a>00030         <a class="code" href="structkick_1_1_texture_sampler.html">TextureSampler</a> getTextureSampler() <span class="keyword">const</span>;
-<a name="l00031"></a>00031         <a class="code" href="structkick_1_1_image_format.html">ImageFormat</a> getImageFormat() <span class="keyword">const</span>;
+<a name="l00030"></a>00030         <a class="code" href="structkick_1_1_texture_sampler.html">TextureSampler</a> textureSampler() <span class="keyword">const</span>;
+<a name="l00031"></a>00031         <a class="code" href="structkick_1_1_image_format.html">ImageFormat</a> imageFormat() <span class="keyword">const</span>;
 <a name="l00032"></a>00032     <span class="keyword">private</span>:
-<a name="l00033"></a>00033         GLuint textureid;
-<a name="l00034"></a>00034         <span class="keywordtype">int</span> width = -1;
-<a name="l00035"></a>00035         <span class="keywordtype">int</span> height = -1;
-<a name="l00036"></a>00036         std::bitset&lt;6&gt; facesSet;
-<a name="l00037"></a>00037         <a class="code" href="structkick_1_1_texture_sampler.html">TextureSampler</a> textureSampler;
-<a name="l00038"></a>00038         <a class="code" href="structkick_1_1_image_format.html">ImageFormat</a> imageFormat;
+<a name="l00033"></a>00033         GLuint mTextureid;
+<a name="l00034"></a>00034         <span class="keywordtype">int</span> mWidth = -1;
+<a name="l00035"></a>00035         <span class="keywordtype">int</span> mHeight = -1;
+<a name="l00036"></a>00036         std::bitset&lt;6&gt; mFacesSet;
+<a name="l00037"></a>00037         <a class="code" href="structkick_1_1_texture_sampler.html">TextureSampler</a> mTextureSampler;
+<a name="l00038"></a>00038         <a class="code" href="structkick_1_1_image_format.html">ImageFormat</a> mImageFormat;
 <a name="l00039"></a>00039     };
 <a name="l00040"></a>00040 };
 <a name="l00041"></a>00041 
@@ -115,7 +115,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

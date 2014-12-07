@@ -68,44 +68,44 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00008"></a>00008 <span class="keyword">namespace </span>kick {
 <a name="l00009"></a>00009     TextureCube::TextureCube(TextureSampler textureSampler)
 <a name="l00010"></a>00010     {
-<a name="l00011"></a>00011         glGenTextures(1, &amp;textureid);
+<a name="l00011"></a>00011         glGenTextures(1, &amp;mTextureid);
 <a name="l00012"></a>00012         setTextureSampler(textureSampler);
 <a name="l00013"></a>00013     }
 <a name="l00014"></a>00014 
 <a name="l00015"></a>00015     TextureCube::TextureCube(TextureCube&amp;&amp; m)
-<a name="l00016"></a>00016     :textureid(m.textureid)
+<a name="l00016"></a>00016     : mTextureid(m.mTextureid)
 <a name="l00017"></a>00017     {
-<a name="l00018"></a>00018         m.textureid = 0;
+<a name="l00018"></a>00018         m.mTextureid = 0;
 <a name="l00019"></a>00019     }
 <a name="l00020"></a>00020 
 <a name="l00021"></a>00021     TextureCube::~TextureCube(){
-<a name="l00022"></a>00022         glDeleteTextures(1, &amp;textureid);
+<a name="l00022"></a>00022         glDeleteTextures(1, &amp;mTextureid);
 <a name="l00023"></a>00023     }
 <a name="l00024"></a>00024 
 <a name="l00025"></a>00025     <span class="keywordtype">void</span> TextureCube::bind(<span class="keywordtype">int</span> textureSlot){
 <a name="l00026"></a>00026         glActiveTexture(GL_TEXTURE0 + textureSlot);
-<a name="l00027"></a>00027         glBindTexture(GL_TEXTURE_CUBE_MAP, textureid);
+<a name="l00027"></a>00027         glBindTexture(GL_TEXTURE_CUBE_MAP, mTextureid);
 <a name="l00028"></a>00028     }
 <a name="l00029"></a>00029 
 <a name="l00030"></a>00030     <span class="keywordtype">void</span> TextureCube::setData(<span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height, <span class="keywordtype">char</span>* data, <span class="keywordtype">int</span> cubemapIndex, <span class="keyword">const</span> ImageFormat&amp; imageFormat){
-<a name="l00031"></a>00031         this-&gt;width = width;
-<a name="l00032"></a>00032         this-&gt;height = height;
-<a name="l00033"></a>00033         this-&gt;imageFormat = imageFormat;
+<a name="l00031"></a>00031         this-&gt;mWidth = width;
+<a name="l00032"></a>00032         this-&gt;mHeight = height;
+<a name="l00033"></a>00033         this-&gt;mImageFormat = imageFormat;
 <a name="l00034"></a>00034         GLenum target = GL_TEXTURE_2D;
 <a name="l00035"></a>00035         GLint border = 0; <span class="comment">// must be 0</span>
 <a name="l00036"></a>00036 
-<a name="l00037"></a>00037         glBindTexture(GL_TEXTURE_CUBE_MAP, textureid);
+<a name="l00037"></a>00037         glBindTexture(GL_TEXTURE_CUBE_MAP, mTextureid);
 <a name="l00038"></a>00038 
 <a name="l00039"></a>00039         glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X+cubemapIndex, imageFormat.mipmapLevel, imageFormat.internalFormat, width, height/6, border, imageFormat.format, imageFormat.type, data);
-<a name="l00040"></a>00040         facesSet[cubemapIndex] = 1;
-<a name="l00041"></a>00041         <span class="keywordflow">if</span> (facesSet.all() &amp;&amp; imageFormat.mipmap != Mipmap::None){
+<a name="l00040"></a>00040         mFacesSet[cubemapIndex] = 1;
+<a name="l00041"></a>00041         <span class="keywordflow">if</span> (mFacesSet.all() &amp;&amp; imageFormat.mipmap != Mipmap::None){
 <a name="l00042"></a>00042             glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 <a name="l00043"></a>00043         }
 <a name="l00044"></a>00044     }
 <a name="l00045"></a>00045 
 <a name="l00046"></a>00046     <span class="keywordtype">void</span> TextureCube::setTextureSampler(<span class="keyword">const</span> TextureSampler &amp; textureSampler){
-<a name="l00047"></a>00047         this-&gt;textureSampler = textureSampler;
-<a name="l00048"></a>00048         glBindTexture(GL_TEXTURE_CUBE_MAP, textureid);
+<a name="l00047"></a>00047         this-&gt;mTextureSampler = textureSampler;
+<a name="l00048"></a>00048         glBindTexture(GL_TEXTURE_CUBE_MAP, mTextureid);
 <a name="l00049"></a>00049 
 <a name="l00050"></a>00050         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, static_cast&lt;GLint&gt;(textureSampler.wrapS));
 <a name="l00051"></a>00051         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, static_cast&lt;GLint&gt;(textureSampler.wrapT));
@@ -114,12 +114,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00054"></a>00054 
 <a name="l00055"></a>00055     }
 <a name="l00056"></a>00056 
-<a name="l00057"></a>00057     TextureSampler TextureCube::getTextureSampler()<span class="keyword"> const</span>{
-<a name="l00058"></a>00058         <span class="keywordflow">return</span> textureSampler;
+<a name="l00057"></a>00057     TextureSampler TextureCube::textureSampler()<span class="keyword"> const</span>{
+<a name="l00058"></a>00058         <span class="keywordflow">return</span> mTextureSampler;
 <a name="l00059"></a>00059     }
 <a name="l00060"></a>00060 
-<a name="l00061"></a>00061     ImageFormat TextureCube::getImageFormat()<span class="keyword"> const </span>{
-<a name="l00062"></a>00062         <span class="keywordflow">return</span> imageFormat;
+<a name="l00061"></a>00061     ImageFormat TextureCube::imageFormat()<span class="keyword"> const </span>{
+<a name="l00062"></a>00062         <span class="keywordflow">return</span> mImageFormat;
 <a name="l00063"></a>00063     }
 <a name="l00064"></a>00064 }
 </pre></div></div>
@@ -138,7 +138,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:40 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

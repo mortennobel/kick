@@ -82,9 +82,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00022"></a>00022     <span class="keywordtype">void</span> AbstractEventListener::destroyListener(){
 <a name="l00023"></a>00023         <span class="keywordflow">if</span> (ae){
 <a name="l00024"></a>00024             ae-&gt;removeListener(listenerId);
-<a name="l00025"></a>00025         }
-<a name="l00026"></a>00026     }
-<a name="l00027"></a>00027 }
+<a name="l00025"></a>00025             ae = <span class="keyword">nullptr</span>;
+<a name="l00026"></a>00026         }
+<a name="l00027"></a>00027     }
+<a name="l00028"></a>00028 }
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -101,7 +102,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Sep 22 2014 22:55:39 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
