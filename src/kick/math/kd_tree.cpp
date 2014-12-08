@@ -29,7 +29,7 @@ namespace kick {
 
     bool KDTreeNodeRef::intersectRay(const Ray &ray, KDTreeHitInfo &hit) const {
         vec3 intersectionPoint;
-        bool res = ray.intersect(triangle[0], triangle[1], triangle[2], intersectionPoint);
+        bool res = ray.intersectTriangle(triangle[0], triangle[1], triangle[2], intersectionPoint);
         float len = length(intersectionPoint - ray.origin());
         if (res && len < hit.distance){
             hit.distance = len;

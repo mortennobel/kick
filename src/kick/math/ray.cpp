@@ -84,7 +84,7 @@ namespace kick {
         return mOrigin + mDirection * offset;
     }
 
-    bool Ray::intersect(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2, glm::vec3 &intersectionPoint, bool clampBackIntersections) const {
+    bool Ray::intersectTriangle(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2, glm::vec3 &intersectionPoint, bool clampBackIntersections) const {
         // based on RTR 3ed page 750
         vec3 e1 = v1 - v0;
         vec3 e2 = v2 - v0;
