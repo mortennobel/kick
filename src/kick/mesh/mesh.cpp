@@ -125,6 +125,7 @@ namespace kick {
         } else {
             mInterleavedFormat.clear();
         }
+        mMeshData = m;
     }
     
     void Mesh::updateMeshData(MeshData *mesh_data){
