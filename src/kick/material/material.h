@@ -23,7 +23,25 @@
 namespace kick {
     
     class Shader;
-    
+
+    struct MaterialValueType{ // todo find workaround should be union
+        // union constructors
+        MaterialValueType(int intValue):intValue{intValue}{}
+        MaterialValueType(float floatValue):floatValue{floatValue}{}
+        MaterialValueType(glm::vec4 vec4Value):vec4Value{vec4Value}{}
+        MaterialValueType(glm::mat3 mat3Value):mat3Value{mat3Value}{}
+        MaterialValueType(glm::mat4 mat4Value):mat4Value{mat4Value}{}
+        MaterialValueType(Texture2D* texture2d):texture2D{texture2d}{}
+        MaterialValueType(TextureCube* textureCube):textureCube{textureCube}{}
+        int intValue;
+        float floatValue;
+        glm::vec4 vec4Value;
+        glm::mat3 mat3Value;
+        glm::mat4 mat4Value;
+        Texture2D* texture2D = nullptr;
+        TextureCube* textureCube = nullptr;
+    };
+
     struct MaterialData {
         MaterialData(int intValue):value{intValue}, glType{GL_INT} {}
         MaterialData(float floatValue):value{floatValue}, glType{GL_FLOAT}{}
@@ -36,23 +54,8 @@ namespace kick {
         MaterialData(const MaterialData & val);
         MaterialData& operator=(const MaterialData& other);
 
-        struct ValueType{ // todo find workaround should be union
-            // union constructors
-            ValueType(int intValue):intValue{intValue}{}
-            ValueType(float floatValue):floatValue{floatValue}{}
-            ValueType(glm::vec4 vec4Value):vec4Value{vec4Value}{}
-            ValueType(glm::mat3 mat3Value):mat3Value{mat3Value}{}
-            ValueType(glm::mat4 mat4Value):mat4Value{mat4Value}{}
-            ValueType(Texture2D* texture2D):texture2D{texture2D}{}
-            ValueType(TextureCube* textureCube):textureCube{textureCube}{}
-            int intValue;
-            float floatValue;
-            glm::vec4 vec4Value;
-            glm::mat3 mat3Value;
-            glm::mat4 mat4Value;
-            Texture2D* texture2D;
-            TextureCube* textureCube;
-        } value;
+        MaterialValueType value;
+
         int shaderLocation;
         int glType;
         // is the value inherited from the default uniform value in the shader

@@ -25,13 +25,25 @@ namespace kick {
     value(0),
     defaultUniform(val.defaultUniform)
     {
-        value.mat4Value = val.value.mat4Value; // if this safe?
+        value.intValue = val.value.intValue;
+        value.floatValue = val.value.floatValue;
+        value.vec4Value = val.value.vec4Value;
+        value.mat3Value = val.value.mat3Value;
+        value.mat4Value = val.value.mat4Value;
+        value.texture2D = val.value.texture2D;
+        value.textureCube = val.value.textureCube;
     }
 
     MaterialData& MaterialData::operator=(const MaterialData& other){
         shaderLocation = other.shaderLocation;
         glType = other.glType;
-        value.mat4Value = other.value.mat4Value; // copy largest element
+        value.intValue = other.value.intValue;
+        value.floatValue = other.value.floatValue;
+        value.vec4Value = other.value.vec4Value;
+        value.mat3Value = other.value.mat3Value;
+        value.mat4Value = other.value.mat4Value;
+        value.texture2D = other.value.texture2D;
+        value.textureCube = other.value.textureCube;
         defaultUniform = other.defaultUniform;
         return *this;
     }
