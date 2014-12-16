@@ -10,10 +10,6 @@
 
 #include <iostream>
 
-#ifndef  GLM_FORCE_RADIANS
-#error "The preprocessor symbol GLM_FORCE_RADIANS must be defined"
-#endif
-
 namespace kick {
     bool openglUsingVao(){
         return true;

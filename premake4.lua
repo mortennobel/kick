@@ -13,12 +13,12 @@ project "kick"
   
   configuration "Debug"
     targetdir "lib/debug"
-    defines { "DEBUG",  "GLM_FORCE_RADIANS" }
+    defines { "DEBUG" }
     flags { "Symbols" }		
 
   configuration "Release"
     targetdir "lib/release"
-    defines { "NDEBUG", "GLM_FORCE_RADIANS" }
+    defines { "NDEBUG" }
     flags { "Optimize" } 	
 	
   if _ACTION == "clean" then
@@ -37,13 +37,13 @@ project "kick_unittest"
   linkoptions { "-F/Library/Frameworks/"}
   configuration "Debug"
     targetdir "bin/debug"
-    defines { "DEBUG",  "GLM_FORCE_RADIANS" }
+    defines { "DEBUG" }
     flags { "Symbols" }		
     debugdir "../.."
 
   configuration "Release"
     targetdir "bin/release"
-    defines { "NDEBUG",  "GLM_FORCE_RADIANS" }
+    defines { "NDEBUG" }
     flags { "Optimize" } 	
     debugdir "../.."
 	

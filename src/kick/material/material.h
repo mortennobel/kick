@@ -36,7 +36,7 @@ namespace kick {
         MaterialData(const MaterialData & val);
         MaterialData& operator=(const MaterialData& other);
 
-        union ValueType{
+        struct ValueType{ // todo find workaround should be union
             // union constructors
             ValueType(int intValue):intValue{intValue}{}
             ValueType(float floatValue):floatValue{floatValue}{}
