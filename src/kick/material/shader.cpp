@@ -671,7 +671,7 @@ break;
     void Shader::setDefaultUniformData(std::string name, MaterialData &&value) {
         auto pos = defaultUniformData.find(name);
         if (pos != defaultUniformData.end()){
-            pos->second.value.mat4Value = value.value.mat4Value; // copy largest element
+            pos->second.setValue(value.value);
             if (pos->second.glType != value.glType){
                 pos->second.glType = value.glType;
                 updateShaderLocation(name, pos->second);
