@@ -135,6 +135,7 @@ namespace kick {
             return;
         }
         auto sceneLights = engineUniforms->sceneLights;
+        engineUniforms->currentCameraTransform = transform();
 
         if (mShadow && sceneLights->directionalLight && sceneLights->directionalLight->shadowType() != ShadowType::None) {
             renderShadowMap(sceneLights->directionalLight);
