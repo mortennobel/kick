@@ -13,6 +13,7 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include <map>
+#include <glm/gtc/type_ptr.hpp>
 #include "kick/core/project_asset.h"
 #include "kick/core/event_listener.h"
 #include "kick/core/kickgl.h"
@@ -24,23 +25,7 @@ namespace kick {
     
     class Shader;
 
-    struct MaterialValueType{ // todo find workaround should be union
-        // union constructors
-        MaterialValueType(int intValue):intValue{intValue}{}
-        MaterialValueType(float floatValue):floatValue{floatValue}{}
-        MaterialValueType(glm::vec4 vec4Value):vec4Value{vec4Value}{}
-        MaterialValueType(glm::mat3 mat3Value):mat3Value{mat3Value}{}
-        MaterialValueType(glm::mat4 mat4Value):mat4Value{mat4Value}{}
-        MaterialValueType(Texture2D* texture2d):texture2D{texture2d}{}
-        MaterialValueType(TextureCube* textureCube):textureCube{textureCube}{}
-        int intValue;
-        float floatValue;
-        glm::vec4 vec4Value;
-        glm::mat3 mat3Value;
-        glm::mat4 mat4Value;
-        Texture2D* texture2D = nullptr;
-        TextureCube* textureCube = nullptr;
-    };
+
 
     struct MaterialData {
         MaterialData(int intValue):value{intValue}, glType{GL_INT} {}
@@ -54,7 +39,22 @@ namespace kick {
         MaterialData(const MaterialData & val);
         MaterialData& operator=(const MaterialData& other);
 
-        MaterialValueType value;
+        union MaterialValueType{ // todo find workaround should be union
+            // union constructors
+            MaterialValueType(int intValue):intValue{intValue}{}
+            MaterialValueType(float floatValue){this->floatValue[0] = floatValue;}
+            MaterialValueType(glm::vec4 vec4Value){ for (int i=0;i<4;i++){floatValue[i] = vec4Value[i]; }}
+            MaterialValueType(glm::mat3 mat3Value){ for (int i=0;i<9;i++){floatValue[i] = glm::value_ptr(mat3Value)[i]; }}
+            MaterialValueType(glm::mat4 mat4Value){ for (int i=0;i<16;i++){floatValue[i] = glm::value_ptr(mat4Value)[i]; }}
+            MaterialValueType(Texture2D* texture2d):texture2D{texture2d}{}
+            MaterialValueType(TextureCube* textureCube):textureCube{textureCube}{}
+            int intValue;
+            float floatValue[16];
+            Texture2D* texture2D;
+            TextureCube* textureCube;
+        } value;
+
+        void setValue(MaterialValueType val);
 
         int shaderLocation;
         int glType;
