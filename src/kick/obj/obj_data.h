@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <memory>
 #include <iostream>
 #include <glm/glm.hpp>
 #include <vector>

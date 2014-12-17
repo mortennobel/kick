@@ -53,7 +53,7 @@ namespace kick {
     }
 
     KeyMapping::KeyMapping(std::initializer_list<Key> keys)
-            : keys{keys} {
+            : keys(keys) {
 
     }
 

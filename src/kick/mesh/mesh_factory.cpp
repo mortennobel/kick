@@ -10,6 +10,7 @@
 #include"kick/core/cpp_ext.h"
 #include"kick/core/project.h"
 #include "glm/gtx/string_cast.hpp"
+#include <glm/gtc/constants.hpp>
 
 using namespace std;
 using namespace glm;
@@ -60,7 +61,7 @@ namespace kick {
         vector<vec4> colors{vertexCount};
         vector<GLushort> indices(vertexCount);
         for (unsigned short i = 0; i <= slices; i++) {
-            auto fraction = 2 * M_PI * i / slices;
+            auto fraction = 2 * glm::pi<float>() * i / slices;
             vertices[i] = vec3{sin(fraction),
                                 -cos(fraction),
                                 0};
@@ -123,11 +124,11 @@ namespace kick {
         int index = 0;
         // create vertices
         for (unsigned short j = 0; j <= stacks; j++) {
-            float latitude1 = (M_PI / stacks) * j - (M_PI / 2);
+			float latitude1 = (glm::pi<float>() / stacks) * j - (glm::pi<float>() / 2);
             float sinLat1 = sin(latitude1);
             float cosLat1 = cos(latitude1);
             for (int i = 0; i <= slices; i++) {
-                float longitude = ((M_PI * 2) / slices) * i;
+				float longitude = ((glm::pi<float>() * 2) / slices) * i;
                 float sinLong = sin(longitude);
                 float cosLong = cos(longitude);
                 vec3 normal{cosLong * cosLat1,

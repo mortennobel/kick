@@ -14,6 +14,9 @@
 #   include <emscripten.h>
 #   include <SDL/SDL.h>
 #   include <SDL/SDL_image.h>
+#elif defined(_WIN32)
+#   define SDL_MAIN_HANDLED
+#   include <SDL.h>
 #else
 #   define SDL_MAIN_HANDLED
 #   include <SDL2/SDL.h>

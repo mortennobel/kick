@@ -6,9 +6,12 @@ project "kick"
   language "C++"
   files    { "src/**.h","src/**.cpp","src/**.inl", "assets/**" }
   includedirs { "src", "libs/include" }
-  buildoptions "-std=c++1y -stdlib=libc++ -fno-exceptions"
-  links { "Cocoa.framework", "OpenGL.framework",  "/Library/Frameworks/SDL2.framework", "/Library/Frameworks/SDL2_image.framework"  }
-  buildoptions { "-F/Library/Frameworks/" }
+  configuration {"xcode*" }
+    buildoptions "-std=c++1y -stdlib=libc++ -fno-exceptions"
+  configuration {"xcode*" }
+    links { "Cocoa.framework", "OpenGL.framework",  "/Library/Frameworks/SDL2.framework", "/Library/Frameworks/SDL2_image.framework"  }
+  configuration {"xcode*" }
+    buildoptions { "-F/Library/Frameworks/" }
   
   
   configuration "Debug"

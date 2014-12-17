@@ -9,7 +9,11 @@
 #include "texture2d.h"
 #include "kick/core/log.h"
 #ifndef EMSCRIPTEN
+#ifdef _WIN32
+#include <SDL_surface.h>
+#else
 #include <SDL2/SDL_surface.h>
+#endif
 #endif
 using namespace std;
 

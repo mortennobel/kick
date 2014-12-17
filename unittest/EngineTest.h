@@ -606,7 +606,7 @@ int TestTransformComponent(){
     }
     glm::vec3 offset{1,2,3};
     transforms[0]->setLocalPosition(offset);
-    glm::vec3 e{ 0.00001 };
+    glm::vec3 e{ 0.00001f };
     TINYTEST_ASSERT(all(epsilonEqual(offset, transforms[1]->position(),e)));
     TINYTEST_ASSERT(all(epsilonEqual(offset, transforms[2]->position(),e)));
     transforms[1]->setLocalPosition(offset);

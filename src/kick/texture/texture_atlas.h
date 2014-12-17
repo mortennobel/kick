@@ -6,6 +6,7 @@
 #include "kick/core/project_asset.h"
 #include "glm/glm.hpp"
 #include <map>
+#include <memory>
 
 namespace kick {
     class Texture2D;

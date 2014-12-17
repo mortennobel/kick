@@ -10,7 +10,7 @@
 #include "glm/glm.hpp"
 
 namespace kick {
-    class EngineUniforms;
+    struct EngineUniforms;
     class Material;
 
     class ComponentRenderable : public Component{

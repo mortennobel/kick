@@ -15,7 +15,7 @@ using namespace std;
 namespace kick {
     
     GameObject::GameObject(const string &name, Scene* scene, int uniqueId)
-    : mName{name}, mScene{scene}, mUniqueId{uniqueId}, mComponents{}, componentListeners{}
+    : mName(name), mScene{scene}, mUniqueId{uniqueId}, mComponents{}, componentListeners{}
     {
         mTransform = addComponent<Transform>();
     }

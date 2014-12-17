@@ -3,6 +3,7 @@
 //
 
 #include "spherical.h"
+#include <glm/gtc/constants.hpp>
 
 namespace kick{
 
@@ -19,7 +20,7 @@ Spherical Spherical::cartesianToSpherical(glm::vec3 cartCoords) {
                 + (cartCoords.z * cartCoords.z));
     res.polar = (float) atan(cartCoords.z / cartCoords.x);
     if (cartCoords.x < 0)
-        res.polar += M_PI;
+		res.polar += glm::pi<float>();
     res.elevation = (float) asin(cartCoords.y / res.radius);
     return res;
 }
