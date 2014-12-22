@@ -30,6 +30,8 @@ namespace kick {
         static void reset();
 
         static void printStacktrace();
+
+		static std::string workingDir();
     };
 };
 

@@ -714,8 +714,11 @@ int TestFont(){
     Font* font = new Font();
     font->loadFntFile();
 
-    TINYTEST_ASSERT(font->height() > 0);
-    TINYTEST_ASSERT(font->width("tt") > font->width("t"));
+	int height = font->height();
+	TINYTEST_ASSERT(height > 0);
+	int ttwidth = font->width("tt");
+	int twidth = font->width("t");
+	TINYTEST_ASSERT(ttwidth > twidth);
 
 
     return 1;
