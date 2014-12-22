@@ -58,19 +58,6 @@ TINYTEST_END_SUITE();
 
 using namespace kick;
 
-int main(int argc, char * argv[])
-{
-	Engine::init(argc, argv);
-	auto scene = Engine::activeScene();
-	auto camera = scene->createPerspectiveCamera();
-	camera->gameObject()->transform()->setLocalPosition({ 0, 0, 10 });
-	scene->createSphere();
-	scene->createDirectionalLight();
-	Engine::startMainLoop();
-
-	return 0;
-}
-/*
 int main(int argc, char* argv[])
 {
 
@@ -83,4 +70,4 @@ int main(int argc, char* argv[])
         TINYTEST_RUN_SUITE(ObjSuite);
 
 TINYTEST_END_MAIN();
-}*/
+}
