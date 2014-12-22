@@ -24,7 +24,9 @@ namespace kick{
         std::stringstream ss(s);
         std::string item;
         while (std::getline(ss, item, delim)) {
-            elems.push_back(item);
+			if (item.length()>0){
+				elems.push_back(item);
+			}
         }
         return elems;
     }

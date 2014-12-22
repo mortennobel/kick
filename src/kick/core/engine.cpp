@@ -8,6 +8,7 @@
 
 #include "kick/core/engine.h"
 #include "kick/core/time.h"
+#include "kick/core/log.h"
 #include "kick/context/sdl2_context.h"
 #include <iostream>
 
@@ -29,6 +30,9 @@ namespace kick {
         createScene("defaultScene");
         mContext->contextSurfaceSize.registerSyncValue(engineUniforms.viewportDimension);
         engineUniforms.viewportDimension.setValue(mContext->getContextSurfaceDim());
+#ifdef DEBUG
+		printf("Working dir %s\n", Log::workingDir().c_str());
+#endif
     }
 
     void Engine::startMainLoop(){

@@ -2,11 +2,18 @@
 // Created by morten on 15/07/14.
 //
 
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
 #include "kick/core/log.h"
 #include <iostream>
 #ifdef __APPLE__
 #include <execinfo.h>
 #endif
+#include <stdio.h>  /* defines FILENAME_MAX */
+
 
 #include "glm/glm.hpp"
 
@@ -48,6 +55,21 @@ namespace kick {
             print("error", message, func, file, line, cerr);
         };
     }
+
+	string Log::workingDir(){
+		char cCurrentPath[FILENAME_MAX];
+
+#ifdef _WIN32
+		if (!GetCurrentDirectoryA(FILENAME_MAX, cCurrentPath))
+#else
+		if (!getcwd(cCurrentPath, sizeof(cCurrentPath)))
+#endif
+		{
+			return "Error";
+		}
+
+		return std::string(cCurrentPath);
+	}
 
     // based on http://oroboro.com/stack-trace-on-crash/
     void Log::printStacktrace(){
