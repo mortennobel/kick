@@ -20,7 +20,11 @@
 #ifdef EMSCRIPTEN
 #   include <SDL/SDL_image.h>
 #else
-#   include <SDL2_image/SDL_image.h>
+#   ifdef _WIN32
+#       include <SDL_image.h>
+#   else
+#       include <SDL2_image/SDL_image.h>
+#   endif
 #endif
 using namespace std;
 

@@ -107,7 +107,7 @@ namespace kick {
                     break;
 #endif
                 default:
-                    cerr << string("Invalid framebuffer ")+ __1::to_string(frameBufferStatus);
+                    cerr << string("Invalid framebuffer ")+ std::to_string(frameBufferStatus);
                     break;
             }
         }

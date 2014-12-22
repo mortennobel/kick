@@ -3,6 +3,7 @@
 //
 
 #include "misc.h"
+#include <glm/gtc/constants.hpp>
 
 namespace kick {
 
@@ -50,10 +51,10 @@ namespace kick {
     }
 
     float lerpAngle(float a, float b, float t) {
-        float num = repeat (b - a, M_PI*2);
-        if (num > M_PI)
+        float num = repeat (b - a, glm::pi<float>()*2);
+		if (num > glm::pi<float>())
         {
-            num -= M_PI*2;
+			num -= glm::pi<float>() * 2;
         }
         return a + num * clamp01 (t);
     }

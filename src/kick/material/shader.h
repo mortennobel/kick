@@ -24,7 +24,7 @@
 namespace kick {
     
     class Material;
-    class EngineUniforms;
+    struct EngineUniforms;
     class Transform;
 
     class Project;

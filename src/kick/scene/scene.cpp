@@ -29,7 +29,7 @@ using namespace std;
 namespace kick {
     
     Scene::Scene(const std::string & name)
-    : mName{name}
+    : mName(name)
     {
     }
     

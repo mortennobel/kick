@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <memory>
 #include <iostream>
 #include <functional>
 #include "kick/mesh/mesh_data.h"

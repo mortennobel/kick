@@ -8,7 +8,10 @@
 
 #pragma once
 
-#if defined(KICK_CONTEXT_ES2)
+#if defined(_WIN32)
+#define GLEW_STATIC 
+#include <GL/glew.h>
+#elif defined(KICK_CONTEXT_ES2)
 #   include <GLES2/gl2.h>
 #elif defined(EMSCRIPTEN)
 #   ifndef KICK_CONTEXT_ES2

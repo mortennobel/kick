@@ -512,7 +512,7 @@ break;
         if (iter != endIter){
             string lineStr = *iter;
             int line = atoi(lineStr.c_str());
-            constexpr int buffer_size = 512;
+            const int buffer_size = 512;
             array<char, buffer_size> lineBuffer;
             istringstream inbuf(source);
             string res;

@@ -4,6 +4,7 @@
 
 #include "event_queue.h"
 
+#include <algorithm>
 #include <cassert>
 #include "time.h"
 

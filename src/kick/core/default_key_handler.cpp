@@ -11,7 +11,7 @@
 using namespace std;
 
 kick::DefaultKeyHandler::DefaultKeyHandler()
-:fullScreen{{KeyMapping{Key::LGUI, Key::f}, KeyMapping{Key::RGUI, Key::f}}}
+:fullScreen({KeyMapping{Key::LGUI, Key::f}, KeyMapping{Key::RGUI, Key::f}})
 {
 }
 

@@ -123,6 +123,16 @@ namespace kick {
 
         glContext = SDL_GL_CreateContext(window);
 
+#ifdef _WIN32
+		//Initialize GLEW
+		glewExperimental = GL_TRUE;
+		GLenum glewError = glewInit();
+		if (glewError != GLEW_OK)
+		{
+			printf("Error initializing GLEW! %s\n", glewGetErrorString(glewError));
+		}
+#endif
+
         if (!glContext)
             return false;
 

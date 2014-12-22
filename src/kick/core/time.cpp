@@ -2,7 +2,7 @@
 // Created by morten on 18/05/14.
 //
 
-#import "time.h"
+#include "time.h"
 #include <chrono>
 #include <ctime>
 

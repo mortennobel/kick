@@ -11,6 +11,8 @@
 #include <iostream>
 #include <locale> 
 #include "kick/core/log.h"
+#include <glm/gtc/constants.hpp>
+
 using namespace std;
 using namespace glm;
 
@@ -262,8 +264,8 @@ namespace kick {
                 float weight1 = acos(std::max(-1.0f, std::min(1.0f, dot(v1v2, v1v3))));
                 
                 vec3 v2v3 = normalize(v3 - v2);
-                float weight2 = (float) (M_PI - acos(std::max(-1.0f, std::min(1.0f, dot(v1v2, v2v3)))));
-                float weight3 = (float) (M_PI - weight1 - weight2);
+				float weight2 = (float)(pi<float>() - acos(std::max(-1.0f, std::min(1.0f, dot(v1v2, v2v3)))));
+				float weight3 = (float)(pi<float>() - weight1 - weight2);
                 mNormal[i1] += weight1 * faceNormal;
                 mNormal[i2] += weight2 * faceNormal;
                 mNormal[i3] += weight3 * faceNormal;
