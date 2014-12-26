@@ -14,9 +14,11 @@ project "kick"
   configuration {"vs*" }
     includedirs { "../glew-1.11.0/include", "../SDL2-2.0.3/include", "../SDL2-2.0.3/include", "../SDL2_image-2.0.0/include"  }
   configuration {"xcode*" }
+    includedirs {"/usr/local/include"}
+  configuration {"xcode*" }
     buildoptions "-std=c++1y -stdlib=libc++ -fno-exceptions"
   configuration {"xcode*" }
-    links { "Cocoa.framework", "OpenGL.framework",  "/Library/Frameworks/SDL2.framework", "/Library/Frameworks/SDL2_image.framework"  }
+    links { "Cocoa.framework", "OpenGL.framework",  "/Library/Frameworks/SDL2.framework", "/Library/Frameworks/SDL2_image.framework", "/usr/local/lib/"  }
   configuration {"vs*" }
     links { "Cocoa.framework", "OpenGL.framework",  "/Library/Frameworks/SDL2.framework", "/Library/Frameworks/SDL2_image.framework"  }
   configuration {"xcode*" }

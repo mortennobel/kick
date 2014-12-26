@@ -24,7 +24,7 @@ void initEngine(int& argc, char** argv){
     //GLUTContext cont;
 
     Engine::init(argc, argv);
-    kick::Log::disable();
+    kick::Debug::disable();
 }
 
 int TestShader() {

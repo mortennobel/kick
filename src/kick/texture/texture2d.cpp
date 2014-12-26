@@ -7,7 +7,7 @@
 //
 
 #include "texture2d.h"
-#include "kick/core/log.h"
+#include "kick/core/debug.h"
 #ifndef EMSCRIPTEN
 #ifdef _WIN32
 #include <SDL_surface.h>

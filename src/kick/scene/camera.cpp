@@ -20,7 +20,7 @@
 #include "kick/scene/light.h"
 #include "kick/math/misc.h"
 #include "kick/material/material.h"
-#include "kick/core/log.h"
+#include "kick/core/debug.h"
 
 using namespace std;
 using namespace glm;

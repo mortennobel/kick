@@ -7,7 +7,7 @@
 #else
 #include <unistd.h>
 #endif
-#include "kick/core/log.h"
+#include "debug.h"
 #include <iostream>
 #ifdef __APPLE__
 #include <execinfo.h>
@@ -27,24 +27,24 @@ namespace kick {
         }
     }
 
-    std::function<void (std::string, std::string, std::string, int)> Log::info = [](std::string message, std::string func, std::string file, int line){
+    std::function<void (std::string, std::string, std::string, int)> Debug::info = [](std::string message, std::string func, std::string file, int line){
         print("info", message, func, file, line);
     };
-    std::function<void (std::string, std::string, std::string, int)> Log::warning = [](std::string message, std::string func, std::string file, int line){
+    std::function<void (std::string, std::string, std::string, int)> Debug::warning = [](std::string message, std::string func, std::string file, int line){
         print("warning", message, func, file, line);
     };
-    std::function<void (std::string, std::string, std::string, int)> Log::error = [](std::string message, std::string func, std::string file, int line){
+    std::function<void (std::string, std::string, std::string, int)> Debug::error = [](std::string message, std::string func, std::string file, int line){
         print("error", message, func, file, line, cerr);
     };
 
-    void Log::disable() {
+    void Debug::disable() {
         function<void (std::string, std::string, std::string, int)> voidFn = [](std::string message, std::string func, std::string file, int line){};
         info = voidFn;
         warning = voidFn;
         error = voidFn;
     }
 
-    void Log::reset() {
+    void Debug::reset() {
         info = [](std::string message, std::string func, std::string file, int line){
             print("info", message, func, file, line);
         };
@@ -56,7 +56,7 @@ namespace kick {
         };
     }
 
-	string Log::workingDir(){
+	string Debug::workingDir(){
 		char cCurrentPath[FILENAME_MAX];
 
 #ifdef _WIN32
@@ -72,7 +72,7 @@ namespace kick {
 	}
 
     // based on http://oroboro.com/stack-trace-on-crash/
-    void Log::printStacktrace(){
+    void Debug::printStacktrace(){
 #ifdef __APPLE__
         FILE *out = stderr;
         unsigned int max_frames = 63;

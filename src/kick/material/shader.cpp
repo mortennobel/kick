@@ -25,7 +25,7 @@
 #include "kick/core/cpp_ext.h"
 #include "kick/scene/transform.h"
 #include "kick/scene/light.h"
-#include "kick/core/log.h"
+#include "kick/core/debug.h"
 using namespace std;
 
 namespace kick {

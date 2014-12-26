@@ -34,7 +34,7 @@ namespace kick {
         static std::shared_ptr<Shader> loadShader(std::string uri);
         static std::shared_ptr<Texture2D> loadTexture2D(std::string uri);
         static std::shared_ptr<Font> loadFont(std::string fontName = "assets/font/open_sans_28.fnt");
-        static Texture2D* loadTexture2DFromMemory(const char *data, int size);
+        static std::shared_ptr<Texture2D> loadTexture2DFromMemory(const char *data, int size);
 
         static std::shared_ptr<TextureCube> loadTextureCube(std::string uri);
         static TextureCube* loadTextureCubeFromMemory(const char *data, int size);

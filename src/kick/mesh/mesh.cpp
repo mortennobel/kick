@@ -8,7 +8,7 @@
 
 #include "kick/mesh/mesh.h"
 #include "kick/mesh/mesh_data.h"
-#include "kick/core/log.h"
+#include "kick/core/debug.h"
 #include <vector>
 #include <set>
 

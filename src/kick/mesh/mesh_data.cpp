@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <iostream>
 #include <locale> 
-#include "kick/core/log.h"
+#include "kick/core/debug.h"
 #include <glm/gtc/constants.hpp>
 
 using namespace std;
