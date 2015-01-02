@@ -8,6 +8,8 @@
 
 #include "kick/scene/scene.h"
 #include <iostream>
+#include "rapidjson/rapidjson.h"
+#include "rapidjson/writer.h"
 #include "kick/scene/engine_uniforms.h"
 #include "kick/scene/camera.h"
 #include "updatable.h"
@@ -96,6 +98,9 @@ namespace kick {
     
     void Scene::render(EngineUniforms* engineUniforms){
         engineUniforms->sceneLights = &mSceneLights;
+        std::sort(mCameras.begin(), mCameras.end(), [](Camera *c1, Camera *c2){
+            return c1->index() < c2->index();
+        });
         for (auto & camera : mCameras) {
             engineUniforms->currentCamera = camera;
             camera->render(engineUniforms);
@@ -299,6 +304,18 @@ namespace kick {
             if (gameObject->uniqueId() == uid){
                 return gameObject.get();
             }
+        }
+        return nullptr;
+    }
+
+    Camera *Scene::mainCamera() {
+        for (auto c : mCameras){
+            if (c->main()){
+                return c;
+            }
+        }
+        if (!mCameras.empty()){
+            return mCameras[0];
         }
         return nullptr;
     }

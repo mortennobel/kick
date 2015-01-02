@@ -375,4 +375,12 @@ namespace kick {
 
         return Ray{(vec3)mousePosWorldNear, normalize((vec3)mousePosWorldFar - (vec3)mousePosWorldNear)};
     }
+
+    bool Camera::main() {return mMainCamera;}
+
+    void Camera::setMain(bool main) { mMainCamera = main;}
+
+    int Camera::index() {return mIndex;}
+
+    void Camera::setIndex(int index) {mIndex = index;}
 }
