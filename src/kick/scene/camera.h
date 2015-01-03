@@ -85,12 +85,12 @@ namespace kick {
         glm::vec2 mNormalizedViewportOffset = glm::vec2(0,0);
         glm::vec2 mNormalizedViewportDim = glm::vec2(1,1);
     private:
+        std::vector<ComponentRenderable*> cull();
         void initShadowMap();
         void destroyShadowMap();
         void renderShadowMap(Light* directionalLight);
-        void rebuildComponentList();
-        void handleObjectPicking(EngineUniforms *engineUniforms);
-        ComponentRenderable *includeComponent(Component* comp);
+        void createComponentList();
+        void handleObjectPicking(EngineUniforms *engineUniforms, std::vector<ComponentRenderable*>& components);
         TextureRenderTarget*mPickingRenderTarget = nullptr;
         std::shared_ptr<Texture2D> mPickingTexture;
         std::shared_ptr<Material> mPickingMaterial;
@@ -101,7 +101,7 @@ namespace kick {
         void setupViewport(glm::vec2 &offset, glm::vec2 &dim);
         std::vector<ComponentRenderable*> mRenderableComponents;
         glm::vec4 mClearColor = glm::vec4(0,0,0,1);
-        int mCullingMask = 0xffffffff;
+        int mCullingMask = 0xFFFFFEFF;
         int mClearFlag  = GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT; // default clear color clear depth
         bool mShadow = false;
         TextureRenderTarget*mTarget = nullptr;

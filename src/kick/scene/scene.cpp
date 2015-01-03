@@ -298,7 +298,7 @@ namespace kick {
             Camera* camera = createOrthographicCamera(gameObject);
             camera->setMain(false);
             camera->setIndex(1);
-            camera->setCullingMask(256);
+            camera->setCullingMask(0b100000000);
             camera->setClearColorBuffer(false);
             panel->setCamera(camera);
         }
