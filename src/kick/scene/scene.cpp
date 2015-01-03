@@ -160,6 +160,9 @@ namespace kick {
             case LightType::Point:
                 this->mSceneLights.pointLights.push_back(light);
                 break;
+            case LightType::Spot:
+                // todo implement
+                break;
             case LightType::Uninitialized:
                 break;
         }
@@ -293,15 +296,18 @@ namespace kick {
         Panel* panel = gameObject->addComponent<Panel>();
         if (includeUICamera){
             Camera* camera = createOrthographicCamera(gameObject);
+            camera->setMain(false);
+            camera->setIndex(1);
             camera->setCullingMask(256);
+            camera->setClearColorBuffer(false);
             panel->setCamera(camera);
         }
         return panel;
     }
 
     GameObject *Scene::gameObjectByUID(int32_t uid) {
-        for (auto & gameObject : *this){
-            if (gameObject->uniqueId() == uid){
+        for (auto & gameObject : *this) {
+            if (gameObject->uniqueId() == uid) {
                 return gameObject.get();
             }
         }
@@ -309,12 +315,12 @@ namespace kick {
     }
 
     Camera *Scene::mainCamera() {
-        for (auto c : mCameras){
-            if (c->main()){
+        for (auto c : mCameras) {
+            if (c->main()) {
                 return c;
             }
         }
-        if (!mCameras.empty()){
+        if (!mCameras.empty()) {
             return mCameras[0];
         }
         return nullptr;
