@@ -261,6 +261,15 @@ namespace kick {
         }
     }
 
+    Material* Project::createMaterial(std::string shaderUri){
+        auto shader = loadShader(shaderUri);
+        if (!shader){
+            return nullptr;
+        }
+        return new Material(shader);
+    }
+
+
     shared_ptr<Shader> Project::loadShader(std::string uri){
         auto iter = shaderRef.find(uri);
         if (iter != shaderRef.end()){

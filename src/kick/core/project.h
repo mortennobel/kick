@@ -28,6 +28,9 @@ namespace kick {
 
     class Project {
     public:
+        // Create a new material with a specific shader attached
+        // Returns nullptr if shader cannot be loaded
+        static Material *createMaterial(std::string shaderUri = "assets/shaders/diffuse.shader");
 
         static bool loadTextResource(std::string uri, std::string &outText);
         static bool loadBinaryResource(std::string uri, std::vector<char> &outResource);
@@ -59,5 +62,7 @@ namespace kick {
         static std::map<std::string, std::weak_ptr<Texture2D>> texture2DRef;
         static std::map<std::string, std::weak_ptr<TextureCube>> textureCubeRef;
         static std::map<std::string, std::weak_ptr<Font>> fontRef;
+
+
     };
 }
