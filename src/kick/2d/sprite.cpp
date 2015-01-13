@@ -2,8 +2,8 @@
 // Created by morten on 30/06/14.
 //
 
-#include "sprite.h"
-#include "kick/core/log.h"
+#include "kick/2d/sprite.h"
+#include "kick/core/debug.h"
 
 #include <iostream>
 #include <glm/gtx/string_cast.hpp>

@@ -14,7 +14,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include "kick/material/shader.h"
-#include "kick/core/log.h"
+#include "kick/core/debug.h"
 
 using namespace std;
 

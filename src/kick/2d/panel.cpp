@@ -192,8 +192,7 @@ namespace kick{
 
     void Panel::setCamera(Camera *camera) {
         Panel::camera = camera;
-        int cullingMask = camera->cullingMask();
-        mGameObject->setLayer((int)round(log2((float)cullingMask))+1); // set to largest value
+        mGameObject->setLayer(256);
     }
 
     void Panel::deactivated() {

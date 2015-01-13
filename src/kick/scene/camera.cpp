@@ -20,7 +20,8 @@
 #include "kick/scene/light.h"
 #include "kick/math/misc.h"
 #include "kick/material/material.h"
-#include "kick/core/log.h"
+#include "kick/core/debug.h"
+#include "time.h"
 
 using namespace std;
 using namespace glm;
@@ -31,22 +32,20 @@ namespace kick {
     :Component(gameObject){
         Scene* scene = gameObject->scene();
         componentListener = scene->componentEvents.createListener([&](pair<Component*, ComponentUpdateStatus> value){
-            if (value.second == ComponentUpdateStatus::Created){
-                auto r = includeComponent(value.first);
-                if (r){
+            auto r = dynamic_cast<ComponentRenderable*>(value.first);
+            if (r) {
+                if (value.second == ComponentUpdateStatus::Created) {
                     mRenderableComponents.push_back(r);
-                }
-            } else if (value.second == ComponentUpdateStatus::Destroyed){
-                auto r = includeComponent(value.first);
-                if (r) {
-                    auto iter = find(mRenderableComponents.begin(), mRenderableComponents.end(), value.first);
+
+                } else if (value.second == ComponentUpdateStatus::Destroyed) {
+                    auto iter = find(mRenderableComponents.begin(), mRenderableComponents.end(), r);
                     if (iter != mRenderableComponents.end()) {
                         mRenderableComponents.erase(iter);
                     }
                 }
             }
         });
-        rebuildComponentList();
+        createComponentList();
     }
 
     Camera::~Camera() {
@@ -56,30 +55,18 @@ namespace kick {
     
 
     
-    void Camera::rebuildComponentList(){
+    void Camera::createComponentList(){
         mRenderableComponents.clear();
         for (auto & gameObject_ : *gameObject()->scene()) {
             for (auto & component :  *gameObject_){
-                auto r = includeComponent(component);
+                auto r = dynamic_cast<ComponentRenderable*>(component);
                 if (r){
                     mRenderableComponents.push_back(r);
                 }
             }
         }
     }
-    
-    ComponentRenderable *Camera::includeComponent(Component* component){
-        auto r = dynamic_cast<ComponentRenderable*>(component);
-        if (!r){
-            return nullptr;
-        }
-        if (dynamic_cast<Camera*>(r)){
-            return nullptr;
-        }
-        // todo - filter
-        return r;
-    }
-    
+
     void Camera::deactivated(){
         // remove listener
         componentListener = {};
@@ -150,28 +137,27 @@ namespace kick {
         }
         setupCamera(engineUniforms);
         engineUniforms->sceneLights->recomputeLight(engineUniforms->viewMatrix);
-        sort(mRenderableComponents.begin(), mRenderableComponents.end(), [](ComponentRenderable* r1, ComponentRenderable* r2){
+        auto components = cull();
+        sort(components.begin(), components.end(), [](ComponentRenderable* r1, ComponentRenderable* r2){
             return r1->renderOrder() < r2->renderOrder();
         });
 
-        for (auto c : mRenderableComponents){
-            if (c->gameObject()->layer() & mCullingMask) {
-                c->render(engineUniforms, mReplacementMaterial.get());
-            }
+        for (auto c : components){
+            c->render(engineUniforms, mReplacementMaterial.get());
         }
         if (mTarget){
             mTarget->unbind();
         }
 
         if (mPickQueue.size() > 0){
-            handleObjectPicking(engineUniforms);
+            handleObjectPicking(engineUniforms, components);
         }
         if (customViewport){
             glDisable(GL_SCISSOR_TEST);
         }
     }
 
-    void Camera::handleObjectPicking(EngineUniforms *engineUniforms) {
+    void Camera::handleObjectPicking(EngineUniforms *engineUniforms, std::vector<ComponentRenderable*>& components) {
         auto viewportSize = engineUniforms->viewportDimension.getValue();
         if (mPickingRenderTarget == nullptr || viewportSize != mPickingRenderTarget->size()){
             delete mPickingRenderTarget;
@@ -202,10 +188,8 @@ namespace kick {
         mPickingRenderTarget->bind();
         glClearColor(0, 0, 0, 0);
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-        for (auto c : mRenderableComponents){
-            if (c->gameObject()->layer() & mCullingMask) {
-                c->render(engineUniforms, mPickingMaterial.get());
-            }
+        for (auto c : components){
+            c->render(engineUniforms, mPickingMaterial.get());
         }
         for (auto q : mPickQueue){
             vector<glm::u8vec4> data((int)(q.size.x * q.size.y));
@@ -374,5 +358,23 @@ namespace kick {
         vec4 mousePosWorldFar = invView * mousePosViewFar;
 
         return Ray{(vec3)mousePosWorldNear, normalize((vec3)mousePosWorldFar - (vec3)mousePosWorldNear)};
+    }
+
+    bool Camera::main() {return mMainCamera;}
+
+    void Camera::setMain(bool main) { mMainCamera = main;}
+
+    int Camera::index() {return mIndex;}
+
+    void Camera::setIndex(int index) {mIndex = index;}
+
+    std::vector<ComponentRenderable *> Camera::cull() {
+        std::vector<ComponentRenderable *> res;
+        for (auto c : mRenderableComponents){
+            if (c->gameObject()->layer() & mCullingMask) {
+                res.push_back(c);
+            }
+        }
+        return res;
     }
 }

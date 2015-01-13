@@ -105,6 +105,9 @@ namespace kick {
 
         GameObject *gameObjectByUID(int32_t uid);
 
+        // Return the first camera component marked as main camera (or any camera if no camera marked).
+        // Return nullptr if no camera component in scene
+        Camera *mainCamera();
     private:
         Scene(const std::string & name);
         Scene(const Scene& scene) = delete;

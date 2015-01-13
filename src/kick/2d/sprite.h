@@ -43,7 +43,7 @@ namespace kick {
 
         virtual Shader *getShader() const;
 
-// when sprite is sliced slice x is two relative slice positions (between 0.0 and 1.0)
+        // when sprite is sliced slice x is two relative slice positions (between 0.0 and 1.0)
         glm::vec2 getSliceX() const;
         // when sprite is sliced slice x is two relative slice positions (between 0.0 and 1.0)
         void setSliceX(glm::vec2 sliceX);

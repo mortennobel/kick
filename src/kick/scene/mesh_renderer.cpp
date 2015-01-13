@@ -10,7 +10,7 @@
 #include "kick/scene/game_object.h"
 #include "kick/mesh/mesh.h"
 #include "kick/scene/game_object.h"
-#include "kick/core/log.h"
+#include "kick/core/debug.h"
 
 namespace kick {
     MeshRenderer::MeshRenderer(GameObject *gameObject)

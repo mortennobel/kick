@@ -8,7 +8,7 @@
 
 #include "kick/core/project.h"
 #include "kick/core/engine.h"
-#include "kick/core/log.h"
+#include "kick/core/debug.h"
 #include <fstream>
 
 #include "kick/texture/image_format.h"
@@ -178,8 +178,8 @@ namespace kick {
         }
         return 0;
     }
-    
-    Texture2D* Project::loadTexture2DFromMemory(const char *data, int size){
+
+    std::shared_ptr<Texture2D> Project::loadTexture2DFromMemory(const char *data, int size){
         Texture2D *texturePtr = nullptr;
         SDL_RWops* source = SDL_RWFromConstMem(data, size);
         if (source){
@@ -193,7 +193,7 @@ namespace kick {
                 SDL_FreeRW(source);
             }
         }
-        return texturePtr;
+        return std::shared_ptr<Texture2D>(texturePtr);
     }
 
     Texture2D *Project::surfaceToTexture2D(SDL_Surface *image) {

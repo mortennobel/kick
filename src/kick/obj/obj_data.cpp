@@ -9,7 +9,7 @@
 #include "kick/obj/obj_data.h"
 #include <stdexcept>
 #include <string>
-#include "kick/core/log.h"
+#include "kick/core/debug.h"
 #include "kick/core/project.h"
 
 using namespace std;

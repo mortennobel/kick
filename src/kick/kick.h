@@ -8,7 +8,7 @@
 #include "kick/core/project.h"
 #include "kick/core/project_asset.h"
 #include "kick/core/time.h"
-#include "kick/core/log.h"
+#include "kick/core/debug.h"
 #include "kick/material/material.h"
 #include "kick/material/shader.h"
 #include "kick/math/aabb.h"

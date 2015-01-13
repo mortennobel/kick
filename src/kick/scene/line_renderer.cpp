@@ -5,7 +5,7 @@
 #include "line_renderer.h"
 #include "kick/core/project.h"
 #include "kick/mesh/mesh.h"
-#include "kick/core/log.h"
+#include "kick/core/debug.h"
 
 using namespace std;
 using namespace glm;

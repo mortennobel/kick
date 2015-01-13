@@ -14,7 +14,7 @@
 #include <sstream>
 #include <cerrno>
 #include "glm/ext.hpp"
-#include "kick/core/log.h"
+#include "kick/core/debug.h"
 
 using namespace std;
 using namespace glm;

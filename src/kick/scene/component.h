@@ -34,7 +34,7 @@ namespace kick {
         virtual void activated() final {}
         virtual void deactivated(){}
         Transform* transform();
-        GameObject*gameObject();
+        GameObject* gameObject();
 
         bool enabled() const;
         void setEnabled(bool enabled);
