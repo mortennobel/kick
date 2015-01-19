@@ -6,6 +6,7 @@
 #include "kick/2d/text.h"
 #include "kick/2d/sprite.h"
 #include "kick/2d/button.h"
+#include "kick/2d/toggle_button.h"
 #include "kick/scene/scene.h"
 #include "kick/2d/component2d.h"
 #include "kick/material/material.h"
@@ -317,5 +318,21 @@ namespace kick{
                 mousePressed.erase(mousePressed.begin()+i);
             }
         }
+    }
+
+    ToggleButton *Panel::createToggleButton() {
+        std::shared_ptr<TextureAtlas> textureAtlas = Project::loadTextureAtlas("assets/ui/ui.txt");
+        GameObject *gameObject_ = gameObject()->scene()->createGameObject("Button");
+        gameObject_->transform()->setParent(transform());
+        ToggleButton* button = gameObject_->addComponent<ToggleButton>();
+        registerComponent2D(button);
+        button->setText("Button");
+        button->setTextureAtlas(textureAtlas);
+        button->setNormal("button-normal.png");
+        button->setHover("button-hover.png");
+        button->setPressed("button-pressed.png");
+        button->setScale({2,2});
+
+        return button;
     }
 }

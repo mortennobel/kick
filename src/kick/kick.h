@@ -51,3 +51,4 @@
 #include "kick/2d/font.h"
 #include "kick/2d/button.h"
 #include "kick/2d/panel.h"
+#include "kick/2d/toggle_button.h"

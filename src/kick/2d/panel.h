@@ -16,6 +16,7 @@
 namespace kick {
     class Camera;
     class Button;
+    class ToggleButton;
     class Sprite;
     class Text;
     class Mesh;
@@ -39,6 +40,9 @@ namespace kick {
 
         Camera * getCamera() const;
         void setCamera(Camera *camera);
+
+        //
+        ToggleButton* createToggleButton();
 
         //
         Button* createButton();

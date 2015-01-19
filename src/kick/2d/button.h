@@ -24,13 +24,13 @@ namespace kick {
     public:
         Button(GameObject *gameObject);
 
-        std::string getNormal() const;
+        std::string normal() const;
         void setNormal(std::string const &normal);
-        std::string getHover() const;
+        std::string hover() const;
         void setHover(std::string const &hover);
-        std::string getPressed() const;
+        std::string pressed() const;
         void setPressed(std::string const &pressed);
-        std::string getText() const;
+        std::string text() const;
         void setText(std::string const &text);
         std::function<void(Button*)> const & getOnClick() const;
         void setOnClick(std::function<void(Button*)> const &onClick);
@@ -38,31 +38,33 @@ namespace kick {
         virtual void deactivated() override;
         virtual void setOrder(int order) override;
 
-
         glm::vec4 const & getNormalColor() const;
         void setNormalColor(glm::vec4 const &normalColor);
         glm::vec4 const & getHoverColor() const;
         void setHoverColor(glm::vec4 const &hoverColor);
         glm::vec4 const & getPressedColor() const;
         void setPressedColor(glm::vec4 const &pressedColor);
-    private:
-        std::string currentSpriteName();
+    protected:
+        virtual std::string currentSpriteName();
+        virtual void updateTextureAndTxtColor();
         virtual void down(int button) override;
         virtual void pressed(int button) override;
         virtual void up(int button) override;
         virtual void over() override;
         virtual void out() override;
 
-        std::shared_ptr<TextureAtlas> textureAtlas;
-        void updateTextureAndTxtColor();
-        ButtonState state = ButtonState::normal;
+        virtual void invokeClick();
+
         std::string normalName;
         std::string hoverName;
         std::string pressedName;
+
+        ButtonState state = ButtonState::normal;
+
         glm::vec4 normalColor = glm::vec4{1,1,1,1};
         glm::vec4 hoverColor = glm::vec4{1,1,1,1};
         glm::vec4 pressedColor = glm::vec4{0,0,0,1};
-        std::string text;
+        std::string mText;
         std::function<void(Button*)> onClick;
         Text *textComponent = nullptr;
         std::set<int> pressedButtons;

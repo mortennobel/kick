@@ -16,23 +16,23 @@ namespace kick {
               onClick{[](Button*){}}
     {
         setAnchor({0.5f,0.5f});
-        textComponent = panel->createText(text);
+        textComponent = panel->createText(mText);
         textComponent->transform()->setParent(transform());
-        textComponent->setText(text);
+        textComponent->setText(mText);
         textComponent->setAnchor({0.5f,0.5f});
         textComponent->setOrder(getOrder()+1);
         updateTextureAndTxtColor();
     }
 
     void Button::setText(std::string const &text) {
-        Button::text = text;
+        Button::mText = text;
         if (textComponent){
             textComponent->setText(text);
         }
     }
 
-    std::string Button::getText() const {
-        return text;
+    std::string Button::text() const {
+        return mText;
     }
 
     void Button::setPressed(std::string const &pressed) {
@@ -40,7 +40,7 @@ namespace kick {
         updateTextureAndTxtColor();
     }
 
-    std::string Button::getPressed() const {
+    std::string Button::pressed() const {
         return pressedName;
     }
 
@@ -49,7 +49,7 @@ namespace kick {
         updateTextureAndTxtColor();
     }
 
-    std::string Button::getHover() const {
+    std::string Button::hover() const {
         return hoverName;
     }
 
@@ -58,7 +58,7 @@ namespace kick {
         updateTextureAndTxtColor();
     }
 
-    std::string Button::getNormal() const {
+    std::string Button::normal() const {
         return normalName;
     }
 
@@ -107,7 +107,7 @@ namespace kick {
     void Button::down(int button) {
         pressedButtons.insert(button);
         updateTextureAndTxtColor();
-        onClick(this);
+        invokeClick();
     }
 
     void Button::pressed(int button) {
@@ -158,5 +158,9 @@ namespace kick {
 
     glm::vec4 const &Button::getNormalColor() const {
         return normalColor;
+    }
+
+    void Button::invokeClick() {
+        onClick(this);
     }
 }
