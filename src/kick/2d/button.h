@@ -24,12 +24,12 @@ namespace kick {
     public:
         Button(GameObject *gameObject);
 
-        std::string normal() const;
-        void setNormal(std::string const &normal);
-        std::string hover() const;
-        void setHover(std::string const &hover);
-        std::string pressed() const;
-        void setPressed(std::string const &pressed);
+        std::string normalSprite() const;
+        void setNormalSprite(std::string const &normal);
+        std::string hoverSprite() const;
+        void setHoverSprite(std::string const &hover);
+        std::string pressedSprite() const;
+        void setPressedSprite(std::string const &pressed);
         std::string text() const;
         void setText(std::string const &text);
         std::function<void(Button*)> const & getOnClick() const;

@@ -244,9 +244,9 @@ namespace kick{
         registerComponent2D(button);
         button->setText("Button");
         button->setTextureAtlas(textureAtlas);
-        button->setNormal("button-normal.png");
-        button->setHover("button-hover.png");
-        button->setPressed("button-pressed.png");
+        button->setNormalSprite("button-normal.png");
+        button->setHoverSprite("button-hover.png");
+        button->setPressedSprite("button-pressed.png");
         button->setScale({2,2});
 
         return button;
@@ -328,9 +328,10 @@ namespace kick{
         registerComponent2D(button);
         button->setText("Button");
         button->setTextureAtlas(textureAtlas);
-        button->setNormal("button-normal.png");
-        button->setHover("button-hover.png");
-        button->setPressed("button-pressed.png");
+        button->setNormalSprite("button-normal.png");
+        button->setHoverSprite("button-hover.png");
+        button->setPressedSprite("button-pressed.png");
+        button->setSelectedSprite("button-pressed.png");
         button->setScale({2,2});
 
         return button;

@@ -35,30 +35,30 @@ namespace kick {
         return mText;
     }
 
-    void Button::setPressed(std::string const &pressed) {
+    void Button::setPressedSprite(std::string const &pressed) {
         Button::pressedName = pressed;
         updateTextureAndTxtColor();
     }
 
-    std::string Button::pressed() const {
+    std::string Button::pressedSprite() const {
         return pressedName;
     }
 
-    void Button::setHover(std::string const &hover) {
+    void Button::setHoverSprite(std::string const &hover) {
         Button::hoverName = hover;
         updateTextureAndTxtColor();
     }
 
-    std::string Button::hover() const {
+    std::string Button::hoverSprite() const {
         return hoverName;
     }
 
-    void Button::setNormal(std::string const &normal) {
+    void Button::setNormalSprite(std::string const &normal) {
         Button::normalName = normal;
         updateTextureAndTxtColor();
     }
 
-    std::string Button::normal() const {
+    std::string Button::normalSprite() const {
         return normalName;
     }
 

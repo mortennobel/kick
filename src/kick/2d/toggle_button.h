@@ -18,6 +18,7 @@ namespace kick {
 
     class ToggleButton : public Button {
         std::shared_ptr<ToggleButtonGroup> mGroup;
+        std::string mSelectedSprite;
     public:
         ToggleButton(GameObject *gameObject);
 
@@ -30,6 +31,10 @@ namespace kick {
         void select();
 
         void deselect();
+
+        std::string selectedSprite() const;
+
+        void setSelectedSprite(std::string const &selectedSprite);
 
         std::function<void(ToggleButton*)> const & getOnChange() const;
         void setOnChange(std::function<void(ToggleButton*)> const &onChange);
