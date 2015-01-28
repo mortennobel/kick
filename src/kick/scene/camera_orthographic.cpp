@@ -16,7 +16,7 @@ namespace kick {
         resetProjectionMatrix();
     }
 
-    float CameraOrthographic::getNear() const {
+    float CameraOrthographic::near() const {
         return mNear;
     }
 
@@ -25,7 +25,7 @@ namespace kick {
         resetProjectionMatrix();
     }
 
-    float CameraOrthographic::getFar() const {
+    float CameraOrthographic::far() const {
         return mFar;
     }
 
@@ -34,7 +34,7 @@ namespace kick {
         resetProjectionMatrix();
     }
 
-    float CameraOrthographic::getLeft() const {
+    float CameraOrthographic::left() const {
         return mLeft;
     }
 
@@ -43,7 +43,7 @@ namespace kick {
         resetProjectionMatrix();
     }
 
-    float CameraOrthographic::getRight() const {
+    float CameraOrthographic::right() const {
         return mRight;
     }
 
@@ -52,7 +52,7 @@ namespace kick {
         resetProjectionMatrix();
     }
 
-    float CameraOrthographic::getBottom() const {
+    float CameraOrthographic::bottom() const {
         return mBottom;
     }
 
@@ -61,7 +61,7 @@ namespace kick {
         resetProjectionMatrix();
     }
 
-    float CameraOrthographic::getTop() const {
+    float CameraOrthographic::top() const {
         return mTop;
     }
 
