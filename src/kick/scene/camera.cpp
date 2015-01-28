@@ -213,6 +213,9 @@ namespace kick {
                     q.onPicked(hitGameObject, uid.second);
                 }
             }
+            if (gameObjectFrequency.empty() && q.returnNullptrOnNoHit){
+                q.onPicked(nullptr, 0);
+            }
         }
         mPickingRenderTarget->unbind();
         mPickQueue.clear();
@@ -305,8 +308,8 @@ namespace kick {
         Camera::mTarget = target;
     }
 
-    void Camera::pick(glm::ivec2 point, std::function<void(GameObject*,int)> onPicked, glm::ivec2 size){
-        mPickQueue.push_back({point, size, onPicked});
+    void Camera::pick(glm::ivec2 point, std::function<void(GameObject*,int)> onPicked, glm::ivec2 size, bool returnNullptrOnNoHit){
+        mPickQueue.push_back({point, size, onPicked, returnNullptrOnNoHit});
     }
 
     std::shared_ptr<Material> const &Camera::replacementMaterial() const {
@@ -376,5 +379,9 @@ namespace kick {
             }
         }
         return res;
+    }
+
+    Camera *Camera::mainCamera() {
+        return Engine::activeScene()->mainCamera();
     }
 }

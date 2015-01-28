@@ -29,6 +29,7 @@ namespace kick {
         glm::ivec2 point;
         glm::ivec2 size;
         std::function<void(GameObject*, int)> onPicked;
+        bool returnNullptrOnNoHit;
     };
 
     class Camera : public Component {
@@ -60,7 +61,8 @@ namespace kick {
         TextureRenderTarget *target() const;
         void setTarget(TextureRenderTarget *target);
 
-        void pick(glm::ivec2 point, std::function<void(GameObject*,int)> onPicked, glm::ivec2 size = glm::ivec2{1,1});
+        // callback function when hit (object hit, number of hits)
+        void pick(glm::ivec2 point, std::function<void(GameObject*,int)> onPicked, glm::ivec2 size = glm::ivec2{1,1}, bool returnNullptrOnNoHit = false);
 
         std::shared_ptr<Material> const &replacementMaterial() const;
         void setReplacementMaterial(std::shared_ptr<Material> const &replacementMaterial);
@@ -79,6 +81,9 @@ namespace kick {
         // (lowest index are rendered first)
         void setIndex(int index);
         int index();
+
+        // Return the main camera (first camera flagged as main) in the active scene.
+        static Camera* mainCamera();
 
     protected:
         glm::mat4 mProjectionMatrix = glm::mat4{1};
