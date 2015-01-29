@@ -46,6 +46,7 @@ namespace kick {
     }
     
     void MeshRenderer::setMaterials(const std::vector<Material *> &mats){
+        isInstanced = false;
         this->mMaterials = mats;
     }
     
@@ -54,6 +55,7 @@ namespace kick {
     }
     
     void MeshRenderer::setMaterial(Material *material){
+        isInstanced = false;
         if (mMaterials.size()==0){
             mMaterials.push_back(material);
         } else {
@@ -73,5 +75,20 @@ namespace kick {
             return 0;
         }
         return mMaterials[0]->renderOrder();
+    }
+
+    Material *MeshRenderer::instancedMaterial() {
+        if (!isInstanced){
+            isInstanced = true;
+            for (int i=0;i<mMaterials.size();i++){
+                mMaterials[i] = new Material(*mMaterials[i]); // memory leak
+            }
+        }
+        return material();
+    }
+
+    const std::vector<Material *> &MeshRenderer::instancedMaterials() {
+        instancedMaterial();
+        return materials();
     }
 }
