@@ -107,4 +107,8 @@ namespace kick {
 
         return true;
     }
+
+    glm::vec3 Ray::closestPoint(glm::vec3 point) const {
+        return mOrigin + dot(point - mOrigin, mDirection) / dot(mDirection,mDirection) * mDirection;
+    }
 }
