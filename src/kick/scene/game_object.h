@@ -28,7 +28,7 @@ namespace kick {
         GameObject& operator=(GameObject&& other);
         ~GameObject();
         template <typename C, typename... T>
-        C *addComponent(T... t);
+        C *addComponent(T&&... t);
         template <typename C>
         C* component();
         template <typename C>
