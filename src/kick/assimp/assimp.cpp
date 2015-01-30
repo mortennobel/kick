@@ -8,6 +8,8 @@
 
 #include "kick/assimp/assimp.h"
 
+#ifndef NO_ASSIMP
+
 #include <assimp/Importer.hpp>      // C++ importer interface
 #include <assimp/scene.h>           // Output data structure
 #include <assimp/postprocess.h>     // Post processing flags
@@ -19,7 +21,7 @@
 #include <map>
 #include <fstream>
 
-#ifndef NO_ASSIMP
+
 
 namespace kick {
     namespace {
