@@ -66,6 +66,7 @@ namespace kick {
     class Material : public ProjectAsset {
     public:
         explicit Material(std::shared_ptr<Shader> shader = {});
+        Material(const Material& copy);
         ~Material();
         void setShader(std::shared_ptr<Shader> shader);
         std::shared_ptr<Shader> shader();

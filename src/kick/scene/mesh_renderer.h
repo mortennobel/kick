@@ -29,13 +29,17 @@ namespace kick {
         // set the first material
         void setMaterial(Material *material);
         // get first material (no nullptr if no material added)
-        Material*material();
+        Material* material();
+
+        Material* instancedMaterial();
         void setMaterials(const std::vector<Material *> &mats);
         const std::vector<Material*> &materials();
+        const std::vector<Material*> &instancedMaterials();
 
         virtual int renderOrder();
 
     private:
+        bool isInstanced = false;
         std::shared_ptr<Mesh> mMesh;
         Transform* mTransform;
         std::vector<Material*> mMaterials;

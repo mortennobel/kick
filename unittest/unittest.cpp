@@ -32,6 +32,7 @@ TINYTEST_ADD_TEST(TestDefaultShaders);
 TINYTEST_ADD_TEST(TestMesh);
 TINYTEST_ADD_TEST(TestMeshData);
 TINYTEST_ADD_TEST(RayClosestPointsTest);
+TINYTEST_ADD_TEST(RayClosestPointTest);
 TINYTEST_ADD_TEST(TestIntPacking);
 TINYTEST_ADD_TEST(TestMeshFactory);
 TINYTEST_ADD_TEST(TestShaderLoading);

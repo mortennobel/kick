@@ -46,7 +46,19 @@ namespace kick {
     {
         setShader(s);
     }
-    
+
+    Material::Material(const Material& copy)
+            :currentUniformData(copy.currentUniformData),
+             mShader(nullptr),
+             shaderChangedListener(),
+             mRenderOrder(copy.mRenderOrder),
+             texture2DRef(copy.texture2DRef),
+             textureCubeRef(copy.textureCubeRef)
+    {
+        setShader(copy.mShader);
+    }
+
+
     Material::~Material(){
     }
     
@@ -268,6 +280,4 @@ namespace kick {
         textureCubeRef[name] = value;
         setUniformInternal(name, value.get());
     }
-
-
 }

@@ -14,17 +14,17 @@ namespace kick {
     public:
         CameraOrthographic(GameObject *gameObject);
 
-        float getNear() const;
+        float near() const;
         void setNear(float near);
-        float getFar() const;
+        float far() const;
         void setFar(float far);
-        float getLeft() const;
+        float left() const;
         void setLeft(float left);
-        float getRight() const;
+        float right() const;
         void setRight(float right);
-        float getBottom() const;
+        float bottom() const;
         void setBottom(float bottom);
-        float getTop() const;
+        float top() const;
         void setTop(float top);
         void set(float near, float far, float left, float right, float bottom, float top);
         virtual void resetProjectionMatrix() override;

@@ -6,15 +6,17 @@
 //  Copyright (c) 2013 Morten Nobel-Joergensen. All rights reserved.
 //
 
+
 #include "kick/context/sdl2_context.h"
 #include "kick/core/mouse_input.h"
 #include "kick/core/key_input.h"
 #include "kick/core/engine.h"
+#ifndef EMSCRIPTEN
+#include <SDL2_image/SDL_image.h>
+#endif
 
 using namespace std;
 using namespace glm;
-
-
 
 namespace kick {
 
@@ -120,6 +122,15 @@ namespace kick {
 
         if (!window)
             return false;
+
+#ifndef EMSCRIPTEN
+        SDL_Surface * iconSurface = IMG_Load("assets/ui/icon.png");
+        if (iconSurface){
+            // The icon is attached to the window pointer
+            SDL_SetWindowIcon(window, iconSurface);
+            SDL_FreeSurface(iconSurface);
+        }
+#endif
 
         glContext = SDL_GL_CreateContext(window);
 
