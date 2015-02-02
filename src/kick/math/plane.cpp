@@ -3,16 +3,23 @@
 //
 
 #include "plane.h"
+#include "ray.h"
 
 namespace kick {
 
     Plane::Plane() : plane{1,0,0,0} {
     }
 
+    Plane::Plane(glm::vec3 normal_, glm::vec3 pointInPlane){
+        Ray r{glm::vec3{0}, normal_};
+        float distance = length(r.closestPoint(pointInPlane));
+        plane = glm::vec4{normal_, distance};
+    }
+
     Plane::Plane(float x, float y, float z, float dist) : plane{x,y,z,dist} {
     }
 
-    Plane::Plane(glm::vec3 direction, float dist) : plane{direction,dist} {
+    Plane::Plane(glm::vec3 normal_, float dist) : plane{normal_, dist} {
     }
 
 

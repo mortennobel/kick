@@ -14,7 +14,9 @@ namespace kick {
 
         Plane(float x, float y, float z, float dist);
 
-        Plane(glm::vec3 direction, float dist);
+        Plane(glm::vec3 normal, glm::vec3 pointInPlane);
+
+        Plane(glm::vec3 normal, float dist);
 
         glm::vec3 normal() const;
 
