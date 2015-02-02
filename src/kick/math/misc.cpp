@@ -58,4 +58,8 @@ namespace kick {
         }
         return a + num * clamp01 (t);
     }
+
+    glm::vec3 faceNormal(glm::vec3 a, glm::vec3 b, glm::vec3 c) {
+        return glm::normalize(glm::cross(c - a, b - a));
+    }
 }
