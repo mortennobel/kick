@@ -23,5 +23,7 @@ namespace kick {
     float repeat(float t, float length);
 
     float lerpAngle(float a, float b, float t);
+
+    glm::vec3 faceNormal(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3);
 }
 
