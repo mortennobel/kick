@@ -41,6 +41,9 @@ namespace kick {
     }
 
     void LineRenderer::render(EngineUniforms *engineUniforms, Material* replacementMaterial) {
+        if (!enabled()){
+            return;
+        }
 #ifndef KICK_CONTEXT_ES2
         if (mSmoothLine){
             glEnable(GL_LINE_SMOOTH);
