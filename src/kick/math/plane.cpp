@@ -34,11 +34,11 @@ namespace kick {
     }
 
     float Plane::distanceToOrigo() const {
-        return plane.z;
+        return plane.w;
     }
 
     void Plane::setDistanceToOrigo(float d) {
-        plane.z = d;
+        plane.w = d;
     }
 
     glm::vec3 Plane::pointOnPlane() const {

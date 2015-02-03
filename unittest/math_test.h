@@ -21,6 +21,7 @@
 #include "glm/glm.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 #include "glm/gtx/string_cast.hpp"
+#include "kick/math/plane.h"
 #include <cstdint>
 
 using namespace std;
@@ -38,6 +39,29 @@ int RayClosestPointsTest(){
     return 1;
 }
 
+int RayClosestPointTest() {
+    kick::Ray ray1{vec3{0,0,0},vec3{1,1,1}};
+    kick::Ray ray2{vec3{0,0,0},vec3{-1,-1,-1}};
+    vec3 point{1,0,0};
+    vec3 cp1 = ray1.closestPoint(point);
+    vec3 cp2 = ray2.closestPoint(point);
+    TINYTEST_ASSERT(cp1 == cp2);
+
+    kick::Ray ray3{vec3{0,5,0},vec3{1,0,0}};
+    vec3 point3{5,0,0};
+    vec3 expected{5,5,0};
+    vec3 cp3 = ray3.closestPoint(point3);
+    TINYTEST_ASSERT(expected == cp3);
+    return 1;
+}
+
+int PlaneRayTest() {
+    Plane plane(vec3{0.0,1.0,0.0},1.0f);
+    Ray ray(vec3(0,0,0), vec3(1,1,1));
+    vec3 intersectionPoint = plane.intersectionPoint(ray);
+    TINYTEST_ASSERT(intersectionPoint == vec3(1,1,1));
+    return 1;
+}
 
 int TestIntPacking(){
     TINYTEST_ASSERT(INT32_MIN == vec4ToUint32(uint32ToVec4(INT32_MIN)));
@@ -46,8 +70,8 @@ int TestIntPacking(){
         int32_t res  = vec4ToUint32(uint32ToVec4((int32_t)i));
         for (int j=0;j<4;j++){
             auto v = uint32ToVec4((int32_t)i);
-            TINYTEST_ASSERT(v[j]<=1);
-            TINYTEST_ASSERT(v[j]>=0);
+            TINYTEST_ASSERT(v[j] <= 1);
+            TINYTEST_ASSERT(v[j] >= 0);
         }
         TINYTEST_ASSERT(res == i);
     }
