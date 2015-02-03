@@ -56,10 +56,23 @@ int RayClosestPointTest() {
 }
 
 int PlaneRayTest() {
-    Plane plane(vec3{0.0,1.0,0.0},1.0f);
+    Plane plane(vec3{0.0,1.0,0.0},-1.0f);
     Ray ray(vec3(0,0,0), vec3(1,1,1));
     vec3 intersectionPoint = plane.intersectionPoint(ray);
-    TINYTEST_ASSERT(intersectionPoint == vec3(1,1,1));
+
+    float dist1 = plane.distanceToPlane(vec3(1,1,1));
+    TINYTEST_ASSERT(dist1 < 0.001);
+
+    TINYTEST_ASSERT(length(intersectionPoint - vec3(1,1,1)) < 0.001);
+    Ray ray2(vec3(1,0,1), vec3(1,1,1));
+    vec3 intersectionPoint2 = plane.intersectionPoint(ray2);
+    TINYTEST_ASSERT(length(intersectionPoint2 - vec3(2,1,2)) < 0.001);
+
+    Plane plane3(vec3{0.0,1.0,0.0},1.0f);
+    vec3 intersectionPoint3 = plane3.intersectionPoint(ray);
+    TINYTEST_ASSERT(length(intersectionPoint3 - vec3(-1,-1,-1))<0.001);
+    float dist3 = plane3.distanceToPlane(vec3(-1,-1,-1));
+    TINYTEST_ASSERT(dist3< 0.001);
     return 1;
 }
 
