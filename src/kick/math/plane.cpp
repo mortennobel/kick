@@ -10,16 +10,16 @@ namespace kick {
     Plane::Plane() : plane{1,0,0,0} {
     }
 
-    Plane::Plane(glm::vec3 normal_, glm::vec3 pointInPlane){
-        Ray r{glm::vec3{0}, normal_};
-        float distance = length(r.closestPoint(pointInPlane));
-        plane = glm::vec4{normal_, distance};
+    Plane::Plane(glm::vec3 normal_, glm::vec3 pointInPlane)
+    :plane(normal_, -dot(normal_, pointInPlane))
+    {
     }
 
-    Plane::Plane(float x, float y, float z, float dist) : plane{x,y,z,dist} {
+    Plane::Plane(float x, float y, float z, float offset) : plane{x,y,z, offset} {
     }
 
-    Plane::Plane(glm::vec3 normal_, float dist) : plane{normal_, dist} {
+    Plane::Plane(glm::vec3 normal_, float offset)
+            : plane{normal_, offset} {
     }
 
 
@@ -33,27 +33,27 @@ namespace kick {
         }
     }
 
-    float Plane::distanceToOrigo() const {
-        return plane.z;
+    float Plane::offset() const {
+        return plane.w;
     }
 
-    void Plane::setDistanceToOrigo(float d) {
-        plane.z = d;
+    void Plane::setOffset(float d) {
+        plane.w = d;
     }
 
     glm::vec3 Plane::pointOnPlane() const {
-        return normal() * distanceToOrigo();
+        return normal() * -offset();
     }
 
     float Plane::distanceToPlane(glm::vec3 point) const {
-        return glm::dot(normal(), point) - distanceToOrigo();
+        return glm::dot(normal(), point) + offset();
     }
 
     float Plane::intersection(const Ray& line) const {
         using namespace std;
         glm::vec3 v0 = pointOnPlane();
-        glm::vec3 n = normal();
-        glm::vec3 u = line.point(1) - line.origin();
+        glm::vec3 n = glm::normalize(normal());
+        glm::vec3 u = glm::normalize(line.point(1) - line.origin());
         const double epsilon = 1e-10;
         double uDotN = glm::dot(u, n);
         if (abs(uDotN) < epsilon){

@@ -8,23 +8,25 @@
 #include "kick/math/ray.h"
 
 namespace kick {
+    // represent a plane using the equation ax + by + cz + d = 0, where (a,b,c) is the normal and d is negative distance
+    // to plane from origin
     class Plane {
     public:
         Plane();
 
-        Plane(float x, float y, float z, float dist);
+        Plane(float x, float y, float z, float offset);
 
         Plane(glm::vec3 normal, glm::vec3 pointInPlane);
 
-        Plane(glm::vec3 normal, float dist);
+        Plane(glm::vec3 normal, float offset);
 
         glm::vec3 normal() const;
 
         void setNormal(glm::vec3 p);
 
-        float distanceToOrigo() const;
+        float offset() const;
 
-        void setDistanceToOrigo(float d);
+        void setOffset(float d);
 
         glm::vec3 pointOnPlane() const;
 
