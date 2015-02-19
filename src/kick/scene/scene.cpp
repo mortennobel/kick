@@ -90,7 +90,7 @@ namespace kick {
         return mGameObjects.end();
     }
         
-    void Scene::update(){
+    void Scene::update() {
         for (auto & component : mUpdatable) {
             component->update();
         }
@@ -102,8 +102,10 @@ namespace kick {
             return c1->index() < c2->index();
         });
         for (auto & camera : mCameras) {
-            engineUniforms->currentCamera = camera;
-            camera->render(engineUniforms);
+            if (camera->enabled()){
+                engineUniforms->currentCamera = camera;
+                camera->render(engineUniforms);
+            }
         }
     }
     

@@ -118,9 +118,6 @@ namespace kick {
     }
     
     void Camera::render(EngineUniforms *engineUniforms){
-        if (!enabled()){
-            return;
-        }
         auto sceneLights = engineUniforms->sceneLights;
         engineUniforms->currentCameraTransform = transform();
 
