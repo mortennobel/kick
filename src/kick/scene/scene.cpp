@@ -8,6 +8,7 @@
 
 #include "kick/scene/scene.h"
 #include <iostream>
+#include <algorithm>
 #include "rapidjson/rapidjson.h"
 #include "rapidjson/writer.h"
 #include "kick/scene/engine_uniforms.h"
@@ -90,7 +91,7 @@ namespace kick {
         return mGameObjects.end();
     }
         
-    void Scene::update(){
+    void Scene::update() {
         for (auto & component : mUpdatable) {
             component->update();
         }
@@ -102,8 +103,10 @@ namespace kick {
             return c1->index() < c2->index();
         });
         for (auto & camera : mCameras) {
-            engineUniforms->currentCamera = camera;
-            camera->render(engineUniforms);
+            if (camera->enabled()){
+                engineUniforms->currentCamera = camera;
+                camera->render(engineUniforms);
+            }
         }
     }
     
@@ -292,7 +295,7 @@ namespace kick {
             Camera* camera = createOrthographicCamera(gameObject);
             camera->setMain(false);
             camera->setIndex(1);
-            camera->setCullingMask(0b100000000);
+            camera->setCullingMask(256);//0b100000000
             camera->setClearColorBuffer(false);
             panel->setCamera(camera);
         }
