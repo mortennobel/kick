@@ -182,7 +182,7 @@ namespace kick {
                     aiTextureOp* op = nullptr;
                     aiTextureMapMode* mapmode = nullptr;
 
-                    if (aiMaterial->GetTextureCount(aiTextureType_DIFFUSE) > 0 &&
+                    /*if (aiMaterial->GetTextureCount(aiTextureType_DIFFUSE) > 0 &&
                             aiMaterial->GetTexture(aiTextureType_DIFFUSE, 0, texturePath, mapping, uvindex, texBlend, op, mapmode) == AI_SUCCESS)
                     {
                         std::fstream file(texturePath->C_Str());
@@ -196,7 +196,7 @@ namespace kick {
                             int textureIndex = atoi(texturePath->C_Str());
                             material->setUniform("mainTexture", allTextures[textureIndex]);
                         }
-                    }
+                    } */
 
                     if (blend){
                         if (shininess>0.0f) {
@@ -269,6 +269,10 @@ namespace kick {
     bool AssImp::importData(std::string filename, Scene *scenePtr, AssImpSettings importSettings) {
         // Create an instance of the Importer class
         Assimp::Importer importer;
+        bool missing = false;
+        importer.SetPropertyInteger(AI_CONFIG_PP_SLM_VERTEX_LIMIT, 64000, &missing);
+
+        std::cout <<  missing<<std::endl;
         // And have it read the given file with some example postprocessing
         // Usually - if speed is not the most important aspect for you - you'll
         // propably to request more postprocessing than we do in this example.
@@ -277,6 +281,8 @@ namespace kick {
                 aiProcess_CalcTangentSpace       |
                         aiProcess_Triangulate            |
                         aiProcess_GenNormals            |
+                        aiProcess_OptimizeMeshes        |
+                        aiProcess_SplitLargeMeshes        |
                         aiProcess_GenUVCoords            |
                         aiProcess_JoinIdenticalVertices  |
                         aiProcess_SortByPType);
