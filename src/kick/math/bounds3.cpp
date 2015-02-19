@@ -43,4 +43,40 @@ bool Bounds3::contains(glm::vec3 point) {
     glm::vec3 Bounds3::center() { return (max+min)*0.5f; }
 
     glm::vec3 Bounds3::diagonal() { return (max-min); }
+
+    std::vector<glm::vec3> Bounds3::toLines() {
+        std::vector<glm::vec3> res;
+        res.push_back(max);
+        res.push_back(glm::vec3(max.x,max.y,min.z));
+        res.push_back(max);
+        res.push_back(glm::vec3(max.x,min.y,max.z));
+        res.push_back(max);
+        res.push_back(glm::vec3(min.x,max.y,max.z));
+
+        res.push_back(min);
+        res.push_back(glm::vec3(min.x,min.y,max.z));
+        res.push_back(min);
+        res.push_back(glm::vec3(min.x,max.y,min.z));
+        res.push_back(min);
+        res.push_back(glm::vec3(max.x,min.y,min.z));
+
+        res.push_back(glm::vec3(max.x,max.y,min.z));
+        res.push_back(glm::vec3(max.x,min.y,min.z));
+
+        res.push_back(glm::vec3(max.x,max.y,min.z));
+        res.push_back(glm::vec3(min.x,max.y,min.z));
+
+        res.push_back(glm::vec3(min.x,max.y,min.z));
+        res.push_back(glm::vec3(min.x,max.y,max.z));
+
+        res.push_back(glm::vec3(min.x,max.y,max.z));
+        res.push_back(glm::vec3(min.x,min.y,max.z));
+
+        res.push_back(glm::vec3(min.x,min.y,max.z));
+        res.push_back(glm::vec3(max.x,min.y,max.z));
+
+        res.push_back(glm::vec3(max.x,min.y,max.z));
+        res.push_back(glm::vec3(max.x,min.y,min.z));
+        return res;
+    }
 }

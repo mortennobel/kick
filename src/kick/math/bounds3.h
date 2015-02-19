@@ -9,6 +9,7 @@
 #include <iostream>
 #include "glm/gtx/string_cast.hpp"
 #include <limits>
+#include <vector>
 
 namespace kick {
     struct Bounds3 {
@@ -35,6 +36,8 @@ namespace kick {
         Bounds3 lerp(float f, Bounds3 b);
 
         bool contains(glm::vec3 point);
+
+        std::vector<glm::vec3> toLines();
     };
 
     inline std::ostream& operator<<(std::ostream& out, const Bounds3 & f){
