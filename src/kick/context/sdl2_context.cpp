@@ -12,7 +12,11 @@
 #include "kick/core/key_input.h"
 #include "kick/core/engine.h"
 #ifndef EMSCRIPTEN
+#ifdef __APPLE__
 #include <SDL2_image/SDL_image.h>
+#else
+#include <SDL2_image/SDL_image.h>
+#endif
 #endif
 
 using namespace std;

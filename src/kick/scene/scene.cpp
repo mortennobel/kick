@@ -8,6 +8,7 @@
 
 #include "kick/scene/scene.h"
 #include <iostream>
+#include <algorithm>
 #include "rapidjson/rapidjson.h"
 #include "rapidjson/writer.h"
 #include "kick/scene/engine_uniforms.h"
@@ -300,7 +301,7 @@ namespace kick {
             Camera* camera = createOrthographicCamera(gameObject);
             camera->setMain(false);
             camera->setIndex(1);
-            camera->setCullingMask(0b100000000);
+            camera->setCullingMask(256);//0b100000000
             camera->setClearColorBuffer(false);
             panel->setCamera(camera);
         }
