@@ -227,6 +227,17 @@ namespace kick {
         return mChildren.end();
     }
 
+	Transform *Transform::root() {
+		if (!mParent){
+			return this;
+		}
+		Transform *t = mParent;
+		while (t->mParent) {
+			t = t->mParent;
+		}
+		return t;
+	}
+
     Transform *Transform::parent() {
         return mParent;
     }

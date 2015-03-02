@@ -44,6 +44,21 @@ bool Bounds3::contains(glm::vec3 point) {
 
     glm::vec3 Bounds3::diagonal() { return (max-min); }
 
+	Bounds3 Bounds3::transform(glm::mat4 trans){
+		glm::vec3 values[2] = {min, max};
+		Bounds3 res;
+		for (int x = 0; x < 2; x++){
+			for (int y = 0; y < 2; y++){
+				for (int z = 0; z < 2; z++){
+					glm::vec4 t = trans * glm::vec4(values[x].x, values[y].y, values[z].z, 1.0);
+					res.expand((glm::vec3)t);
+				}
+			}
+		}
+		return res;
+
+	}
+
     std::vector<glm::vec3> Bounds3::toLines() {
         std::vector<glm::vec3> res;
         res.push_back(max);

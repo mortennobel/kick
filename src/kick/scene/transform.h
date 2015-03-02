@@ -46,6 +46,7 @@ namespace kick {
         glm::mat4 globalMatrix();
         glm::mat4 localTRSInverse();
         glm::mat4 globalTRSInverse();
+		Transform* root();
         Transform* parent();
         TransformIter begin();
         TransformIter end();

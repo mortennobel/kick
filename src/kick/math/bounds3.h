@@ -23,6 +23,8 @@ namespace kick {
 
         glm::vec3 diagonal();
 
+		Bounds3 transform(glm::mat4 trans);
+
         Bounds3();
 
         Bounds3(glm::vec3 const &min, glm::vec3 const &max);

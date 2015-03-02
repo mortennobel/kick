@@ -43,7 +43,7 @@ namespace kick {
         }
 
         void importNode(aiNode * node, Scene *scenePtr, Transform* parent, std::map<aiNode *,GameObject*>& nodeMap){
-            logInfo(std::string("Import node ")+node->mName.C_Str());
+            // logInfo(std::string("Import node ")+node->mName.C_Str());
             for (int i=0;i<node->mNumChildren;i++){
                 aiNode * childNode = node->mChildren[i];
                 GameObject* go = scenePtr->createGameObject(childNode->mName.C_Str());
@@ -59,14 +59,14 @@ namespace kick {
                 go->transform()->setLocalRotation(glm::quat(rotation.w,rotation.x,rotation.y,rotation.z));
                 go->transform()->setLocalPosition(toVec3(position));
                 go->transform()->setLocalScale(toVec3(scaling));
-                logInfo(std::string("RTS ")+/*glm::to_string(go->transform()->localRotation())+*/glm::to_string(go->transform()->localPosition())+glm::to_string(go->transform()->localScale()));
+                // logInfo(std::string("RTS ")+/*glm::to_string(go->transform()->localRotation())+*/glm::to_string(go->transform()->localPosition())+glm::to_string(go->transform()->localScale()));
 
                 importNode(childNode, scenePtr, go->transform(), nodeMap);
             }
         }
 
         void assignMesh(aiNode * node, int meshIndex, std::shared_ptr<Mesh> mesh, Material * pMaterial, std::map<aiNode *,GameObject*>& nodeMap) {
-            logInfo(std::string("Assign mesh ")+node->mName.C_Str());
+            //logInfo(std::string("Assign mesh ")+node->mName.C_Str());
             for (int i=0;i<node->mNumChildren;i++){
                 aiNode *child = node->mChildren[i];
                 for (int j=0;j<child->mNumMeshes;j++){
@@ -220,7 +220,7 @@ namespace kick {
                     aiMesh* aiMesh = scene->mMeshes[j];
                     std::shared_ptr<MeshData> meshData = std::make_shared<MeshData>();
                     std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>();
-                    logInfo(std::string("Mesh ")+aiMesh->mName.C_Str());
+                    // logInfo(std::string("Mesh ")+aiMesh->mName.C_Str());
                     if (aiMesh->HasPositions()){
                         std::vector<glm::vec3> pos;
                         for (int i=0;i<aiMesh->mNumVertices;i++){
