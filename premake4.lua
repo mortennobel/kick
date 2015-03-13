@@ -16,7 +16,7 @@ project "kick"
   configuration {"xcode*" }
     includedirs {"/usr/local/include"}
   configuration {"xcode*" }
-    buildoptions "-std=c++1y -stdlib=libc++ -fno-exceptions"
+    buildoptions "-std=c++11 -stdlib=libc++ -fno-exceptions"
   configuration {"xcode*" }
     links { "Cocoa.framework", "OpenGL.framework",  "/Library/Frameworks/SDL2.framework", "/Library/Frameworks/SDL2_image.framework", "/usr/local/lib/"  }
   configuration {"vs*" }
@@ -45,7 +45,7 @@ project "kick_unittest"
   files    { "src/**.h","src/**.cpp", "src/**.inl", "unittest/**.cpp","unittest/**.h", "assets/**" }
   includedirs { "src", "unittest", "libs/include" }
   configuration {"xcode*" }
-    buildoptions "-std=c++1y -stdlib=libc++ -fno-exceptions"
+    buildoptions "-std=c++11 -stdlib=libc++ -fno-exceptions"
   configuration {"xcode*" }
     links { "Cocoa.framework", "OpenGL.framework",  "/Library/Frameworks/SDL2.framework", "/Library/Frameworks/SDL2_image.framework"  }
   configuration {"vs*" }

@@ -35,7 +35,11 @@ namespace kick{
         string texturename = filename.substr(0, filename.size()-4) + ".png";
         fontMap.clear();
         kerning.clear();
-        setTexture(Project::loadTexture2D(texturename));
+        TextureSampler sampler;
+        sampler.filterMag = TextureFilter::Linear;
+        sampler.filterMin = TextureFilter::LinearMipmapLinear;
+
+        setTexture(Project::loadTexture2D(texturename, sampler));
         if (!texture){
             return false;
         }

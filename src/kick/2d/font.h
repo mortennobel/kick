@@ -13,7 +13,7 @@
 namespace kick {
     class Texture2D;
     class Shader;
-    class Text;
+    class Label;
 
     struct FontChar {
 //        int id;
@@ -55,7 +55,7 @@ public:
 
     int getBase() const;
 
-    friend class Text;
+    friend class Label;
 
     bool IsInitialized() const;
 

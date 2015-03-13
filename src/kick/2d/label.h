@@ -16,9 +16,9 @@ namespace kick {
     class Font;
     class Mesh;
 
-    class Text : public Component2D {
+    class Label : public Component2D {
     public:
-        Text(GameObject *gameObject);
+        Label(GameObject *gameObject);
         std::shared_ptr<Font> getFont() const;
         void setFont(std::shared_ptr<Font>& font);
         virtual void render(EngineUniforms *engineUniforms);

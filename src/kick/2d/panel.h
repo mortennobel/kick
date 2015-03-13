@@ -18,7 +18,7 @@ namespace kick {
     class Button;
     class ToggleButton;
     class Sprite;
-    class Text;
+    class Label;
     class Mesh;
     class MeshData;
     class SpriteMouseListener;
@@ -49,7 +49,7 @@ namespace kick {
         // helper function, which creates a gameobject and attaches an sprite object
         Sprite* createSprite(std::shared_ptr<TextureAtlas> textureAtlas, std::string spriteName, glm::vec2 pos = glm::vec2{0});
         //
-        Text *createText(std::string text);
+        Label *createLabel(std::string text);
 
     private:
         void updateVertexBuffer(std::vector<Sprite *> &sprites);

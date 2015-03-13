@@ -3,7 +3,7 @@
 //
 
 #include "panel.h"
-#include "kick/2d/text.h"
+#include "label.h"
 #include "kick/2d/sprite.h"
 #include "kick/2d/button.h"
 #include "kick/2d/toggle_button.h"
@@ -48,7 +48,7 @@ namespace kick{
         vector<Sprite*> sprites;
         TextureAtlas* textureAtlas = nullptr;
         for (auto& comp : components){
-            auto text = dynamic_cast<Text*>(comp);
+            auto text = dynamic_cast<Label *>(comp);
             if (text){
                 renderSprites(sprites, engineUniforms, replacementMaterial); // render previous sprites
                 text->render(engineUniforms);
@@ -252,18 +252,18 @@ namespace kick{
         return button;
     }
 
-    Text *Panel::createText(std::string text) {
-        auto go = gameObject()->scene()->createGameObject("Font");
+    Label *Panel::createLabel(std::string text) {
+        auto go = gameObject()->scene()->createGameObject("Label");
         go->transform()->setParent(transform());
-        Text* textComponent = go->addComponent<Text>();
+        Label *labelComponent = go->addComponent<Label>();
 
-        registerComponent2D(textComponent);
+        registerComponent2D(labelComponent);
 
         auto font = Project::loadFont();
-        textComponent->setFont(font);
-        textComponent->setText(text);
+        labelComponent->setFont(font);
+        labelComponent->setText(text);
 
-        return textComponent;
+        return labelComponent;
     }
 
     void Panel::updateRenderOrder(Component2D *comp) {

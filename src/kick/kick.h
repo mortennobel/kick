@@ -47,7 +47,7 @@
 #include "kick/obj/obj_save.h"
 #include "kick/ply/ply_load.h"
 #include "kick/2d/sprite.h"
-#include "kick/2d/text.h"
+#include "kick/2d/label.h"
 #include "kick/2d/font.h"
 #include "kick/2d/button.h"
 #include "kick/2d/panel.h"

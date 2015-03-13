@@ -23,7 +23,7 @@
 #include "kick/scene/camera_perspective.h"
 #include "kick/scene/line_renderer.h"
 #include "kick/scene/camera_orthographic.h"
-#include "kick/2d/text.h"
+#include "kick/2d/label.h"
 
 namespace kick {
     class CameraPerspective;
@@ -31,7 +31,7 @@ namespace kick {
     class MeshRenderer;
     class Light;
     class Updatable;
-    class Text;
+    class Label;
     class Sprite;
     class TextureAtlas;
     class Button;

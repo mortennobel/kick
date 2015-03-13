@@ -108,10 +108,10 @@ namespace kick {
         return true;
     }
     
-    shared_ptr<Texture2D> Project::loadTexture2D(std::string uri){
+    shared_ptr<Texture2D> Project::loadTexture2D(std::string uri, TextureSampler sampler){
         SDL_Surface * surface = IMG_Load(uri.c_str());
         if (surface){
-            return shared_ptr<Texture2D>{surfaceToTexture2D(surface)};
+            return shared_ptr<Texture2D>{surfaceToTexture2D(surface, sampler)};
         } else {
             return shared_ptr<Texture2D>{};
         }
@@ -196,7 +196,7 @@ namespace kick {
         return std::shared_ptr<Texture2D>(texturePtr);
     }
 
-    Texture2D *Project::surfaceToTexture2D(SDL_Surface *image) {
+    Texture2D *Project::surfaceToTexture2D(SDL_Surface *image, TextureSampler sampler) {
         ImageFormat imageFormat;
         convertTextureIfNeeded(imageFormat, &image);
 #if EMSCRIPTEN
@@ -205,7 +205,7 @@ namespace kick {
 #else
         invert_image(image->pitch, image->h, image->pixels);
 #endif
-        Texture2D *texturePtr = new Texture2D();
+        Texture2D *texturePtr = new Texture2D(sampler);
         texturePtr->setData(image->w, image->h, static_cast<char*>(image->pixels), imageFormat);
 #if EMSCRIPTEN
         glPixelStorei(GL_UNPACK_FLIP_Y_WEBGL, false);

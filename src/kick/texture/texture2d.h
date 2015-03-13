@@ -14,7 +14,7 @@
 #include "kick/core/kickgl.h"
 #include "kick/texture/texture_sampler.h"
 #include "kick/texture/image_format.h"
-
+#include "glm/glm.hpp"
 
 namespace kick {
     class Project;
@@ -31,6 +31,7 @@ namespace kick {
         void bind(int textureSlot);
         int width(){ return mWidth; }
         int height(){ return mHeight; }
+        glm::vec2 size() {return glm::vec2{mWidth, mHeight}; }
         void setTextureSampler(const TextureSampler & textureSampler);
         TextureSampler textureSampler() const;
         ImageFormat imageFormat() const;

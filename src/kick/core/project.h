@@ -35,7 +35,7 @@ namespace kick {
         static bool loadTextResource(std::string uri, std::string &outText);
         static bool loadBinaryResource(std::string uri, std::vector<char> &outResource);
         static std::shared_ptr<Shader> loadShader(std::string uri);
-        static std::shared_ptr<Texture2D> loadTexture2D(std::string uri);
+        static std::shared_ptr<Texture2D> loadTexture2D(std::string uri, TextureSampler sampler = {});
         static std::shared_ptr<Font> loadFont(std::string fontName = "assets/font/open_sans_28.fnt");
         static std::shared_ptr<Texture2D> loadTexture2DFromMemory(const char *data, int size);
 
@@ -53,7 +53,7 @@ namespace kick {
         Project(const Project&) = delete;
         Project(Project&&) = delete;
 
-        static Texture2D *surfaceToTexture2D( SDL_Surface *image);
+        static Texture2D *surfaceToTexture2D( SDL_Surface *image, TextureSampler sampler = {});
 
         static TextureCube *surfaceToTextureCube(SDL_Surface *image);
 

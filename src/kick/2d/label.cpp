@@ -2,7 +2,7 @@
 // Created by morten on 30/06/14.
 //
 
-#include "text.h"
+#include "label.h"
 #include <iostream>
 #include "kick/mesh/mesh.h"
 #include "glm/gtx/string_cast.hpp"
@@ -12,7 +12,7 @@ using namespace glm;
 
 namespace kick {
 
-    Text::Text(GameObject *gameObject)
+    Label::Label(GameObject *gameObject)
             : Component2D(gameObject),
               bounds{vec2{0,0},vec2{0,0}} {
         mesh = new Mesh();
@@ -21,16 +21,16 @@ namespace kick {
         mesh->setMeshData(meshData);
     }
 
-    std::string const &Text::getText() const {
+    std::string const &Label::getText() const {
         return text;
     }
 
-    void Text::setText(std::string const &text) {
-        Text::text = text;
+    void Label::setText(std::string const &text) {
+        Label::text = text;
         updateVertexBuffer();
     }
 
-    void Text::render(EngineUniforms *engineUniforms) {
+    void Label::render(EngineUniforms *engineUniforms) {
         if (!font) return;
         auto shader = material->shader();
         assert(shader);
@@ -39,25 +39,25 @@ namespace kick {
         mesh->render(0);
     }
 
-    void Text::setFont(std::shared_ptr<Font>& font) {
+    void Label::setFont(std::shared_ptr<Font>& font) {
         if (!font->IsInitialized()){
             font->loadFntFile();
         }
-        Text::font = font;
-        material->setShader(font->getShader());
-        material->setUniform("mainTexture", font->getTexture());
-        eventListener = font->fontListener.createListener([&](Font* f){
+        Label::font = font;
+        auto setupFont = [&](Font* f){
             material->setShader(f->getShader());
             material->setUniform("mainTexture", f->getTexture());
-        });
+        };
+        setupFont(font.get());
+        eventListener = font->fontListener.createListener(setupFont);
         updateVertexBuffer();
     }
 
-    std::shared_ptr<Font> Text::getFont() const {
+    std::shared_ptr<Font> Label::getFont() const {
         return font;
     }
 
-    void Text::updateVertexBuffer() {
+    void Label::updateVertexBuffer() {
         if (!font || text.length() ==0) {
             meshData->setSubmesh(0, {}, MeshType::Triangles);
             mesh->setMeshData(meshData);
@@ -113,37 +113,37 @@ namespace kick {
         mesh->setMeshData(meshData);
     }
 
-    Bounds2 Text::getBounds() {
+    Bounds2 Label::getBounds() {
         return bounds;
     }
 
-    Material *Text::getMaterial() const {
+    Material *Label::getMaterial() const {
         return material;
     }
 
-    void Text::setMaterial(Material *material) {
+    void Label::setMaterial(Material *material) {
         assert(material);
-        Text::material = material;
+        Label::material = material;
         material->setShader(font->getShader());
         material->setUniform("mainTexture", font->getTexture());
     }
 
-    int Text::getRenderOrder() {
+    int Label::getRenderOrder() {
         return material->renderOrder();
     }
 
-    void Text::setAnchor(glm::vec2 anchor) {
-        if (anchor != Text::anchor){
-            Text::anchor = anchor;
+    void Label::setAnchor(glm::vec2 anchor) {
+        if (anchor != Label::anchor){
+            Label::anchor = anchor;
             updateVertexBuffer();
         }
     }
 
-    glm::vec2 Text::getAnchor() const {
+    glm::vec2 Label::getAnchor() const {
         return anchor;
     }
 
-    Shader *Text::getShader() const {
+    Shader *Label::getShader() const {
         if (material){
             return material->shader().get();
         }

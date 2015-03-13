@@ -8,7 +8,7 @@
 #include "kick/scene/component.h"
 #include "kick/2d/sprite_mouse_listener.h"
 #include "kick/2d/sprite.h"
-#include "kick/2d/text.h"
+#include "label.h"
 #include <string>
 #include <functional>
 #include <set>
@@ -66,7 +66,7 @@ namespace kick {
         glm::vec4 pressedColor = glm::vec4{0,0,0,1};
         std::string mText;
         std::function<void(Button*)> onClick;
-        Text *textComponent = nullptr;
+        Label *textComponent = nullptr;
         std::set<int> pressedButtons;
     };
 }

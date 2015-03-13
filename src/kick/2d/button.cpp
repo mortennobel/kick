@@ -16,7 +16,7 @@ namespace kick {
               onClick{[](Button*){}}
     {
         setAnchor({0.5f,0.5f});
-        textComponent = panel->createText(mText);
+        textComponent = panel->createLabel(mText);
         textComponent->transform()->setParent(transform());
         textComponent->setText(mText);
         textComponent->setAnchor({0.5f,0.5f});
