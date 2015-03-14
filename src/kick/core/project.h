@@ -36,6 +36,7 @@ namespace kick {
         static bool loadBinaryResource(std::string uri, std::vector<char> &outResource);
         static std::shared_ptr<Shader> loadShader(std::string uri);
         static std::shared_ptr<Texture2D> loadTexture2D(std::string uri, TextureSampler sampler = {});
+        static std::shared_ptr<Font> loadFont(int fontsize = 16);
         static std::shared_ptr<Font> loadFont(std::string fontName = "assets/font/open_sans_28.fnt");
         static std::shared_ptr<Texture2D> loadTexture2DFromMemory(const char *data, int size);
 

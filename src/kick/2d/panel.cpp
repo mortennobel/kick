@@ -252,14 +252,14 @@ namespace kick{
         return button;
     }
 
-    Label *Panel::createLabel(std::string text) {
+    Label *Panel::createLabel(std::string text, int fontsize) {
         auto go = gameObject()->scene()->createGameObject("Label");
         go->transform()->setParent(transform());
         Label *labelComponent = go->addComponent<Label>();
 
         registerComponent2D(labelComponent);
 
-        auto font = Project::loadFont();
+        auto font = Project::loadFont(fontsize);
         labelComponent->setFont(font);
         labelComponent->setText(text);
 

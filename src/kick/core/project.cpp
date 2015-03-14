@@ -480,6 +480,11 @@ namespace kick {
         return ref;
     }
 
+    std::shared_ptr<Font> Project::loadFont(int fontsize){
+
+        return loadFont(string("assets/font/open_sans_")+std::to_string(fontsize)+".fnt");
+    }
+
     std::shared_ptr<Font> Project::loadFont(string fontName) {
         auto iter = fontRef.find(fontName);
         if (iter != fontRef.end()){

@@ -49,7 +49,7 @@ namespace kick {
         // helper function, which creates a gameobject and attaches an sprite object
         Sprite* createSprite(std::shared_ptr<TextureAtlas> textureAtlas, std::string spriteName, glm::vec2 pos = glm::vec2{0});
         //
-        Label *createLabel(std::string text);
+        Label *createLabel(std::string text, int fontsize = 16);
 
     private:
         void updateVertexBuffer(std::vector<Sprite *> &sprites);

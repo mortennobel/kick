@@ -15,6 +15,7 @@ namespace kick {
             : Sprite{gameObject},
               onClick{[](Button*){}}
     {
+        setType(SpriteType::Sliced);
         setAnchor({0.5f,0.5f});
         textComponent = panel->createLabel(mText);
         textComponent->transform()->setParent(transform());
