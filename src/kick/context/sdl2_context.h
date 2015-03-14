@@ -56,6 +56,5 @@ namespace kick {
         SDL_Window *window = nullptr;
         SDL_GLContext glContext = nullptr;
         std::string basePath;
-        bool fullscreen = false;
     };
 };

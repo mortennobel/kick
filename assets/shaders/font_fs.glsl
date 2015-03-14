@@ -4,13 +4,13 @@ out vec4 fragColor;
 
 uniform vec4 mainColor;
 uniform sampler2D mainTexture;
+uniform float distmin;
+uniform float distmax;
 
 void main(void)
 {
-
-    float smoothness = 0.5; // between 0.0 and 1.0
-    float offset = smoothness*0.5;
-    float a = smoothstep(0.5-offset, 0.5+offset, texture(mainTexture,vUv).a);
+    float distance = texture(mainTexture,vUv).r;
+    float a = smoothstep(distmin, distmax, distance);
     vec4 baseColor = vec4(mainColor.rgb, mainColor.a * a);
     fragColor = baseColor;
 }

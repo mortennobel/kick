@@ -381,34 +381,20 @@ namespace kick {
     }
 
     bool SDL2Context::isFullscreen() {
-        return fullscreen;
+        return ((SDL_GetWindowFlags(window)&(SDL_WINDOW_FULLSCREEN|SDL_WINDOW_FULLSCREEN_DESKTOP)) != 0);
     }
 
     void SDL2Context::setFullscreen(bool fullscreen) {
 #ifndef EMSCRIPTEN
-        /*int error = SDL_SetWindowFullscreen(window, fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
-        if (error){
-            cout << "Error "<<SDL_GetError()<<endl;
-        }
-        this->fullscreen = fullscreen;
-          */
-        if (this->fullscreen != fullscreen){
+        if (isFullscreen() != fullscreen){
             Uint32 flags = (SDL_GetWindowFlags(window) ^ SDL_WINDOW_FULLSCREEN_DESKTOP);
             if (SDL_SetWindowFullscreen(window, flags) < 0) // NOTE: this takes FLAGS as the second param, NOT true/false!
             {
                 std::cout << "Toggling fullscreen mode failed: " << SDL_GetError() << std::endl;
                 return;
             }
-
-            /*Engine::getEventQueue().scheduleEvent([&](int eventid){
-                SDL_GL_GetDrawableSize(window, &contextSurfaceDim.x, &contextSurfaceDim.y);
-                contextSurfaceSize.notifyListeners(contextSurfaceDim);
-            });*/
-
-            this->fullscreen = fullscreen;
         }
 #endif
-
     }
 
     void SDL2Context::setWindowTitle(std::string title) {
