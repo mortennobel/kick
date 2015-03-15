@@ -40,7 +40,7 @@ namespace kick {
     }
 
     void Label::setFont(std::shared_ptr<Font>& font) {
-        if (!font->IsInitialized()){
+        if (!font->initialized()){
             font->loadFntFile();
         }
         Label::font = font;

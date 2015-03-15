@@ -90,11 +90,17 @@ namespace kick {
     }
 
     void Engine::init(int &argc, char **argv, WindowConfig const &config) {
+        cout << "kick "<< headerVersion()<<" (lib "<< libVersion()<<")"<<endl;
+
         assert(instance == nullptr);
         new Engine(argc, argv, config);
     }
 
     EventQueue &Engine::getEventQueue() {
         return instance->eventQueue;
+    }
+
+    std::string Engine::libVersion() {
+        return headerVersion();
     }
 }

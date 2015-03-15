@@ -57,7 +57,7 @@ public:
 
     friend class Label;
 
-    bool IsInitialized() const;
+    bool initialized() const;
 
     Event<Font*> fontListener;
 private:

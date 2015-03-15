@@ -101,4 +101,16 @@ namespace kick {
 
 #endif
     }
+
+    void Debug::drawLine(glm::vec3 from, glm::vec3 to, float seconds, glm::vec4 color, Camera* camera) {
+        cout << "Implement draw line"<<endl; // todo
+    }
+
+    void Debug::drawSphere(glm::vec3 center, float size, float seconds, glm::vec4 color, Camera* camera) {
+        cout << "Implement draw sphere"<<endl; // todo
+    }
+
+    void Debug::drawBox(glm::vec3 center, glm::vec3 size, float seconds, glm::vec4 color, Camera* camera) {
+        cout << "Implement draw box"<<endl; // todo
+    }
 }

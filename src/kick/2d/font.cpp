@@ -41,10 +41,12 @@ namespace kick{
 
         setTexture(Project::loadTexture2D(texturename, sampler));
         if (!texture){
+            logWarning(string("Cannot load font texture file ")+texturename);
             return false;
         }
         string fntFile;
         if (!Project::loadTextResource(filename,fntFile)){
+            logWarning(string("Cannot load font text file ")+filename);
             return false;
         }
         std::istringstream f{fntFile};
@@ -198,7 +200,7 @@ namespace kick{
         return shader;
     }
 
-    bool Font::IsInitialized() const {
+    bool Font::initialized() const {
         return texture != nullptr;
     }
 }

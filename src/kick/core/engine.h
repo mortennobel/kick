@@ -47,6 +47,20 @@ namespace kick {
         static void update();
         static void render();
 
+        // return the version number of the header
+        inline static std::string headerVersion(){
+            return std::string("0.0.1")
+#ifdef DEBUG
+                +"d"
+#endif
+#ifdef NDEBUG
+                +"n"
+#endif
+            ;
+        }
+
+        static std::string libVersion();
+
         static EventQueue & getEventQueue();
 
     private:
