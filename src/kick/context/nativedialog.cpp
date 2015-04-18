@@ -5,6 +5,7 @@
 #include "nativedialog.h"
 #include "tinyfiledialogs.h"
 #include <sstream>
+#include <iostream>
 
 // http://stackoverflow.com/a/236803/420250
 namespace {
@@ -88,7 +89,7 @@ std::unique_ptr<std::string> kick::NativeDialog::saveFile(std::string title, std
     return std::unique_ptr<std::string>(res?new std::string(res): nullptr);
 }
 
-std::vector<std::string> kick::NativeDialog::openFile(std::string title, std::string aDefaultPathAndFile, std::vector<std::string> filters, bool allowMultipleSelects) {
+std::vector<std::string> kick::NativeDialog::openFile(std::string  title, std::string aDefaultPathAndFile, std::vector<std::string> filters, bool allowMultipleSelects) {
     std::vector<char const *> filtersConverted;
     for (auto & f : filters){
         filtersConverted.push_back(f.c_str());
@@ -105,19 +106,25 @@ std::unique_ptr<std::string> kick::NativeDialog::selectFolder(std::string title,
     return std::unique_ptr<std::string>(res?new std::string(res): nullptr);
 }
 
-std::unique_ptr<glm::vec3> kick::NativeDialog::colorChooser(std::string title, glm::vec3 defaultRGB) {
+/*std::unique_ptr<glm::vec3> kick::NativeDialog::colorChooser(std::string title, glm::vec3 defaultRGB) {
     unsigned char aDefaultRGB[3];
-    unsigned char resRGB[3];
+    char hex[7];
+    hex[6] = '\0';
     for (int i=0;i<3;i++){
-        aDefaultRGB[i] = (unsigned char)round(defaultRGB[i]*255);
+        unsigned char c =(unsigned char)round(defaultRGB[i]*255);
+        hex[i*2] = '0'+ (c/16);
+        hex[i*2+1] = '0'+ (c%16);
     }
-    char const * res = tinyfd_colorChooser(title.c_str(), nullptr, aDefaultRGB, resRGB);
+    std::cout << "input "<<hex << std::endl;
+    char const * res = tinyfd_colorChooser(title.c_str(), hex, aDefaultRGB, aDefaultRGB);
     if (res){
         glm::vec3* c = new glm::vec3();
+        std::cout << "res "<<res<<std::endl;
         for (int i=0;i<3;i++){
-            (*c)[i] = resRGB[i]/255.0f;
+            (*c)[i] = aDefaultRGB[i]/255.0f;
+            std::cout<<(*c)[i]<< " "<<(int)aDefaultRGB[i]<<std::endl;
         }
         return std::unique_ptr<glm::vec3>(c);
     }
     return std::unique_ptr<glm::vec3>();
-}
+}   */

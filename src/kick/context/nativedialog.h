@@ -37,7 +37,7 @@ namespace kick {
 
         static std::unique_ptr<std::string> selectFolder(std::string title, std::string aDefaultPathAndFile);
 
-        static std::unique_ptr<glm::vec3> colorChooser(std::string title, glm::vec3 defaultRGB);
+        // static std::unique_ptr<glm::vec3> colorChooser(std::string title, glm::vec3 defaultRGB);
     };
 }
 
