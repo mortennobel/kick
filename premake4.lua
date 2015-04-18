@@ -9,7 +9,7 @@ solution "kick"
 project "kick"
   kind     "StaticLib"
   language "C++"
-  files    { "src/**.h","src/**.cpp","src/**.inl", "assets/**" }
+  files    { "src/**.h","src/**.cpp","src/**.inl", "assets/**", "libs/src/**" }
   includedirs { "src", "libs/include" }
   configuration {"vs*" }
     includedirs { "../glew-1.11.0/include", "../SDL2-2.0.3/include", "../SDL2-2.0.3/include", "../SDL2_image-2.0.0/include","../assimp-3.1.1-win-binaries/include"  }
@@ -42,7 +42,7 @@ project "kick"
 project "kick_unittest"
   kind "ConsoleApp"
   language "C++"
-  files    { "src/**.h","src/**.cpp", "src/**.inl", "unittest/**.cpp","unittest/**.h", "assets/**" }
+  files    { "src/**.h","src/**.cpp", "src/**.inl", "unittest/**.cpp","unittest/**.h", "assets/**", "libs/src/**" }
   includedirs { "src", "unittest", "libs/include" }
   configuration {"xcode*" }
     buildoptions "-std=c++11 -stdlib=libc++ -fno-exceptions"
