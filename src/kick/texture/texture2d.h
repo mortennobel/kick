@@ -33,7 +33,12 @@ namespace kick {
         void setEmptyDepthTexture(int width = 512, int height = 512, int bits = 32, bool fpTexture = false);
 
         void setData(int width, int height, char* data, const ImageFormat& imageFormat = {});
-        
+
+        std::vector<char> getData();
+
+        // return the runtime usage in bytes
+        int dataSize();
+
         void bind(int textureSlot);
         int width(){ return mWidth; }
         int height(){ return mHeight; }

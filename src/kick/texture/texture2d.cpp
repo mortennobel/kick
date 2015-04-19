@@ -152,4 +152,46 @@ namespace kick {
 
         setData(width, height, nullptr, imageFormat);
     }
+
+    std::vector<char> Texture2D::getData() {
+        vector<char> res(dataSize());
+        GLenum type = GL_UNSIGNED_BYTE;
+        glGetTexImage(GL_TEXTURE_2D, 0, mImageFormat.format, type, res.data());
+        return res;
+    }
+
+    int Texture2D::dataSize(){
+        int bytesPerTexel = 4;
+        switch (mImageFormat.internalFormat){
+            case GL_RGBA32F:
+                bytesPerTexel = 16;
+                break;
+            case GL_RGB32F:
+                bytesPerTexel = 12;
+                break;
+            case GL_RG32F:
+                bytesPerTexel = 8;
+                break;
+            case GL_DEPTH_COMPONENT32:
+            case GL_DEPTH_COMPONENT32F:
+            case GL_RGBA8:
+            case GL_R32F:
+                bytesPerTexel = 4;
+                break;
+            case GL_DEPTH_COMPONENT24:
+            case GL_RGB8:
+                bytesPerTexel = 3;
+                break;
+            case GL_DEPTH_COMPONENT16:
+            case GL_RG8:
+                bytesPerTexel = 2;
+                break;
+            case GL_R8:
+                bytesPerTexel = 1;
+                break;
+            default:
+                logWarning("Unknown size");
+        }
+        return mWidth * mHeight * bytesPerTexel;
+    }
 }
