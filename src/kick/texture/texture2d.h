@@ -14,6 +14,7 @@
 #include "kick/core/kickgl.h"
 #include "kick/texture/texture_sampler.h"
 #include "kick/texture/image_format.h"
+#include "kick/texture/texture2d_data.h"
 #include "glm/glm.hpp"
 
 namespace kick {
@@ -32,9 +33,10 @@ namespace kick {
         // Create an empty depth texture. A simple alternative to setData
         void setEmptyDepthTexture(int width = 512, int height = 512, int bits = 32, bool fpTexture = false);
 
-        void setData(int width, int height, char* data, const ImageFormat& imageFormat = {});
+        void setData(const Texture2DData& data, const ImageFormat& imageFormat = {});
+        void setData(int width, int height, const char* data, const ImageFormat& imageFormat = {});
 
-        std::vector<char> getData();
+        Texture2DData data();
 
         // return the runtime usage in bytes
         int dataSize();

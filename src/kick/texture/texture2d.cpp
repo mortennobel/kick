@@ -7,6 +7,7 @@
 //
 
 #include "texture2d.h"
+
 #include "kick/core/debug.h"
 #ifndef EMSCRIPTEN
 #ifdef _WIN32
@@ -39,7 +40,11 @@ namespace kick {
         glBindTexture(GL_TEXTURE_2D, mTextureid);
     }
     
-    void Texture2D::setData(int width, int height, char* data, const ImageFormat& imageFormat){
+    void Texture2D::setData(const Texture2DData& data, const ImageFormat& imageFormat){
+        setData(data.width(), data.height(),data.data(), imageFormat);
+    }
+
+    void Texture2D::setData(int width, int height, const char* data, const ImageFormat& imageFormat){
         this->mWidth = width;
         this->mHeight = height;
         this->mImageFormat = imageFormat;
@@ -153,11 +158,20 @@ namespace kick {
         setData(width, height, nullptr, imageFormat);
     }
 
-    std::vector<char> Texture2D::getData() {
+    Texture2DData Texture2D::data() {
+        bind(0);
         vector<char> res(dataSize());
         GLenum type = GL_UNSIGNED_BYTE;
+        switch (mImageFormat.internalFormat){
+            case GL_RGBA32F:
+            case GL_RGB32F:
+            case GL_RG32F:
+            case GL_R32F:
+            case GL_DEPTH_COMPONENT32F:
+                type = GL_FLOAT;
+        }
         glGetTexImage(GL_TEXTURE_2D, 0, mImageFormat.format, type, res.data());
-        return res;
+        return Texture2DData(res, mWidth, mHeight);
     }
 
     int Texture2D::dataSize(){
