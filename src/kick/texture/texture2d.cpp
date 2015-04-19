@@ -90,4 +90,66 @@ namespace kick {
         SDL_FreeSurface(sdlSurface);
 #endif
     }
+
+
+    void Texture2D::setEmptyColorTexture(int width, int height, int colorChannels, bool fpTexture) {
+        ImageFormat imageFormat;
+        if (fpTexture){
+            if (colorChannels == 4){
+                imageFormat.internalFormat = GL_RGBA32F;
+            } else if (colorChannels == 3){
+                imageFormat.internalFormat = GL_RGB32F;
+            } else if (colorChannels == 2){
+                imageFormat.internalFormat = GL_RG32F;
+            } else if (colorChannels == 1){
+                imageFormat.internalFormat = GL_R32F;
+            }
+        } else {
+            if (colorChannels == 4){
+                imageFormat.internalFormat = GL_RGBA8;
+            } else if (colorChannels == 3){
+                imageFormat.internalFormat = GL_RGB8;
+            } else if (colorChannels == 2){
+                imageFormat.internalFormat = GL_RG8;
+            } else if (colorChannels == 1){
+                imageFormat.internalFormat = GL_R8;
+            }
+        }
+        if (colorChannels == 4){
+            imageFormat.format = GL_RGBA;
+        } else if (colorChannels == 3){
+            imageFormat.format = GL_RGB;
+        } else if (colorChannels == 2){
+            imageFormat.format = GL_RG;
+        } else if (colorChannels == 1){
+            imageFormat.format = GL_RED;
+        }
+        setData(width, height, nullptr, imageFormat);
+    }
+
+    void Texture2D::setEmptyDepthTexture(int width, int height, int bits, bool fpTexture) {
+        ImageFormat imageFormat;
+        if (bits == 16){
+            if (fpTexture){
+                logWarning("Unsupported fpTexture for 16 bit depth texture");
+            }
+            imageFormat.internalFormat = GL_DEPTH_COMPONENT16;
+        } else if (bits == 24){
+            if (fpTexture){
+                logWarning("Unsupported fpTexture for 24 bit depth texture");
+            }
+            imageFormat.internalFormat = GL_DEPTH_COMPONENT24;
+        } else if (bits == 32 && fpTexture) {
+            imageFormat.internalFormat = GL_DEPTH_COMPONENT32F;
+        } else {
+            if (bits != 32){
+                logWarning("Unsupported bit depth for depth texture");
+            }
+            imageFormat.internalFormat = GL_DEPTH_COMPONENT32;
+        }
+
+        imageFormat.format = GL_DEPTH_COMPONENT;
+
+        setData(width, height, nullptr, imageFormat);
+    }
 }

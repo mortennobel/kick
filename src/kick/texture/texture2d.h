@@ -25,7 +25,13 @@ namespace kick {
         Texture2D(const Texture2D&) = delete;
         Texture2D(Texture2D&& m);
         ~Texture2D();
-        
+
+        // Create an empty color texture. A simple alternative to setData
+        void setEmptyColorTexture(int width = 512, int height = 512, int colorChannels = 4, bool fpTexture = false);
+
+        // Create an empty depth texture. A simple alternative to setData
+        void setEmptyDepthTexture(int width = 512, int height = 512, int bits = 32, bool fpTexture = false);
+
         void setData(int width, int height, char* data, const ImageFormat& imageFormat = {});
         
         void bind(int textureSlot);

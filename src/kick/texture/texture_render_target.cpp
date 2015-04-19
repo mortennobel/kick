@@ -21,12 +21,19 @@ namespace kick {
     }
 
     void TextureRenderTarget::bind() {
-        assert(mRenderBuffers.size() > 0); // probably missing TextureRenderTarget.apply
         glBindFramebuffer(GL_FRAMEBUFFER, mFramebuffer);
+        if (mColorTextures.size() == 0){
+            glDrawBuffer(GL_NONE);
+            glReadBuffer(GL_NONE);
+        }
     }
 
     void TextureRenderTarget::unbind() {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        if (mColorTextures.size() == 0){
+            glDrawBuffer(GL_BACK);
+            glReadBuffer(GL_BACK);
+        }
     }
 
     void TextureRenderTarget::apply() {
@@ -43,30 +50,37 @@ namespace kick {
                 glFramebufferTexture2D(GL_FRAMEBUFFER, (GLenum) (GL_COLOR_ATTACHMENT0+i), GL_TEXTURE_2D, colorTexture->mTextureid, 0);
             }
         } else {
-            GLuint renderBuffer;
+            /*GLuint renderBuffer;
             glGenRenderbuffers(1, &renderBuffer);
             mRenderBuffers.push_back(renderBuffer);
             glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer);
             glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA4, mSize.x, mSize.y);
-            glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderBuffer);
+            glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderBuffer); */
+            glDrawBuffer(GL_NONE);
+            glReadBuffer(GL_NONE);
         }
 
         // bind depth attachments
-        GLuint renderBuffer;
-        glGenRenderbuffers(1, &renderBuffer);
-        mRenderBuffers.push_back(renderBuffer);
-        glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer);
-        glRenderbufferStorage(GL_RENDERBUFFER,
-#ifdef KICK_CONTEXT_ES2
-                GL_DEPTH_COMPONENT16,
-#else
-                GL_DEPTH_COMPONENT32,
-#endif
+        if (mDepthTexture){
+            glFramebufferTexture2D(GL_FRAMEBUFFER, (GLenum) GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mDepthTexture->mTextureid, 0);
+        } else {
+            GLuint renderBuffer;
+            glGenRenderbuffers(1, &renderBuffer);
+            mRenderBuffers.push_back(renderBuffer);
+            glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer);
+            glRenderbufferStorage(GL_RENDERBUFFER,
+    #ifdef KICK_CONTEXT_ES2
+                    GL_DEPTH_COMPONENT16,
+    #else
+                    GL_DEPTH_COMPONENT32,
+    #endif
 
-                mSize.x, mSize.y);
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, renderBuffer);
-
+                    mSize.x, mSize.y);
+            glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, renderBuffer);
+        }
         checkStatus();
+
+        cout << "Make rendertarget"<<endl;
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
@@ -142,5 +156,13 @@ namespace kick {
         mColorTextures[channel].reset();
         mColorTextures.erase(mColorTextures.begin() + channel);
         return true;
+    }
+
+    bool TextureRenderTarget::deleteDepthTexture() {
+        mDepthTexture.reset();
+    }
+
+    void TextureRenderTarget::setDepthTexture(std::shared_ptr<Texture2D> texture) {
+        mDepthTexture = texture;
     }
 }
