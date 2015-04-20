@@ -31,7 +31,6 @@ namespace kick {
         this->mWidth = width;
         this->mHeight = height;
         this->mImageFormat = imageFormat;
-        GLenum target = GL_TEXTURE_2D;
         GLint border = 0; // must be 0
 
         glBindTexture(GL_TEXTURE_CUBE_MAP, mTextureid);
