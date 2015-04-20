@@ -75,18 +75,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9146332e92139eca8a5c51c42f8f80ac"></a><!-- doxytag: member="kick::Plane::Plane" ref="a9146332e92139eca8a5c51c42f8f80ac" args="(float x, float y, float z, float dist)" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>Plane</b> (float x, float y, float z, float dist)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0766a81470349fbddc6003ea433601d9"></a><!-- doxytag: member="kick::Plane::Plane" ref="a0766a81470349fbddc6003ea433601d9" args="(glm::vec3 direction, float dist)" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>Plane</b> (glm::vec3 direction, float dist)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afdb16a52aed4caf2ebf25ca17da18264"></a><!-- doxytag: member="kick::Plane::Plane" ref="afdb16a52aed4caf2ebf25ca17da18264" args="(float x, float y, float z, float offset)" -->
+&#160;</td><td class="memItemRight" valign="bottom"><b>Plane</b> (float x, float y, float z, float offset)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3f636ef3ed0e29247931cb6f8a79616d"></a><!-- doxytag: member="kick::Plane::Plane" ref="a3f636ef3ed0e29247931cb6f8a79616d" args="(glm::vec3 normal, glm::vec3 pointInPlane)" -->
+&#160;</td><td class="memItemRight" valign="bottom"><b>Plane</b> (glm::vec3 normal, glm::vec3 pointInPlane)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad0ce306c67d9684040445c7a1542b139"></a><!-- doxytag: member="kick::Plane::Plane" ref="ad0ce306c67d9684040445c7a1542b139" args="(glm::vec3 normal, float offset)" -->
+&#160;</td><td class="memItemRight" valign="bottom"><b>Plane</b> (glm::vec3 normal, float offset)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2889a1f17cb3330b53733ae4bf589f4f"></a><!-- doxytag: member="kick::Plane::normal" ref="a2889a1f17cb3330b53733ae4bf589f4f" args="() const " -->
 glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>normal</b> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acf5d6a776c357b53957ca1d31c0bee84"></a><!-- doxytag: member="kick::Plane::setNormal" ref="acf5d6a776c357b53957ca1d31c0bee84" args="(glm::vec3 p)" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setNormal</b> (glm::vec3 p)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae548269286cfb2e33504c8b43ffc31bc"></a><!-- doxytag: member="kick::Plane::distanceToOrigo" ref="ae548269286cfb2e33504c8b43ffc31bc" args="() const " -->
-float&#160;</td><td class="memItemRight" valign="bottom"><b>distanceToOrigo</b> () const </td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac83bcd2fee56220f07b1c1427c1805f3"></a><!-- doxytag: member="kick::Plane::setDistanceToOrigo" ref="ac83bcd2fee56220f07b1c1427c1805f3" args="(float d)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setDistanceToOrigo</b> (float d)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abfe85e4d7e979d81fd9f8560cf18977c"></a><!-- doxytag: member="kick::Plane::offset" ref="abfe85e4d7e979d81fd9f8560cf18977c" args="() const " -->
+float&#160;</td><td class="memItemRight" valign="bottom"><b>offset</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad95eeee6bdbd7c73f3e4afcff9376042"></a><!-- doxytag: member="kick::Plane::setOffset" ref="ad95eeee6bdbd7c73f3e4afcff9376042" args="(float d)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setOffset</b> (float d)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a058c910182a1cb02f3a9a8e6a3fc26f9"></a><!-- doxytag: member="kick::Plane::pointOnPlane" ref="a058c910182a1cb02f3a9a8e6a3fc26f9" args="() const " -->
 glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>pointOnPlane</b> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0dbd97944e83561602e106aac6861ce0"></a><!-- doxytag: member="kick::Plane::distanceToPlane" ref="a0dbd97944e83561602e106aac6861ce0" args="(glm::vec3 point) const " -->
@@ -98,7 +100,7 @@ glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>intersectionPoin
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="plane_8h_source.html#l00011">11</a> of file <a class="el" href="plane_8h_source.html">plane.h</a>.</p>
+<p>Definition at line <a class="el" href="plane_8h_source.html#l00013">13</a> of file <a class="el" href="plane_8h_source.html">plane.h</a>.</p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>/Users/morten/Programmering/cpp/kick/src/kick/math/<a class="el" href="plane_8h_source.html">plane.h</a></li>
 <li>/Users/morten/Programmering/cpp/kick/src/kick/math/<a class="el" href="plane_8cpp_source.html">plane.cpp</a></li>
@@ -118,7 +120,7 @@ glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>intersectionPoin
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Apr 20 2015 22:02:09 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

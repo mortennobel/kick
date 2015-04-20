@@ -89,7 +89,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00029"></a>00029 
 <a name="l00030"></a>00030     <span class="keywordtype">bool</span> KDTreeNodeRef::intersectRay(<span class="keyword">const</span> Ray &amp;ray, KDTreeHitInfo &amp;hit)<span class="keyword"> const </span>{
 <a name="l00031"></a>00031         vec3 intersectionPoint;
-<a name="l00032"></a>00032         <span class="keywordtype">bool</span> res = ray.intersect(triangle[0], triangle[1], triangle[2], intersectionPoint);
+<a name="l00032"></a>00032         <span class="keywordtype">bool</span> res = ray.intersectTriangle(triangle[0], triangle[1], triangle[2], intersectionPoint);
 <a name="l00033"></a>00033         <span class="keywordtype">float</span> len = length(intersectionPoint - ray.origin());
 <a name="l00034"></a>00034         <span class="keywordflow">if</span> (res &amp;&amp; len &lt; hit.distance){
 <a name="l00035"></a>00035             hit.distance = len;
@@ -263,7 +263,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Apr 20 2015 22:02:09 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

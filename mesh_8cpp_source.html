@@ -68,7 +68,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00008"></a>00008 
 <a name="l00009"></a>00009 <span class="preprocessor">#include &quot;kick/mesh/mesh.h&quot;</span>
 <a name="l00010"></a>00010 <span class="preprocessor">#include &quot;kick/mesh/mesh_data.h&quot;</span>
-<a name="l00011"></a>00011 <span class="preprocessor">#include &quot;kick/core/log.h&quot;</span>
+<a name="l00011"></a>00011 <span class="preprocessor">#include &quot;kick/core/debug.h&quot;</span>
 <a name="l00012"></a>00012 <span class="preprocessor">#include &lt;vector&gt;</span>
 <a name="l00013"></a>00013 <span class="preprocessor">#include &lt;set&gt;</span>
 <a name="l00014"></a>00014 
@@ -185,29 +185,30 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00125"></a>00125         } <span class="keywordflow">else</span> {
 <a name="l00126"></a>00126             mInterleavedFormat.clear();
 <a name="l00127"></a>00127         }
-<a name="l00128"></a>00128     }
-<a name="l00129"></a>00129     
-<a name="l00130"></a>00130     <span class="keywordtype">void</span> Mesh::updateMeshData(MeshData *mesh_data){
-<a name="l00131"></a>00131         vector&lt;float&gt; data = mesh_data-&gt;interleavedData();
-<a name="l00132"></a>00132 
-<a name="l00133"></a>00133         <span class="keywordflow">if</span> (data.size()){
-<a name="l00134"></a>00134             GLsizeiptr vertexDataSize =data.size()*<span class="keyword">sizeof</span>(float);
-<a name="l00135"></a>00135             glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferId);
-<a name="l00136"></a>00136             glBufferData(GL_ARRAY_BUFFER, vertexDataSize, data.data(), mesh_data-&gt;meshUsageVal());
-<a name="l00137"></a>00137         }
-<a name="l00138"></a>00138 
-<a name="l00139"></a>00139         vector&lt;GLushort&gt; indices = mesh_data-&gt;indicesConcat();
-<a name="l00140"></a>00140         <span class="keywordflow">if</span> (indices.size()){
-<a name="l00141"></a>00141             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mElementBufferId);
-<a name="l00142"></a>00142             GLsizeiptr indicesSize = indices.size()*<span class="keyword">sizeof</span>(GLushort);
-<a name="l00143"></a>00143             glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices.data(), mesh_data-&gt;meshUsageVal());
-<a name="l00144"></a>00144         }
-<a name="l00145"></a>00145     }
-<a name="l00146"></a>00146 
-<a name="l00147"></a>00147     std::shared_ptr&lt;MeshData&gt; Mesh::meshData() {
-<a name="l00148"></a>00148         <span class="keywordflow">return</span> mMeshData;
-<a name="l00149"></a>00149     }
-<a name="l00150"></a>00150 };
+<a name="l00128"></a>00128         mMeshData = m;
+<a name="l00129"></a>00129     }
+<a name="l00130"></a>00130     
+<a name="l00131"></a>00131     <span class="keywordtype">void</span> Mesh::updateMeshData(MeshData *mesh_data){
+<a name="l00132"></a>00132         vector&lt;float&gt; data = mesh_data-&gt;interleavedData();
+<a name="l00133"></a>00133 
+<a name="l00134"></a>00134         <span class="keywordflow">if</span> (data.size()){
+<a name="l00135"></a>00135             GLsizeiptr vertexDataSize =data.size()*<span class="keyword">sizeof</span>(float);
+<a name="l00136"></a>00136             glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferId);
+<a name="l00137"></a>00137             glBufferData(GL_ARRAY_BUFFER, vertexDataSize, data.data(), mesh_data-&gt;meshUsageVal());
+<a name="l00138"></a>00138         }
+<a name="l00139"></a>00139 
+<a name="l00140"></a>00140         vector&lt;GLushort&gt; indices = mesh_data-&gt;indicesConcat();
+<a name="l00141"></a>00141         <span class="keywordflow">if</span> (indices.size()){
+<a name="l00142"></a>00142             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mElementBufferId);
+<a name="l00143"></a>00143             GLsizeiptr indicesSize = indices.size()*<span class="keyword">sizeof</span>(GLushort);
+<a name="l00144"></a>00144             glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices.data(), mesh_data-&gt;meshUsageVal());
+<a name="l00145"></a>00145         }
+<a name="l00146"></a>00146     }
+<a name="l00147"></a>00147 
+<a name="l00148"></a>00148     std::shared_ptr&lt;MeshData&gt; Mesh::meshData() {
+<a name="l00149"></a>00149         <span class="keywordflow">return</span> mMeshData;
+<a name="l00150"></a>00150     }
+<a name="l00151"></a>00151 };
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -224,7 +225,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Apr 20 2015 22:02:09 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

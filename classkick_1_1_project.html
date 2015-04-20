@@ -76,18 +76,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a154bb6cbc4c5ab489089000889bae100"></a><!-- doxytag: member="kick::Project::createMaterial" ref="a154bb6cbc4c5ab489089000889bae100" args="(std::string shaderUri=&quot;assets/shaders/diffuse.shader&quot;)" -->
+static <a class="el" href="classkick_1_1_material.html">Material</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>createMaterial</b> (std::string shaderUri=&quot;assets/shaders/diffuse.shader&quot;)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab53b6ee36e487d2938fa3a7e2bb7825f"></a><!-- doxytag: member="kick::Project::loadTextResource" ref="ab53b6ee36e487d2938fa3a7e2bb7825f" args="(std::string uri, std::string &amp;outText)" -->
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>loadTextResource</b> (std::string uri, std::string &amp;outText)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a24b3073c3e6434e605d3282064e788b8"></a><!-- doxytag: member="kick::Project::loadBinaryResource" ref="a24b3073c3e6434e605d3282064e788b8" args="(std::string uri, std::vector&lt; char &gt; &amp;outResource)" -->
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>loadBinaryResource</b> (std::string uri, std::vector&lt; char &gt; &amp;outResource)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1e7259678d920e53473c282694a33e7a"></a><!-- doxytag: member="kick::Project::loadShader" ref="a1e7259678d920e53473c282694a33e7a" args="(std::string uri)" -->
 static std::shared_ptr&lt; <a class="el" href="classkick_1_1_shader.html">Shader</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>loadShader</b> (std::string uri)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8186993b925e0fbc905577d5bebadcbf"></a><!-- doxytag: member="kick::Project::loadTexture2D" ref="a8186993b925e0fbc905577d5bebadcbf" args="(std::string uri)" -->
-static std::shared_ptr&lt; <a class="el" href="classkick_1_1_texture2_d.html">Texture2D</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>loadTexture2D</b> (std::string uri)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a61b4459a75fe15fd938d356e039893f1"></a><!-- doxytag: member="kick::Project::loadFont" ref="a61b4459a75fe15fd938d356e039893f1" args="(std::string fontName=&quot;assets/font/open_sans_28.fnt&quot;)" -->
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac88fd26c7777d9141c9291963e3c9971"></a><!-- doxytag: member="kick::Project::loadTexture2D" ref="ac88fd26c7777d9141c9291963e3c9971" args="(std::string uri, TextureSampler sampler={})" -->
+static std::shared_ptr&lt; <a class="el" href="classkick_1_1_texture2_d.html">Texture2D</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>loadTexture2D</b> (std::string uri, <a class="el" href="structkick_1_1_texture_sampler.html">TextureSampler</a> sampler={})</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2db9ed864fc5c5c436fb3574014d0d72"></a><!-- doxytag: member="kick::Project::loadFont" ref="a2db9ed864fc5c5c436fb3574014d0d72" args="(int fontsize=16)" -->
+static std::shared_ptr&lt; <a class="el" href="classkick_1_1_font.html">Font</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>loadFont</b> (int fontsize=16)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac37c379e5422608eed1dcdfdf5a48b5c"></a><!-- doxytag: member="kick::Project::loadFont" ref="ac37c379e5422608eed1dcdfdf5a48b5c" args="(std::string fontName=&quot;assets/font/open_sans_28.fnt&quot;)" -->
 static std::shared_ptr&lt; <a class="el" href="classkick_1_1_font.html">Font</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>loadFont</b> (std::string fontName=&quot;assets/font/open_sans_28.fnt&quot;)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6be91d098b62d3462cdb87ec37b31c59"></a><!-- doxytag: member="kick::Project::loadTexture2DFromMemory" ref="a6be91d098b62d3462cdb87ec37b31c59" args="(const char *data, int size)" -->
-static <a class="el" href="classkick_1_1_texture2_d.html">Texture2D</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>loadTexture2DFromMemory</b> (const char *data, int size)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0b1f94b31459565deae7b5c715240e44"></a><!-- doxytag: member="kick::Project::loadTexture2DFromMemory" ref="a0b1f94b31459565deae7b5c715240e44" args="(const char *data, int size)" -->
+static std::shared_ptr&lt; <a class="el" href="classkick_1_1_texture2_d.html">Texture2D</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>loadTexture2DFromMemory</b> (const char *data, int size)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a02c7b137596b084d26ae80605c069033"></a><!-- doxytag: member="kick::Project::loadTextureCube" ref="a02c7b137596b084d26ae80605c069033" args="(std::string uri)" -->
 static std::shared_ptr<br class="typebreak"/>
 &lt; <a class="el" href="classkick_1_1_texture_cube.html">TextureCube</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>loadTextureCube</b> (std::string uri)</td></tr>
@@ -125,7 +129,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Engine</b></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Apr 20 2015 22:02:09 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

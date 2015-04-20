@@ -77,18 +77,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00017"></a>00017         <a class="code" href="classkick_1_1_ray.html">Ray</a>(glm::vec3 origin, glm::vec3 direction);
 <a name="l00018"></a>00018         
 <a name="l00019"></a>00019         <span class="keywordtype">bool</span> closestPoints(<a class="code" href="classkick_1_1_ray.html">Ray</a> otherRay, glm::vec3&amp; outPoint1, glm::vec3&amp; outPoint2) <span class="keyword">const</span>;
-<a name="l00020"></a>00020         <span class="keywordtype">bool</span> intersect(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2, glm::vec3 &amp;intersectionPoint, <span class="keywordtype">bool</span> clampBackIntersections = <span class="keyword">true</span>) <span class="keyword">const</span>;
-<a name="l00021"></a>00021         glm::vec3 <span class="keyword">const</span> &amp;origin() <span class="keyword">const</span>;
-<a name="l00022"></a>00022         <span class="keywordtype">void</span> setOrigin(glm::vec3 <span class="keyword">const</span> &amp;origin);
-<a name="l00023"></a>00023         glm::vec3 <span class="keyword">const</span> &amp;direction() <span class="keyword">const</span>;
-<a name="l00024"></a>00024         <span class="keywordtype">void</span> setDirection(glm::vec3 <span class="keyword">const</span> &amp;direction);
-<a name="l00025"></a>00025 
-<a name="l00026"></a>00026         glm::vec3 point(<span class="keywordtype">float</span> offset) <span class="keyword">const</span>;
-<a name="l00027"></a>00027     <span class="keyword">private</span>:
-<a name="l00028"></a>00028         glm::vec3 mOrigin;
-<a name="l00029"></a>00029         glm::vec3 mDirection;
-<a name="l00030"></a>00030     };
-<a name="l00031"></a>00031 }
+<a name="l00020"></a>00020         glm::vec3 closestPoint(glm::vec3 point) <span class="keyword">const</span>;
+<a name="l00021"></a>00021         <span class="keywordtype">bool</span> intersectTriangle(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2, glm::vec3 &amp;intersectionPoint, <span class="keywordtype">bool</span> clampBackIntersections = <span class="keyword">true</span>) <span class="keyword">const</span>;
+<a name="l00022"></a>00022         glm::vec3 <span class="keyword">const</span> &amp;origin() <span class="keyword">const</span>;
+<a name="l00023"></a>00023         <span class="keywordtype">void</span> setOrigin(glm::vec3 <span class="keyword">const</span> &amp;origin);
+<a name="l00024"></a>00024         glm::vec3 <span class="keyword">const</span> &amp;direction() <span class="keyword">const</span>;
+<a name="l00025"></a>00025         <span class="keywordtype">void</span> setDirection(glm::vec3 <span class="keyword">const</span> &amp;direction);
+<a name="l00026"></a>00026 
+<a name="l00027"></a>00027         glm::vec3 point(<span class="keywordtype">float</span> offset) <span class="keyword">const</span>;
+<a name="l00028"></a>00028     <span class="keyword">private</span>:
+<a name="l00029"></a>00029         glm::vec3 mOrigin;
+<a name="l00030"></a>00030         glm::vec3 mDirection;
+<a name="l00031"></a>00031     };
+<a name="l00032"></a>00032 }
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -105,7 +106,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Apr 20 2015 22:02:09 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

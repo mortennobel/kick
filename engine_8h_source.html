@@ -107,23 +107,37 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00047"></a>00047         <span class="keyword">static</span> <span class="keywordtype">void</span> update();
 <a name="l00048"></a>00048         <span class="keyword">static</span> <span class="keywordtype">void</span> render();
 <a name="l00049"></a>00049 
-<a name="l00050"></a>00050         <span class="keyword">static</span> <a class="code" href="classkick_1_1_event_queue.html">EventQueue</a> &amp; getEventQueue();
-<a name="l00051"></a>00051 
-<a name="l00052"></a>00052     <span class="keyword">private</span>:
-<a name="l00053"></a>00053         <span class="keyword">static</span> <a class="code" href="classkick_1_1_engine.html">Engine</a>* instance;
-<a name="l00054"></a>00054         <a class="code" href="structkick_1_1_engine_config.html">EngineConfig</a> mConfig;
-<a name="l00055"></a>00055         <a class="code" href="classkick_1_1_event_queue.html">EventQueue</a> eventQueue;
-<a name="l00056"></a>00056         <a class="code" href="classkick_1_1_engine.html">Engine</a>(<span class="keywordtype">int</span> &amp;argc, <span class="keywordtype">char</span> **argv, <span class="keyword">const</span> <a class="code" href="structkick_1_1_window_config.html">WindowConfig</a>&amp; config = WindowConfig::plain);
-<a name="l00057"></a>00057         <span class="keywordtype">float</span> tickStartTime;
-<a name="l00058"></a>00058 
-<a name="l00059"></a>00059         <a class="code" href="classkick_1_1_project.html">Project</a> project;
-<a name="l00060"></a>00060         std::vector&lt;Scene&gt; scenes;
-<a name="l00061"></a>00061         <a class="code" href="structkick_1_1_engine_uniforms.html">EngineUniforms</a> engineUniforms;
-<a name="l00062"></a>00062         <a class="code" href="classkick_1_1_scene.html">Scene</a> *mActiveScene = <span class="keyword">nullptr</span>;
-<a name="l00063"></a>00063         <a class="code" href="classkick_1_1_context.html">Context</a>* mContext = <span class="keyword">nullptr</span>;
-<a name="l00064"></a>00064         <a class="code" href="classkick_1_1_default_key_handler.html">DefaultKeyHandler</a> mDefaultKeyHandler;
-<a name="l00065"></a>00065     };
-<a name="l00066"></a>00066 };
+<a name="l00050"></a>00050         <span class="comment">// return the version number of the header</span>
+<a name="l00051"></a>00051         <span class="keyword">inline</span> <span class="keyword">static</span> std::string headerVersion(){
+<a name="l00052"></a>00052             <span class="keywordflow">return</span> std::string(<span class="stringliteral">&quot;0.0.1&quot;</span>)
+<a name="l00053"></a>00053 <span class="preprocessor">#ifdef DEBUG</span>
+<a name="l00054"></a>00054 <span class="preprocessor"></span>                +<span class="stringliteral">&quot;d&quot;</span>
+<a name="l00055"></a>00055 <span class="preprocessor">#endif</span>
+<a name="l00056"></a>00056 <span class="preprocessor"></span><span class="preprocessor">#ifdef NDEBUG</span>
+<a name="l00057"></a>00057 <span class="preprocessor"></span>                +<span class="stringliteral">&quot;n&quot;</span>
+<a name="l00058"></a>00058 <span class="preprocessor">#endif</span>
+<a name="l00059"></a>00059 <span class="preprocessor"></span>            ;
+<a name="l00060"></a>00060         }
+<a name="l00061"></a>00061 
+<a name="l00062"></a>00062         <span class="keyword">static</span> std::string libVersion();
+<a name="l00063"></a>00063 
+<a name="l00064"></a>00064         <span class="keyword">static</span> <a class="code" href="classkick_1_1_event_queue.html">EventQueue</a> &amp; getEventQueue();
+<a name="l00065"></a>00065 
+<a name="l00066"></a>00066     <span class="keyword">private</span>:
+<a name="l00067"></a>00067         <span class="keyword">static</span> <a class="code" href="classkick_1_1_engine.html">Engine</a>* instance;
+<a name="l00068"></a>00068         <a class="code" href="structkick_1_1_engine_config.html">EngineConfig</a> mConfig;
+<a name="l00069"></a>00069         <a class="code" href="classkick_1_1_event_queue.html">EventQueue</a> eventQueue;
+<a name="l00070"></a>00070         <a class="code" href="classkick_1_1_engine.html">Engine</a>(<span class="keywordtype">int</span> &amp;argc, <span class="keywordtype">char</span> **argv, <span class="keyword">const</span> <a class="code" href="structkick_1_1_window_config.html">WindowConfig</a>&amp; config = WindowConfig::plain);
+<a name="l00071"></a>00071         <span class="keywordtype">float</span> tickStartTime;
+<a name="l00072"></a>00072 
+<a name="l00073"></a>00073         <a class="code" href="classkick_1_1_project.html">Project</a> project;
+<a name="l00074"></a>00074         std::vector&lt;Scene&gt; scenes;
+<a name="l00075"></a>00075         <a class="code" href="structkick_1_1_engine_uniforms.html">EngineUniforms</a> engineUniforms;
+<a name="l00076"></a>00076         <a class="code" href="classkick_1_1_scene.html">Scene</a> *mActiveScene = <span class="keyword">nullptr</span>;
+<a name="l00077"></a>00077         <a class="code" href="classkick_1_1_context.html">Context</a>* mContext = <span class="keyword">nullptr</span>;
+<a name="l00078"></a>00078         <a class="code" href="classkick_1_1_default_key_handler.html">DefaultKeyHandler</a> mDefaultKeyHandler;
+<a name="l00079"></a>00079     };
+<a name="l00080"></a>00080 };
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -140,7 +154,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Apr 20 2015 22:02:09 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

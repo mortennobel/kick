@@ -68,7 +68,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00008"></a>00008 
 <a name="l00009"></a>00009 <span class="preprocessor">#include &quot;kick/core/project.h&quot;</span>
 <a name="l00010"></a>00010 <span class="preprocessor">#include &quot;kick/core/engine.h&quot;</span>
-<a name="l00011"></a>00011 <span class="preprocessor">#include &quot;kick/core/log.h&quot;</span>
+<a name="l00011"></a>00011 <span class="preprocessor">#include &quot;kick/core/debug.h&quot;</span>
 <a name="l00012"></a>00012 <span class="preprocessor">#include &lt;fstream&gt;</span>
 <a name="l00013"></a>00013 
 <a name="l00014"></a>00014 <span class="preprocessor">#include &quot;kick/texture/image_format.h&quot;</span>
@@ -80,467 +80,484 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00020"></a>00020 <span class="preprocessor">#ifdef EMSCRIPTEN</span>
 <a name="l00021"></a>00021 <span class="preprocessor"></span><span class="preprocessor">#   include &lt;SDL/SDL_image.h&gt;</span>
 <a name="l00022"></a>00022 <span class="preprocessor">#else</span>
-<a name="l00023"></a>00023 <span class="preprocessor"></span><span class="preprocessor">#   include &lt;SDL2_image/SDL_image.h&gt;</span>
-<a name="l00024"></a>00024 <span class="preprocessor">#endif</span>
-<a name="l00025"></a>00025 <span class="preprocessor"></span><span class="keyword">using namespace </span>std;
-<a name="l00026"></a>00026 
-<a name="l00027"></a>00027 <span class="keyword">namespace </span>kick {
-<a name="l00028"></a>00028 
-<a name="l00029"></a>00029     std::map&lt;std::string, std::weak_ptr&lt;TextureAtlas&gt;&gt; Project::textureAtlasRef;
-<a name="l00030"></a>00030     std::map&lt;std::string, std::weak_ptr&lt;Shader&gt;&gt; Project::shaderRef;
-<a name="l00031"></a>00031     std::map&lt;std::string, std::weak_ptr&lt;Texture2D&gt;&gt; Project::texture2DRef;
-<a name="l00032"></a>00032     std::map&lt;std::string, std::weak_ptr&lt;TextureCube&gt;&gt; Project::textureCubeRef;
-<a name="l00033"></a>00033     std::map&lt;std::string, std::weak_ptr&lt;Font&gt;&gt; Project::fontRef;
-<a name="l00034"></a>00034 
-<a name="l00035"></a>00035     Project::Project()
-<a name="l00036"></a>00036     {
-<a name="l00037"></a>00037 <span class="preprocessor">#ifndef EMSCRIPTEN</span>
-<a name="l00038"></a>00038 <span class="preprocessor"></span>        SDL_version compile_version;
-<a name="l00039"></a>00039         <span class="keyword">const</span> SDL_version *link_version=IMG_Linked_Version();
-<a name="l00040"></a>00040         SDL_IMAGE_VERSION(&amp;compile_version);
-<a name="l00041"></a>00041         <span class="keywordflow">if</span> (compile_version.major != link_version-&gt;major ||
-<a name="l00042"></a>00042                 compile_version.minor != link_version-&gt;minor ||
-<a name="l00043"></a>00043                 compile_version.patch != link_version-&gt;patch){
-<a name="l00044"></a>00044             printf(<span class="stringliteral">&quot;compiled with SDL_image version: %d.%d.%d\n&quot;</span>,
-<a name="l00045"></a>00045                     compile_version.major,
-<a name="l00046"></a>00046                     compile_version.minor,
-<a name="l00047"></a>00047                     compile_version.patch);
-<a name="l00048"></a>00048             printf(<span class="stringliteral">&quot;running with SDL_image version: %d.%d.%d\n&quot;</span>,
-<a name="l00049"></a>00049                     link_version-&gt;major,
-<a name="l00050"></a>00050                     link_version-&gt;minor,
-<a name="l00051"></a>00051                     link_version-&gt;patch);
-<a name="l00052"></a>00052         } <span class="keywordflow">else</span> {
-<a name="l00053"></a>00053             printf(<span class="stringliteral">&quot;SDL_image version: %d.%d.%d\n&quot;</span>,
-<a name="l00054"></a>00054                     compile_version.major,
-<a name="l00055"></a>00055                     compile_version.minor,
-<a name="l00056"></a>00056                     compile_version.patch);
-<a name="l00057"></a>00057         }
-<a name="l00058"></a>00058 <span class="preprocessor">#endif</span>
-<a name="l00059"></a>00059 <span class="preprocessor"></span>
-<a name="l00060"></a>00060         <span class="keywordtype">int</span> flags=IMG_INIT_JPG|IMG_INIT_PNG;
-<a name="l00061"></a>00061         <span class="keywordtype">int</span> initted=IMG_Init(flags);
-<a name="l00062"></a>00062         <span class="keywordflow">if</span>((initted&amp;flags) != flags) {
-<a name="l00063"></a>00063             printf(<span class="stringliteral">&quot;IMG_Init: Failed to init required jpg and png support!\n&quot;</span>);
-<a name="l00064"></a>00064             printf(<span class="stringliteral">&quot;IMG_Init: %s\n&quot;</span>, IMG_GetError());
-<a name="l00065"></a>00065             <span class="comment">// handle error</span>
-<a name="l00066"></a>00066         }
-<a name="l00067"></a>00067     }
-<a name="l00068"></a>00068     
-<a name="l00069"></a>00069 
-<a name="l00070"></a>00070 
-<a name="l00071"></a>00071 
-<a name="l00072"></a>00072     <span class="keywordtype">bool</span> Project::loadTextResource(std::string uri, std::string &amp;res){
-<a name="l00073"></a>00073         ifstream file(uri);
-<a name="l00074"></a>00074         <span class="keywordflow">if</span>(!file.is_open()) {
-<a name="l00075"></a>00075             logError(<span class="keywordtype">string</span>{<span class="stringliteral">&quot;couldn&#39;t open file &quot;</span>} + uri);
-<a name="l00076"></a>00076             <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00077"></a>00077         }
-<a name="l00078"></a>00078 
-<a name="l00079"></a>00079         <span class="keywordtype">string</span> str;
-<a name="l00080"></a>00080         res = <span class="stringliteral">&quot;&quot;</span>;
-<a name="l00081"></a>00081         <span class="keywordflow">while</span> (std::getline(file, str))
-<a name="l00082"></a>00082         {
-<a name="l00083"></a>00083             <span class="keywordflow">if</span> (res.length()&gt;0){
-<a name="l00084"></a>00084                 res = res + <span class="stringliteral">&quot;\n&quot;</span>;
-<a name="l00085"></a>00085             }
-<a name="l00086"></a>00086             res = res + str;
-<a name="l00087"></a>00087         }
-<a name="l00088"></a>00088         <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00089"></a>00089     }
-<a name="l00090"></a>00090     
-<a name="l00091"></a>00091     <span class="keywordtype">bool</span> Project::loadBinaryResource(<span class="keywordtype">string</span> uri, vector&lt;char&gt;&amp; fileContents){
-<a name="l00092"></a>00092         ifstream file(uri, ios::in | ios::binary | ios::ate);
-<a name="l00093"></a>00093         <span class="keywordflow">if</span>(!file.is_open()){
-<a name="l00094"></a>00094             logError(<span class="keywordtype">string</span>{<span class="stringliteral">&quot;couldn&#39;t open &quot;</span>}+uri);
-<a name="l00095"></a>00095             <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00096"></a>00096         }
-<a name="l00097"></a>00097         fileContents.resize((<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>) file.tellg());
-<a name="l00098"></a>00098 
-<a name="l00099"></a>00099         file.seekg(0, ios::beg);
-<a name="l00100"></a>00100         <span class="keywordflow">if</span>(!file.read(&amp;fileContents[ 0 ], fileContents.size())){
-<a name="l00101"></a>00101             logError(<span class="keywordtype">string</span>{<span class="stringliteral">&quot;failed to read from &quot;</span>}+uri);
-<a name="l00102"></a>00102             <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00103"></a>00103         }
-<a name="l00104"></a>00104         <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00105"></a>00105     }
-<a name="l00106"></a>00106     
-<a name="l00107"></a>00107     shared_ptr&lt;Texture2D&gt; Project::loadTexture2D(std::string uri){
-<a name="l00108"></a>00108         SDL_Surface * surface = IMG_Load(uri.c_str());
-<a name="l00109"></a>00109         <span class="keywordflow">if</span> (surface){
-<a name="l00110"></a>00110             <span class="keywordflow">return</span> shared_ptr&lt;Texture2D&gt;{surfaceToTexture2D(surface)};
-<a name="l00111"></a>00111         } <span class="keywordflow">else</span> {
-<a name="l00112"></a>00112             <span class="keywordflow">return</span> shared_ptr&lt;Texture2D&gt;{};
-<a name="l00113"></a>00113         }
-<a name="l00114"></a>00114     }
-<a name="l00115"></a>00115     
-<a name="l00116"></a>00116     <span class="keywordtype">void</span> convertTextureIfNeeded(ImageFormat&amp; imageFormat, SDL_Surface **image){
-<a name="l00117"></a>00117         SDL_Surface* imgRef = *image;
-<a name="l00118"></a>00118         SDL_PixelFormat * format = imgRef-&gt;format;
-<a name="l00119"></a>00119         <span class="keyword">auto</span> pixelFormat = format-&gt;format;
-<a name="l00120"></a>00120         <span class="keywordtype">bool</span> isBGR = format-&gt;Rshift == 16;
-<a name="l00121"></a>00121 <span class="preprocessor">#ifdef GL_ES_VERSION_2_0</span>
-<a name="l00122"></a>00122 <span class="preprocessor"></span>        GLenum RGB  = GL_RGB;
-<a name="l00123"></a>00123         GLenum RGBA = GL_RGBA;
-<a name="l00124"></a>00124 <span class="preprocessor">#else</span>
-<a name="l00125"></a>00125 <span class="preprocessor"></span>        GLenum RGB  = isBGR ? GL_BGR : GL_RGB;
-<a name="l00126"></a>00126         GLenum RGBA = isBGR ? GL_BGRA : GL_RGBA;
-<a name="l00127"></a>00127 
-<a name="l00128"></a>00128 <span class="preprocessor">#endif</span>
-<a name="l00129"></a>00129 <span class="preprocessor"></span>        <span class="keyword">const</span> <span class="keywordtype">bool</span> alpha = SDL_ISPIXELFORMAT_ALPHA(pixelFormat);
-<a name="l00130"></a>00130         <span class="keywordflow">if</span> (alpha){
-<a name="l00131"></a>00131             imageFormat.format = RGBA;
-<a name="l00132"></a>00132             imageFormat.internalFormat = GL_RGBA;
-<a name="l00133"></a>00133             imageFormat.type = GL_UNSIGNED_BYTE;
-<a name="l00134"></a>00134         } <span class="keywordflow">else</span> {
-<a name="l00135"></a>00135             <span class="keywordflow">if</span> (format-&gt;BytesPerPixel == 4){
-<a name="l00136"></a>00136                 imageFormat.format = RGBA;
-<a name="l00137"></a>00137                 imageFormat.internalFormat = GL_RGBA;
-<a name="l00138"></a>00138             } <span class="keywordflow">else</span> {
-<a name="l00139"></a>00139                 imageFormat.format = RGB;
-<a name="l00140"></a>00140                 imageFormat.internalFormat = GL_RGB;
-<a name="l00141"></a>00141             }
-<a name="l00142"></a>00142             imageFormat.type = GL_UNSIGNED_BYTE;
-<a name="l00143"></a>00143         }
-<a name="l00144"></a>00144     }
-<a name="l00145"></a>00145     
-<a name="l00146"></a>00146     <span class="keywordtype">int</span> invert_image(<span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height, <span class="keywordtype">void</span>* image_pixels)
-<a name="l00147"></a>00147     {
-<a name="l00148"></a>00148         <span class="keyword">auto</span> temp_row = unique_ptr&lt;char&gt;(<span class="keyword">new</span> <span class="keywordtype">char</span>[width]);
-<a name="l00149"></a>00149         <span class="keywordflow">if</span> (temp_row.get() == <span class="keyword">nullptr</span>)
-<a name="l00150"></a>00150         {
-<a name="l00151"></a>00151             SDL_SetError(<span class="stringliteral">&quot;Not enough memory for image inversion&quot;</span>);
-<a name="l00152"></a>00152             <span class="keywordflow">return</span> -1;
-<a name="l00153"></a>00153         }
-<a name="l00154"></a>00154         <span class="comment">//if height is odd, don&#39;t need to swap middle row</span>
-<a name="l00155"></a>00155         <span class="keywordtype">int</span> height_div_2 = (int) (height * .5f);
-<a name="l00156"></a>00156         <span class="keywordflow">for</span>(<span class="keywordtype">int</span> index = 0; index &lt; height_div_2; index++)    {
-<a name="l00157"></a>00157             <span class="comment">//uses string.h</span>
-<a name="l00158"></a>00158             memcpy((Uint8 *)temp_row.get(),
-<a name="l00159"></a>00159                    (Uint8 *)(image_pixels) +
-<a name="l00160"></a>00160                    width * index,
-<a name="l00161"></a>00161                     width);
-<a name="l00162"></a>00162             
-<a name="l00163"></a>00163             memcpy(
-<a name="l00164"></a>00164                    (Uint8 *)(image_pixels) +
-<a name="l00165"></a>00165                    width * index,
-<a name="l00166"></a>00166                    (Uint8 *)(image_pixels) +
-<a name="l00167"></a>00167                    width * (height - index-1),
-<a name="l00168"></a>00168                     width);
-<a name="l00169"></a>00169             memcpy(
+<a name="l00023"></a>00023 <span class="preprocessor"></span><span class="preprocessor">#   ifdef _WIN32</span>
+<a name="l00024"></a>00024 <span class="preprocessor"></span><span class="preprocessor">#       include &lt;SDL_image.h&gt;</span>
+<a name="l00025"></a>00025 <span class="preprocessor">#   else</span>
+<a name="l00026"></a>00026 <span class="preprocessor"></span><span class="preprocessor">#       include &lt;SDL2_image/SDL_image.h&gt;</span>
+<a name="l00027"></a>00027 <span class="preprocessor">#   endif</span>
+<a name="l00028"></a>00028 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
+<a name="l00029"></a>00029 <span class="preprocessor"></span><span class="keyword">using namespace </span>std;
+<a name="l00030"></a>00030 
+<a name="l00031"></a>00031 <span class="keyword">namespace </span>kick {
+<a name="l00032"></a>00032 
+<a name="l00033"></a>00033     std::map&lt;std::string, std::weak_ptr&lt;TextureAtlas&gt;&gt; Project::textureAtlasRef;
+<a name="l00034"></a>00034     std::map&lt;std::string, std::weak_ptr&lt;Shader&gt;&gt; Project::shaderRef;
+<a name="l00035"></a>00035     std::map&lt;std::string, std::weak_ptr&lt;Texture2D&gt;&gt; Project::texture2DRef;
+<a name="l00036"></a>00036     std::map&lt;std::string, std::weak_ptr&lt;TextureCube&gt;&gt; Project::textureCubeRef;
+<a name="l00037"></a>00037     std::map&lt;std::string, std::weak_ptr&lt;Font&gt;&gt; Project::fontRef;
+<a name="l00038"></a>00038 
+<a name="l00039"></a>00039     Project::Project()
+<a name="l00040"></a>00040     {
+<a name="l00041"></a>00041 <span class="preprocessor">#ifndef EMSCRIPTEN</span>
+<a name="l00042"></a>00042 <span class="preprocessor"></span>        SDL_version compile_version;
+<a name="l00043"></a>00043         <span class="keyword">const</span> SDL_version *link_version=IMG_Linked_Version();
+<a name="l00044"></a>00044         SDL_IMAGE_VERSION(&amp;compile_version);
+<a name="l00045"></a>00045         <span class="keywordflow">if</span> (compile_version.major != link_version-&gt;major ||
+<a name="l00046"></a>00046                 compile_version.minor != link_version-&gt;minor ||
+<a name="l00047"></a>00047                 compile_version.patch != link_version-&gt;patch){
+<a name="l00048"></a>00048             printf(<span class="stringliteral">&quot;compiled with SDL_image version: %d.%d.%d\n&quot;</span>,
+<a name="l00049"></a>00049                     compile_version.major,
+<a name="l00050"></a>00050                     compile_version.minor,
+<a name="l00051"></a>00051                     compile_version.patch);
+<a name="l00052"></a>00052             printf(<span class="stringliteral">&quot;running with SDL_image version: %d.%d.%d\n&quot;</span>,
+<a name="l00053"></a>00053                     link_version-&gt;major,
+<a name="l00054"></a>00054                     link_version-&gt;minor,
+<a name="l00055"></a>00055                     link_version-&gt;patch);
+<a name="l00056"></a>00056         } <span class="keywordflow">else</span> {
+<a name="l00057"></a>00057             printf(<span class="stringliteral">&quot;SDL_image version: %d.%d.%d\n&quot;</span>,
+<a name="l00058"></a>00058                     compile_version.major,
+<a name="l00059"></a>00059                     compile_version.minor,
+<a name="l00060"></a>00060                     compile_version.patch);
+<a name="l00061"></a>00061         }
+<a name="l00062"></a>00062 <span class="preprocessor">#endif</span>
+<a name="l00063"></a>00063 <span class="preprocessor"></span>
+<a name="l00064"></a>00064         <span class="keywordtype">int</span> flags=IMG_INIT_JPG|IMG_INIT_PNG;
+<a name="l00065"></a>00065         <span class="keywordtype">int</span> initted=IMG_Init(flags);
+<a name="l00066"></a>00066         <span class="keywordflow">if</span>((initted&amp;flags) != flags) {
+<a name="l00067"></a>00067             printf(<span class="stringliteral">&quot;IMG_Init: Failed to init required jpg and png support!\n&quot;</span>);
+<a name="l00068"></a>00068             printf(<span class="stringliteral">&quot;IMG_Init: %s\n&quot;</span>, IMG_GetError());
+<a name="l00069"></a>00069             <span class="comment">// handle error</span>
+<a name="l00070"></a>00070         }
+<a name="l00071"></a>00071     }
+<a name="l00072"></a>00072     
+<a name="l00073"></a>00073 
+<a name="l00074"></a>00074 
+<a name="l00075"></a>00075 
+<a name="l00076"></a>00076     <span class="keywordtype">bool</span> Project::loadTextResource(std::string uri, std::string &amp;res){
+<a name="l00077"></a>00077         ifstream file(uri);
+<a name="l00078"></a>00078         <span class="keywordflow">if</span>(!file.is_open()) {
+<a name="l00079"></a>00079             logError(<span class="keywordtype">string</span>{<span class="stringliteral">&quot;couldn&#39;t open file &quot;</span>} + uri);
+<a name="l00080"></a>00080             <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00081"></a>00081         }
+<a name="l00082"></a>00082 
+<a name="l00083"></a>00083         <span class="keywordtype">string</span> str;
+<a name="l00084"></a>00084         res = <span class="stringliteral">&quot;&quot;</span>;
+<a name="l00085"></a>00085         <span class="keywordflow">while</span> (std::getline(file, str))
+<a name="l00086"></a>00086         {
+<a name="l00087"></a>00087             <span class="keywordflow">if</span> (res.length()&gt;0){
+<a name="l00088"></a>00088                 res = res + <span class="stringliteral">&quot;\n&quot;</span>;
+<a name="l00089"></a>00089             }
+<a name="l00090"></a>00090             res = res + str;
+<a name="l00091"></a>00091         }
+<a name="l00092"></a>00092         <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00093"></a>00093     }
+<a name="l00094"></a>00094     
+<a name="l00095"></a>00095     <span class="keywordtype">bool</span> Project::loadBinaryResource(<span class="keywordtype">string</span> uri, vector&lt;char&gt;&amp; fileContents){
+<a name="l00096"></a>00096         ifstream file(uri, ios::in | ios::binary | ios::ate);
+<a name="l00097"></a>00097         <span class="keywordflow">if</span>(!file.is_open()){
+<a name="l00098"></a>00098             logError(<span class="keywordtype">string</span>{<span class="stringliteral">&quot;couldn&#39;t open &quot;</span>}+uri);
+<a name="l00099"></a>00099             <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00100"></a>00100         }
+<a name="l00101"></a>00101         fileContents.resize((<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>) file.tellg());
+<a name="l00102"></a>00102 
+<a name="l00103"></a>00103         file.seekg(0, ios::beg);
+<a name="l00104"></a>00104         <span class="keywordflow">if</span>(!file.read(&amp;fileContents[ 0 ], fileContents.size())){
+<a name="l00105"></a>00105             logError(<span class="keywordtype">string</span>{<span class="stringliteral">&quot;failed to read from &quot;</span>}+uri);
+<a name="l00106"></a>00106             <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00107"></a>00107         }
+<a name="l00108"></a>00108         <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00109"></a>00109     }
+<a name="l00110"></a>00110     
+<a name="l00111"></a>00111     shared_ptr&lt;Texture2D&gt; Project::loadTexture2D(std::string uri, TextureSampler sampler){
+<a name="l00112"></a>00112         SDL_Surface * surface = IMG_Load(uri.c_str());
+<a name="l00113"></a>00113         <span class="keywordflow">if</span> (surface){
+<a name="l00114"></a>00114             <span class="keywordflow">return</span> shared_ptr&lt;Texture2D&gt;{surfaceToTexture2D(surface, sampler)};
+<a name="l00115"></a>00115         } <span class="keywordflow">else</span> {
+<a name="l00116"></a>00116             <span class="keywordflow">return</span> shared_ptr&lt;Texture2D&gt;{};
+<a name="l00117"></a>00117         }
+<a name="l00118"></a>00118     }
+<a name="l00119"></a>00119     
+<a name="l00120"></a>00120     <span class="keywordtype">void</span> convertTextureIfNeeded(ImageFormat&amp; imageFormat, SDL_Surface **image){
+<a name="l00121"></a>00121         SDL_Surface* imgRef = *image;
+<a name="l00122"></a>00122         SDL_PixelFormat * format = imgRef-&gt;format;
+<a name="l00123"></a>00123         <span class="keyword">auto</span> pixelFormat = format-&gt;format;
+<a name="l00124"></a>00124         <span class="keywordtype">bool</span> isBGR = format-&gt;Rshift == 16;
+<a name="l00125"></a>00125 <span class="preprocessor">#ifdef GL_ES_VERSION_2_0</span>
+<a name="l00126"></a>00126 <span class="preprocessor"></span>        GLenum RGB  = GL_RGB;
+<a name="l00127"></a>00127         GLenum RGBA = GL_RGBA;
+<a name="l00128"></a>00128 <span class="preprocessor">#else</span>
+<a name="l00129"></a>00129 <span class="preprocessor"></span>        GLenum RGB  = isBGR ? GL_BGR : GL_RGB;
+<a name="l00130"></a>00130         GLenum RGBA = isBGR ? GL_BGRA : GL_RGBA;
+<a name="l00131"></a>00131 
+<a name="l00132"></a>00132 <span class="preprocessor">#endif</span>
+<a name="l00133"></a>00133 <span class="preprocessor"></span>        <span class="keyword">const</span> <span class="keywordtype">bool</span> alpha = SDL_ISPIXELFORMAT_ALPHA(pixelFormat);
+<a name="l00134"></a>00134         <span class="keywordflow">if</span> (alpha){
+<a name="l00135"></a>00135             imageFormat.format = RGBA;
+<a name="l00136"></a>00136             imageFormat.internalFormat = GL_RGBA;
+<a name="l00137"></a>00137             imageFormat.type = GL_UNSIGNED_BYTE;
+<a name="l00138"></a>00138         } <span class="keywordflow">else</span> {
+<a name="l00139"></a>00139             <span class="keywordflow">if</span> (format-&gt;BytesPerPixel == 4){
+<a name="l00140"></a>00140                 imageFormat.format = RGBA;
+<a name="l00141"></a>00141                 imageFormat.internalFormat = GL_RGBA;
+<a name="l00142"></a>00142             } <span class="keywordflow">else</span> {
+<a name="l00143"></a>00143                 imageFormat.format = RGB;
+<a name="l00144"></a>00144                 imageFormat.internalFormat = GL_RGB;
+<a name="l00145"></a>00145             }
+<a name="l00146"></a>00146             imageFormat.type = GL_UNSIGNED_BYTE;
+<a name="l00147"></a>00147         }
+<a name="l00148"></a>00148     }
+<a name="l00149"></a>00149     
+<a name="l00150"></a>00150     <span class="keywordtype">int</span> invert_image(<span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height, <span class="keywordtype">void</span>* image_pixels)
+<a name="l00151"></a>00151     {
+<a name="l00152"></a>00152         <span class="keyword">auto</span> temp_row = unique_ptr&lt;char&gt;(<span class="keyword">new</span> <span class="keywordtype">char</span>[width]);
+<a name="l00153"></a>00153         <span class="keywordflow">if</span> (temp_row.get() == <span class="keyword">nullptr</span>)
+<a name="l00154"></a>00154         {
+<a name="l00155"></a>00155             SDL_SetError(<span class="stringliteral">&quot;Not enough memory for image inversion&quot;</span>);
+<a name="l00156"></a>00156             <span class="keywordflow">return</span> -1;
+<a name="l00157"></a>00157         }
+<a name="l00158"></a>00158         <span class="comment">//if height is odd, don&#39;t need to swap middle row</span>
+<a name="l00159"></a>00159         <span class="keywordtype">int</span> height_div_2 = (int) (height * .5f);
+<a name="l00160"></a>00160         <span class="keywordflow">for</span>(<span class="keywordtype">int</span> index = 0; index &lt; height_div_2; index++)    {
+<a name="l00161"></a>00161             <span class="comment">//uses string.h</span>
+<a name="l00162"></a>00162             memcpy((Uint8 *)temp_row.get(),
+<a name="l00163"></a>00163                    (Uint8 *)(image_pixels) +
+<a name="l00164"></a>00164                    width * index,
+<a name="l00165"></a>00165                     width);
+<a name="l00166"></a>00166             
+<a name="l00167"></a>00167             memcpy(
+<a name="l00168"></a>00168                    (Uint8 *)(image_pixels) +
+<a name="l00169"></a>00169                    width * index,
 <a name="l00170"></a>00170                    (Uint8 *)(image_pixels) +
 <a name="l00171"></a>00171                    width * (height - index-1),
-<a name="l00172"></a>00172                    temp_row.get(),
-<a name="l00173"></a>00173                     width);
-<a name="l00174"></a>00174         }
-<a name="l00175"></a>00175         <span class="keywordflow">return</span> 0;
-<a name="l00176"></a>00176     }
-<a name="l00177"></a>00177     
-<a name="l00178"></a>00178     Texture2D* Project::loadTexture2DFromMemory(<span class="keyword">const</span> <span class="keywordtype">char</span> *data, <span class="keywordtype">int</span> size){
-<a name="l00179"></a>00179         Texture2D *texturePtr = <span class="keyword">nullptr</span>;
-<a name="l00180"></a>00180         SDL_RWops* source = SDL_RWFromConstMem(data, size);
-<a name="l00181"></a>00181         <span class="keywordflow">if</span> (source){
-<a name="l00182"></a>00182             <span class="comment">// load uri into memory</span>
-<a name="l00183"></a>00183             SDL_Surface *image = <span class="keyword">nullptr</span>;
-<a name="l00184"></a>00184             image = IMG_Load_RW(source, 1);
-<a name="l00185"></a>00185             
-<a name="l00186"></a>00186             <span class="keywordflow">if</span> (image) {
-<a name="l00187"></a>00187                 texturePtr = surfaceToTexture2D(image);
-<a name="l00188"></a>00188             } <span class="keywordflow">else</span> {
-<a name="l00189"></a>00189                 SDL_FreeRW(source);
-<a name="l00190"></a>00190             }
-<a name="l00191"></a>00191         }
-<a name="l00192"></a>00192         <span class="keywordflow">return</span> texturePtr;
-<a name="l00193"></a>00193     }
-<a name="l00194"></a>00194 
-<a name="l00195"></a>00195     Texture2D *Project::surfaceToTexture2D(SDL_Surface *image) {
-<a name="l00196"></a>00196         ImageFormat imageFormat;
-<a name="l00197"></a>00197         convertTextureIfNeeded(imageFormat, &amp;image);
-<a name="l00198"></a>00198 <span class="preprocessor">#if EMSCRIPTEN</span>
-<a name="l00199"></a>00199 <span class="preprocessor"></span>        <span class="keyword">const</span> GLenum GL_UNPACK_FLIP_Y_WEBGL = 37440;
-<a name="l00200"></a>00200         glPixelStorei(GL_UNPACK_FLIP_Y_WEBGL, <span class="keyword">true</span>);
-<a name="l00201"></a>00201 <span class="preprocessor">#else</span>
-<a name="l00202"></a>00202 <span class="preprocessor"></span>        invert_image(image-&gt;pitch, image-&gt;h, image-&gt;pixels);
-<a name="l00203"></a>00203 <span class="preprocessor">#endif</span>
-<a name="l00204"></a>00204 <span class="preprocessor"></span>        Texture2D *texturePtr = <span class="keyword">new</span> Texture2D();
-<a name="l00205"></a>00205         texturePtr-&gt;setData(image-&gt;w, image-&gt;h, static_cast&lt;char*&gt;(image-&gt;pixels), imageFormat);
-<a name="l00206"></a>00206 <span class="preprocessor">#if EMSCRIPTEN</span>
-<a name="l00207"></a>00207 <span class="preprocessor"></span>        glPixelStorei(GL_UNPACK_FLIP_Y_WEBGL, <span class="keyword">false</span>);
-<a name="l00208"></a>00208 <span class="preprocessor">#endif</span>
-<a name="l00209"></a>00209 <span class="preprocessor"></span>        SDL_FreeSurface(image);
-<a name="l00210"></a>00210         <span class="keywordflow">return</span> texturePtr;
-<a name="l00211"></a>00211     }
-<a name="l00212"></a>00212 
-<a name="l00213"></a>00213     TextureCube* Project::loadTextureCubeFromMemory(<span class="keyword">const</span> <span class="keywordtype">char</span> *data, <span class="keywordtype">int</span> size){
-<a name="l00214"></a>00214         TextureCube *texturePtr = <span class="keyword">nullptr</span>;
-<a name="l00215"></a>00215         SDL_RWops* source = SDL_RWFromConstMem(data, size);
-<a name="l00216"></a>00216         <span class="keywordflow">if</span> (source){
-<a name="l00217"></a>00217             <span class="comment">// load uri into memory</span>
-<a name="l00218"></a>00218             SDL_Surface *image = <span class="keyword">nullptr</span>;
-<a name="l00219"></a>00219             image = IMG_Load_RW(source, 1);
-<a name="l00220"></a>00220 
-<a name="l00221"></a>00221             <span class="keywordflow">if</span> (image) {
-<a name="l00222"></a>00222                 texturePtr = surfaceToTextureCube(image);
-<a name="l00223"></a>00223             } <span class="keywordflow">else</span> {
-<a name="l00224"></a>00224                 SDL_FreeRW(source);
-<a name="l00225"></a>00225             }
-<a name="l00226"></a>00226         }
-<a name="l00227"></a>00227         <span class="keywordflow">return</span> texturePtr;
-<a name="l00228"></a>00228     }
-<a name="l00229"></a>00229 
-<a name="l00230"></a>00230     TextureCube *Project::surfaceToTextureCube( SDL_Surface *image) {
-<a name="l00231"></a>00231         ImageFormat imageFormat;
-<a name="l00232"></a>00232         TextureCube *texturePtr = <span class="keyword">new</span> TextureCube();
-<a name="l00233"></a>00233         convertTextureIfNeeded(imageFormat, &amp;image);
-<a name="l00234"></a>00234         assert(image-&gt;h == image-&gt;w * 6);
-<a name="l00235"></a>00235         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 6; i++) {
-<a name="l00236"></a>00236             texturePtr-&gt;setData(image-&gt;w, image-&gt;h, static_cast&lt;char *&gt;(image-&gt;pixels) + image-&gt;pitch * image-&gt;w * i, i, imageFormat);
-<a name="l00237"></a>00237         }
-<a name="l00238"></a>00238         SDL_FreeSurface(image);
-<a name="l00239"></a>00239         <span class="keywordflow">return</span> texturePtr;
-<a name="l00240"></a>00240     }
-<a name="l00241"></a>00241 
-<a name="l00242"></a>00242     shared_ptr&lt;TextureCube&gt; Project::loadTextureCube(std::string uri){
-<a name="l00243"></a>00243         <span class="keyword">auto</span> iter = textureCubeRef.find(uri);
-<a name="l00244"></a>00244         <span class="keywordflow">if</span> (iter != textureCubeRef.end()){
-<a name="l00245"></a>00245             <span class="keywordflow">if</span> (!iter-&gt;second.expired()){
-<a name="l00246"></a>00246                 <span class="keywordflow">return</span> iter-&gt;second.lock();
-<a name="l00247"></a>00247             }
-<a name="l00248"></a>00248         }
-<a name="l00249"></a>00249 
-<a name="l00250"></a>00250         SDL_Surface * surface = IMG_Load(uri.c_str());
-<a name="l00251"></a>00251         <span class="keywordflow">if</span> (surface){
-<a name="l00252"></a>00252             <span class="keyword">auto</span> res = shared_ptr&lt;TextureCube&gt;{surfaceToTextureCube(surface)};
-<a name="l00253"></a>00253             textureCubeRef[uri] = std::weak_ptr&lt;TextureCube&gt;{res};
-<a name="l00254"></a>00254             <span class="keywordflow">return</span> res;
-<a name="l00255"></a>00255         } <span class="keywordflow">else</span> {
-<a name="l00256"></a>00256             <span class="keywordflow">return</span> shared_ptr&lt;TextureCube&gt;{<span class="keyword">nullptr</span>};
-<a name="l00257"></a>00257         }
-<a name="l00258"></a>00258     }
-<a name="l00259"></a>00259 
-<a name="l00260"></a>00260     shared_ptr&lt;Shader&gt; Project::loadShader(std::string uri){
-<a name="l00261"></a>00261         <span class="keyword">auto</span> iter = shaderRef.find(uri);
-<a name="l00262"></a>00262         <span class="keywordflow">if</span> (iter != shaderRef.end()){
-<a name="l00263"></a>00263             <span class="keywordflow">if</span> (!iter-&gt;second.expired()){
-<a name="l00264"></a>00264                 <span class="keywordflow">return</span> iter-&gt;second.lock();
-<a name="l00265"></a>00265             }
-<a name="l00266"></a>00266         }
-<a name="l00267"></a>00267 
-<a name="l00268"></a>00268         <span class="keyword">using namespace </span>rapidjson;
-<a name="l00269"></a>00269         <span class="keyword">using namespace </span>glm;
-<a name="l00270"></a>00270         <span class="keywordtype">string</span> shaderSource;
-<a name="l00271"></a>00271         <span class="keywordtype">bool</span> success = loadTextResource(uri, shaderSource);
-<a name="l00272"></a>00272         <span class="keywordflow">if</span> (!success){
-<a name="l00273"></a>00273             <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;
-<a name="l00274"></a>00274         }
-<a name="l00275"></a>00275 
-<a name="l00276"></a>00276         Document document;
-<a name="l00277"></a>00277         Shader* shader = <span class="keyword">nullptr</span>;
-<a name="l00278"></a>00278         <span class="keywordflow">if</span> (document.Parse&lt;0&gt;( shaderSource.c_str() ).HasParseError() ) {
-<a name="l00279"></a>00279             logError(<span class="stringliteral">&quot;Error parsing .shader file&quot;</span>);
-<a name="l00280"></a>00280         } <span class="keywordflow">else</span> {
-<a name="l00281"></a>00281             shader = <span class="keyword">new</span> Shader();
-<a name="l00282"></a>00282             <span class="keyword">auto</span> getString = [&amp;](<span class="keywordtype">string</span> name, <span class="keywordtype">string</span> defaultValue){
-<a name="l00283"></a>00283                 <span class="keywordflow">if</span> (!document.HasMember(name.c_str())){
-<a name="l00284"></a>00284                     <span class="keywordflow">return</span> defaultValue;
-<a name="l00285"></a>00285                 }
-<a name="l00286"></a>00286                 <span class="keywordflow">return</span> <span class="keywordtype">string</span>{document[name.c_str()].GetString()};
-<a name="l00287"></a>00287             };
-<a name="l00288"></a>00288             
-<a name="l00289"></a>00289             <span class="keyword">auto</span> getBool = [&amp;](<span class="keywordtype">string</span> name, <span class="keywordtype">bool</span> defaultValue){
-<a name="l00290"></a>00290                 <span class="keywordflow">if</span> (!document.HasMember(name.c_str())){
-<a name="l00291"></a>00291                     <span class="keywordflow">return</span> defaultValue;
-<a name="l00292"></a>00292                 }
-<a name="l00293"></a>00293                 <span class="keywordflow">return</span> document[name.c_str()].GetBool();
-<a name="l00294"></a>00294             };
-<a name="l00295"></a>00295             
-<a name="l00296"></a>00296             <span class="keyword">auto</span> getFloat = [&amp;](<span class="keywordtype">string</span> name, <span class="keywordtype">float</span> defaultValue){
-<a name="l00297"></a>00297                 <span class="keywordflow">if</span> (!document.HasMember(name.c_str())){
-<a name="l00298"></a>00298                     <span class="keywordflow">return</span> defaultValue;
-<a name="l00299"></a>00299                 }
-<a name="l00300"></a>00300                 <span class="keywordflow">return</span> (<span class="keywordtype">float</span>)document[name.c_str()].GetDouble();
-<a name="l00301"></a>00301             };
-<a name="l00302"></a>00302 
-<a name="l00303"></a>00303             <span class="keyword">auto</span> getInt = [&amp;](<span class="keywordtype">string</span> name, <span class="keywordtype">int</span> defaultValue){
-<a name="l00304"></a>00304                 <span class="keywordflow">if</span> (!document.HasMember(name.c_str())){
-<a name="l00305"></a>00305                     <span class="keywordflow">return</span> defaultValue;
-<a name="l00306"></a>00306                 }
-<a name="l00307"></a>00307                 <span class="keywordflow">return</span> document[name.c_str()].GetInt();
-<a name="l00308"></a>00308             };
-<a name="l00309"></a>00309             
-<a name="l00310"></a>00310 <span class="preprocessor">#define createGetX(X) auto get##X = [&amp;](string name, X defaultValue){ \</span>
-<a name="l00311"></a>00311 <span class="preprocessor">                if (!document.HasMember(name.c_str())){ \</span>
-<a name="l00312"></a>00312 <span class="preprocessor">                    return defaultValue; \</span>
-<a name="l00313"></a>00313 <span class="preprocessor">                } \</span>
-<a name="l00314"></a>00314 <span class="preprocessor">                int val = (int)round(document[name.c_str()].GetDouble()); \</span>
-<a name="l00315"></a>00315 <span class="preprocessor">                X res {defaultValue}; \</span>
-<a name="l00316"></a>00316 <span class="preprocessor">                toEnum(val, res); \</span>
-<a name="l00317"></a>00317 <span class="preprocessor">                return res; \</span>
-<a name="l00318"></a>00318 <span class="preprocessor">            }</span>
-<a name="l00319"></a>00319 <span class="preprocessor"></span>            createGetX(BlendType);
-<a name="l00320"></a>00320             createGetX(FaceCullingType);
-<a name="l00321"></a>00321             createGetX(ZTestType);
+<a name="l00172"></a>00172                     width);
+<a name="l00173"></a>00173             memcpy(
+<a name="l00174"></a>00174                    (Uint8 *)(image_pixels) +
+<a name="l00175"></a>00175                    width * (height - index-1),
+<a name="l00176"></a>00176                    temp_row.get(),
+<a name="l00177"></a>00177                     width);
+<a name="l00178"></a>00178         }
+<a name="l00179"></a>00179         <span class="keywordflow">return</span> 0;
+<a name="l00180"></a>00180     }
+<a name="l00181"></a>00181 
+<a name="l00182"></a>00182     std::shared_ptr&lt;Texture2D&gt; Project::loadTexture2DFromMemory(<span class="keyword">const</span> <span class="keywordtype">char</span> *data, <span class="keywordtype">int</span> size){
+<a name="l00183"></a>00183         Texture2D *texturePtr = <span class="keyword">nullptr</span>;
+<a name="l00184"></a>00184         SDL_RWops* source = SDL_RWFromConstMem(data, size);
+<a name="l00185"></a>00185         <span class="keywordflow">if</span> (source){
+<a name="l00186"></a>00186             <span class="comment">// load uri into memory</span>
+<a name="l00187"></a>00187             SDL_Surface *image = <span class="keyword">nullptr</span>;
+<a name="l00188"></a>00188             image = IMG_Load_RW(source, 1);
+<a name="l00189"></a>00189             
+<a name="l00190"></a>00190             <span class="keywordflow">if</span> (image) {
+<a name="l00191"></a>00191                 texturePtr = surfaceToTexture2D(image);
+<a name="l00192"></a>00192             } <span class="keywordflow">else</span> {
+<a name="l00193"></a>00193                 SDL_FreeRW(source);
+<a name="l00194"></a>00194             }
+<a name="l00195"></a>00195         }
+<a name="l00196"></a>00196         <span class="keywordflow">return</span> std::shared_ptr&lt;Texture2D&gt;(texturePtr);
+<a name="l00197"></a>00197     }
+<a name="l00198"></a>00198 
+<a name="l00199"></a>00199     Texture2D *Project::surfaceToTexture2D(SDL_Surface *image, TextureSampler sampler) {
+<a name="l00200"></a>00200         ImageFormat imageFormat;
+<a name="l00201"></a>00201         convertTextureIfNeeded(imageFormat, &amp;image);
+<a name="l00202"></a>00202 <span class="preprocessor">#if EMSCRIPTEN</span>
+<a name="l00203"></a>00203 <span class="preprocessor"></span>        <span class="keyword">const</span> GLenum GL_UNPACK_FLIP_Y_WEBGL = 37440;
+<a name="l00204"></a>00204         glPixelStorei(GL_UNPACK_FLIP_Y_WEBGL, <span class="keyword">true</span>);
+<a name="l00205"></a>00205 <span class="preprocessor">#else</span>
+<a name="l00206"></a>00206 <span class="preprocessor"></span>        invert_image(image-&gt;pitch, image-&gt;h, image-&gt;pixels);
+<a name="l00207"></a>00207 <span class="preprocessor">#endif</span>
+<a name="l00208"></a>00208 <span class="preprocessor"></span>        Texture2D *texturePtr = <span class="keyword">new</span> Texture2D(sampler);
+<a name="l00209"></a>00209         texturePtr-&gt;setData(image-&gt;w, image-&gt;h, static_cast&lt;char*&gt;(image-&gt;pixels), imageFormat);
+<a name="l00210"></a>00210 <span class="preprocessor">#if EMSCRIPTEN</span>
+<a name="l00211"></a>00211 <span class="preprocessor"></span>        glPixelStorei(GL_UNPACK_FLIP_Y_WEBGL, <span class="keyword">false</span>);
+<a name="l00212"></a>00212 <span class="preprocessor">#endif</span>
+<a name="l00213"></a>00213 <span class="preprocessor"></span>        SDL_FreeSurface(image);
+<a name="l00214"></a>00214         <span class="keywordflow">return</span> texturePtr;
+<a name="l00215"></a>00215     }
+<a name="l00216"></a>00216 
+<a name="l00217"></a>00217     TextureCube* Project::loadTextureCubeFromMemory(<span class="keyword">const</span> <span class="keywordtype">char</span> *data, <span class="keywordtype">int</span> size){
+<a name="l00218"></a>00218         TextureCube *texturePtr = <span class="keyword">nullptr</span>;
+<a name="l00219"></a>00219         SDL_RWops* source = SDL_RWFromConstMem(data, size);
+<a name="l00220"></a>00220         <span class="keywordflow">if</span> (source){
+<a name="l00221"></a>00221             <span class="comment">// load uri into memory</span>
+<a name="l00222"></a>00222             SDL_Surface *image = <span class="keyword">nullptr</span>;
+<a name="l00223"></a>00223             image = IMG_Load_RW(source, 1);
+<a name="l00224"></a>00224 
+<a name="l00225"></a>00225             <span class="keywordflow">if</span> (image) {
+<a name="l00226"></a>00226                 texturePtr = surfaceToTextureCube(image);
+<a name="l00227"></a>00227             } <span class="keywordflow">else</span> {
+<a name="l00228"></a>00228                 SDL_FreeRW(source);
+<a name="l00229"></a>00229             }
+<a name="l00230"></a>00230         }
+<a name="l00231"></a>00231         <span class="keywordflow">return</span> texturePtr;
+<a name="l00232"></a>00232     }
+<a name="l00233"></a>00233 
+<a name="l00234"></a>00234     TextureCube *Project::surfaceToTextureCube( SDL_Surface *image) {
+<a name="l00235"></a>00235         ImageFormat imageFormat;
+<a name="l00236"></a>00236         TextureCube *texturePtr = <span class="keyword">new</span> TextureCube();
+<a name="l00237"></a>00237         convertTextureIfNeeded(imageFormat, &amp;image);
+<a name="l00238"></a>00238         assert(image-&gt;h == image-&gt;w * 6);
+<a name="l00239"></a>00239         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 6; i++) {
+<a name="l00240"></a>00240             texturePtr-&gt;setData(image-&gt;w, image-&gt;h, static_cast&lt;char *&gt;(image-&gt;pixels) + image-&gt;pitch * image-&gt;w * i, i, imageFormat);
+<a name="l00241"></a>00241         }
+<a name="l00242"></a>00242         SDL_FreeSurface(image);
+<a name="l00243"></a>00243         <span class="keywordflow">return</span> texturePtr;
+<a name="l00244"></a>00244     }
+<a name="l00245"></a>00245 
+<a name="l00246"></a>00246     shared_ptr&lt;TextureCube&gt; Project::loadTextureCube(std::string uri){
+<a name="l00247"></a>00247         <span class="keyword">auto</span> iter = textureCubeRef.find(uri);
+<a name="l00248"></a>00248         <span class="keywordflow">if</span> (iter != textureCubeRef.end()){
+<a name="l00249"></a>00249             <span class="keywordflow">if</span> (!iter-&gt;second.expired()){
+<a name="l00250"></a>00250                 <span class="keywordflow">return</span> iter-&gt;second.lock();
+<a name="l00251"></a>00251             }
+<a name="l00252"></a>00252         }
+<a name="l00253"></a>00253 
+<a name="l00254"></a>00254         SDL_Surface * surface = IMG_Load(uri.c_str());
+<a name="l00255"></a>00255         <span class="keywordflow">if</span> (surface){
+<a name="l00256"></a>00256             <span class="keyword">auto</span> res = shared_ptr&lt;TextureCube&gt;{surfaceToTextureCube(surface)};
+<a name="l00257"></a>00257             textureCubeRef[uri] = std::weak_ptr&lt;TextureCube&gt;{res};
+<a name="l00258"></a>00258             <span class="keywordflow">return</span> res;
+<a name="l00259"></a>00259         } <span class="keywordflow">else</span> {
+<a name="l00260"></a>00260             <span class="keywordflow">return</span> shared_ptr&lt;TextureCube&gt;{<span class="keyword">nullptr</span>};
+<a name="l00261"></a>00261         }
+<a name="l00262"></a>00262     }
+<a name="l00263"></a>00263 
+<a name="l00264"></a>00264     Material* Project::createMaterial(std::string shaderUri){
+<a name="l00265"></a>00265         <span class="keyword">auto</span> shader = loadShader(shaderUri);
+<a name="l00266"></a>00266         <span class="keywordflow">if</span> (!shader){
+<a name="l00267"></a>00267             <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;
+<a name="l00268"></a>00268         }
+<a name="l00269"></a>00269         <span class="keywordflow">return</span> <span class="keyword">new</span> Material(shader);
+<a name="l00270"></a>00270     }
+<a name="l00271"></a>00271 
+<a name="l00272"></a>00272 
+<a name="l00273"></a>00273     shared_ptr&lt;Shader&gt; Project::loadShader(std::string uri){
+<a name="l00274"></a>00274         <span class="keyword">auto</span> iter = shaderRef.find(uri);
+<a name="l00275"></a>00275         <span class="keywordflow">if</span> (iter != shaderRef.end()){
+<a name="l00276"></a>00276             <span class="keywordflow">if</span> (!iter-&gt;second.expired()){
+<a name="l00277"></a>00277                 <span class="keywordflow">return</span> iter-&gt;second.lock();
+<a name="l00278"></a>00278             }
+<a name="l00279"></a>00279         }
+<a name="l00280"></a>00280 
+<a name="l00281"></a>00281         <span class="keyword">using namespace </span>rapidjson;
+<a name="l00282"></a>00282         <span class="keyword">using namespace </span>glm;
+<a name="l00283"></a>00283         <span class="keywordtype">string</span> shaderSource;
+<a name="l00284"></a>00284         <span class="keywordtype">bool</span> success = loadTextResource(uri, shaderSource);
+<a name="l00285"></a>00285         <span class="keywordflow">if</span> (!success){
+<a name="l00286"></a>00286             <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;
+<a name="l00287"></a>00287         }
+<a name="l00288"></a>00288 
+<a name="l00289"></a>00289         Document document;
+<a name="l00290"></a>00290         Shader* shader = <span class="keyword">nullptr</span>;
+<a name="l00291"></a>00291         <span class="keywordflow">if</span> (document.Parse&lt;0&gt;( shaderSource.c_str() ).HasParseError() ) {
+<a name="l00292"></a>00292             logError(<span class="stringliteral">&quot;Error parsing .shader file&quot;</span>);
+<a name="l00293"></a>00293         } <span class="keywordflow">else</span> {
+<a name="l00294"></a>00294             shader = <span class="keyword">new</span> Shader();
+<a name="l00295"></a>00295             <span class="keyword">auto</span> getString = [&amp;](<span class="keywordtype">string</span> name, <span class="keywordtype">string</span> defaultValue){
+<a name="l00296"></a>00296                 <span class="keywordflow">if</span> (!document.HasMember(name.c_str())){
+<a name="l00297"></a>00297                     <span class="keywordflow">return</span> defaultValue;
+<a name="l00298"></a>00298                 }
+<a name="l00299"></a>00299                 <span class="keywordflow">return</span> <span class="keywordtype">string</span>{document[name.c_str()].GetString()};
+<a name="l00300"></a>00300             };
+<a name="l00301"></a>00301             
+<a name="l00302"></a>00302             <span class="keyword">auto</span> getBool = [&amp;](<span class="keywordtype">string</span> name, <span class="keywordtype">bool</span> defaultValue){
+<a name="l00303"></a>00303                 <span class="keywordflow">if</span> (!document.HasMember(name.c_str())){
+<a name="l00304"></a>00304                     <span class="keywordflow">return</span> defaultValue;
+<a name="l00305"></a>00305                 }
+<a name="l00306"></a>00306                 <span class="keywordflow">return</span> document[name.c_str()].GetBool();
+<a name="l00307"></a>00307             };
+<a name="l00308"></a>00308             
+<a name="l00309"></a>00309             <span class="keyword">auto</span> getFloat = [&amp;](<span class="keywordtype">string</span> name, <span class="keywordtype">float</span> defaultValue){
+<a name="l00310"></a>00310                 <span class="keywordflow">if</span> (!document.HasMember(name.c_str())){
+<a name="l00311"></a>00311                     <span class="keywordflow">return</span> defaultValue;
+<a name="l00312"></a>00312                 }
+<a name="l00313"></a>00313                 <span class="keywordflow">return</span> (<span class="keywordtype">float</span>)document[name.c_str()].GetDouble();
+<a name="l00314"></a>00314             };
+<a name="l00315"></a>00315 
+<a name="l00316"></a>00316             <span class="keyword">auto</span> getInt = [&amp;](<span class="keywordtype">string</span> name, <span class="keywordtype">int</span> defaultValue){
+<a name="l00317"></a>00317                 <span class="keywordflow">if</span> (!document.HasMember(name.c_str())){
+<a name="l00318"></a>00318                     <span class="keywordflow">return</span> defaultValue;
+<a name="l00319"></a>00319                 }
+<a name="l00320"></a>00320                 <span class="keywordflow">return</span> document[name.c_str()].GetInt();
+<a name="l00321"></a>00321             };
 <a name="l00322"></a>00322             
-<a name="l00323"></a>00323             <span class="keywordtype">string</span> vertexShaderURI      = getString(<span class="stringliteral">&quot;vertexShaderURI&quot;</span>, <span class="stringliteral">&quot;&quot;</span>);
-<a name="l00324"></a>00324             <span class="keywordtype">string</span> geometryShaderURI      = getString(<span class="stringliteral">&quot;geometryShaderURI&quot;</span>, <span class="stringliteral">&quot;&quot;</span>);
-<a name="l00325"></a>00325             <span class="keywordtype">string</span> fragmentShaderURI    = getString(<span class="stringliteral">&quot;fragmentShaderURI&quot;</span>, <span class="stringliteral">&quot;&quot;</span>);
-<a name="l00326"></a>00326             <span class="comment">//string outputAttributeName  = getString(&quot;outputAttributeName&quot;, &quot;&quot;);</span>
-<a name="l00327"></a>00327             <span class="keywordtype">bool</span> blend                  = getBool(<span class="stringliteral">&quot;blend&quot;</span>, <span class="keyword">false</span>);
-<a name="l00328"></a>00328             BlendType blendDFactorAlpha = getBlendType(<span class="stringliteral">&quot;blendDFactorAlpha&quot;</span>, BlendType::OneMinusSrcAlpha);
-<a name="l00329"></a>00329             BlendType blendDFactorRGB   = getBlendType(<span class="stringliteral">&quot;blendDFactorRGB&quot;</span>, BlendType::OneMinusSrcAlpha);
-<a name="l00330"></a>00330             BlendType blendSFactorAlpha = getBlendType(<span class="stringliteral">&quot;blendSFactorAlpha&quot;</span>, BlendType::SrcAlpha);
-<a name="l00331"></a>00331             BlendType blendSFactorRGB   = getBlendType(<span class="stringliteral">&quot;blendSFactorRGB&quot;</span>, BlendType::SrcAlpha);
-<a name="l00332"></a>00332             <span class="keywordtype">bool</span> depthWrite             = getBool(<span class="stringliteral">&quot;depthWrite&quot;</span>, <span class="keyword">true</span>);
-<a name="l00333"></a>00333             FaceCullingType faceCulling = getFaceCullingType(<span class="stringliteral">&quot;faceCulling&quot;</span>, FaceCullingType::Back);
-<a name="l00334"></a>00334             <span class="keywordtype">bool</span> polygonOffsetEnabled   = getBool(<span class="stringliteral">&quot;polygonOffsetEnabled&quot;</span>, <span class="keyword">false</span>);
-<a name="l00335"></a>00335             <span class="keywordtype">float</span> polygonOffsetFactor   = getFloat(<span class="stringliteral">&quot;polygonOffsetFactor&quot;</span>, 1);
-<a name="l00336"></a>00336             <span class="keywordtype">float</span> polygonOffsetUnit     = getFloat(<span class="stringliteral">&quot;polygonOffsetUnit&quot;</span>, 0);
-<a name="l00337"></a>00337             ZTestType zTest             = getZTestType(<span class="stringliteral">&quot;zTest&quot;</span>, ZTestType::Less);
-<a name="l00338"></a>00338             <span class="keywordtype">int</span> renderOrder             = getInt(<span class="stringliteral">&quot;renderOrder&quot;</span>, 1000);
-<a name="l00339"></a>00339             <span class="keywordtype">string</span> vertexShader;
-<a name="l00340"></a>00340             <span class="keywordflow">if</span> (!loadTextResource(vertexShaderURI, vertexShader)){
-<a name="l00341"></a>00341                 <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;
-<a name="l00342"></a>00342             }
-<a name="l00343"></a>00343             <span class="keywordtype">string</span> fragmentShader;
-<a name="l00344"></a>00344             <span class="keywordflow">if</span> (!loadTextResource(fragmentShaderURI,fragmentShader)){
-<a name="l00345"></a>00345                 <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;
-<a name="l00346"></a>00346             }
-<a name="l00347"></a>00347 
-<a name="l00348"></a>00348 
-<a name="l00349"></a>00349             shader-&gt;setShaderSource(ShaderType::VertexShader, vertexShader);
-<a name="l00350"></a>00350             shader-&gt;setShaderSource(ShaderType::FragmentShader, fragmentShader);
-<a name="l00351"></a>00351 
-<a name="l00352"></a>00352             <span class="keywordflow">if</span> (geometryShaderURI.length()){
-<a name="l00353"></a>00353 <span class="preprocessor">#ifdef GL_ES_VERSION_2_0</span>
-<a name="l00354"></a>00354 <span class="preprocessor"></span>                assert(<span class="keyword">false</span>);
-<a name="l00355"></a>00355 <span class="preprocessor">#else</span>
-<a name="l00356"></a>00356 <span class="preprocessor"></span>                <span class="keywordtype">string</span> geometryShader;
-<a name="l00357"></a>00357                 <span class="keywordflow">if</span> (!loadTextResource(geometryShaderURI, geometryShader)){
-<a name="l00358"></a>00358                     <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;
-<a name="l00359"></a>00359                 }
-<a name="l00360"></a>00360                 shader-&gt;setShaderSource(ShaderType::GeometryShader, geometryShader);
-<a name="l00361"></a>00361 <span class="preprocessor">#endif</span>
-<a name="l00362"></a>00362 <span class="preprocessor"></span>            }
-<a name="l00363"></a>00363 
-<a name="l00364"></a>00364             shader-&gt;setBlend(blend);
-<a name="l00365"></a>00365             shader-&gt;setBlendDFactorAlpha(blendDFactorAlpha);
-<a name="l00366"></a>00366             shader-&gt;setBlendDFactorRGB(blendDFactorRGB);
-<a name="l00367"></a>00367             shader-&gt;setBlendSFactorAlpha(blendSFactorAlpha);
-<a name="l00368"></a>00368             shader-&gt;setBlendSFactorRGB(blendSFactorRGB);
-<a name="l00369"></a>00369             shader-&gt;setDepthWrite(depthWrite);
-<a name="l00370"></a>00370             shader-&gt;setFaceCulling(faceCulling);
-<a name="l00371"></a>00371             shader-&gt;setPolygonOffsetEnabled(polygonOffsetEnabled);
-<a name="l00372"></a>00372             shader-&gt;setPolygonOffsetFactorAndUnit(vec2{polygonOffsetFactor, polygonOffsetUnit});
-<a name="l00373"></a>00373             shader-&gt;setZTest(zTest);
-<a name="l00374"></a>00374             shader-&gt;setRenderOrder(renderOrder);
-<a name="l00375"></a>00375             shader-&gt;apply();
+<a name="l00323"></a>00323 <span class="preprocessor">#define createGetX(X) auto get##X = [&amp;](string name, X defaultValue){ \</span>
+<a name="l00324"></a>00324 <span class="preprocessor">                if (!document.HasMember(name.c_str())){ \</span>
+<a name="l00325"></a>00325 <span class="preprocessor">                    return defaultValue; \</span>
+<a name="l00326"></a>00326 <span class="preprocessor">                } \</span>
+<a name="l00327"></a>00327 <span class="preprocessor">                int val = (int)round(document[name.c_str()].GetDouble()); \</span>
+<a name="l00328"></a>00328 <span class="preprocessor">                X res {defaultValue}; \</span>
+<a name="l00329"></a>00329 <span class="preprocessor">                toEnum(val, res); \</span>
+<a name="l00330"></a>00330 <span class="preprocessor">                return res; \</span>
+<a name="l00331"></a>00331 <span class="preprocessor">            }</span>
+<a name="l00332"></a>00332 <span class="preprocessor"></span>            createGetX(BlendType);
+<a name="l00333"></a>00333             createGetX(FaceCullingType);
+<a name="l00334"></a>00334             createGetX(ZTestType);
+<a name="l00335"></a>00335             
+<a name="l00336"></a>00336             <span class="keywordtype">string</span> vertexShaderURI      = getString(<span class="stringliteral">&quot;vertexShaderURI&quot;</span>, <span class="stringliteral">&quot;&quot;</span>);
+<a name="l00337"></a>00337             <span class="keywordtype">string</span> geometryShaderURI      = getString(<span class="stringliteral">&quot;geometryShaderURI&quot;</span>, <span class="stringliteral">&quot;&quot;</span>);
+<a name="l00338"></a>00338             <span class="keywordtype">string</span> fragmentShaderURI    = getString(<span class="stringliteral">&quot;fragmentShaderURI&quot;</span>, <span class="stringliteral">&quot;&quot;</span>);
+<a name="l00339"></a>00339             <span class="comment">//string outputAttributeName  = getString(&quot;outputAttributeName&quot;, &quot;&quot;);</span>
+<a name="l00340"></a>00340             <span class="keywordtype">bool</span> blend                  = getBool(<span class="stringliteral">&quot;blend&quot;</span>, <span class="keyword">false</span>);
+<a name="l00341"></a>00341             BlendType blendDFactorAlpha = getBlendType(<span class="stringliteral">&quot;blendDFactorAlpha&quot;</span>, BlendType::OneMinusSrcAlpha);
+<a name="l00342"></a>00342             BlendType blendDFactorRGB   = getBlendType(<span class="stringliteral">&quot;blendDFactorRGB&quot;</span>, BlendType::OneMinusSrcAlpha);
+<a name="l00343"></a>00343             BlendType blendSFactorAlpha = getBlendType(<span class="stringliteral">&quot;blendSFactorAlpha&quot;</span>, BlendType::SrcAlpha);
+<a name="l00344"></a>00344             BlendType blendSFactorRGB   = getBlendType(<span class="stringliteral">&quot;blendSFactorRGB&quot;</span>, BlendType::SrcAlpha);
+<a name="l00345"></a>00345             <span class="keywordtype">bool</span> depthWrite             = getBool(<span class="stringliteral">&quot;depthWrite&quot;</span>, <span class="keyword">true</span>);
+<a name="l00346"></a>00346             FaceCullingType faceCulling = getFaceCullingType(<span class="stringliteral">&quot;faceCulling&quot;</span>, FaceCullingType::Back);
+<a name="l00347"></a>00347             <span class="keywordtype">bool</span> polygonOffsetEnabled   = getBool(<span class="stringliteral">&quot;polygonOffsetEnabled&quot;</span>, <span class="keyword">false</span>);
+<a name="l00348"></a>00348             <span class="keywordtype">float</span> polygonOffsetFactor   = getFloat(<span class="stringliteral">&quot;polygonOffsetFactor&quot;</span>, 1);
+<a name="l00349"></a>00349             <span class="keywordtype">float</span> polygonOffsetUnit     = getFloat(<span class="stringliteral">&quot;polygonOffsetUnit&quot;</span>, 0);
+<a name="l00350"></a>00350             ZTestType zTest             = getZTestType(<span class="stringliteral">&quot;zTest&quot;</span>, ZTestType::Less);
+<a name="l00351"></a>00351             <span class="keywordtype">int</span> renderOrder             = getInt(<span class="stringliteral">&quot;renderOrder&quot;</span>, 1000);
+<a name="l00352"></a>00352             <span class="keywordtype">string</span> vertexShader;
+<a name="l00353"></a>00353             <span class="keywordflow">if</span> (!loadTextResource(vertexShaderURI, vertexShader)){
+<a name="l00354"></a>00354                 <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;
+<a name="l00355"></a>00355             }
+<a name="l00356"></a>00356             <span class="keywordtype">string</span> fragmentShader;
+<a name="l00357"></a>00357             <span class="keywordflow">if</span> (!loadTextResource(fragmentShaderURI,fragmentShader)){
+<a name="l00358"></a>00358                 <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;
+<a name="l00359"></a>00359             }
+<a name="l00360"></a>00360 
+<a name="l00361"></a>00361 
+<a name="l00362"></a>00362             shader-&gt;setShaderSource(ShaderType::VertexShader, vertexShader);
+<a name="l00363"></a>00363             shader-&gt;setShaderSource(ShaderType::FragmentShader, fragmentShader);
+<a name="l00364"></a>00364 
+<a name="l00365"></a>00365             <span class="keywordflow">if</span> (geometryShaderURI.length()){
+<a name="l00366"></a>00366 <span class="preprocessor">#ifdef GL_ES_VERSION_2_0</span>
+<a name="l00367"></a>00367 <span class="preprocessor"></span>                assert(<span class="keyword">false</span>);
+<a name="l00368"></a>00368 <span class="preprocessor">#else</span>
+<a name="l00369"></a>00369 <span class="preprocessor"></span>                <span class="keywordtype">string</span> geometryShader;
+<a name="l00370"></a>00370                 <span class="keywordflow">if</span> (!loadTextResource(geometryShaderURI, geometryShader)){
+<a name="l00371"></a>00371                     <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;
+<a name="l00372"></a>00372                 }
+<a name="l00373"></a>00373                 shader-&gt;setShaderSource(ShaderType::GeometryShader, geometryShader);
+<a name="l00374"></a>00374 <span class="preprocessor">#endif</span>
+<a name="l00375"></a>00375 <span class="preprocessor"></span>            }
 <a name="l00376"></a>00376 
-<a name="l00377"></a>00377             <span class="keywordflow">if</span> (document.HasMember(<span class="stringliteral">&quot;defaultUniform&quot;</span>) &amp;&amp; document[<span class="stringliteral">&quot;defaultUniform&quot;</span>].IsObject()){
-<a name="l00378"></a>00378                 <span class="keyword">auto</span> &amp; defaultUniformArray = document[<span class="stringliteral">&quot;defaultUniform&quot;</span>];
-<a name="l00379"></a>00379                 <span class="keywordflow">for</span> (<span class="keyword">auto</span> memberIter = defaultUniformArray.MemberBegin();memberIter != defaultUniformArray.MemberEnd();memberIter++){
-<a name="l00380"></a>00380                     <span class="keywordtype">string</span> name = memberIter-&gt;name.GetString();
-<a name="l00381"></a>00381                     <span class="keyword">auto</span>&amp; uniformValue = memberIter-&gt;value;
-<a name="l00382"></a>00382                     <span class="keyword">const</span> UniformDescriptor * uniform = shader-&gt;getShaderUniform(name);
-<a name="l00383"></a>00383                     <span class="keywordflow">if</span> (uniform) {
-<a name="l00384"></a>00384                         <span class="keywordflow">switch</span> (uniform-&gt;type){
-<a name="l00385"></a>00385                             <span class="keywordflow">case</span> GL_INT:
-<a name="l00386"></a>00386                             {
-<a name="l00387"></a>00387                                 <span class="keywordtype">int</span> value = uniformValue.GetInt();
-<a name="l00388"></a>00388                                 shader-&gt;setDefaultUniform(name, value);
-<a name="l00389"></a>00389                             }
-<a name="l00390"></a>00390                                 <span class="keywordflow">break</span>;
-<a name="l00391"></a>00391                             <span class="keywordflow">case</span> GL_FLOAT:
-<a name="l00392"></a>00392                             {
-<a name="l00393"></a>00393                                 <span class="keywordtype">float</span> value = (float) uniformValue.GetDouble();
-<a name="l00394"></a>00394                                 shader-&gt;setDefaultUniform(name, value);
-<a name="l00395"></a>00395                             }
-<a name="l00396"></a>00396                                 <span class="keywordflow">break</span>;
-<a name="l00397"></a>00397                             <span class="keywordflow">case</span> GL_FLOAT_VEC4:
-<a name="l00398"></a>00398                             {
-<a name="l00399"></a>00399                                 vec4 value;
-<a name="l00400"></a>00400                                 <span class="keywordflow">for</span> (SizeType i=0;i&lt;4;i++){
-<a name="l00401"></a>00401                                     value[i] = (float)uniformValue[i].GetDouble();
-<a name="l00402"></a>00402                                 }
-<a name="l00403"></a>00403                                 shader-&gt;setDefaultUniform(name, value);
-<a name="l00404"></a>00404                             }
-<a name="l00405"></a>00405                                 <span class="keywordflow">break</span>;
-<a name="l00406"></a>00406                             <span class="keywordflow">case</span> GL_FLOAT_MAT3:
-<a name="l00407"></a>00407                             {
-<a name="l00408"></a>00408                                 mat3 value;
-<a name="l00409"></a>00409                                 <span class="keywordtype">float</span> *valuePtr = value_ptr(value);
-<a name="l00410"></a>00410                                 <span class="keywordflow">for</span> (SizeType i=0;i&lt;9;i++){
-<a name="l00411"></a>00411                                     valuePtr[i] = (float)uniformValue[i].GetDouble();
-<a name="l00412"></a>00412                                 }
-<a name="l00413"></a>00413                                 shader-&gt;setDefaultUniform(name, value);
-<a name="l00414"></a>00414                             }
-<a name="l00415"></a>00415                                 <span class="keywordflow">break</span>;
-<a name="l00416"></a>00416                             <span class="keywordflow">case</span> GL_FLOAT_MAT4:
-<a name="l00417"></a>00417                             {
-<a name="l00418"></a>00418                                 mat4 value;
-<a name="l00419"></a>00419                                 <span class="keywordtype">float</span> *valuePtr = value_ptr(value);
-<a name="l00420"></a>00420                                 <span class="keywordflow">for</span> (SizeType i = 0; i &lt; 16; i++) {
-<a name="l00421"></a>00421                                     valuePtr[i] = (float) uniformValue[i].GetDouble();
-<a name="l00422"></a>00422                                 }
-<a name="l00423"></a>00423                                 shader-&gt;setDefaultUniform(name, value);
-<a name="l00424"></a>00424                             }
-<a name="l00425"></a>00425                                 <span class="keywordflow">break</span>;
-<a name="l00426"></a>00426                             <span class="keywordflow">case</span> GL_SAMPLER_2D:
-<a name="l00427"></a>00427                             {
-<a name="l00428"></a>00428                                 <span class="keywordtype">string</span> texName = memberIter-&gt;value.GetString();
-<a name="l00429"></a>00429                                 <span class="keyword">auto</span> value = loadTexture2D(texName);
-<a name="l00430"></a>00430                                 shader-&gt;setDefaultUniform(name, value);
-<a name="l00431"></a>00431                             }
-<a name="l00432"></a>00432                                 <span class="keywordflow">break</span>;
-<a name="l00433"></a>00433                             <span class="keywordflow">case</span> GL_SAMPLER_CUBE:
-<a name="l00434"></a>00434                             {
-<a name="l00435"></a>00435                                 <span class="keywordtype">string</span> texName = memberIter-&gt;value.GetString();
-<a name="l00436"></a>00436                                 <span class="keyword">auto</span> value = loadTextureCube(texName);
-<a name="l00437"></a>00437                                 shader-&gt;setDefaultUniform(name, value);
-<a name="l00438"></a>00438                             }
-<a name="l00439"></a>00439                                 <span class="keywordflow">break</span>;
-<a name="l00440"></a>00440                             <span class="keywordflow">default</span>:{
-<a name="l00441"></a>00441                                 cout &lt;&lt; <span class="stringliteral">&quot;Unhandled case &quot;</span> &lt;&lt; uniform-&gt;type &lt;&lt; endl;
-<a name="l00442"></a>00442                             }
-<a name="l00443"></a>00443                             <span class="keywordflow">break</span>;
-<a name="l00444"></a>00444                         }
-<a name="l00445"></a>00445                     }
-<a name="l00446"></a>00446                 }
-<a name="l00447"></a>00447             }
-<a name="l00448"></a>00448         }
-<a name="l00449"></a>00449         <span class="keyword">auto</span> ref = std::shared_ptr&lt;Shader&gt;{shader};
-<a name="l00450"></a>00450         shaderRef[uri] = weak_ptr&lt;Shader&gt;{ref};
-<a name="l00451"></a>00451         <span class="keywordflow">return</span> ref;
-<a name="l00452"></a>00452     }
-<a name="l00453"></a>00453 
-<a name="l00454"></a>00454     std::shared_ptr&lt;TextureAtlas&gt; Project::loadTextureAtlas(std::string filename) {
-<a name="l00455"></a>00455         std::string texture = filename.substr(0, filename.size()-4) + <span class="stringliteral">&quot;.png&quot;</span>;
-<a name="l00456"></a>00456 
-<a name="l00457"></a>00457         <span class="keyword">auto</span> iter = textureAtlasRef.find(filename);
-<a name="l00458"></a>00458         <span class="keywordflow">if</span> (iter != textureAtlasRef.end()){
-<a name="l00459"></a>00459             <span class="keywordflow">if</span> (!iter-&gt;second.expired()){
-<a name="l00460"></a>00460                 <span class="keywordflow">return</span> iter-&gt;second.lock();
-<a name="l00461"></a>00461             }
-<a name="l00462"></a>00462         }
-<a name="l00463"></a>00463         TextureAtlas* textureAtlas = <span class="keyword">new</span> TextureAtlas();
-<a name="l00464"></a>00464         textureAtlas-&gt;load(filename, texture);
-<a name="l00465"></a>00465         <span class="keyword">auto</span> ref = std::shared_ptr&lt;TextureAtlas&gt;{textureAtlas};
-<a name="l00466"></a>00466         textureAtlasRef[filename] = weak_ptr&lt;TextureAtlas&gt;{ref};
-<a name="l00467"></a>00467         <span class="keywordflow">return</span> ref;
-<a name="l00468"></a>00468     }
+<a name="l00377"></a>00377             shader-&gt;setBlend(blend);
+<a name="l00378"></a>00378             shader-&gt;setBlendDFactorAlpha(blendDFactorAlpha);
+<a name="l00379"></a>00379             shader-&gt;setBlendDFactorRGB(blendDFactorRGB);
+<a name="l00380"></a>00380             shader-&gt;setBlendSFactorAlpha(blendSFactorAlpha);
+<a name="l00381"></a>00381             shader-&gt;setBlendSFactorRGB(blendSFactorRGB);
+<a name="l00382"></a>00382             shader-&gt;setDepthWrite(depthWrite);
+<a name="l00383"></a>00383             shader-&gt;setFaceCulling(faceCulling);
+<a name="l00384"></a>00384             shader-&gt;setPolygonOffsetEnabled(polygonOffsetEnabled);
+<a name="l00385"></a>00385             shader-&gt;setPolygonOffsetFactorAndUnit(vec2{polygonOffsetFactor, polygonOffsetUnit});
+<a name="l00386"></a>00386             shader-&gt;setZTest(zTest);
+<a name="l00387"></a>00387             shader-&gt;setRenderOrder(renderOrder);
+<a name="l00388"></a>00388             shader-&gt;apply();
+<a name="l00389"></a>00389 
+<a name="l00390"></a>00390             <span class="keywordflow">if</span> (document.HasMember(<span class="stringliteral">&quot;defaultUniform&quot;</span>) &amp;&amp; document[<span class="stringliteral">&quot;defaultUniform&quot;</span>].IsObject()){
+<a name="l00391"></a>00391                 <span class="keyword">auto</span> &amp; defaultUniformArray = document[<span class="stringliteral">&quot;defaultUniform&quot;</span>];
+<a name="l00392"></a>00392                 <span class="keywordflow">for</span> (<span class="keyword">auto</span> memberIter = defaultUniformArray.MemberBegin();memberIter != defaultUniformArray.MemberEnd();memberIter++){
+<a name="l00393"></a>00393                     <span class="keywordtype">string</span> name = memberIter-&gt;name.GetString();
+<a name="l00394"></a>00394                     <span class="keyword">auto</span>&amp; uniformValue = memberIter-&gt;value;
+<a name="l00395"></a>00395                     <span class="keyword">const</span> UniformDescriptor * uniform = shader-&gt;getShaderUniform(name);
+<a name="l00396"></a>00396                     <span class="keywordflow">if</span> (uniform) {
+<a name="l00397"></a>00397                         <span class="keywordflow">switch</span> (uniform-&gt;type){
+<a name="l00398"></a>00398                             <span class="keywordflow">case</span> GL_INT:
+<a name="l00399"></a>00399                             {
+<a name="l00400"></a>00400                                 <span class="keywordtype">int</span> value = uniformValue.GetInt();
+<a name="l00401"></a>00401                                 shader-&gt;setDefaultUniform(name, value);
+<a name="l00402"></a>00402                             }
+<a name="l00403"></a>00403                                 <span class="keywordflow">break</span>;
+<a name="l00404"></a>00404                             <span class="keywordflow">case</span> GL_FLOAT:
+<a name="l00405"></a>00405                             {
+<a name="l00406"></a>00406                                 <span class="keywordtype">float</span> value = (float) uniformValue.GetDouble();
+<a name="l00407"></a>00407                                 shader-&gt;setDefaultUniform(name, value);
+<a name="l00408"></a>00408                             }
+<a name="l00409"></a>00409                                 <span class="keywordflow">break</span>;
+<a name="l00410"></a>00410                             <span class="keywordflow">case</span> GL_FLOAT_VEC4:
+<a name="l00411"></a>00411                             {
+<a name="l00412"></a>00412                                 vec4 value;
+<a name="l00413"></a>00413                                 <span class="keywordflow">for</span> (SizeType i=0;i&lt;4;i++){
+<a name="l00414"></a>00414                                     value[i] = (float)uniformValue[i].GetDouble();
+<a name="l00415"></a>00415                                 }
+<a name="l00416"></a>00416                                 shader-&gt;setDefaultUniform(name, value);
+<a name="l00417"></a>00417                             }
+<a name="l00418"></a>00418                                 <span class="keywordflow">break</span>;
+<a name="l00419"></a>00419                             <span class="keywordflow">case</span> GL_FLOAT_MAT3:
+<a name="l00420"></a>00420                             {
+<a name="l00421"></a>00421                                 mat3 value;
+<a name="l00422"></a>00422                                 <span class="keywordtype">float</span> *valuePtr = value_ptr(value);
+<a name="l00423"></a>00423                                 <span class="keywordflow">for</span> (SizeType i=0;i&lt;9;i++){
+<a name="l00424"></a>00424                                     valuePtr[i] = (float)uniformValue[i].GetDouble();
+<a name="l00425"></a>00425                                 }
+<a name="l00426"></a>00426                                 shader-&gt;setDefaultUniform(name, value);
+<a name="l00427"></a>00427                             }
+<a name="l00428"></a>00428                                 <span class="keywordflow">break</span>;
+<a name="l00429"></a>00429                             <span class="keywordflow">case</span> GL_FLOAT_MAT4:
+<a name="l00430"></a>00430                             {
+<a name="l00431"></a>00431                                 mat4 value;
+<a name="l00432"></a>00432                                 <span class="keywordtype">float</span> *valuePtr = value_ptr(value);
+<a name="l00433"></a>00433                                 <span class="keywordflow">for</span> (SizeType i = 0; i &lt; 16; i++) {
+<a name="l00434"></a>00434                                     valuePtr[i] = (float) uniformValue[i].GetDouble();
+<a name="l00435"></a>00435                                 }
+<a name="l00436"></a>00436                                 shader-&gt;setDefaultUniform(name, value);
+<a name="l00437"></a>00437                             }
+<a name="l00438"></a>00438                                 <span class="keywordflow">break</span>;
+<a name="l00439"></a>00439                             <span class="keywordflow">case</span> GL_SAMPLER_2D:
+<a name="l00440"></a>00440                             {
+<a name="l00441"></a>00441                                 <span class="keywordtype">string</span> texName = memberIter-&gt;value.GetString();
+<a name="l00442"></a>00442                                 <span class="keyword">auto</span> value = loadTexture2D(texName);
+<a name="l00443"></a>00443                                 shader-&gt;setDefaultUniform(name, value);
+<a name="l00444"></a>00444                             }
+<a name="l00445"></a>00445                                 <span class="keywordflow">break</span>;
+<a name="l00446"></a>00446                             <span class="keywordflow">case</span> GL_SAMPLER_CUBE:
+<a name="l00447"></a>00447                             {
+<a name="l00448"></a>00448                                 <span class="keywordtype">string</span> texName = memberIter-&gt;value.GetString();
+<a name="l00449"></a>00449                                 <span class="keyword">auto</span> value = loadTextureCube(texName);
+<a name="l00450"></a>00450                                 shader-&gt;setDefaultUniform(name, value);
+<a name="l00451"></a>00451                             }
+<a name="l00452"></a>00452                                 <span class="keywordflow">break</span>;
+<a name="l00453"></a>00453                             <span class="keywordflow">default</span>:{
+<a name="l00454"></a>00454                                 cout &lt;&lt; <span class="stringliteral">&quot;Unhandled case &quot;</span> &lt;&lt; uniform-&gt;type &lt;&lt; endl;
+<a name="l00455"></a>00455                             }
+<a name="l00456"></a>00456                             <span class="keywordflow">break</span>;
+<a name="l00457"></a>00457                         }
+<a name="l00458"></a>00458                     }
+<a name="l00459"></a>00459                 }
+<a name="l00460"></a>00460             }
+<a name="l00461"></a>00461         }
+<a name="l00462"></a>00462         <span class="keyword">auto</span> ref = std::shared_ptr&lt;Shader&gt;{shader};
+<a name="l00463"></a>00463         shaderRef[uri] = weak_ptr&lt;Shader&gt;{ref};
+<a name="l00464"></a>00464         <span class="keywordflow">return</span> ref;
+<a name="l00465"></a>00465     }
+<a name="l00466"></a>00466 
+<a name="l00467"></a>00467     std::shared_ptr&lt;TextureAtlas&gt; Project::loadTextureAtlas(std::string filename) {
+<a name="l00468"></a>00468         std::string texture = filename.substr(0, filename.size()-4) + <span class="stringliteral">&quot;.png&quot;</span>;
 <a name="l00469"></a>00469 
-<a name="l00470"></a>00470     std::shared_ptr&lt;Font&gt; Project::loadFont(<span class="keywordtype">string</span> fontName) {
-<a name="l00471"></a>00471         <span class="keyword">auto</span> iter = fontRef.find(fontName);
-<a name="l00472"></a>00472         <span class="keywordflow">if</span> (iter != fontRef.end()){
-<a name="l00473"></a>00473             <span class="keywordflow">if</span> (!iter-&gt;second.expired()){
-<a name="l00474"></a>00474                 <span class="keywordflow">return</span> iter-&gt;second.lock();
-<a name="l00475"></a>00475             }
-<a name="l00476"></a>00476         }
-<a name="l00477"></a>00477         Font* font = <span class="keyword">new</span> Font();
-<a name="l00478"></a>00478         font-&gt;loadFntFile(fontName);
-<a name="l00479"></a>00479         <span class="keyword">auto</span> ref = std::shared_ptr&lt;Font&gt;{font};
-<a name="l00480"></a>00480         fontRef[fontName] = weak_ptr&lt;Font&gt;{ref};
-<a name="l00481"></a>00481         <span class="keywordflow">return</span> ref;
-<a name="l00482"></a>00482     }
-<a name="l00483"></a>00483 }
+<a name="l00470"></a>00470         <span class="keyword">auto</span> iter = textureAtlasRef.find(filename);
+<a name="l00471"></a>00471         <span class="keywordflow">if</span> (iter != textureAtlasRef.end()){
+<a name="l00472"></a>00472             <span class="keywordflow">if</span> (!iter-&gt;second.expired()){
+<a name="l00473"></a>00473                 <span class="keywordflow">return</span> iter-&gt;second.lock();
+<a name="l00474"></a>00474             }
+<a name="l00475"></a>00475         }
+<a name="l00476"></a>00476         TextureAtlas* textureAtlas = <span class="keyword">new</span> TextureAtlas();
+<a name="l00477"></a>00477         textureAtlas-&gt;load(filename, texture);
+<a name="l00478"></a>00478         <span class="keyword">auto</span> ref = std::shared_ptr&lt;TextureAtlas&gt;{textureAtlas};
+<a name="l00479"></a>00479         textureAtlasRef[filename] = weak_ptr&lt;TextureAtlas&gt;{ref};
+<a name="l00480"></a>00480         <span class="keywordflow">return</span> ref;
+<a name="l00481"></a>00481     }
+<a name="l00482"></a>00482 
+<a name="l00483"></a>00483     std::shared_ptr&lt;Font&gt; Project::loadFont(<span class="keywordtype">int</span> fontsize){
+<a name="l00484"></a>00484         <span class="keywordflow">return</span> loadFont(<span class="keywordtype">string</span>(<span class="stringliteral">&quot;assets/font/open_sans_&quot;</span>)+std::to_string(fontsize)+<span class="stringliteral">&quot;.fnt&quot;</span>);
+<a name="l00485"></a>00485     }
+<a name="l00486"></a>00486 
+<a name="l00487"></a>00487     std::shared_ptr&lt;Font&gt; Project::loadFont(<span class="keywordtype">string</span> fontName) {
+<a name="l00488"></a>00488         <span class="keyword">auto</span> iter = fontRef.find(fontName);
+<a name="l00489"></a>00489         <span class="keywordflow">if</span> (iter != fontRef.end()){
+<a name="l00490"></a>00490             <span class="keywordflow">if</span> (!iter-&gt;second.expired()){
+<a name="l00491"></a>00491                 <span class="keywordflow">return</span> iter-&gt;second.lock();
+<a name="l00492"></a>00492             }
+<a name="l00493"></a>00493         }
+<a name="l00494"></a>00494         Font* font = <span class="keyword">new</span> Font();
+<a name="l00495"></a>00495         font-&gt;loadFntFile(fontName);
+<a name="l00496"></a>00496         <span class="keyword">auto</span> ref = std::shared_ptr&lt;Font&gt;{font};
+<a name="l00497"></a>00497         fontRef[fontName] = weak_ptr&lt;Font&gt;{ref};
+<a name="l00498"></a>00498         <span class="keywordflow">return</span> ref;
+<a name="l00499"></a>00499     }
+<a name="l00500"></a>00500 }
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -557,7 +574,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Apr 20 2015 22:02:09 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

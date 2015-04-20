@@ -144,7 +144,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00084"></a>00084         <span class="keywordflow">return</span> mOrigin + mDirection * offset;
 <a name="l00085"></a>00085     }
 <a name="l00086"></a>00086 
-<a name="l00087"></a>00087     <span class="keywordtype">bool</span> Ray::intersect(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2, glm::vec3 &amp;intersectionPoint, <span class="keywordtype">bool</span> clampBackIntersections)<span class="keyword"> const </span>{
+<a name="l00087"></a>00087     <span class="keywordtype">bool</span> Ray::intersectTriangle(glm::vec3 v0, glm::vec3 v1, glm::vec3 v2, glm::vec3 &amp;intersectionPoint, <span class="keywordtype">bool</span> clampBackIntersections)<span class="keyword"> const </span>{
 <a name="l00088"></a>00088         <span class="comment">// based on RTR 3ed page 750</span>
 <a name="l00089"></a>00089         vec3 e1 = v1 - v0;
 <a name="l00090"></a>00090         vec3 e2 = v2 - v0;
@@ -167,7 +167,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00107"></a>00107 
 <a name="l00108"></a>00108         <span class="keywordflow">return</span> <span class="keyword">true</span>;
 <a name="l00109"></a>00109     }
-<a name="l00110"></a>00110 }
+<a name="l00110"></a>00110 
+<a name="l00111"></a>00111     glm::vec3 Ray::closestPoint(glm::vec3 point)<span class="keyword"> const </span>{
+<a name="l00112"></a>00112         <span class="keywordflow">return</span> mOrigin + dot(point - mOrigin, mDirection) / dot(mDirection,mDirection) * mDirection;
+<a name="l00113"></a>00113     }
+<a name="l00114"></a>00114 }
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -184,7 +188,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Apr 20 2015 22:02:09 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

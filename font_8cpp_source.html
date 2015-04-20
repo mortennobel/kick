@@ -64,7 +64,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00004"></a>00004 
 <a name="l00005"></a>00005 <span class="preprocessor">#include &quot;kick/2d/font.h&quot;</span>
 <a name="l00006"></a>00006 <span class="preprocessor">#include &quot;kick/core/project.h&quot;</span>
-<a name="l00007"></a>00007 <span class="preprocessor">#include &quot;kick/core/log.h&quot;</span>
+<a name="l00007"></a>00007 <span class="preprocessor">#include &quot;kick/core/debug.h&quot;</span>
 <a name="l00008"></a>00008 <span class="preprocessor">#include &lt;string&gt;</span>
 <a name="l00009"></a>00009 <span class="preprocessor">#include &lt;sstream&gt;</span>
 <a name="l00010"></a>00010 <span class="preprocessor">#include &lt;iostream&gt;</span>
@@ -84,178 +84,186 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00024"></a>00024         std::stringstream ss(s);
 <a name="l00025"></a>00025         std::string item;
 <a name="l00026"></a>00026         <span class="keywordflow">while</span> (std::getline(ss, item, delim)) {
-<a name="l00027"></a>00027             elems.push_back(item);
-<a name="l00028"></a>00028         }
-<a name="l00029"></a>00029         <span class="keywordflow">return</span> elems;
-<a name="l00030"></a>00030     }
-<a name="l00031"></a>00031 
-<a name="l00032"></a>00032     <span class="keywordtype">bool</span> Font::loadFntFile(<span class="keywordtype">string</span> filename) {
-<a name="l00033"></a>00033         <span class="keywordtype">string</span> texturename = filename.substr(0, filename.size()-4) + <span class="stringliteral">&quot;.png&quot;</span>;
-<a name="l00034"></a>00034         fontMap.clear();
-<a name="l00035"></a>00035         kerning.clear();
-<a name="l00036"></a>00036         setTexture(Project::loadTexture2D(texturename));
-<a name="l00037"></a>00037         <span class="keywordflow">if</span> (!texture){
-<a name="l00038"></a>00038             <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00039"></a>00039         }
-<a name="l00040"></a>00040         <span class="keywordtype">string</span> fntFile;
-<a name="l00041"></a>00041         <span class="keywordflow">if</span> (!Project::loadTextResource(filename,fntFile)){
-<a name="l00042"></a>00042             <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00043"></a>00043         }
-<a name="l00044"></a>00044         std::istringstream f{fntFile};
-<a name="l00045"></a>00045         std::string line;
-<a name="l00046"></a>00046         std::vector&lt;string&gt; elems;
-<a name="l00047"></a>00047         std::vector&lt;string&gt; keyval;
-<a name="l00048"></a>00048         <span class="keywordflow">while</span> (std::getline(f, line)) {
-<a name="l00049"></a>00049             split(line, <span class="charliteral">&#39; &#39;</span>, elems);
-<a name="l00050"></a>00050             <span class="keywordflow">if</span> (elems.empty())
-<a name="l00051"></a>00051                 <span class="keywordflow">continue</span>;
-<a name="l00052"></a>00052             <span class="keywordflow">if</span> (elems[0] == <span class="stringliteral">&quot;info&quot;</span>) {
-<a name="l00053"></a>00053             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (elems[0] == <span class="stringliteral">&quot;common&quot;</span>) {
-<a name="l00054"></a>00054                 <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=1;i&lt;elems.size();i++) {
-<a name="l00055"></a>00055                     split(elems[i], <span class="charliteral">&#39;=&#39;</span>, keyval);
-<a name="l00056"></a>00056                     <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;lineHeight&quot;</span>){
-<a name="l00057"></a>00057                         lineHeight = stoi(keyval[1]);
-<a name="l00058"></a>00058                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;base&quot;</span>){
-<a name="l00059"></a>00059                         base = stoi(keyval[1]);
-<a name="l00060"></a>00060                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;scaleW&quot;</span>){
-<a name="l00061"></a>00061                         scaleW = stoi(keyval[1]);
-<a name="l00062"></a>00062                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;scaleH&quot;</span>){
-<a name="l00063"></a>00063                         scaleH = stoi(keyval[1]);
-<a name="l00064"></a>00064                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;pages&quot;</span>){
-<a name="l00065"></a>00065                         pages = stoi(keyval[1]);
-<a name="l00066"></a>00066                     }
-<a name="l00067"></a>00067                 }
-<a name="l00068"></a>00068             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (elems[0] == <span class="stringliteral">&quot;page&quot;</span>) {
-<a name="l00069"></a>00069             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (elems[0] == <span class="stringliteral">&quot;chars&quot;</span>) {
-<a name="l00070"></a>00070             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (elems[0] == <span class="stringliteral">&quot;char&quot;</span>) {
-<a name="l00071"></a>00071                 FontChar fc{};
-<a name="l00072"></a>00072                 <span class="keywordtype">int</span> <span class="keywordtype">id</span> = -1;
-<a name="l00073"></a>00073                 <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=1;i&lt;elems.size();i++){
-<a name="l00074"></a>00074                     split(elems[i], <span class="charliteral">&#39;=&#39;</span>, keyval);
-<a name="l00075"></a>00075                     <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;id&quot;</span>){
-<a name="l00076"></a>00076                         <span class="keywordtype">id</span> = stoi(keyval[1]);
-<a name="l00077"></a>00077                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;x&quot;</span>){
-<a name="l00078"></a>00078                         fc.x = stoi(keyval[1]);
-<a name="l00079"></a>00079                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;y&quot;</span>){
-<a name="l00080"></a>00080                         fc.y = stoi(keyval[1]);
-<a name="l00081"></a>00081                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;width&quot;</span>){
-<a name="l00082"></a>00082                         fc.width = stoi(keyval[1]);
-<a name="l00083"></a>00083                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;height&quot;</span>){
-<a name="l00084"></a>00084                         fc.height = stoi(keyval[1]);
-<a name="l00085"></a>00085                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;xoffset&quot;</span>){
-<a name="l00086"></a>00086                         fc.xoffset = stoi(keyval[1]);
-<a name="l00087"></a>00087                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;yoffset&quot;</span>){
-<a name="l00088"></a>00088                         fc.yoffset = stoi(keyval[1]);
-<a name="l00089"></a>00089                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;xadvance&quot;</span>){
-<a name="l00090"></a>00090                         fc.xadvance = stoi(keyval[1]);
-<a name="l00091"></a>00091                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;page&quot;</span>){
-<a name="l00092"></a>00092                         fc.page = stoi(keyval[1]);
-<a name="l00093"></a>00093                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;chnl&quot;</span>){
-<a name="l00094"></a>00094                         fc.chnl = stoi(keyval[1]);
-<a name="l00095"></a>00095                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;letter&quot;</span>){
-<a name="l00096"></a>00096                         <span class="comment">//    f.letter = keyval[1].substr (1, (unsigned long) (keyval[1].length()-2));</span>
-<a name="l00097"></a>00097                     }
-<a name="l00098"></a>00098                 }
-<a name="l00099"></a>00099                 fontMap[id] = fc;
-<a name="l00100"></a>00100             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (elems[0] == <span class="stringliteral">&quot;kernings&quot;</span>) {
-<a name="l00101"></a>00101 
-<a name="l00102"></a>00102             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (elems[0] == <span class="stringliteral">&quot;kerning&quot;</span>) {
-<a name="l00103"></a>00103                 <span class="keywordtype">int</span> first =0;
-<a name="l00104"></a>00104                 <span class="keywordtype">int</span> second=0;
-<a name="l00105"></a>00105                 <span class="keywordtype">int</span> amount=0;
-<a name="l00106"></a>00106                 <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=1;i&lt;elems.size();i++) {
-<a name="l00107"></a>00107 
-<a name="l00108"></a>00108                     split(elems[i], <span class="charliteral">&#39;=&#39;</span>, keyval);
-<a name="l00109"></a>00109                     <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;first&quot;</span>){
-<a name="l00110"></a>00110                         first  =stoi(keyval[1]);
-<a name="l00111"></a>00111                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;second&quot;</span>){
-<a name="l00112"></a>00112                         second =stoi(keyval[1]);
-<a name="l00113"></a>00113                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;amount&quot;</span>){
-<a name="l00114"></a>00114                         amount =stoi(keyval[1]);
-<a name="l00115"></a>00115                     }
-<a name="l00116"></a>00116                 }
-<a name="l00117"></a>00117                 kerning[pair&lt;int,int&gt;{first, second}] = amount;
-<a name="l00118"></a>00118             } <span class="keywordflow">else</span> {
-<a name="l00119"></a>00119                 cout &lt;&lt; <span class="stringliteral">&quot;Not found type &quot;</span>&lt;&lt;elems[0]&lt;&lt;endl;
-<a name="l00120"></a>00120             }
-<a name="l00121"></a>00121             elems.clear();
-<a name="l00122"></a>00122         }
-<a name="l00123"></a>00123         <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00124"></a>00124     }
-<a name="l00125"></a>00125 
-<a name="l00126"></a>00126     <span class="keywordtype">int</span> Font::width(std::string text) {
-<a name="l00127"></a>00127         <span class="keywordtype">int</span> sum = 0;
-<a name="l00128"></a>00128         <span class="keywordtype">int</span> lastChar = -1;
-<a name="l00129"></a>00129         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=0;i&lt;text.length();i++){
-<a name="l00130"></a>00130             <span class="keywordtype">int</span> f = text[i];
-<a name="l00131"></a>00131             <span class="keyword">auto</span> found = fontMap.find(f);
-<a name="l00132"></a>00132             <span class="keywordflow">if</span> (found != fontMap.end()){
-<a name="l00133"></a>00133                 sum += getKerning(lastChar, f);
-<a name="l00134"></a>00134                 sum += found-&gt;second.xadvance;
-<a name="l00135"></a>00135                 lastChar = f;
-<a name="l00136"></a>00136             } <span class="keywordflow">else</span> {
-<a name="l00137"></a>00137                 cout &lt;&lt; <span class="stringliteral">&quot;Cannot find char &quot;</span>&lt;&lt;f&lt;&lt;endl;
-<a name="l00138"></a>00138                 <span class="keywordflow">return</span> -1;
-<a name="l00139"></a>00139             }
-<a name="l00140"></a>00140         }
-<a name="l00141"></a>00141         <span class="keywordflow">return</span> sum;
-<a name="l00142"></a>00142     }
-<a name="l00143"></a>00143 
-<a name="l00144"></a>00144     <span class="keywordtype">int</span> Font::getKerning(<span class="keywordtype">int</span> t1, <span class="keywordtype">int</span> t2){
-<a name="l00145"></a>00145         <span class="keyword">auto</span> foundKerning = kerning.find(pair&lt;int,int&gt;{t1, t2});
-<a name="l00146"></a>00146         <span class="keywordflow">if</span> (foundKerning != kerning.end()){
-<a name="l00147"></a>00147             <span class="keywordflow">return</span> foundKerning-&gt;second;
+<a name="l00027"></a>00027                         <span class="keywordflow">if</span> (item.length()&gt;0){
+<a name="l00028"></a>00028                                 elems.push_back(item);
+<a name="l00029"></a>00029                         }
+<a name="l00030"></a>00030         }
+<a name="l00031"></a>00031         <span class="keywordflow">return</span> elems;
+<a name="l00032"></a>00032     }
+<a name="l00033"></a>00033 
+<a name="l00034"></a>00034     <span class="keywordtype">bool</span> Font::loadFntFile(<span class="keywordtype">string</span> filename) {
+<a name="l00035"></a>00035         <span class="keywordtype">string</span> texturename = filename.substr(0, filename.size()-4) + <span class="stringliteral">&quot;.png&quot;</span>;
+<a name="l00036"></a>00036         fontMap.clear();
+<a name="l00037"></a>00037         kerning.clear();
+<a name="l00038"></a>00038         TextureSampler sampler;
+<a name="l00039"></a>00039         sampler.filterMag = TextureFilter::Linear;
+<a name="l00040"></a>00040         sampler.filterMin = TextureFilter::LinearMipmapLinear;
+<a name="l00041"></a>00041 
+<a name="l00042"></a>00042         setTexture(Project::loadTexture2D(texturename, sampler));
+<a name="l00043"></a>00043         <span class="keywordflow">if</span> (!texture){
+<a name="l00044"></a>00044             logWarning(<span class="keywordtype">string</span>(<span class="stringliteral">&quot;Cannot load font texture file &quot;</span>)+texturename);
+<a name="l00045"></a>00045             <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00046"></a>00046         }
+<a name="l00047"></a>00047         <span class="keywordtype">string</span> fntFile;
+<a name="l00048"></a>00048         <span class="keywordflow">if</span> (!Project::loadTextResource(filename,fntFile)){
+<a name="l00049"></a>00049             logWarning(<span class="keywordtype">string</span>(<span class="stringliteral">&quot;Cannot load font text file &quot;</span>)+filename);
+<a name="l00050"></a>00050             <span class="keywordflow">return</span> <span class="keyword">false</span>;
+<a name="l00051"></a>00051         }
+<a name="l00052"></a>00052         std::istringstream f{fntFile};
+<a name="l00053"></a>00053         std::string line;
+<a name="l00054"></a>00054         std::vector&lt;string&gt; elems;
+<a name="l00055"></a>00055         std::vector&lt;string&gt; keyval;
+<a name="l00056"></a>00056         <span class="keywordflow">while</span> (std::getline(f, line)) {
+<a name="l00057"></a>00057             split(line, <span class="charliteral">&#39; &#39;</span>, elems);
+<a name="l00058"></a>00058             <span class="keywordflow">if</span> (elems.empty())
+<a name="l00059"></a>00059                 <span class="keywordflow">continue</span>;
+<a name="l00060"></a>00060             <span class="keywordflow">if</span> (elems[0] == <span class="stringliteral">&quot;info&quot;</span>) {
+<a name="l00061"></a>00061             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (elems[0] == <span class="stringliteral">&quot;common&quot;</span>) {
+<a name="l00062"></a>00062                 <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=1;i&lt;elems.size();i++) {
+<a name="l00063"></a>00063                     split(elems[i], <span class="charliteral">&#39;=&#39;</span>, keyval);
+<a name="l00064"></a>00064                     <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;lineHeight&quot;</span>){
+<a name="l00065"></a>00065                         lineHeight = stoi(keyval[1]);
+<a name="l00066"></a>00066                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;base&quot;</span>){
+<a name="l00067"></a>00067                         base = stoi(keyval[1]);
+<a name="l00068"></a>00068                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;scaleW&quot;</span>){
+<a name="l00069"></a>00069                         scaleW = stoi(keyval[1]);
+<a name="l00070"></a>00070                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;scaleH&quot;</span>){
+<a name="l00071"></a>00071                         scaleH = stoi(keyval[1]);
+<a name="l00072"></a>00072                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;pages&quot;</span>){
+<a name="l00073"></a>00073                         pages = stoi(keyval[1]);
+<a name="l00074"></a>00074                     }
+<a name="l00075"></a>00075                 }
+<a name="l00076"></a>00076             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (elems[0] == <span class="stringliteral">&quot;page&quot;</span>) {
+<a name="l00077"></a>00077             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (elems[0] == <span class="stringliteral">&quot;chars&quot;</span>) {
+<a name="l00078"></a>00078             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (elems[0] == <span class="stringliteral">&quot;char&quot;</span>) {
+<a name="l00079"></a>00079                 FontChar fc{};
+<a name="l00080"></a>00080                 <span class="keywordtype">int</span> <span class="keywordtype">id</span> = -1;
+<a name="l00081"></a>00081                 <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=1;i&lt;elems.size();i++){
+<a name="l00082"></a>00082                     split(elems[i], <span class="charliteral">&#39;=&#39;</span>, keyval);
+<a name="l00083"></a>00083                     <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;id&quot;</span>){
+<a name="l00084"></a>00084                         <span class="keywordtype">id</span> = stoi(keyval[1]);
+<a name="l00085"></a>00085                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;x&quot;</span>){
+<a name="l00086"></a>00086                         fc.x = stoi(keyval[1]);
+<a name="l00087"></a>00087                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;y&quot;</span>){
+<a name="l00088"></a>00088                         fc.y = stoi(keyval[1]);
+<a name="l00089"></a>00089                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;width&quot;</span>){
+<a name="l00090"></a>00090                         fc.width = stoi(keyval[1]);
+<a name="l00091"></a>00091                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;height&quot;</span>){
+<a name="l00092"></a>00092                         fc.height = stoi(keyval[1]);
+<a name="l00093"></a>00093                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;xoffset&quot;</span>){
+<a name="l00094"></a>00094                         fc.xoffset = stoi(keyval[1]);
+<a name="l00095"></a>00095                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;yoffset&quot;</span>){
+<a name="l00096"></a>00096                         fc.yoffset = stoi(keyval[1]);
+<a name="l00097"></a>00097                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;xadvance&quot;</span>){
+<a name="l00098"></a>00098                         fc.xadvance = stoi(keyval[1]);
+<a name="l00099"></a>00099                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;page&quot;</span>){
+<a name="l00100"></a>00100                         fc.page = stoi(keyval[1]);
+<a name="l00101"></a>00101                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;chnl&quot;</span>){
+<a name="l00102"></a>00102                         fc.chnl = stoi(keyval[1]);
+<a name="l00103"></a>00103                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;letter&quot;</span>){
+<a name="l00104"></a>00104                         <span class="comment">//    f.letter = keyval[1].substr (1, (unsigned long) (keyval[1].length()-2));</span>
+<a name="l00105"></a>00105                     }
+<a name="l00106"></a>00106                 }
+<a name="l00107"></a>00107                 fontMap[id] = fc;
+<a name="l00108"></a>00108             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (elems[0] == <span class="stringliteral">&quot;kernings&quot;</span>) {
+<a name="l00109"></a>00109 
+<a name="l00110"></a>00110             } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (elems[0] == <span class="stringliteral">&quot;kerning&quot;</span>) {
+<a name="l00111"></a>00111                 <span class="keywordtype">int</span> first =0;
+<a name="l00112"></a>00112                 <span class="keywordtype">int</span> second=0;
+<a name="l00113"></a>00113                 <span class="keywordtype">int</span> amount=0;
+<a name="l00114"></a>00114                 <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=1;i&lt;elems.size();i++) {
+<a name="l00115"></a>00115 
+<a name="l00116"></a>00116                     split(elems[i], <span class="charliteral">&#39;=&#39;</span>, keyval);
+<a name="l00117"></a>00117                     <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;first&quot;</span>){
+<a name="l00118"></a>00118                         first  =stoi(keyval[1]);
+<a name="l00119"></a>00119                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;second&quot;</span>){
+<a name="l00120"></a>00120                         second =stoi(keyval[1]);
+<a name="l00121"></a>00121                     } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (keyval[0] == <span class="stringliteral">&quot;amount&quot;</span>){
+<a name="l00122"></a>00122                         amount =stoi(keyval[1]);
+<a name="l00123"></a>00123                     }
+<a name="l00124"></a>00124                 }
+<a name="l00125"></a>00125                 kerning[pair&lt;int,int&gt;{first, second}] = amount;
+<a name="l00126"></a>00126             } <span class="keywordflow">else</span> {
+<a name="l00127"></a>00127                 cout &lt;&lt; <span class="stringliteral">&quot;Not found type &quot;</span>&lt;&lt;elems[0]&lt;&lt;endl;
+<a name="l00128"></a>00128             }
+<a name="l00129"></a>00129             elems.clear();
+<a name="l00130"></a>00130         }
+<a name="l00131"></a>00131         <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00132"></a>00132     }
+<a name="l00133"></a>00133 
+<a name="l00134"></a>00134     <span class="keywordtype">int</span> Font::width(std::string text) {
+<a name="l00135"></a>00135         <span class="keywordtype">int</span> sum = 0;
+<a name="l00136"></a>00136         <span class="keywordtype">int</span> lastChar = -1;
+<a name="l00137"></a>00137         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=0;i&lt;text.length();i++){
+<a name="l00138"></a>00138             <span class="keywordtype">int</span> f = text[i];
+<a name="l00139"></a>00139             <span class="keyword">auto</span> found = fontMap.find(f);
+<a name="l00140"></a>00140             <span class="keywordflow">if</span> (found != fontMap.end()){
+<a name="l00141"></a>00141                 sum += getKerning(lastChar, f);
+<a name="l00142"></a>00142                 sum += found-&gt;second.xadvance;
+<a name="l00143"></a>00143                 lastChar = f;
+<a name="l00144"></a>00144             } <span class="keywordflow">else</span> {
+<a name="l00145"></a>00145                 cout &lt;&lt; <span class="stringliteral">&quot;Cannot find char &quot;</span>&lt;&lt;f&lt;&lt;endl;
+<a name="l00146"></a>00146                 <span class="keywordflow">return</span> -1;
+<a name="l00147"></a>00147             }
 <a name="l00148"></a>00148         }
-<a name="l00149"></a>00149         <span class="keywordflow">return</span> 0;
+<a name="l00149"></a>00149         <span class="keywordflow">return</span> sum;
 <a name="l00150"></a>00150     }
 <a name="l00151"></a>00151 
-<a name="l00152"></a>00152     <span class="keywordtype">int</span> Font::height() {
-<a name="l00153"></a>00153         <span class="keywordflow">return</span> lineHeight;
-<a name="l00154"></a>00154     }
-<a name="l00155"></a>00155 
-<a name="l00156"></a>00156     shared_ptr&lt;Texture2D&gt; Font::getTexture()<span class="keyword"> const </span>{
-<a name="l00157"></a>00157         <span class="keywordflow">return</span> texture;
+<a name="l00152"></a>00152     <span class="keywordtype">int</span> Font::getKerning(<span class="keywordtype">int</span> t1, <span class="keywordtype">int</span> t2){
+<a name="l00153"></a>00153         <span class="keyword">auto</span> foundKerning = kerning.find(pair&lt;int,int&gt;{t1, t2});
+<a name="l00154"></a>00154         <span class="keywordflow">if</span> (foundKerning != kerning.end()){
+<a name="l00155"></a>00155             <span class="keywordflow">return</span> foundKerning-&gt;second;
+<a name="l00156"></a>00156         }
+<a name="l00157"></a>00157         <span class="keywordflow">return</span> 0;
 <a name="l00158"></a>00158     }
 <a name="l00159"></a>00159 
-<a name="l00160"></a>00160     <span class="keywordtype">void</span> Font::setTexture(shared_ptr&lt;Texture2D&gt; texture) {
-<a name="l00161"></a>00161         Font::texture = texture;
-<a name="l00162"></a>00162         fontListener.notifyListeners(<span class="keyword">this</span>);
-<a name="l00163"></a>00163     }
-<a name="l00164"></a>00164 
-<a name="l00165"></a>00165     <span class="keyword">const</span> FontChar Font::getChar(<span class="keywordtype">char</span> r) {
-<a name="l00166"></a>00166         <span class="keyword">auto</span> found = fontMap.find((<span class="keywordtype">int</span>)r);
-<a name="l00167"></a>00167         <span class="keywordflow">if</span> (found != fontMap.end()){
-<a name="l00168"></a>00168             <span class="keywordflow">return</span> found-&gt;second;
-<a name="l00169"></a>00169         } <span class="keywordflow">else</span> {
-<a name="l00170"></a>00170             <span class="keywordflow">return</span> <a class="code" href="structkick_1_1_font_char.html">kick::FontChar</a>{-1,-1,-1,-1};
-<a name="l00171"></a>00171         }
-<a name="l00172"></a>00172     }
-<a name="l00173"></a>00173 
-<a name="l00174"></a>00174     <span class="keywordtype">int</span> Font::getScaleW()<span class="keyword"> const </span>{
-<a name="l00175"></a>00175         <span class="keywordflow">return</span> scaleW;
-<a name="l00176"></a>00176     }
-<a name="l00177"></a>00177 
-<a name="l00178"></a>00178     <span class="keywordtype">int</span> Font::getScaleH()<span class="keyword"> const </span>{
-<a name="l00179"></a>00179         <span class="keywordflow">return</span> scaleH;
+<a name="l00160"></a>00160     <span class="keywordtype">int</span> Font::height() {
+<a name="l00161"></a>00161         <span class="keywordflow">return</span> lineHeight;
+<a name="l00162"></a>00162     }
+<a name="l00163"></a>00163 
+<a name="l00164"></a>00164     shared_ptr&lt;Texture2D&gt; Font::getTexture()<span class="keyword"> const </span>{
+<a name="l00165"></a>00165         <span class="keywordflow">return</span> texture;
+<a name="l00166"></a>00166     }
+<a name="l00167"></a>00167 
+<a name="l00168"></a>00168     <span class="keywordtype">void</span> Font::setTexture(shared_ptr&lt;Texture2D&gt; texture) {
+<a name="l00169"></a>00169         Font::texture = texture;
+<a name="l00170"></a>00170         fontListener.notifyListeners(<span class="keyword">this</span>);
+<a name="l00171"></a>00171     }
+<a name="l00172"></a>00172 
+<a name="l00173"></a>00173     <span class="keyword">const</span> FontChar Font::getChar(<span class="keywordtype">char</span> r) {
+<a name="l00174"></a>00174         <span class="keyword">auto</span> found = fontMap.find((<span class="keywordtype">int</span>)r);
+<a name="l00175"></a>00175         <span class="keywordflow">if</span> (found != fontMap.end()){
+<a name="l00176"></a>00176             <span class="keywordflow">return</span> found-&gt;second;
+<a name="l00177"></a>00177         } <span class="keywordflow">else</span> {
+<a name="l00178"></a>00178             <span class="keywordflow">return</span> <a class="code" href="structkick_1_1_font_char.html">kick::FontChar</a>{-1,-1,-1,-1};
+<a name="l00179"></a>00179         }
 <a name="l00180"></a>00180     }
 <a name="l00181"></a>00181 
-<a name="l00182"></a>00182     <span class="keywordtype">int</span> Font::getBase()<span class="keyword"> const </span>{
-<a name="l00183"></a>00183         <span class="keywordflow">return</span> base;
+<a name="l00182"></a>00182     <span class="keywordtype">int</span> Font::getScaleW()<span class="keyword"> const </span>{
+<a name="l00183"></a>00183         <span class="keywordflow">return</span> scaleW;
 <a name="l00184"></a>00184     }
 <a name="l00185"></a>00185 
-<a name="l00186"></a>00186     <span class="keywordtype">void</span> Font::setShader(std::shared_ptr&lt;Shader&gt; shader) {
-<a name="l00187"></a>00187         this-&gt;shader = shader;
-<a name="l00188"></a>00188         fontListener.notifyListeners(<span class="keyword">this</span>);
-<a name="l00189"></a>00189     }
-<a name="l00190"></a>00190 
-<a name="l00191"></a>00191     std::shared_ptr&lt;Shader&gt; Font::getShader() {
-<a name="l00192"></a>00192         <span class="keywordflow">return</span> shader;
-<a name="l00193"></a>00193     }
-<a name="l00194"></a>00194 
-<a name="l00195"></a>00195     <span class="keywordtype">bool</span> Font::IsInitialized()<span class="keyword"> const </span>{
-<a name="l00196"></a>00196         <span class="keywordflow">return</span> texture != <span class="keyword">nullptr</span>;
+<a name="l00186"></a>00186     <span class="keywordtype">int</span> Font::getScaleH()<span class="keyword"> const </span>{
+<a name="l00187"></a>00187         <span class="keywordflow">return</span> scaleH;
+<a name="l00188"></a>00188     }
+<a name="l00189"></a>00189 
+<a name="l00190"></a>00190     <span class="keywordtype">int</span> Font::getBase()<span class="keyword"> const </span>{
+<a name="l00191"></a>00191         <span class="keywordflow">return</span> base;
+<a name="l00192"></a>00192     }
+<a name="l00193"></a>00193 
+<a name="l00194"></a>00194     <span class="keywordtype">void</span> Font::setShader(std::shared_ptr&lt;Shader&gt; shader) {
+<a name="l00195"></a>00195         this-&gt;shader = shader;
+<a name="l00196"></a>00196         fontListener.notifyListeners(<span class="keyword">this</span>);
 <a name="l00197"></a>00197     }
-<a name="l00198"></a>00198 }
+<a name="l00198"></a>00198 
+<a name="l00199"></a>00199     std::shared_ptr&lt;Shader&gt; Font::getShader() {
+<a name="l00200"></a>00200         <span class="keywordflow">return</span> shader;
+<a name="l00201"></a>00201     }
+<a name="l00202"></a>00202 
+<a name="l00203"></a>00203     <span class="keywordtype">bool</span> Font::initialized()<span class="keyword"> const </span>{
+<a name="l00204"></a>00204         <span class="keywordflow">return</span> texture != <span class="keyword">nullptr</span>;
+<a name="l00205"></a>00205     }
+<a name="l00206"></a>00206 }
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -272,7 +280,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:46 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Apr 20 2015 22:02:09 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -82,6 +82,8 @@ glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>dimension</b> ()
 glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>center</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a902fee115957c4c0d3e8e43bfa70831f"></a><!-- doxytag: member="kick::Bounds3::diagonal" ref="a902fee115957c4c0d3e8e43bfa70831f" args="()" -->
 glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>diagonal</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abf238956bdbd5151eaeaf6d3082b7ac0"></a><!-- doxytag: member="kick::Bounds3::transform" ref="abf238956bdbd5151eaeaf6d3082b7ac0" args="(glm::mat4 trans)" -->
+<a class="el" href="structkick_1_1_bounds3.html">Bounds3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>transform</b> (glm::mat4 trans)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0c03fef2738cbbb26ea9fc8ba4d80f00"></a><!-- doxytag: member="kick::Bounds3::Bounds3" ref="a0c03fef2738cbbb26ea9fc8ba4d80f00" args="(glm::vec3 const &amp;min, glm::vec3 const &amp;max)" -->
 &#160;</td><td class="memItemRight" valign="bottom"><b>Bounds3</b> (glm::vec3 const &amp;min, glm::vec3 const &amp;max)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac5558ed06981b85d27d19389371b60e8"></a><!-- doxytag: member="kick::Bounds3::expand" ref="ac5558ed06981b85d27d19389371b60e8" args="(glm::vec3 p)" -->
@@ -94,6 +96,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>reset</b> ()</td></tr
 <a class="el" href="structkick_1_1_bounds3.html">Bounds3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>lerp</b> (float f, <a class="el" href="structkick_1_1_bounds3.html">Bounds3</a> b)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4af5ea3017b930c663391740fb0e80a6"></a><!-- doxytag: member="kick::Bounds3::contains" ref="a4af5ea3017b930c663391740fb0e80a6" args="(glm::vec3 point)" -->
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>contains</b> (glm::vec3 point)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4fd312e7fdbadfe015790bf8acb01472"></a><!-- doxytag: member="kick::Bounds3::toLines" ref="a4fd312e7fdbadfe015790bf8acb01472" args="()" -->
+std::vector&lt; glm::vec3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>toLines</b> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab3efb15dd90f0729ab8520a1d781c728"></a><!-- doxytag: member="kick::Bounds3::min" ref="ab3efb15dd90f0729ab8520a1d781c728" args="" -->
@@ -103,7 +107,7 @@ glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>max</b> = glm::v
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="bounds3_8h_source.html#l00014">14</a> of file <a class="el" href="bounds3_8h_source.html">bounds3.h</a>.</p>
+<p>Definition at line <a class="el" href="bounds3_8h_source.html#l00015">15</a> of file <a class="el" href="bounds3_8h_source.html">bounds3.h</a>.</p>
 </div><hr/>The documentation for this struct was generated from the following files:<ul>
 <li>/Users/morten/Programmering/cpp/kick/src/kick/math/<a class="el" href="bounds3_8h_source.html">bounds3.h</a></li>
 <li>/Users/morten/Programmering/cpp/kick/src/kick/math/<a class="el" href="bounds3_8cpp_source.html">bounds3.cpp</a></li>
@@ -123,7 +127,7 @@ glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>max</b> = glm::v
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Sun Dec 7 2014 20:52:47 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Apr 20 2015 22:02:09 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
