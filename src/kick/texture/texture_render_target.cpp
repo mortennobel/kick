@@ -159,7 +159,9 @@ namespace kick {
     }
 
     bool TextureRenderTarget::deleteDepthTexture() {
+        bool wasNotEmpty = mDepthTexture.get();
         mDepthTexture.reset();
+        return wasNotEmpty;
     }
 
     void TextureRenderTarget::setDepthTexture(std::shared_ptr<Texture2D> texture) {
