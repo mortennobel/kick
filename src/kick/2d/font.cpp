@@ -136,10 +136,14 @@ namespace kick{
         int lastChar = -1;
         for (int i=0;i<text.length();i++){
             int f = text[i];
-            auto found = fontMap.find(f);
-            if (found != fontMap.end()){
+            auto foundChar = fontMap.find(f);
+            if (foundChar != fontMap.end()){
                 sum += getKerning(lastChar, f);
-                sum += found->second.xadvance;
+                if (i == text.length()-1){
+                    sum += foundChar->second.width;
+                } else {
+                    sum += foundChar->second.xadvance;
+                }
                 lastChar = f;
             } else {
                 cout << "Cannot find char "<<f<<endl;
@@ -175,7 +179,7 @@ namespace kick{
         if (found != fontMap.end()){
             return found->second;
         } else {
-            return kick::FontChar{-1,-1,-1,-1};
+            return kick::FontChar{0,0,0,0};
         }
     }
 

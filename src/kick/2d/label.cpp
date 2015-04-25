@@ -66,18 +66,24 @@ namespace kick {
         vector<vec3> position;
         vector<vec2> textureCoords;
         vector<GLushort> indices;
-        vec2 carent{-font->width(text) * anchor.x, -font->height() * anchor.y};
+        vec2 caret{-font->width(text) * anchor.x, -font->height() * anchor.y};
+
+        if (text.length()>0){ // if first char is x-offset, then undo offset to fix horizontal alignment
+            const FontChar fc = font->getChar(text[0]);
+            caret.x -= fc.xoffset;
+        }
+
         bounds.max = vec2{-FLT_MAX};
         bounds.min = vec2{FLT_MAX};
         GLushort vertexCount = 0;
         int lastChar = -1;
         for (unsigned short i=0;i<text.length();i++){
             const FontChar fc = font->getChar(text[i]);
-            if (fc.width  == -1){
+            if (fc.width  <= 0){
                 continue;
             }
-            carent.x += font->getKerning(lastChar, text[i]);
-            vec2 basePoint = carent+vec2{fc.xoffset,font->height()-fc.height-fc.yoffset};
+            caret.x += font->getKerning(lastChar, text[i]);
+            vec2 basePoint = caret + vec2{fc.xoffset,font->height()-fc.height-fc.yoffset};
             position.push_back(vec3{basePoint,0});
             position.push_back(vec3{basePoint+vec2{fc.width,0},0});
             position.push_back(vec3{basePoint+vec2{fc.width,fc.height},0});
@@ -103,7 +109,7 @@ namespace kick {
 
             vertexCount += 4;
 
-            carent.x += fc.xadvance;
+            caret.x += fc.xadvance;
             lastChar = text[i];
         }
 
