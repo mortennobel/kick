@@ -35,7 +35,7 @@ namespace kick {
     class Sprite;
     class TextureAtlas;
     class Button;
-    class Panel;
+    class Canvas;
 
     class Scene {
     public:
@@ -97,8 +97,8 @@ namespace kick {
         Light* createDirectionalLight(GameObject *go = nullptr);
         // Creates a gameobject and attaches an ambient light
         Light* createAmbientLight(float intensity = 0.3f, glm::vec3 color = glm::vec3(1));
-        // create a Panel
-        Panel* createPanel(bool includeUICamera = true);
+        // create a Canvas
+        Canvas * createCanvas(bool includeUICamera = true);
 
         friend class Engine;
         friend class GameObject;

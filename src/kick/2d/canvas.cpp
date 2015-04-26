@@ -2,7 +2,7 @@
 // Created by morten on 26/07/14.
 //
 
-#include "panel.h"
+#include "canvas.h"
 #include "label.h"
 #include "kick/2d/sprite.h"
 #include "kick/2d/button.h"
@@ -23,40 +23,40 @@ using namespace glm;
 
 namespace kick{
 
-    Panel::Panel(GameObject *gameObject) : ComponentRenderable(gameObject) {
-        mesh = new Mesh();
-        meshData = make_shared<MeshData>();
-        meshData->setMeshUsage(MeshUsage::DynamicDraw);
-        mesh->setMeshData(meshData);
-        material = new Material();
+    Canvas::Canvas(GameObject *gameObject) : ComponentRenderable(gameObject) {
+        mMesh = new Mesh();
+        mMeshData = make_shared<MeshData>();
+        mMeshData->setMeshUsage(MeshUsage::DynamicDraw);
+        mMesh->setMeshData(mMeshData);
+        mMaterial = new Material();
         for (auto c : gameObject->componentsInChildren<Component2D>()){
             registerComponent2D(c);
         }
     }
 
-    Panel::~Panel() {
+    Canvas::~Canvas() {
 
     }
 
-    void Panel::render(kick::EngineUniforms *engineUniforms, Material* replacementMaterial) {
-        sort(components.begin(), components.end(), [](Component2D *c1, Component2D *c2){
-            int order = c1->getOrder() - c2->getOrder();
+    void Canvas::render(kick::EngineUniforms *engineUniforms, Material* replacementMaterial) {
+        sort(mComponents.begin(), mComponents.end(), [](Component2D *c1, Component2D *c2){
+            int order = c1->order() - c2->order();
             return order < 0 || (order==0 &&
-                    (c1->getShader() < c2->getShader()));
+                    (c1->shader() < c2->shader()));
         });
 
         vector<Sprite*> sprites;
         TextureAtlas* textureAtlas = nullptr;
-        for (auto& comp : components){
+        for (auto& comp : mComponents){
             auto text = dynamic_cast<Label *>(comp);
             if (text){
                 renderSprites(sprites, engineUniforms, replacementMaterial); // render previous sprites
                 text->render(engineUniforms);
             } else {
                 auto sprite = dynamic_cast<Sprite*>(comp);
-                if (textureAtlas != sprite->getTextureAtlas().get()){
+                if (textureAtlas != sprite->textureAtlas().get()){
                     renderSprites(sprites, engineUniforms, replacementMaterial);
-                    textureAtlas = sprite->getTextureAtlas().get();
+                    textureAtlas = sprite->textureAtlas().get();
                 }
                 if (sprite){
                     sprites.push_back(sprite);
@@ -66,29 +66,29 @@ namespace kick{
         renderSprites(sprites, engineUniforms, replacementMaterial);
     }
 
-    void Panel::updateVertexBuffer(std::vector<Sprite *> &sprites) {
+    void Canvas::updateVertexBuffer(std::vector<Sprite *> &sprites) {
         vector<vec3> position;
         vector<vec2> textureCoords;
         vector<vec4> colors;
         vector<GLushort> indices;
         sort(sprites.begin(), sprites.end(), [](Sprite* s1, Sprite* s2){
-            return s1->getOrder() < s2->getOrder();
+            return s1->order() < s2->order();
         });
         unsigned short index = 0;
         for (unsigned short i=0;i<sprites.size();i++){
             Sprite * sprite = sprites[i];
             Transform* transform = sprite->transform();
 
-            vec2 size = (vec2) sprite->getTextureAtlas()->textureSize();
+            vec2 size = (vec2) sprite->textureAtlas()->textureSize();
             mat4 toWorld = transform->globalMatrix();
-            vec2 scale = sprite->getScale();
+            vec2 scale = sprite->scale();
 
 
-            TextureAtlasEntry entry = sprite->getEntry();
-            Bounds2 bounds = sprite->getTrimmedBounds();
-            vec4 color = sprite->getColor();
+            TextureAtlasEntry entry = sprite->entry();
+            Bounds2 bounds = sprite->trimmedBounds();
+            vec4 color = sprite->color();
 
-            if (sprite->getType() == SpriteType::Simple) {
+            if (sprite->type() == SpriteType::Simple) {
                 position.push_back((vec3) (toWorld * vec4{bounds.lowLeft(), 0, 1}));
                 position.push_back((vec3) (toWorld * vec4{bounds.lowRight(), 0, 1}));
                 position.push_back((vec3) (toWorld * vec4{bounds.upperRight(), 0, 1}));
@@ -115,15 +115,15 @@ namespace kick{
                 indices.push_back(index);
                 index+=4;
             }
-            else if (sprite->getType() == SpriteType::Sliced) {
+            else if (sprite->type() == SpriteType::Sliced) {
                 vec2 dim {entry.frame.z,entry.frame.w};
-                vec4 sliceX = vec4{bounds.min.x, bounds.min.x + dim.x * sprite->getSliceX()[0],bounds.max.x - dim.x * (1.0-sprite->getSliceX()[1]), bounds.max.x};
-                vec4 sliceY = vec4{bounds.min.y, bounds.min.y + dim.y * sprite->getSliceY()[0],bounds.max.y - dim.y * (1.0-sprite->getSliceY()[1]), bounds.max.y};
+                vec4 sliceX = vec4{bounds.min.x, bounds.min.x + dim.x * sprite->sliceX()[0],bounds.max.x - dim.x * (1.0- sprite->sliceX()[1]), bounds.max.x};
+                vec4 sliceY = vec4{bounds.min.y, bounds.min.y + dim.y * sprite->sliceY()[0],bounds.max.y - dim.y * (1.0- sprite->sliceY()[1]), bounds.max.y};
 
                 vec2 min{entry.frame.x / size.x, 1.0 - (entry.frame.y + entry.frame.w) / size.y};
                 vec2 max{(entry.frame.x + entry.frame.z) / size.x, 1.0 - entry.frame.y / size.y};
-                vec4 uvX{min.x, lerp(min.x, max.x, sprite->getSliceX()[0]),lerp(min.x, max.x, sprite->getSliceX()[1]),max.x};
-                vec4 uvY{min.y, lerp(min.y, max.y, sprite->getSliceY()[0]),lerp(min.y, max.y, sprite->getSliceY()[1]),max.y};
+                vec4 uvX{min.x, lerp(min.x, max.x, sprite->sliceX()[0]),lerp(min.x, max.x, sprite->sliceX()[1]),max.x};
+                vec4 uvY{min.y, lerp(min.y, max.y, sprite->sliceY()[0]),lerp(min.y, max.y, sprite->sliceY()[1]),max.y};
 
                 for (int x=0;x<3;x++){
                     for (int y=0;y<3;y++){
@@ -154,79 +154,79 @@ namespace kick{
                 }
             }
         }
-        meshData->setPosition(position);
-        meshData->setColor(colors);
-        meshData->setTexCoord0(textureCoords);
-        meshData->setSubmesh(0,indices, MeshType::Triangles);
-        mesh->setMeshData(meshData);
+        mMeshData->setPosition(position);
+        mMeshData->setColor(colors);
+        mMeshData->setTexCoord0(textureCoords);
+        mMeshData->setSubmesh(0,indices, MeshType::Triangles);
+        mMesh->setMeshData(mMeshData);
     }
 
-    void Panel::renderSprites(std::vector<Sprite *> &sprites, kick::EngineUniforms *engineUniforms, Material* replacementMaterial) {
+    void Canvas::renderSprites(std::vector<Sprite *> &sprites, kick::EngineUniforms *engineUniforms, Material* replacementMaterial) {
         if (sprites.size()==0){
             return;
         }
         updateVertexBuffer(sprites);
 
-        auto mat = replacementMaterial ? replacementMaterial : material;
+        auto mat = replacementMaterial ? replacementMaterial : mMaterial;
         if (!replacementMaterial ){
-            material->setShader(sprites[0]->getTextureAtlas()->shader());
-            material->setUniform("mainTexture", sprites[0]->getTextureAtlas()->texture());
+            mMaterial->setShader(sprites[0]->textureAtlas()->shader());
+            mMaterial->setUniform("mainTexture", sprites[0]->textureAtlas()->texture());
         }
         auto shader = mat->shader();
         assert(shader);
-        mesh->bind(shader.get());
+        mMesh->bind(shader.get());
 
-        shader->bind_uniforms(material, engineUniforms, transform());
+        shader->bind_uniforms(mMaterial, engineUniforms, transform());
 
-        mesh->render(0);
+        mMesh->render(0);
 
         sprites.clear();
     }
 
-    int Panel::renderOrder() {
+    int Canvas::renderOrder() {
         return 0;
     }
 
-    Camera *Panel::getCamera() const {
-        return camera;
+    Camera *Canvas::camera() const {
+        return mCamera;
     }
 
-    void Panel::setCamera(Camera *camera) {
-        Panel::camera = camera;
+    void Canvas::setCamera(Camera *camera) {
+        Canvas::mCamera = camera;
         mGameObject->setLayer(256);
     }
 
-    void Panel::deactivated() {
-        for (auto c : components){
+    void Canvas::deactivated() {
+        for (auto c : mComponents){
             deregisterComponent2D(c);
         }
     }
 
-    void Panel::registerComponent2D(Component2D *comp) {
-        components.push_back(comp);
-        comp->panel = this;
+    void Canvas::registerComponent2D(Component2D *comp) {
+        mComponents.push_back(comp);
+        comp->mPanel = this;
 
         SpriteMouseListener *sml = dynamic_cast<SpriteMouseListener*>(comp);
         if (sml){
-            mouseListeners.push_back(sml);
+            mMouseListeners.push_back(sml);
         }
     }
 
-    void Panel::deregisterComponent2D(Component2D *comp) {
-        auto pos = find(components.begin(), components.end(), comp);
-        if (pos != components.end()){
-            (*pos)->panel = nullptr;
-            components.erase(pos);
+    void Canvas::deregisterComponent2D(Component2D *comp) {
+        auto pos = find(mComponents.begin(), mComponents.end(), comp);
+        if (pos != mComponents.end()){
+            (*pos)->mPanel = nullptr;
+            mComponents.erase(pos);
 
             SpriteMouseListener *sml = dynamic_cast<SpriteMouseListener*>(comp);
-            auto pos2 = find(mouseListeners.begin(), mouseListeners.end(), sml);
-            if (pos2 != mouseListeners.end()){
-                mouseListeners.erase(pos2);
+            auto pos2 = find(mMouseListeners.begin(), mMouseListeners.end(), sml);
+            if (pos2 != mMouseListeners.end()){
+                mMouseListeners.erase(pos2);
             }
         }
     }
 
-    Sprite *Panel::createSprite(std::shared_ptr<TextureAtlas> textureAtlas, std::string spriteName, glm::vec2 pos) {
+    Sprite *Canvas::createSprite(std::shared_ptr<TextureAtlas> textureAtlas, std::string spriteName, glm::vec2 pos) {
         GameObject *gameObject_ = gameObject()->scene()->createGameObject("Sprite");
         gameObject_->transform()->setParent(transform());
         Sprite* sprite = gameObject_->addComponent<Sprite>();
@@ -236,7 +236,7 @@ namespace kick{
         return sprite;
     }
 
-    Button *Panel::createButton() {
+    Button *Canvas::createButton() {
         std::shared_ptr<TextureAtlas> textureAtlas = Project::loadTextureAtlas("assets/ui/ui.txt");
         GameObject *gameObject_ = gameObject()->scene()->createGameObject("Button");
         gameObject_->transform()->setParent(transform());
@@ -252,7 +252,7 @@ namespace kick{
         return button;
     }
 
-    Label *Panel::createLabel(std::string text, int fontsize) {
+    Label *Canvas::createLabel(std::string text, int fontsize) {
         auto go = gameObject()->scene()->createGameObject("Label");
         go->transform()->setParent(transform());
         Label *labelComponent = go->addComponent<Label>();
@@ -266,13 +266,13 @@ namespace kick{
         return labelComponent;
     }
 
-    void Panel::updateRenderOrder(Component2D *comp) {
+    void Canvas::updateRenderOrder(Component2D *comp) {
         // todo
     }
 
 
-    void Panel::update() {
-        if (camera==nullptr) {
+    void Canvas::update() {
+        if (mCamera ==nullptr) {
             return;
         }
         vec2 mousePosition = (vec2) MouseInput::position();
@@ -280,47 +280,47 @@ namespace kick{
         vec2 screensize = (vec2) Engine::context()->getContextSurfaceDim();
         vec2 mouseClipCoord = ((mousePosition / screensize)*2.0f-vec2{1.0})*vec2{1,-1}; // correct
 
-        mat4 viewProjection = inverse(camera->projectionMatrix() * camera->viewMatrix());
+        mat4 viewProjection = inverse(mCamera->projectionMatrix() * mCamera->viewMatrix());
         vec2 mouseWorldCoord = (vec2)(viewProjection * vec4(mouseClipCoord, 0, 1));
 
-        for (auto ml : mouseListeners){
+        for (auto ml : mMouseListeners){
             Sprite* sprite = dynamic_cast<Sprite*>(ml);
-            Bounds2 bounds = sprite->getTrimmedBounds();
+            Bounds2 bounds = sprite->trimmedBounds();
             vec2 mouseLocalCoord = (vec2)(sprite->transform()->globalTRSInverse() * vec4{mouseWorldCoord, 0, 1});
 
-            auto mouseOverIter = find(mouseOver.begin(), mouseOver.end(), ml);
-            bool wasMouseOver = mouseOverIter != mouseOver.end();
+            auto mouseOverIter = find(mMouseOver.begin(), mMouseOver.end(), ml);
+            bool wasMouseOver = mouseOverIter != mMouseOver.end();
             if (bounds.contains(mouseLocalCoord)){
                 if (!wasMouseOver){
                     ml->over();
-                    mouseOver.push_back(ml);
+                    mMouseOver.push_back(ml);
                 }
                 for (int i=0;i<3;i++){
                     if (MouseInput::down(i)){
                         ml->down(i);
-                        mousePressed.push_back({ml, i});
+                        mMousePressed.push_back({ml, i});
                     }
                 }
 
             } else {
                 if (wasMouseOver){
                     ml->out();
-                    mouseOver.erase(mouseOverIter);
+                    mMouseOver.erase(mouseOverIter);
                 }
             }
         }
-        for (int i=mousePressed.size()-1;i>=0;i--){
-            int button = mousePressed[i].second;
+        for (int i= mMousePressed.size()-1;i>=0;i--){
+            int button = mMousePressed[i].second;
             if (MouseInput::pressed(button)){
-                mousePressed[i].first->pressed(button);
+                mMousePressed[i].first->pressed(button);
             } else {
-                mousePressed[i].first->up(button);
-                mousePressed.erase(mousePressed.begin()+i);
+                mMousePressed[i].first->up(button);
+                mMousePressed.erase(mMousePressed.begin()+i);
             }
         }
     }
 
-    ToggleButton *Panel::createToggleButton() {
+    ToggleButton *Canvas::createToggleButton() {
         std::shared_ptr<TextureAtlas> textureAtlas = Project::loadTextureAtlas("assets/ui/ui.txt");
         GameObject *gameObject_ = gameObject()->scene()->createGameObject("Button");
         gameObject_->transform()->setParent(transform());

@@ -5,7 +5,7 @@
 #include "button.h"
 #include "kick/scene/scene.h"
 #include "kick/scene/transform.h"
-#include "panel.h"
+#include "canvas.h"
 #include <iostream>
 
 using namespace std;
@@ -17,18 +17,18 @@ namespace kick {
     {
         setType(SpriteType::Sliced);
         setAnchor({0.5f,0.5f});
-        textComponent = panel->createLabel(mText);
-        textComponent->transform()->setParent(transform());
-        textComponent->setText(mText);
-        textComponent->setAnchor({0.5f,0.5f});
-        textComponent->setOrder(getOrder()+1);
+        mTextComponent = mPanel->createLabel(mText);
+        mTextComponent->transform()->setParent(transform());
+        mTextComponent->setText(mText);
+        mTextComponent->setAnchor({0.5f,0.5f});
+        mTextComponent->setOrder(order() + 1);
         updateTextureAndTxtColor();
     }
 
     void Button::setText(std::string const &text) {
         Button::mText = text;
-        if (textComponent){
-            textComponent->setText(text);
+        if (mTextComponent){
+            mTextComponent->setText(text);
         }
     }
 
@@ -37,30 +37,30 @@ namespace kick {
     }
 
     void Button::setPressedSprite(std::string const &pressed) {
-        Button::pressedName = pressed;
+        Button::mPressedName = pressed;
         updateTextureAndTxtColor();
     }
 
     std::string Button::pressedSprite() const {
-        return pressedName;
+        return mPressedName;
     }
 
     void Button::setHoverSprite(std::string const &hover) {
-        Button::hoverName = hover;
+        Button::mHoverName = hover;
         updateTextureAndTxtColor();
     }
 
     std::string Button::hoverSprite() const {
-        return hoverName;
+        return mHoverName;
     }
 
     void Button::setNormalSprite(std::string const &normal) {
-        Button::normalName = normal;
+        Button::mNormalName = normal;
         updateTextureAndTxtColor();
     }
 
     std::string Button::normalSprite() const {
-        return normalName;
+        return mNormalName;
     }
 
     void Button::setOnClick(std::function<void(Button*)> const &onClick) {
@@ -73,28 +73,28 @@ namespace kick {
 
     void Button::updateTextureAndTxtColor() {
         setSpriteName(currentSpriteName());
-        if (pressedButtons.size()>0){
-            textComponent->getMaterial()->setUniform("mainColor", pressedColor);
+        if (mPressedButtons.size()>0){
+            mTextComponent->material()->setUniform("mainColor", mPressedColor);
         } else {
-            if (state == ButtonState::normal){
-                textComponent->getMaterial()->setUniform("mainColor", normalColor);
+            if (mState == ButtonState::normal){
+                mTextComponent->material()->setUniform("mainColor", mNormalColor);
             } else {
-                textComponent->getMaterial()->setUniform("mainColor", hoverColor);
+                mTextComponent->material()->setUniform("mainColor", mHoverColor);
             }
         }
     }
 
     std::string Button::currentSpriteName() {
-        if (pressedButtons.size()>0){
-            return pressedName;
+        if (mPressedButtons.size()>0){
+            return mPressedName;
         }
-        switch (state){
+        switch (mState){
             case ButtonState::normal:
-                return normalName;
+                return mNormalName;
             case ButtonState::hover:
-                return hoverName;
+                return mHoverName;
             default: ////case ButtonState::pressed:
-                return pressedName;
+                return mPressedName;
         }
     }
 
@@ -102,11 +102,11 @@ namespace kick {
 
     void Button::deactivated() {
         Sprite::deactivated();
-        gameObject()->scene()->destroyGameObject(textComponent->gameObject());
+        gameObject()->scene()->destroyGameObject(mTextComponent->gameObject());
     }
 
     void Button::down(int button) {
-        pressedButtons.insert(button);
+        mPressedButtons.insert(button);
         updateTextureAndTxtColor();
         invokeClick();
     }
@@ -116,49 +116,49 @@ namespace kick {
     }
 
     void Button::up(int button) {
-        pressedButtons.erase(button);
+        mPressedButtons.erase(button);
         updateTextureAndTxtColor();
     }
 
     void Button::over() {
-        state = ButtonState::hover;
+        mState = ButtonState::hover;
         updateTextureAndTxtColor();
     }
 
     void Button::out() {
-        state = ButtonState::normal;
+        mState = ButtonState::normal;
         updateTextureAndTxtColor();
     }
 
     void Button::setOrder(int order) {
         Component2D::setOrder(order);
-        if (textComponent){
-            textComponent->setOrder(order+1);
+        if (mTextComponent){
+            mTextComponent->setOrder(order + 1);
         }
     }
 
     void Button::setPressedColor(glm::vec4 const &pressedColor) {
-        Button::pressedColor = pressedColor;
+        Button::mPressedColor = pressedColor;
     }
 
-    glm::vec4 const &Button::getPressedColor() const {
-        return pressedColor;
+    glm::vec4 const &Button::pressedColor() const {
+        return mPressedColor;
     }
 
     void Button::setHoverColor(glm::vec4 const &hoverColor) {
-        Button::hoverColor = hoverColor;
+        Button::mHoverColor = hoverColor;
     }
 
-    glm::vec4 const &Button::getHoverColor() const {
-        return hoverColor;
+    glm::vec4 const &Button::hoverColor() const {
+        return mHoverColor;
     }
 
     void Button::setNormalColor(glm::vec4 const &normalColor) {
-        Button::normalColor = normalColor;
+        Button::mNormalColor = normalColor;
     }
 
-    glm::vec4 const &Button::getNormalColor() const {
-        return normalColor;
+    glm::vec4 const &Button::normalColor() const {
+        return mNormalColor;
     }
 
     void Button::invokeClick() {

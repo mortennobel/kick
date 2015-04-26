@@ -62,7 +62,7 @@ namespace kick {
     void ToggleButton::updateTextureAndTxtColor() {
         if (selected()){
             setSpriteName(mSelectedSprite);
-            textComponent->getMaterial()->setUniform("mainColor", pressedColor);
+            mTextComponent->material()->setUniform("mainColor", mPressedColor);
         } else {
             Button::updateTextureAndTxtColor();
         }
@@ -73,12 +73,12 @@ namespace kick {
         Button::invokeClick();
     }
 
-    std::function<void(ToggleButton*)> const &ToggleButton::getOnChange() const {
-        return onChange;
+    std::function<void(ToggleButton*)> const &ToggleButton::onChange() const {
+        return mOnChange;
     }
 
     void ToggleButton::setOnChange(std::function<void(ToggleButton*)> const &onChange) {
-        this->onChange = onChange;
+        this->mOnChange = onChange;
     }
 
     std::string ToggleButton::selectedSprite() const {

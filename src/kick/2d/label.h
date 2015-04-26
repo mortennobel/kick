@@ -19,30 +19,33 @@ namespace kick {
     class Label : public Component2D {
     public:
         Label(GameObject *gameObject);
-        std::shared_ptr<Font> getFont() const;
+        std::shared_ptr<Font> font() const;
         void setFont(std::shared_ptr<Font>& font);
         virtual void render(EngineUniforms *engineUniforms);
-        std::string const & getText() const;
+        std::string const &text() const;
         void setText(std::string const &text);
-        Bounds2 getBounds();
-        Shader* getShader() const override;
-        Material * getMaterial() const;
+        virtual Bounds2 bounds() const override;
+        virtual Shader*shader() const override;
+        Material *material() const;
         void setMaterial(Material *material);
 
-        virtual int getRenderOrder();
+        virtual int renderOrder();
 
-        glm::vec2 getAnchor() const;
+        virtual void setBounds(Bounds2 bounds);
+
+        glm::vec2 anchor() const;
         void setAnchor(glm::vec2 anchor);
     private:
-        EventListener<Font*> eventListener;
-        Bounds2 bounds;
         void updateVertexBuffer();
-        std::shared_ptr<Font> font = nullptr;
-        Mesh *mesh = nullptr;
-        std::shared_ptr<MeshData> meshData;
-        std::string text;
-        glm::vec2 anchor{0,0};
-        Material* material = nullptr;
+
+        EventListener<Font*> mEventListener;
+        Bounds2 mBounds;
+        std::shared_ptr<Font> mFont = nullptr;
+        Mesh *mMesh = nullptr;
+        std::shared_ptr<MeshData> mMeshData;
+        std::string mText;
+        glm::vec2 mAnchor{0,0};
+        Material*mMaterial = nullptr;
     };
 }
 

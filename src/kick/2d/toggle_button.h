@@ -36,12 +36,12 @@ namespace kick {
 
         void setSelectedSprite(std::string const &selectedSprite);
 
-        std::function<void(ToggleButton*)> const & getOnChange() const;
+        std::function<void(ToggleButton*)> const &onChange() const;
         void setOnChange(std::function<void(ToggleButton*)> const &onChange);
     protected:
         virtual void updateTextureAndTxtColor();
 
         virtual void invokeClick() override;
-        std::function<void(ToggleButton*)> onChange = [](Button*){};
+        std::function<void(ToggleButton*)> mOnChange = [](Button*){};
     };
 }

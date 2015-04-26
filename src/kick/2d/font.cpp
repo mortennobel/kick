@@ -13,7 +13,7 @@ using namespace std;
 
 namespace kick{
     Font::Font()  {
-        shader = Project::loadShader("assets/shaders/font.shader");
+        fShader = Project::loadShader("assets/shaders/font.shader");
     }
 
     Font::~Font() {
@@ -33,14 +33,14 @@ namespace kick{
 
     bool Font::loadFntFile(string filename) {
         string texturename = filename.substr(0, filename.size()-4) + ".png";
-        fontMap.clear();
-        kerning.clear();
+        mFontMap.clear();
+        mKerning.clear();
         TextureSampler sampler;
         sampler.filterMag = TextureFilter::Linear;
         sampler.filterMin = TextureFilter::LinearMipmapLinear;
 
         setTexture(Project::loadTexture2D(texturename, sampler));
-        if (!texture){
+        if (!mTexture){
             logWarning(string("Cannot load font texture file ")+texturename);
             return false;
         }
@@ -62,15 +62,15 @@ namespace kick{
                 for (int i=1;i<elems.size();i++) {
                     split(elems[i], '=', keyval);
                     if (keyval[0] == "lineHeight"){
-                        lineHeight = stoi(keyval[1]);
+                        mLineHeight = stoi(keyval[1]);
                     } else if (keyval[0] == "base"){
-                        base = stoi(keyval[1]);
+                        mBase = stoi(keyval[1]);
                     } else if (keyval[0] == "scaleW"){
-                        scaleW = stoi(keyval[1]);
+                        mScaleW = stoi(keyval[1]);
                     } else if (keyval[0] == "scaleH"){
-                        scaleH = stoi(keyval[1]);
+                        mScaleH = stoi(keyval[1]);
                     } else if (keyval[0] == "pages"){
-                        pages = stoi(keyval[1]);
+                        mPages = stoi(keyval[1]);
                     }
                 }
             } else if (elems[0] == "page") {
@@ -104,7 +104,7 @@ namespace kick{
                         //    f.letter = keyval[1].substr (1, (unsigned long) (keyval[1].length()-2));
                     }
                 }
-                fontMap[id] = fc;
+                mFontMap[id] = fc;
             } else if (elems[0] == "kernings") {
 
             } else if (elems[0] == "kerning") {
@@ -122,7 +122,7 @@ namespace kick{
                         amount =stoi(keyval[1]);
                     }
                 }
-                kerning[pair<int,int>{first, second}] = amount;
+                mKerning[pair<int,int>{first, second}] = amount;
             } else {
                 cout << "Not found type "<<elems[0]<<endl;
             }
@@ -136,8 +136,8 @@ namespace kick{
         int lastChar = -1;
         for (int i=0;i<text.length();i++){
             int f = text[i];
-            auto foundChar = fontMap.find(f);
-            if (foundChar != fontMap.end()){
+            auto foundChar = mFontMap.find(f);
+            if (foundChar != mFontMap.end()){
                 sum += getKerning(lastChar, f);
                 if (i == text.length()-1){
                     sum += foundChar->second.width;
@@ -154,57 +154,57 @@ namespace kick{
     }
 
     int Font::getKerning(int t1, int t2){
-        auto foundKerning = kerning.find(pair<int,int>{t1, t2});
-        if (foundKerning != kerning.end()){
+        auto foundKerning = mKerning.find(pair<int,int>{t1, t2});
+        if (foundKerning != mKerning.end()){
             return foundKerning->second;
         }
         return 0;
     }
 
     int Font::height() {
-        return lineHeight;
+        return mLineHeight;
     }
 
-    shared_ptr<Texture2D> Font::getTexture() const {
-        return texture;
+    shared_ptr<Texture2D> Font::texture() const {
+        return mTexture;
     }
 
     void Font::setTexture(shared_ptr<Texture2D> texture) {
-        Font::texture = texture;
+        Font::mTexture = texture;
         fontListener.notifyListeners(this);
     }
 
     const FontChar Font::getChar(char r) {
-        auto found = fontMap.find((int)r);
-        if (found != fontMap.end()){
+        auto found = mFontMap.find((int)r);
+        if (found != mFontMap.end()){
             return found->second;
         } else {
             return kick::FontChar{0,0,0,0};
         }
     }
 
-    int Font::getScaleW() const {
-        return scaleW;
+    int Font::scaleW() const {
+        return mScaleW;
     }
 
-    int Font::getScaleH() const {
-        return scaleH;
+    int Font::scaleH() const {
+        return mScaleH;
     }
 
-    int Font::getBase() const {
-        return base;
+    int Font::base() const {
+        return mBase;
     }
 
     void Font::setShader(std::shared_ptr<Shader> shader) {
-        this->shader = shader;
+        this->fShader = shader;
         fontListener.notifyListeners(this);
     }
 
     std::shared_ptr<Shader> Font::getShader() {
-        return shader;
+        return fShader;
     }
 
     bool Font::initialized() const {
-        return texture != nullptr;
+        return mTexture != nullptr;
     }
 }

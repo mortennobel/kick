@@ -23,11 +23,12 @@ namespace kick {
     class MeshData;
     class SpriteMouseListener;
 
-    class Panel : public ComponentRenderable, public Updatable {
+
+    class Canvas : public ComponentRenderable, public Updatable {
 
     public:
-        Panel(GameObject *gameObject);
-        virtual ~Panel();
+        Canvas(GameObject *gameObject);
+        virtual ~Canvas();
 
         virtual void deactivated() override;
 
@@ -38,7 +39,7 @@ namespace kick {
 
         virtual int renderOrder();
 
-        Camera * getCamera() const;
+        Camera *camera() const;
         void setCamera(Camera *camera);
 
         //
@@ -51,6 +52,8 @@ namespace kick {
         //
         Label *createLabel(std::string text, int fontsize = 16);
 
+
+
     private:
         void updateVertexBuffer(std::vector<Sprite *> &sprites);
         void renderSprites(std::vector<Sprite*> &sprites, kick::EngineUniforms *engineUniforms, Material* replacementMaterial);
@@ -58,13 +61,13 @@ namespace kick {
         void updateRenderOrder(Component2D* comp);
         void registerComponent2D(Component2D* comp);
         void deregisterComponent2D(Component2D* comp);
-        Camera* camera = nullptr;
-        std::vector<Component2D*> components;
-        std::vector<SpriteMouseListener*> mouseListeners;
-        std::vector<SpriteMouseListener*> mouseOver;
-        std::vector<std::pair<SpriteMouseListener*, int>> mousePressed;
-        Mesh *mesh = nullptr;
-        std::shared_ptr<MeshData> meshData;
-        Material* material = nullptr;
+        Camera*mCamera = nullptr;
+        std::vector<Component2D*> mComponents;
+        std::vector<SpriteMouseListener*> mMouseListeners;
+        std::vector<SpriteMouseListener*> mMouseOver;
+        std::vector<std::pair<SpriteMouseListener*, int>> mMousePressed;
+        Mesh *mMesh = nullptr;
+        std::shared_ptr<MeshData> mMeshData;
+        Material*mMaterial = nullptr;
     };
 }

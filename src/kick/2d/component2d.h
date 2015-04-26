@@ -6,27 +6,28 @@
 #pragma once
 #include "kick/scene/component.h"
 #include "kick/scene/game_object.h"
+#include "kick/math/bounds2.h"
 
 namespace kick {
-    class Panel;
+    class Canvas;
     class Shader;
 
-    class Component2D : public Component{
+    class Component2D : public Component {
     public:
         Component2D(GameObject *gameObject);
 
-        int getOrder() const;
+        int order() const;
         virtual void setOrder(int order);
-        virtual Shader* getShader() const = 0;
+        virtual Shader* shader() const = 0;
 
         virtual void deactivated() override;
-
+        virtual Bounds2 bounds() const = 0;
+        virtual void setBounds(Bounds2 bounds) = 0;
     protected:
-        Panel* panel = nullptr;
-        bool dirty = false;
+        Canvas *mPanel = nullptr;
     private:
-        friend class Panel;
-        int order = 0;
+        friend class Canvas;
+        int mOrder = 0;
     };
 }
 

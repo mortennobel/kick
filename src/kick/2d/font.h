@@ -40,20 +40,20 @@ public:
     int height();
 
 
-    std::shared_ptr<Texture2D> getTexture() const;
+    std::shared_ptr<Texture2D> texture() const;
 
     void setTexture(std::shared_ptr<Texture2D> texture);
 
     const FontChar getChar(char r);
 
-    int getScaleW() const;
-    int getScaleH() const;
+    int scaleW() const;
+    int scaleH() const;
 
     std::shared_ptr<Shader> getShader();
 
     void setShader(std::shared_ptr<Shader> shader);
 
-    int getBase() const;
+    int base() const;
 
     friend class Label;
 
@@ -62,14 +62,15 @@ public:
     Event<Font*> fontListener;
 private:
     int getKerning(int t1, int t2);
-    std::shared_ptr<Texture2D> texture;
-    int lineHeight = 0;
-    int base = 0;
-    int scaleW = 0;
-    int scaleH = 0;
-    int pages = 1;
-    std::map<int, FontChar> fontMap;
-    std::shared_ptr<Shader> shader;
-    std::map<std::pair<int, int>, int> kerning;
+
+    std::shared_ptr<Texture2D> mTexture;
+    int mLineHeight = 0;
+    int mBase = 0;
+    int mScaleW = 0;
+    int mScaleH = 0;
+    int mPages = 1;
+    std::map<int, FontChar> mFontMap;
+    std::shared_ptr<Shader> fShader;
+    std::map<std::pair<int, int>, int> mKerning;
 };
 }

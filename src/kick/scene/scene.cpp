@@ -25,7 +25,7 @@
 #include "glm/gtx/string_cast.hpp"
 #include "kick/texture/texture_atlas.h"
 #include "kick/2d/button.h"
-#include "kick/2d/panel.h"
+#include "canvas.h"
 
 using namespace std;
 
@@ -288,9 +288,9 @@ namespace kick {
         }
     }
 
-    Panel *Scene::createPanel(bool includeUICamera) {
-        GameObject *gameObject = createGameObject("Panel");
-        Panel* panel = gameObject->addComponent<Panel>();
+    Canvas *Scene::createCanvas(bool includeUICamera) {
+        GameObject *gameObject = createGameObject("Canvas");
+        Canvas * panel = gameObject->addComponent<Canvas>();
         if (includeUICamera){
             Camera* camera = createOrthographicCamera(gameObject);
             camera->setMain(false);

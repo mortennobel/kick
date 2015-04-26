@@ -26,52 +26,53 @@ namespace kick {
     public:
         Sprite(GameObject *gameObject);
 
-        std::shared_ptr<TextureAtlas> getTextureAtlas() const;
+        std::shared_ptr<TextureAtlas> textureAtlas() const;
 
         void setTextureAtlas(std::shared_ptr<TextureAtlas> textureAtlas);
 
-        std::string const & getSpriteName() const;
+        std::string const &spriteName() const;
 
         void setSpriteName(std::string const &spriteName);
 
         Event<Sprite*> spriteUpdated;
 
-        TextureAtlasEntry getEntry() const;
+        TextureAtlasEntry entry() const;
 
-        Bounds2 getTrimmedBounds() const;
-        Bounds2 getBounds() const;
+        Bounds2 trimmedBounds() const;
+        virtual Bounds2 bounds() const override;
+        virtual void setBounds(Bounds2 b) override;
 
-        virtual Shader *getShader() const;
+        virtual Shader *shader() const;
 
         // when sprite is sliced slice x is two relative slice positions (between 0.0 and 1.0)
-        glm::vec2 getSliceX() const;
+        glm::vec2 sliceX() const;
         // when sprite is sliced slice x is two relative slice positions (between 0.0 and 1.0)
         void setSliceX(glm::vec2 sliceX);
         // when sprite is sliced slice y is two relative slice positions (between 0.0 and 1.0)
-        glm::vec2 getSliceY() const;
+        glm::vec2 sliceY() const;
         // when sprite is sliced slice y is two relative slice positions (between 0.0 and 1.0)
         void setSliceY(glm::vec2 sliceY);
         // anchor (or pivot point). Default is (0.0) which is the lower left corner.
-        glm::vec2 getAnchor() const;
+        glm::vec2 anchor() const;
         void setAnchor(glm::vec2 anchor);
-        glm::vec2 getScale() const;
+        glm::vec2 scale() const;
         // scale is useful when type is sliced
         void setScale(glm::vec2 scale);
-        SpriteType getType() const;
+        SpriteType type() const;
         void setType(SpriteType type);
 
-        glm::vec4 getColor() const;
+        glm::vec4 color() const;
         void setColor(glm::vec4 color);
     private:
-        std::shared_ptr<TextureAtlas> textureAtlas = nullptr;
-        std::string spriteName;
-        TextureAtlasEntry entry;
-        glm::vec2 sliceX{0.333f, 0.667f};
-        glm::vec2 sliceY{0.333f, 0.667f};
-        glm::vec2 anchor{0,0};
-        glm::vec2 scale{1,1};
-        glm::vec4 color{1,1,1,1};
-        SpriteType type = SpriteType::Simple;
+        std::shared_ptr<TextureAtlas> mTextureAtlas = nullptr;
+        std::string mSpriteName;
+        TextureAtlasEntry mEntry;
+        glm::vec2 mSliceX{0.333f, 0.667f};
+        glm::vec2 mSliceY{0.333f, 0.667f};
+        glm::vec2 mAnchor{0,0};
+        glm::vec2 mScale{1,1};
+        glm::vec4 mColor{1,1,1,1};
+        SpriteType mType = SpriteType::Simple;
     };
 }
 

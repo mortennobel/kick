@@ -14,90 +14,90 @@ namespace kick {
 
     Label::Label(GameObject *gameObject)
             : Component2D(gameObject),
-              bounds{vec2{0,0},vec2{0,0}} {
-        mesh = new Mesh();
-        meshData = make_shared<MeshData>();
-        material = new Material();
-        mesh->setMeshData(meshData);
+              mBounds{vec2{0,0},vec2{0,0}} {
+        mMesh = new Mesh();
+        mMeshData = make_shared<MeshData>();
+        mMaterial = new Material();
+        mMesh->setMeshData(mMeshData);
     }
 
-    std::string const &Label::getText() const {
-        return text;
+    std::string const &Label::text() const {
+        return mText;
     }
 
     void Label::setText(std::string const &text) {
-        Label::text = text;
+        Label::mText = text;
         updateVertexBuffer();
     }
 
     void Label::render(EngineUniforms *engineUniforms) {
-        if (!font) return;
-        auto shader = material->shader();
+        if (!mFont) return;
+        auto shader = mMaterial->shader();
         assert(shader);
-        mesh->bind(shader.get());
-        shader->bind_uniforms(material, engineUniforms, transform());
-        mesh->render(0);
+        mMesh->bind(shader.get());
+        shader->bind_uniforms(mMaterial, engineUniforms, transform());
+        mMesh->render(0);
     }
 
     void Label::setFont(std::shared_ptr<Font>& font) {
         if (!font->initialized()){
             font->loadFntFile();
         }
-        Label::font = font;
+        Label::mFont = font;
         auto setupFont = [&](Font* f){
-            material->setShader(f->getShader());
-            material->setUniform("mainTexture", f->getTexture());
+            mMaterial->setShader(f->getShader());
+            mMaterial->setUniform("mainTexture", f->texture());
         };
         setupFont(font.get());
-        eventListener = font->fontListener.createListener(setupFont);
+        mEventListener = font->fontListener.createListener(setupFont);
         updateVertexBuffer();
     }
 
-    std::shared_ptr<Font> Label::getFont() const {
-        return font;
+    std::shared_ptr<Font> Label::font() const {
+        return mFont;
     }
 
     void Label::updateVertexBuffer() {
-        if (!font || text.length() ==0) {
-            meshData->setSubmesh(0, {}, MeshType::Triangles);
-            mesh->setMeshData(meshData);
+        if (!mFont || mText.length() ==0) {
+            mMeshData->setSubmesh(0, {}, MeshType::Triangles);
+            mMesh->setMeshData(mMeshData);
             return;
         }
         vector<vec3> position;
         vector<vec2> textureCoords;
         vector<GLushort> indices;
-        vec2 caret{-font->width(text) * anchor.x, -font->height() * anchor.y};
+        vec2 caret{-mFont->width(mText) * mAnchor.x, -mFont->height() * mAnchor.y};
 
-        if (text.length()>0){ // if first char is x-offset, then undo offset to fix horizontal alignment
-            const FontChar fc = font->getChar(text[0]);
+        if (mText.length()>0){ // if first char is x-offset, then undo offset to fix horizontal alignment
+            const FontChar fc = mFont->getChar(mText[0]);
             caret.x -= fc.xoffset;
         }
 
-        bounds.max = vec2{-FLT_MAX};
-        bounds.min = vec2{FLT_MAX};
+        mBounds.max = vec2{-FLT_MAX};
+        mBounds.min = vec2{FLT_MAX};
         GLushort vertexCount = 0;
         int lastChar = -1;
-        for (unsigned short i=0;i<text.length();i++){
-            const FontChar fc = font->getChar(text[i]);
+        for (unsigned short i=0;i< mText.length();i++){
+            const FontChar fc = mFont->getChar(mText[i]);
             if (fc.width  <= 0){
                 continue;
             }
-            caret.x += font->getKerning(lastChar, text[i]);
-            vec2 basePoint = caret + vec2{fc.xoffset,font->height()-fc.height-fc.yoffset};
+            caret.x += mFont->getKerning(lastChar, mText[i]);
+            vec2 basePoint = caret + vec2{fc.xoffset, mFont->height()-fc.height-fc.yoffset};
             position.push_back(vec3{basePoint,0});
             position.push_back(vec3{basePoint+vec2{fc.width,0},0});
             position.push_back(vec3{basePoint+vec2{fc.width,fc.height},0});
             position.push_back(vec3{basePoint+vec2{0       ,fc.height},0});
 
-            bounds.min = glm::min(bounds.min, basePoint);
-            bounds.max = glm::max(bounds.max, (vec2)position[position.size()-2]);
+            mBounds.min = glm::min(mBounds.min, basePoint);
+            mBounds.max = glm::max(mBounds.max, (vec2)position[position.size()-2]);
 
-            vec2 scale{1.0f / font->getScaleW(), 1.0f / font->getScaleH()};
+            vec2 scale{1.0f / mFont->scaleW(), 1.0f / mFont->scaleH()};
 
-            textureCoords.push_back(vec2{fc.x         ,font->getScaleH()-fc.y-fc.height}*scale);
-            textureCoords.push_back(vec2{fc.x+fc.width,font->getScaleH()-fc.y-fc.height}*scale);
-            textureCoords.push_back(vec2{fc.x+fc.width,font->getScaleH()-fc.y}*scale);
-            textureCoords.push_back(vec2{fc.x         ,font->getScaleH()-fc.y}*scale);
+            textureCoords.push_back(vec2{fc.x         , mFont->scaleH()-fc.y-fc.height}*scale);
+            textureCoords.push_back(vec2{fc.x+fc.width, mFont->scaleH()-fc.y-fc.height}*scale);
+            textureCoords.push_back(vec2{fc.x+fc.width, mFont->scaleH()-fc.y}*scale);
+            textureCoords.push_back(vec2{fc.x         , mFont->scaleH()-fc.y}*scale);
 
             // push two triangles
             indices.push_back(vertexCount);
@@ -110,49 +110,53 @@ namespace kick {
             vertexCount += 4;
 
             caret.x += fc.xadvance;
-            lastChar = text[i];
+            lastChar = mText[i];
         }
 
-        meshData->setPosition(position);
-        meshData->setTexCoord0(textureCoords);
-        meshData->setSubmesh(0,indices, MeshType::Triangles);
-        mesh->setMeshData(meshData);
+        mMeshData->setPosition(position);
+        mMeshData->setTexCoord0(textureCoords);
+        mMeshData->setSubmesh(0,indices, MeshType::Triangles);
+        mMesh->setMeshData(mMeshData);
     }
 
-    Bounds2 Label::getBounds() {
-        return bounds;
+    Bounds2 Label::bounds() const {
+        return mBounds;
     }
 
-    Material *Label::getMaterial() const {
-        return material;
+    Material *Label::material() const {
+        return mMaterial;
     }
 
     void Label::setMaterial(Material *material) {
         assert(material);
-        Label::material = material;
-        material->setShader(font->getShader());
-        material->setUniform("mainTexture", font->getTexture());
+        Label::mMaterial = material;
+        material->setShader(mFont->getShader());
+        material->setUniform("mainTexture", mFont->texture());
     }
 
-    int Label::getRenderOrder() {
-        return material->renderOrder();
+    int Label::renderOrder() {
+        return mMaterial->renderOrder();
     }
 
     void Label::setAnchor(glm::vec2 anchor) {
-        if (anchor != Label::anchor){
-            Label::anchor = anchor;
+        if (anchor != Label::mAnchor){
+            Label::mAnchor = anchor;
             updateVertexBuffer();
         }
     }
 
-    glm::vec2 Label::getAnchor() const {
-        return anchor;
+    glm::vec2 Label::anchor() const {
+        return mAnchor;
     }
 
-    Shader *Label::getShader() const {
-        if (material){
-            return material->shader().get();
+    Shader *Label::shader() const {
+        if (mMaterial){
+            return mMaterial->shader().get();
         }
         return nullptr;
+    }
+
+    void Label::setBounds(Bounds2 bounds) {
+        cout << "Implement" << endl;
     }
 }

@@ -16,115 +16,118 @@ namespace kick {
     Sprite::Sprite(GameObject *gameObject) : Component2D(gameObject) {
     }
 
-    std::shared_ptr<TextureAtlas> Sprite::getTextureAtlas() const {
-        return textureAtlas;
+    std::shared_ptr<TextureAtlas> Sprite::textureAtlas() const {
+        return mTextureAtlas;
     }
 
     void Sprite::setTextureAtlas(std::shared_ptr<TextureAtlas> textureAtlas) {
-        Sprite::textureAtlas = textureAtlas;
-        if (textureAtlas && spriteName.length()>0){
-            entry = textureAtlas->get(spriteName);
+        Sprite::mTextureAtlas = textureAtlas;
+        if (textureAtlas && mSpriteName.length()>0){
+            mEntry = textureAtlas->get(mSpriteName);
             spriteUpdated.notifyListeners(this);
         }
     }
 
 
-    std::string const &Sprite::getSpriteName() const {
-        return spriteName;
+    std::string const &Sprite::spriteName() const {
+        return mSpriteName;
     }
 
     void Sprite::setSpriteName(std::string const &spriteName) {
-        Sprite::spriteName = spriteName;
-        if (textureAtlas && spriteName != ""){
-            entry = textureAtlas->get(spriteName);
+        Sprite::mSpriteName = spriteName;
+        if (mTextureAtlas && spriteName != ""){
+            mEntry = mTextureAtlas->get(spriteName);
             spriteUpdated.notifyListeners(this);
         }
     }
 
-    TextureAtlasEntry Sprite::getEntry() const {
-        return entry;
+    TextureAtlasEntry Sprite::entry() const {
+        return mEntry;
     }
 
-    glm::vec2 Sprite::getSliceX() const {
-        return sliceX;
+    glm::vec2 Sprite::sliceX() const {
+        return mSliceX;
     }
 
     void Sprite::setSliceX(glm::vec2 sliceX) {
         assert (sliceX.x <= sliceX.y);
         assert (0 <= sliceX.x);
         assert (sliceX.y <= 1);
-        Sprite::sliceX = sliceX;
+        Sprite::mSliceX = sliceX;
     }
 
-    glm::vec2 Sprite::getSliceY() const {
-        return sliceY;
+    glm::vec2 Sprite::sliceY() const {
+        return mSliceY;
     }
 
     void Sprite::setSliceY(glm::vec2 sliceY) {
         assert (sliceY.x <= sliceY.y);
         assert (0 <= sliceY.x);
         assert (sliceY.y <= 1);
-        Sprite::sliceY = sliceY;
+        Sprite::mSliceY = sliceY;
     }
 
-    glm::vec2 Sprite::getAnchor() const {
-        return anchor;
+    glm::vec2 Sprite::anchor() const {
+        return mAnchor;
     }
 
     void Sprite::setAnchor(glm::vec2 anchor) {
-        Sprite::anchor = anchor;
+        Sprite::mAnchor = anchor;
     }
 
-    glm::vec2 Sprite::getScale() const {
-        return scale;
+    glm::vec2 Sprite::scale() const {
+        return mScale;
     }
 
     void Sprite::setScale(glm::vec2 scale) {
-        Sprite::scale = scale;
+        Sprite::mScale = scale;
     }
 
     void Sprite::setType(SpriteType type) {
-        Sprite::type = type;
+        Sprite::mType = type;
     }
 
-    SpriteType Sprite::getType() const {
-        return type;
+    SpriteType Sprite::type() const {
+        return mType;
     }
 
-    Bounds2 Sprite::getBounds() const {
+    Bounds2 Sprite::bounds() const {
         Bounds2 bounds;
 
-        float w = entry.spriteSourceSize.z * scale.x;
-        float h = entry.spriteSourceSize.w * scale.y;
-        bounds.min = -vec2{entry.spriteSourceSize.z, entry.spriteSourceSize.w} * anchor * scale;
+        float w = mEntry.spriteSourceSize.z * mScale.x;
+        float h = mEntry.spriteSourceSize.w * mScale.y;
+        bounds.min = -vec2{mEntry.spriteSourceSize.z, mEntry.spriteSourceSize.w} * mAnchor * mScale;
         bounds.max = bounds.min + glm::vec2{w,h};
         return bounds;
     }
 
-    Bounds2 Sprite::getTrimmedBounds() const {
+    Bounds2 Sprite::trimmedBounds() const {
         Bounds2 bounds;
 
-        float w = entry.frame.z * scale.x;
-        float h = entry.frame.w * scale.y;
-        bounds.min = {entry.spriteSourceSize.x, entry.spriteSourceSize.w - entry.spriteSourceSize.y - entry.frame.w};
-        bounds.min -= vec2{entry.spriteSourceSize.z, entry.spriteSourceSize.w} * anchor * scale;
+        float w = mEntry.frame.z * mScale.x;
+        float h = mEntry.frame.w * mScale.y;
+        bounds.min = {mEntry.spriteSourceSize.x, mEntry.spriteSourceSize.w - mEntry.spriteSourceSize.y - mEntry.frame.w};
+        bounds.min -= vec2{mEntry.spriteSourceSize.z, mEntry.spriteSourceSize.w} * mAnchor * mScale;
         bounds.max = bounds.min + glm::vec2{w,h};
         return bounds;
     }
 
-    glm::vec4 Sprite::getColor() const {
-        return color;
+    glm::vec4 Sprite::color() const {
+        return mColor;
     }
 
     void Sprite::setColor(glm::vec4 color) {
-        Sprite::color = color;
+        Sprite::mColor = color;
     }
 
-    Shader *Sprite::getShader() const {
-        if (textureAtlas){
-            return textureAtlas->shader().get();
+    Shader *Sprite::shader() const {
+        if (mTextureAtlas){
+            return mTextureAtlas->shader().get();
         }
         return nullptr;
     }
 
+    void Sprite::setBounds(Bounds2 b) {
+        cout << "Todo implement"<<endl;
+    }
 }

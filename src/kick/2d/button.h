@@ -38,11 +38,11 @@ namespace kick {
         virtual void deactivated() override;
         virtual void setOrder(int order) override;
 
-        glm::vec4 const & getNormalColor() const;
+        glm::vec4 const &normalColor() const;
         void setNormalColor(glm::vec4 const &normalColor);
-        glm::vec4 const & getHoverColor() const;
+        glm::vec4 const &hoverColor() const;
         void setHoverColor(glm::vec4 const &hoverColor);
-        glm::vec4 const & getPressedColor() const;
+        glm::vec4 const &pressedColor() const;
         void setPressedColor(glm::vec4 const &pressedColor);
     protected:
         virtual std::string currentSpriteName();
@@ -55,19 +55,19 @@ namespace kick {
 
         virtual void invokeClick();
 
-        std::string normalName;
-        std::string hoverName;
-        std::string pressedName;
+        std::string mNormalName;
+        std::string mHoverName;
+        std::string mPressedName;
 
-        ButtonState state = ButtonState::normal;
+        ButtonState mState = ButtonState::normal;
 
-        glm::vec4 normalColor = glm::vec4{1,1,1,1};
-        glm::vec4 hoverColor = glm::vec4{1,1,1,1};
-        glm::vec4 pressedColor = glm::vec4{0,0,0,1};
+        glm::vec4 mNormalColor = glm::vec4{1,1,1,1};
+        glm::vec4 mHoverColor = glm::vec4{1,1,1,1};
+        glm::vec4 mPressedColor = glm::vec4{0,0,0,1};
         std::string mText;
         std::function<void(Button*)> onClick;
-        Label *textComponent = nullptr;
-        std::set<int> pressedButtons;
+        Label *mTextComponent = nullptr;
+        std::set<int> mPressedButtons;
     };
 }
 
