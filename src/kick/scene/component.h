@@ -24,7 +24,7 @@ namespace kick {
         Updated
     };
     
-    class Component {
+    class Component : public std::enable_shared_from_this<Component> {
     public:
         Component(GameObject* gameObject);
         Component(Component&& component);
@@ -33,7 +33,7 @@ namespace kick {
         // deprecated
         virtual void activated() final {}
         virtual void deactivated(){}
-        Transform* transform();
+        std::shared_ptr<Transform> transform();
         GameObject* gameObject();
 
         bool enabled() const;
@@ -45,6 +45,6 @@ namespace kick {
         bool mEnabled = true;
     };
     
-    typedef std::vector<Component*>::const_iterator ConstComponentIter;
-    typedef std::vector<Component*>::iterator ComponentIter;
+    typedef std::vector<std::shared_ptr<Component>>::const_iterator ConstComponentIter;
+    typedef std::vector<std::shared_ptr<Component>>::iterator ComponentIter;
 }

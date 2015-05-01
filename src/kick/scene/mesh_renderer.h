@@ -41,7 +41,7 @@ namespace kick {
     private:
         bool isInstanced = false;
         std::shared_ptr<Mesh> mMesh;
-        Transform* mTransform;
+        std::shared_ptr<Transform> mTransform;
         std::vector<Material*> mMaterials;
     };
 }

@@ -56,7 +56,7 @@ namespace kick {
     
     GameObject *Scene::createGameObject(const string &name){
         auto res = new GameObject(name, this, ++mUniqueIdGenerator);
-        EventListener<std::pair<Component*, ComponentUpdateStatus>> eventListener = res->componentEvent.createListener([&](std::pair<Component*, ComponentUpdateStatus> e){
+        EventListener<std::pair<std::shared_ptr<Component>, ComponentUpdateStatus>> eventListener = res->componentEvent.createListener([&](std::pair<std::shared_ptr<Component>, ComponentUpdateStatus> e){
             componentListener(e.first, e.second);
         });
 
@@ -99,7 +99,7 @@ namespace kick {
     
     void Scene::render(EngineUniforms* engineUniforms){
         engineUniforms->sceneLights = &mSceneLights;
-        std::sort(mCameras.begin(), mCameras.end(), [](Camera *c1, Camera *c2){
+        std::sort(mCameras.begin(), mCameras.end(), [](std::shared_ptr<Camera> c1, std::shared_ptr<Camera> c2){
             return c1->index() < c2->index();
         });
         for (auto & camera : mCameras) {
@@ -110,20 +110,20 @@ namespace kick {
         }
     }
     
-    void Scene::componentListener(Component* component, ComponentUpdateStatus status){
+    void Scene::componentListener(std::shared_ptr<Component> component, ComponentUpdateStatus status){
         componentEvents.notifyListeners({component, status});
-        Camera *camera = dynamic_cast<Camera*>(component);
-        Light *light = dynamic_cast<Light*>(component);
+        auto camera = std::dynamic_pointer_cast<Camera>(component);
+        auto light = std::dynamic_pointer_cast<Light>(component);
         if (status == ComponentUpdateStatus::Created){
             if (camera){
                 mCameras.push_back(camera);
             } else if (light){
-                mLights[light] = light->lightTypeChanged.createListener([&](Light* l){
+                mLights[light] = light->lightTypeChanged.createListener([&](std::shared_ptr<Light> l){
                     rebuildSceneLights();
                 }, 0);
                 addLight(light);
             }
-            auto updateable = dynamic_cast<Updatable *>(component);
+            auto updateable = std::dynamic_pointer_cast<Updatable>(component);
             if (updateable){
                 mUpdatable.push_back(updateable);
             }
@@ -142,7 +142,7 @@ namespace kick {
                     rebuildSceneLights();
                 }
             }
-            auto updateable = dynamic_cast<Updatable *>(component);
+            auto updateable = std::dynamic_pointer_cast<Updatable>(component);
             if (updateable){
                 auto pos = find(mUpdatable.begin(), mUpdatable.end(), updateable);
                 if (pos != mUpdatable.end()){
@@ -152,7 +152,7 @@ namespace kick {
         }
     }
 
-    void Scene::addLight(Light *light) {
+    void Scene::addLight(std::shared_ptr<Light> light) {
         switch (light->lightType()){
             case LightType::Ambient:
                 this->mSceneLights.ambientLight = light;
@@ -171,11 +171,11 @@ namespace kick {
         }
     }
 
-    CameraPerspective* Scene::createPerspectiveCamera(GameObject *cameraObject){
+    std::shared_ptr<CameraPerspective> Scene::createPerspectiveCamera(GameObject *cameraObject){
         if (!cameraObject ){
             cameraObject = createGameObject("PerspectiveCamera");
         }
-        CameraPerspective *cam = cameraObject->addComponent<CameraPerspective>();
+        auto cam = cameraObject->addComponent<CameraPerspective>();
         cam->setNear(0.1f);
         cam->setFar(100);
         cam->setFieldOfViewY(glm::radians(60.0f));
@@ -183,11 +183,11 @@ namespace kick {
         return cam;
     }
 
-    CameraOrthographic *Scene::createOrthographicCamera(GameObject *cameraObject) {
+    std::shared_ptr<CameraOrthographic> Scene::createOrthographicCamera(GameObject *cameraObject) {
         if (!cameraObject ) {
             cameraObject = createGameObject("OrthographicCamera");
         }
-        CameraOrthographic *cam = cameraObject->addComponent<CameraOrthographic>();
+        auto cam = cameraObject->addComponent<CameraOrthographic>();
         glm::ivec2 dim = Engine::context()->getContextSurfaceDim();
         cam->setNear(-10);
         cam->setFar(10);
@@ -199,11 +199,11 @@ namespace kick {
         return cam;
     }
 
-    MeshRenderer* Scene::createCube(GameObject *gameObject, float length){
+    std::shared_ptr<MeshRenderer> Scene::createCube(GameObject *gameObject, float length){
         if (!gameObject) {
             gameObject = createGameObject("Cube");
         }
-        MeshRenderer *meshRenderer = gameObject->addComponent<MeshRenderer>();
+        auto meshRenderer = gameObject->addComponent<MeshRenderer>();
         auto mesh = make_shared<Mesh>();
         mesh->setMeshData(MeshFactory::createCubeData(length*0.5f));
         meshRenderer->setMesh(mesh);
@@ -213,11 +213,11 @@ namespace kick {
         return meshRenderer;
     }
 
-    MeshRenderer* Scene::createSphere(GameObject *gameObject){
+    std::shared_ptr<MeshRenderer> Scene::createSphere(GameObject *gameObject){
         if (!gameObject ) {
             gameObject = createGameObject("Sphere");
         }
-        MeshRenderer *meshRenderer = gameObject->addComponent<MeshRenderer>();
+        auto meshRenderer = gameObject->addComponent<MeshRenderer>();
         auto mesh = make_shared<Mesh>();
         mesh->setMeshData(MeshFactory::createUVSphereData());
         meshRenderer->setMesh(mesh);
@@ -228,22 +228,22 @@ namespace kick {
     }
 
 
-    LineRenderer *Scene::createLine(GameObject *gameObject, const vector<glm::vec3> &points, kick::MeshType meshType, const std::vector<GLushort> &indices) {
+    std::shared_ptr<LineRenderer> Scene::createLine(GameObject *gameObject, const vector<glm::vec3> &points, kick::MeshType meshType, const std::vector<GLushort> &indices) {
         if (!gameObject) {
             gameObject = createGameObject("Plane");
         }
-        LineRenderer *lineRenderer = gameObject->addComponent<LineRenderer>();
+        auto lineRenderer = gameObject->addComponent<LineRenderer>();
         if (points.size()){
             lineRenderer->setPoints(points, meshType, indices);
         }
         return lineRenderer;
     }
 
-    MeshRenderer* Scene::createPlane(GameObject *gameObject){
+    std::shared_ptr<MeshRenderer> Scene::createPlane(GameObject *gameObject){
         if (!gameObject) {
             gameObject = createGameObject("Plane");
         }
-        MeshRenderer *meshRenderer = gameObject->addComponent<MeshRenderer>();
+        auto meshRenderer = gameObject->addComponent<MeshRenderer>();
         auto mesh = make_shared<Mesh>();
         mesh->setMeshData(MeshFactory::createPlaneData());
         meshRenderer->setMesh(mesh);
@@ -253,28 +253,28 @@ namespace kick {
         return meshRenderer;
     }
 
-    Light* Scene::createPointLight(GameObject *gameObject){
+    std::shared_ptr<Light> Scene::createPointLight(GameObject *gameObject){
         if (!gameObject) {
             gameObject = createGameObject("PointLight");
         }
-        Light* light = gameObject->addComponent<Light>();
+        auto light = gameObject->addComponent<Light>();
         light->setLightType(LightType::Point);
         return light;
     }
 
-    Light* Scene::createDirectionalLight(GameObject *gameObject){
+    std::shared_ptr<Light> Scene::createDirectionalLight(GameObject *gameObject){
         if (!gameObject){
             gameObject = createGameObject("DirectionalLight");
         }
-        Light* light = gameObject->addComponent<Light>();
+        auto light = gameObject->addComponent<Light>();
         light->setLightType(LightType::Directional);
         return light;
     }
 
     // helper function, which creates a gameobject and attaches a ambient light
-    Light* Scene::createAmbientLight(float intensity, glm::vec3 color){
+    std::shared_ptr<Light> Scene::createAmbientLight(float intensity, glm::vec3 color){
         GameObject *gameObject = createGameObject("AmbientLight");
-        Light* light = gameObject->addComponent<Light>();
+        auto light = gameObject->addComponent<Light>();
         light->setLightType(LightType::Ambient);
         light->setIntensity(intensity);
         light->setColor(color);
@@ -288,18 +288,18 @@ namespace kick {
         }
     }
 
-    Canvas *Scene::createCanvas(bool includeUICamera) {
+    std::shared_ptr<Canvas> Scene::createCanvas(bool includeUICamera) {
         GameObject *gameObject = createGameObject("Canvas");
-        Canvas * panel = gameObject->addComponent<Canvas>();
+        auto canvas = gameObject->addComponent<Canvas>();
         if (includeUICamera){
-            Camera* camera = createOrthographicCamera(gameObject);
+            auto camera = createOrthographicCamera(gameObject);
             camera->setMain(false);
             camera->setIndex(1);
             camera->setCullingMask(256);//0b100000000
             camera->setClearColorBuffer(false);
-            panel->setCamera(camera);
+            canvas->setCamera(camera);
         }
-        return panel;
+        return canvas;
     }
 
     GameObject *Scene::gameObjectByUID(int32_t uid) {
@@ -311,7 +311,7 @@ namespace kick {
         return nullptr;
     }
 
-    Camera *Scene::mainCamera() {
+    std::shared_ptr<Camera> Scene::mainCamera() {
         for (auto c : mCameras) {
             if (c->main()) {
                 return c;
@@ -320,6 +320,6 @@ namespace kick {
         if (!mCameras.empty()) {
             return mCameras[0];
         }
-        return nullptr;
+        return std::shared_ptr<Camera>();
     }
 }

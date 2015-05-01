@@ -28,31 +28,31 @@ namespace kick {
         GameObject& operator=(GameObject&& other);
         ~GameObject();
         template <typename C, typename... T>
-        C *addComponent(T... t);
+        std::shared_ptr<C> addComponent(T... t);
         template <typename C>
-        C* component();
+        std::shared_ptr<C> component();
         template <typename C>
-        std::vector<C*> components();
+        std::vector<std::shared_ptr<C>> components();
         template <typename C>
-        C*componentInParent();
+        std::shared_ptr<C> componentInParent();
         template <typename C>
-        std::vector<C*> componentsInParent();
+        std::vector<std::shared_ptr<C>> componentsInParent();
         template <typename C>
-        C*componentInChildren();
+        std::shared_ptr<C> componentInChildren();
         template <typename C>
-        std::vector<C*> componentsInChildren();
-        bool destroyComponent(Component *component);
+        std::vector<std::shared_ptr<C>> componentsInChildren();
+        bool destroyComponent(std::shared_ptr<Component> component);
         ConstComponentIter begin() const;
         ConstComponentIter end() const;
         ComponentIter begin();
         ComponentIter end();
-        Event<std::pair<Component*, ComponentUpdateStatus>> componentEvent;
+        Event<std::pair<std::shared_ptr<Component>, ComponentUpdateStatus>> componentEvent;
         std::string name() const;
         void setName(std::string str);
 
-        Transform *transform(){ return mTransform; }
+        std::shared_ptr<Transform> transform(){ return mTransform; }
         
-        Scene*scene(){ return mScene; }
+        Scene* scene(){ return mScene; }
 
         int layer() const;
         void setLayer(int layer);
@@ -66,10 +66,10 @@ namespace kick {
         std::string mName;
         int mLayer = 1;
         bool mDestroyed = false;
-        std::vector<Component*> mComponents;
-        std::vector<Component*> newComponents;
-        std::vector<std::function<void (Component*, ComponentUpdateStatus)>> componentListeners;
-        Transform *mTransform;
+        std::vector<std::shared_ptr<Component>> mComponents;
+        std::vector<std::shared_ptr<Component>> newComponents;
+        std::vector<std::function<void (std::shared_ptr<Component>, ComponentUpdateStatus)>> componentListeners;
+        std::shared_ptr<Transform> mTransform;
     };
 };
 

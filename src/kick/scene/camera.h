@@ -83,7 +83,7 @@ namespace kick {
         int index();
 
         // Return the main camera (first camera flagged as main) in the active scene.
-        static Camera* mainCamera();
+        static std::shared_ptr<Camera> mainCamera();
 
     protected:
         glm::mat4 mProjectionMatrix = glm::mat4{1};
@@ -102,9 +102,9 @@ namespace kick {
         std::shared_ptr<Shader> mShadowMapShader;
         std::shared_ptr<Material> mReplacementMaterial;
         Material*mShadowMapMaterial;
-        EventListener<std::pair<Component*, ComponentUpdateStatus>> componentListener;
+        EventListener<std::pair<std::shared_ptr<Component>, ComponentUpdateStatus>> componentListener;
         void setupViewport(glm::vec2 &offset, glm::vec2 &dim);
-        std::vector<ComponentRenderable*> mRenderableComponents;
+        std::vector<std::shared_ptr<ComponentRenderable>> mRenderableComponents;
         glm::vec4 mClearColor = glm::vec4(0,0,0,1);
         int mCullingMask = 0xFFFFFEFF;
         int mClearFlag  = GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT; // default clear color clear depth

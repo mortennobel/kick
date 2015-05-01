@@ -40,7 +40,7 @@ namespace kick {
     void Light::setLightType(LightType lightType) {
         assert(this->mLightType == LightType::Uninitialized);
         this->mLightType = lightType;
-        lightTypeChanged.notifyListeners(this);
+        lightTypeChanged.notifyListeners(std::dynamic_pointer_cast<Light>(shared_from_this()));
     };
     
     LightType Light::lightType(){

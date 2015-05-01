@@ -46,7 +46,7 @@ namespace kick {
         std::vector<glm::vec3> mPoints;
         std::vector<GLushort> mIndices;
         std::shared_ptr<Mesh> mMesh;
-        Transform* mTransform;
+        std::shared_ptr<Transform> mTransform;
         Material* mMaterial;
         bool mSmoothLine = true;
     };

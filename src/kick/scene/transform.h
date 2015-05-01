@@ -19,8 +19,8 @@ namespace kick {
     class GameObject;
     class Transform;
     
-    typedef std::vector<Transform*>::iterator TransformIter;
-    typedef std::vector<Transform*>::const_iterator ConstTransformIter;
+    typedef std::vector<std::shared_ptr<Transform>>::iterator TransformIter;
+    typedef std::vector<std::shared_ptr<Transform>>::const_iterator ConstTransformIter;
     
     class Transform : public Component {
     public:
@@ -39,15 +39,15 @@ namespace kick {
         glm::quat localRotation();
         void setLocalScale(glm::vec3 scale);
         glm::vec3 localScale();
-        void setParent(Transform *parent);
+        void setParent(std::shared_ptr<Transform> parent);
         void lookAt(glm::vec3 target, glm::vec3 up = glm::vec3{0,1,0});
         void lookAt(Transform *target, glm::vec3 up = glm::vec3{0,1,0});
         glm::mat4 localMatrix();
         glm::mat4 globalMatrix();
         glm::mat4 localTRSInverse();
         glm::mat4 globalTRSInverse();
-		Transform* root();
-        Transform* parent();
+		std::shared_ptr<Transform> root();
+        std::shared_ptr<Transform> parent();
         TransformIter begin();
         TransformIter end();
         ConstTransformIter begin() const;
@@ -76,7 +76,7 @@ namespace kick {
             bool globalPos = true;
             bool globalRot = true;
         } mDirty;
-        std::vector<Transform*> mChildren;
-        Transform*mParent = nullptr;
+        std::vector<std::shared_ptr<Transform>> mChildren;
+        std::shared_ptr<Transform> mParent = nullptr;
     };
 }

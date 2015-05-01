@@ -4,8 +4,8 @@ namespace kick {
     typedef std::vector<std::unique_ptr<GameObject>>::const_iterator GameObjectIter;
     
     template <typename C, typename... T>
-    inline C *GameObject::addComponent(T... t){
-        auto res = new C(this, t...);
+    inline std::shared_ptr<C> GameObject::addComponent(T... t){
+        auto res = std::make_shared<C>(this, t...);
         mComponents.push_back(res);
         res->activated();
         componentEvent.notifyListeners({res, ComponentUpdateStatus::Created});
@@ -13,9 +13,9 @@ namespace kick {
     }
 
     template <typename C>
-    inline C* GameObject::component(){
+    inline std::shared_ptr<C> GameObject::component(){
         for (auto c : mComponents){
-            C* comp = dynamic_cast<C*>(c);
+            auto comp = std::dynamic_pointer_cast<C>(c);
             if (comp){
                 return comp;
             }
@@ -24,10 +24,10 @@ namespace kick {
     }
 
     template <typename C>
-    inline std::vector<C*> GameObject::components(){
-        std::vector<C*> res;
+    inline std::vector<std::shared_ptr<C>> GameObject::components(){
+        std::vector<std::shared_ptr<C>> res;
         for (auto c : mComponents){
-            C* comp = dynamic_cast<C*>(c);
+            std::shared_ptr<C> comp = std::dynamic_pointer_cast<C>(c);
             if (comp){
                 res.push_back(comp);
             }
@@ -36,10 +36,10 @@ namespace kick {
     }
 
     template <typename C>
-    inline C* GameObject::componentInParent(){
-        Transform* p = mTransform->parent();
+    inline std::shared_ptr<C> GameObject::componentInParent(){
+        auto p = mTransform->parent();
         while (p){
-            C* c = p->gameObject()->component<C>();
+            std::shared_ptr<C> c = p->gameObject()->component<C>();
             if (c){
                 return c;
             }
@@ -49,11 +49,11 @@ namespace kick {
     }
 
     template <typename C>
-    inline std::vector<C*> GameObject::componentsInParent(){
-        std::vector<C*> res;
-        Transform* p = mTransform->parent();
+    inline std::vector<std::shared_ptr<C>> GameObject::componentsInParent(){
+        std::vector<std::shared_ptr<C>> res;
+        auto p = mTransform->parent();
         while (p){
-            std::vector<C*> c = p->gameObject()->components<C>();
+            std::vector<std::shared_ptr<C>> c = p->gameObject()->components<std::shared_ptr<C>>();
             if (c.size()){
                 res.insert(res.begin(), c.begin(), c.end());
             }
@@ -63,13 +63,13 @@ namespace kick {
     }
 
     template <typename C>
-    inline C* GameObject::componentInChildren(){
-        Transform *t = mTransform;
-        std::vector<Transform*> q{t->begin(), t->end()};
+    inline std::shared_ptr<C> GameObject::componentInChildren(){
+        auto t = mTransform;
+        std::vector<std::shared_ptr<Transform>> q{t->begin(), t->end()};
         int index = 0;
         while (index < q.size()){
             t = q[index];
-            C* c = t->gameObject()->component<C>();
+            auto c = t->gameObject()->component<C>();
             if (c){
                 return c;
             }
@@ -80,14 +80,14 @@ namespace kick {
     }
 
     template <typename C>
-    inline std::vector<C*> GameObject::componentsInChildren(){
-        std::vector<C*> res;
-        Transform *t = mTransform;
-        std::vector<Transform*> q{t->begin(), t->end()};
+    inline std::vector<std::shared_ptr<C>> GameObject::componentsInChildren(){
+        std::vector<std::shared_ptr<C>> res;
+        auto t = mTransform;
+        std::vector<std::shared_ptr<Transform>> q{t->begin(), t->end()};
         int index = 0;
         while (index < q.size()){
             t = q[index];
-            C* c = t->gameObject()->component<C>();
+            std::shared_ptr<C> c = t->gameObject()->component<C>();
             if (c){
                 res.push_back(c);
             }

@@ -24,7 +24,7 @@ namespace kick {
         virtual Bounds2 bounds() const = 0;
         virtual void setBounds(Bounds2 bounds) = 0;
     protected:
-        Canvas *mPanel = nullptr;
+        std::shared_ptr<Canvas> mPanel;
     private:
         friend class Canvas;
         int mOrder = 0;

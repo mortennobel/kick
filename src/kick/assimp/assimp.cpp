@@ -47,7 +47,7 @@ namespace kick {
             for (int i=0;i<node->mNumChildren;i++){
                 aiNode * childNode = node->mChildren[i];
                 GameObject* go = scenePtr->createGameObject(childNode->mName.C_Str());
-                go->transform()->setParent(parent);
+                go->transform()->setParent(std::dynamic_pointer_cast<Transform>(parent->shared_from_this()));
                 nodeMap[childNode] = go;
 
                 aiMatrix4x4 aiMat4 = childNode->mTransformation;
@@ -61,7 +61,7 @@ namespace kick {
                 go->transform()->setLocalScale(toVec3(scaling));
                 // logInfo(std::string("RTS ")+/*glm::to_string(go->transform()->localRotation())+*/glm::to_string(go->transform()->localPosition())+glm::to_string(go->transform()->localScale()));
 
-                importNode(childNode, scenePtr, go->transform(), nodeMap);
+                importNode(childNode, scenePtr, go->transform().get(), nodeMap);
             }
         }
 
@@ -72,7 +72,7 @@ namespace kick {
                 for (int j=0;j<child->mNumMeshes;j++){
                     if (child->mMeshes[j] == meshIndex){
                         GameObject *go = nodeMap[child];
-                        MeshRenderer *mr = go->addComponent<MeshRenderer>();
+                        auto mr = go->addComponent<MeshRenderer>();
                         mr->setMaterial(pMaterial);
                         mr->setMesh(mesh);
                     }
@@ -94,7 +94,7 @@ namespace kick {
                     auto cameraNode = scene->mRootNode->FindNode(camera->mName);
                     if (cameraNode){
                         GameObject* cameraGO = nodeMap[cameraNode];
-                        CameraPerspective* perspective = cameraGO->addComponent<CameraPerspective>();
+                        auto perspective = cameraGO->addComponent<CameraPerspective>();
 
                         float aspect = camera->mAspect;
                         float fovH = camera->mHorizontalFOV;
@@ -129,7 +129,7 @@ namespace kick {
                     auto lightNode = scene->mRootNode->FindNode(light->mName);
                     if (lightNode){
                         GameObject *lightGO = nodeMap[lightNode];
-                        Light* lightComponent = lightGO->addComponent<Light>();
+                        auto lightComponent = lightGO->addComponent<Light>();
                         lightComponent->setColor(toVec3(light->mColorDiffuse));
                         lightComponent->setAttenuation(glm::vec3(light->mAttenuationConstant, light->mAttenuationLinear, light->mAttenuationQuadratic));
                         light->mPosition; // todo

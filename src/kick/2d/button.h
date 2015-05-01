@@ -66,7 +66,7 @@ namespace kick {
         glm::vec4 mPressedColor = glm::vec4{0,0,0,1};
         std::string mText;
         std::function<void(Button*)> onClick;
-        Label *mTextComponent = nullptr;
+        std::shared_ptr<Label> mTextComponent;
         std::set<int> mPressedButtons;
     };
 }

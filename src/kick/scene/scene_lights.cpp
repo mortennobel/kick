@@ -44,8 +44,8 @@ namespace kick {
         }
         int i = 0;
         for (;i<std::min((size_t)KICK_MAX_POINT_LIGHTS, pointLights.size());i++){
-            Light * light = pointLights[i];
-            Transform * transform = light->gameObject()->transform();
+            auto light = pointLights[i];
+            auto transform = light->gameObject()->transform();
 
             // save eyespace position
             pointLightData[i][0] = (vec3)(viewMatrix * vec4(transform->position(),1.0f));

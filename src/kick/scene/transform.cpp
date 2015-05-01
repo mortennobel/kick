@@ -104,7 +104,7 @@ namespace kick {
         }
         if (mDirty.globalRot){
             mGlobalRotationQuat = mLocalRotationQuat;
-            Transform *parentIterator = this->mParent;
+            auto parentIterator = this->mParent;
             while (parentIterator != nullptr){
                 mGlobalRotationQuat = parentIterator->mLocalRotationQuat * mGlobalRotationQuat;
                 parentIterator = parentIterator->mParent;
@@ -133,22 +133,22 @@ namespace kick {
         return mLocalScale;
     }
     
-    void Transform::setParent(Transform *parent){
-        if (parent == this){
+    void Transform::setParent(std::shared_ptr<Transform> parent){
+        if (parent && parent.get() == this){
             return;
         }
         if (this->mParent){
-            auto pos = find(this->mParent->mChildren.begin(),this->mParent->mChildren.end(), this);
+            auto pos = find(this->mParent->mChildren.begin(),this->mParent->mChildren.end(), std::dynamic_pointer_cast<Transform>(shared_from_this()));
             this->mParent->mChildren.erase(pos);
         }
         this->mParent = parent;
         if (parent){
-            parent->mChildren.push_back(this);
+            parent->mChildren.push_back(std::dynamic_pointer_cast<Transform>( shared_from_this()));
 
             // search for circularity
             while (parent != nullptr){
-                if (parent->mParent == this){ // circularity found - break
-                    parent->setParent(nullptr);
+                if (parent->mParent && parent->mParent.get() == this){ // circularity found - break
+                    parent->setParent(std::shared_ptr<Transform>());
                 }
                 parent = parent->mParent;
             }
@@ -201,7 +201,7 @@ namespace kick {
         if (mDirty.global) {
             mGlobalMatrix = localMatrix();
             
-            Transform * transformIterator = mParent;
+            auto transformIterator = mParent;
             while (transformIterator) {
                 mGlobalMatrix = transformIterator->localMatrix() * mGlobalMatrix;
                 transformIterator  = transformIterator->mParent;
@@ -227,18 +227,18 @@ namespace kick {
         return mChildren.end();
     }
 
-	Transform *Transform::root() {
+    std::shared_ptr<Transform> Transform::root() {
 		if (!mParent){
-			return this;
+			return std::dynamic_pointer_cast<Transform>(shared_from_this());
 		}
-		Transform *t = mParent;
+		auto t = mParent;
 		while (t->mParent) {
 			t = t->mParent;
 		}
 		return t;
 	}
 
-    Transform *Transform::parent() {
+    std::shared_ptr<Transform> Transform::parent() {
         return mParent;
     }
 

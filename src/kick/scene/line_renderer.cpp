@@ -54,7 +54,7 @@ namespace kick {
         auto mat = replacementMaterial?replacementMaterial : mMaterial;
         auto shader = mat->shader().get();
         mMesh->bind(shader);
-        shader->bind_uniforms(mat, engineUniforms, mTransform);
+        shader->bind_uniforms(mat, engineUniforms, mTransform.get());
         mMesh->render(0);
     }
 

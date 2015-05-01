@@ -25,9 +25,6 @@ namespace kick {
     }
  
     GameObject::~GameObject(){
-        for (auto p : mComponents){
-            delete p;
-        }
     }
     
     GameObject::GameObject(GameObject&& other)
@@ -46,13 +43,12 @@ namespace kick {
         return *this;
     }
     
-    bool GameObject::destroyComponent(Component *component){
+    bool GameObject::destroyComponent(std::shared_ptr<Component> component){
         auto pos = find(mComponents.begin(), mComponents.end(), component);
         if (pos != mComponents.end()){
             component->deactivated();
             componentEvent.notifyListeners({component, ComponentUpdateStatus::Destroyed});
             mComponents.erase(pos);
-            delete component;
             return true;
         }
         return false;

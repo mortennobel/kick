@@ -39,21 +39,24 @@ namespace kick{
     }
 
     void Canvas::render(kick::EngineUniforms *engineUniforms, Material* replacementMaterial) {
-        sort(mComponents.begin(), mComponents.end(), [](Component2D *c1, Component2D *c2){
+        if (!enabled()){
+            return;
+        }
+        sort(mComponents.begin(), mComponents.end(), [](std::shared_ptr<Component2D> c1, std::shared_ptr<Component2D> c2){
             int order = c1->order() - c2->order();
             return order < 0 || (order==0 &&
                     (c1->shader() < c2->shader()));
         });
 
-        vector<Sprite*> sprites;
+        vector<std::shared_ptr<Sprite>> sprites;
         TextureAtlas* textureAtlas = nullptr;
         for (auto& comp : mComponents){
-            auto text = dynamic_cast<Label *>(comp);
+            auto text = dynamic_pointer_cast<Label>(comp);
             if (text){
                 renderSprites(sprites, engineUniforms, replacementMaterial); // render previous sprites
                 text->render(engineUniforms);
             } else {
-                auto sprite = dynamic_cast<Sprite*>(comp);
+                auto sprite = dynamic_pointer_cast<Sprite>(comp);
                 if (textureAtlas != sprite->textureAtlas().get()){
                     renderSprites(sprites, engineUniforms, replacementMaterial);
                     textureAtlas = sprite->textureAtlas().get();
@@ -66,18 +69,18 @@ namespace kick{
         renderSprites(sprites, engineUniforms, replacementMaterial);
     }
 
-    void Canvas::updateVertexBuffer(std::vector<Sprite *> &sprites) {
+    void Canvas::updateVertexBuffer(std::vector<std::shared_ptr<Sprite>> &sprites) {
         vector<vec3> position;
         vector<vec2> textureCoords;
         vector<vec4> colors;
         vector<GLushort> indices;
-        sort(sprites.begin(), sprites.end(), [](Sprite* s1, Sprite* s2){
+        sort(sprites.begin(), sprites.end(), [](std::shared_ptr<Sprite> s1, std::shared_ptr<Sprite> s2){
             return s1->order() < s2->order();
         });
         unsigned short index = 0;
         for (unsigned short i=0;i<sprites.size();i++){
-            Sprite * sprite = sprites[i];
-            Transform* transform = sprite->transform();
+            auto sprite = sprites[i];
+            auto transform = sprite->transform();
 
             vec2 size = (vec2) sprite->textureAtlas()->textureSize();
             mat4 toWorld = transform->globalMatrix();
@@ -161,7 +164,7 @@ namespace kick{
         mMesh->setMeshData(mMeshData);
     }
 
-    void Canvas::renderSprites(std::vector<Sprite *> &sprites, kick::EngineUniforms *engineUniforms, Material* replacementMaterial) {
+    void Canvas::renderSprites(vector<std::shared_ptr<Sprite>> &sprites, kick::EngineUniforms *engineUniforms, Material* replacementMaterial) {
         if (sprites.size()==0){
             return;
         }
@@ -176,7 +179,7 @@ namespace kick{
         assert(shader);
         mMesh->bind(shader.get());
 
-        shader->bind_uniforms(mMaterial, engineUniforms, transform());
+        shader->bind_uniforms(mMaterial, engineUniforms, transform().get());
 
         mMesh->render(0);
 
@@ -187,11 +190,11 @@ namespace kick{
         return 0;
     }
 
-    Camera *Canvas::camera() const {
+    std::shared_ptr<Camera> Canvas::camera() const {
         return mCamera;
     }
 
-    void Canvas::setCamera(Camera *camera) {
+    void Canvas::setCamera(std::shared_ptr<Camera> camera) {
         Canvas::mCamera = camera;
         mGameObject->setLayer(256);
     }
@@ -202,23 +205,24 @@ namespace kick{
         }
     }
 
-    void Canvas::registerComponent2D(Component2D *comp) {
+    void Canvas::registerComponent2D(std::shared_ptr<Component2D> comp) {
         mComponents.push_back(comp);
-        comp->mPanel = this;
+        comp->mPanel = dynamic_pointer_cast<Canvas>(shared_from_this());
 
-        SpriteMouseListener *sml = dynamic_cast<SpriteMouseListener*>(comp);
+
+        auto sml = dynamic_pointer_cast<SpriteMouseListener>(comp);
         if (sml){
             mMouseListeners.push_back(sml);
         }
     }
 
-    void Canvas::deregisterComponent2D(Component2D *comp) {
+    void Canvas::deregisterComponent2D(std::shared_ptr<Component2D> comp) {
         auto pos = find(mComponents.begin(), mComponents.end(), comp);
         if (pos != mComponents.end()){
             (*pos)->mPanel = nullptr;
             mComponents.erase(pos);
 
-            SpriteMouseListener *sml = dynamic_cast<SpriteMouseListener*>(comp);
+            auto sml = dynamic_pointer_cast<SpriteMouseListener>(comp);
             auto pos2 = find(mMouseListeners.begin(), mMouseListeners.end(), sml);
             if (pos2 != mMouseListeners.end()){
                 mMouseListeners.erase(pos2);
@@ -226,21 +230,21 @@ namespace kick{
         }
     }
 
-    Sprite *Canvas::createSprite(std::shared_ptr<TextureAtlas> textureAtlas, std::string spriteName, glm::vec2 pos) {
+    std::shared_ptr<Sprite> Canvas::createSprite(std::shared_ptr<TextureAtlas> textureAtlas, std::string spriteName, glm::vec2 pos) {
         GameObject *gameObject_ = gameObject()->scene()->createGameObject("Sprite");
         gameObject_->transform()->setParent(transform());
-        Sprite* sprite = gameObject_->addComponent<Sprite>();
+        auto sprite = gameObject_->addComponent<Sprite>();
         registerComponent2D(sprite);
         sprite->setTextureAtlas(textureAtlas);
         sprite->setSpriteName(spriteName);
         return sprite;
     }
 
-    Button *Canvas::createButton() {
+    std::shared_ptr<Button> Canvas::createButton() {
         std::shared_ptr<TextureAtlas> textureAtlas = Project::loadTextureAtlas("assets/ui/ui.txt");
         GameObject *gameObject_ = gameObject()->scene()->createGameObject("Button");
         gameObject_->transform()->setParent(transform());
-        Button* button = gameObject_->addComponent<Button>();
+        auto button = gameObject_->addComponent<Button>();
         registerComponent2D(button);
         button->setText("Button");
         button->setTextureAtlas(textureAtlas);
@@ -252,10 +256,10 @@ namespace kick{
         return button;
     }
 
-    Label *Canvas::createLabel(std::string text, int fontsize) {
+    std::shared_ptr<Label> Canvas::createLabel(std::string text, int fontsize) {
         auto go = gameObject()->scene()->createGameObject("Label");
         go->transform()->setParent(transform());
-        Label *labelComponent = go->addComponent<Label>();
+        auto labelComponent = go->addComponent<Label>();
 
         registerComponent2D(labelComponent);
 
@@ -266,13 +270,13 @@ namespace kick{
         return labelComponent;
     }
 
-    void Canvas::updateRenderOrder(Component2D *comp) {
+    void Canvas::updateRenderOrder(std::shared_ptr<Component2D> comp) {
         // todo
     }
 
 
     void Canvas::update() {
-        if (mCamera ==nullptr) {
+        if (mCamera ==nullptr || !enabled()) {
             return;
         }
         vec2 mousePosition = (vec2) MouseInput::position();
@@ -284,7 +288,7 @@ namespace kick{
         vec2 mouseWorldCoord = (vec2)(viewProjection * vec4(mouseClipCoord, 0, 1));
 
         for (auto ml : mMouseListeners){
-            Sprite* sprite = dynamic_cast<Sprite*>(ml);
+            auto sprite = dynamic_pointer_cast<Sprite>(ml);
             Bounds2 bounds = sprite->trimmedBounds();
             vec2 mouseLocalCoord = (vec2)(sprite->transform()->globalTRSInverse() * vec4{mouseWorldCoord, 0, 1});
 
@@ -309,7 +313,7 @@ namespace kick{
                 }
             }
         }
-        for (int i= mMousePressed.size()-1;i>=0;i--){
+        for (int i = mMousePressed.size()-1;i>=0;i--){
             int button = mMousePressed[i].second;
             if (MouseInput::pressed(button)){
                 mMousePressed[i].first->pressed(button);
@@ -320,11 +324,11 @@ namespace kick{
         }
     }
 
-    ToggleButton *Canvas::createToggleButton() {
+    std::shared_ptr<ToggleButton> Canvas::createToggleButton() {
         std::shared_ptr<TextureAtlas> textureAtlas = Project::loadTextureAtlas("assets/ui/ui.txt");
         GameObject *gameObject_ = gameObject()->scene()->createGameObject("Button");
         gameObject_->transform()->setParent(transform());
-        ToggleButton* button = gameObject_->addComponent<ToggleButton>();
+        auto button = gameObject_->addComponent<ToggleButton>();
         registerComponent2D(button);
         button->setText("Button");
         button->setTextureAtlas(textureAtlas);

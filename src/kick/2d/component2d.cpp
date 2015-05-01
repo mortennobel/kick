@@ -22,14 +22,14 @@ namespace kick {
         if (Component2D::mOrder != order) {
             Component2D::mOrder = order;
             if (mPanel){
-                mPanel->updateRenderOrder(this);
+                mPanel->updateRenderOrder(dynamic_pointer_cast<Component2D>(shared_from_this()));
             }
         }
     }
 
     void Component2D::deactivated() {
         if (mPanel) {
-            mPanel->deregisterComponent2D(this);
+            mPanel->deregisterComponent2D(dynamic_pointer_cast<Component2D>(shared_from_this()));
         }
     }
 }

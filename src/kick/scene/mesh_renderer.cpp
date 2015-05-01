@@ -32,7 +32,7 @@ namespace kick {
             auto material = replacementMaterial ? replacementMaterial : mMaterials[i];
             auto shader = material->shader().get();
             mMesh->bind(shader);
-            shader->bind_uniforms(material, engineUniforms, mTransform);
+            shader->bind_uniforms(material, engineUniforms, mTransform.get());
             mMesh->render(i);
         }
     }

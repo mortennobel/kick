@@ -43,7 +43,7 @@ namespace kick {
         glm::vec3 attenuation() const;
         // attenuation: {constant, linear, quadratic}
         void setAttenuation(glm::vec3 attenuation);
-        Event<Light*> lightTypeChanged;
+        Event<std::shared_ptr<Light>> lightTypeChanged;
         ShadowType const &shadowType() const;
         void setShadowType(ShadowType const &shadowType);
     private:

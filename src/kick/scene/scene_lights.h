@@ -19,9 +19,9 @@ namespace kick {
     class Light;
     
     struct SceneLights {
-        Light *ambientLight = nullptr;
-        Light *directionalLight = nullptr;
-        std::vector<Light*> pointLights;
+        std::shared_ptr<Light> ambientLight = nullptr;
+        std::shared_ptr<Light> directionalLight = nullptr;
+        std::vector<std::shared_ptr<Light>> pointLights;
 
         glm::mat3 directionalLightData; // matrix with the columns lightDirection,colorIntensity,halfVector
         glm::mat3 pointLightData[KICK_MAX_POINT_LIGHTS];

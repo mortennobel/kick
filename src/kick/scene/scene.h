@@ -50,14 +50,14 @@ namespace kick {
         void setName(std::string name);
         void update();
         void render(EngineUniforms* engineUniforms);
-        Event<std::pair<Component*, ComponentUpdateStatus>> componentEvents;
+        Event<std::pair<std::shared_ptr<Component>, ComponentUpdateStatus>> componentEvents;
 
         template <typename T>
-        std::vector<T*> findComponents(){
-            std::vector<T*> res;
+        std::vector<std::shared_ptr<T>> findComponents(){
+            std::vector<std::shared_ptr<T>> res;
             for (auto & gameObject : *this){
                 for (auto & comp : *gameObject){
-                    T* component = dynamic_cast<T*>(comp);
+                    auto component = std::dynamic_pointer_cast<T>(comp);
                     if (component){
                         res.push_back(component);
                     }
@@ -67,10 +67,10 @@ namespace kick {
         }
 
         template <typename T>
-        T* findComponent(){
+        std::shared_ptr<T> findComponent(){
             for (auto & gameObject : *this){
                 for (auto & comp : *gameObject){
-                    T* component = dynamic_cast<T*>(comp);
+                    auto component = std::dynamic_pointer_cast<T>(comp);
                     if (component){
                         return component;
                     }
@@ -80,25 +80,25 @@ namespace kick {
         }
 
         // Creates a gameobject and attaches a perspective camera to it
-        CameraPerspective* createPerspectiveCamera(GameObject *go = nullptr);
+        std::shared_ptr<CameraPerspective> createPerspectiveCamera(GameObject *go = nullptr);
         // Creates a gameobject and attaches an orthographic camera to it
-        CameraOrthographic* createOrthographicCamera(GameObject *go = nullptr);
+        std::shared_ptr<CameraOrthographic> createOrthographicCamera(GameObject *go = nullptr);
         // Creates a gameobject and attaches a line renderer with diffuse renderer
-        LineRenderer* createLine(GameObject *go = nullptr, const std::vector<glm::vec3> &points = std::vector<glm::vec3>(), MeshType meshType = MeshType::Lines, const std::vector<GLushort> &indices = std::vector<GLushort>{});
+        std::shared_ptr<LineRenderer> createLine(GameObject *go = nullptr, const std::vector<glm::vec3> &points = std::vector<glm::vec3>(), MeshType meshType = MeshType::Lines, const std::vector<GLushort> &indices = std::vector<GLushort>{});
         // Creates a gameobject and attaches a cube with diffuse renderer
-        MeshRenderer* createCube(GameObject *go = nullptr, float length = 1);
+        std::shared_ptr<MeshRenderer> createCube(GameObject *go = nullptr, float length = 1);
         // Creates a gameobject and attaches a sphere with diffuse renderer
-        MeshRenderer* createSphere(GameObject *go = nullptr);
+        std::shared_ptr<MeshRenderer> createSphere(GameObject *go = nullptr);
         // Creates a gameobject and attaches a plane with diffuse renderer
-        MeshRenderer* createPlane(GameObject *go = nullptr);
+        std::shared_ptr<MeshRenderer> createPlane(GameObject *go = nullptr);
         // Creates a gameobject and attaches a point light
-        Light* createPointLight(GameObject *go = nullptr);
+        std::shared_ptr<Light> createPointLight(GameObject *go = nullptr);
         // Creates a gameobject and attaches a directional light
-        Light* createDirectionalLight(GameObject *go = nullptr);
+        std::shared_ptr<Light> createDirectionalLight(GameObject *go = nullptr);
         // Creates a gameobject and attaches an ambient light
-        Light* createAmbientLight(float intensity = 0.3f, glm::vec3 color = glm::vec3(1));
+        std::shared_ptr<Light> createAmbientLight(float intensity = 0.3f, glm::vec3 color = glm::vec3(1));
         // create a Canvas
-        Canvas * createCanvas(bool includeUICamera = true);
+        std::shared_ptr<Canvas> createCanvas(bool includeUICamera = true);
 
         friend class Engine;
         friend class GameObject;
@@ -107,17 +107,17 @@ namespace kick {
 
         // Return the first camera component marked as main camera (or any camera if no camera marked).
         // Return nullptr if no camera component in scene
-        Camera *mainCamera();
+        std::shared_ptr<Camera> mainCamera();
     private:
         Scene(const std::string & name);
         Scene(const Scene& scene) = delete;
-        void componentListener(Component* component, ComponentUpdateStatus status);
-        void addLight(Light *light);
+        void componentListener(std::shared_ptr<Component> component, ComponentUpdateStatus status);
+        void addLight(std::shared_ptr<Light> light);
         std::vector<std::unique_ptr<GameObject>> mGameObjects;
-        std::map<GameObject*,EventListener<std::pair<Component*, ComponentUpdateStatus>>> mComponentListeners;
-        std::vector<Camera*> mCameras;
-        std::vector<Updatable *> mUpdatable;
-        std::unordered_map<Light*, EventListener<Light*>> mLights;
+        std::map<GameObject*,EventListener<std::pair<std::shared_ptr<Component>, ComponentUpdateStatus>>> mComponentListeners;
+        std::vector<std::shared_ptr<Camera>> mCameras;
+        std::vector<std::shared_ptr<Updatable>> mUpdatable;
+        std::unordered_map<std::shared_ptr<Light>, EventListener<std::shared_ptr<Light>>> mLights;
         SceneLights mSceneLights;
         std::string mName = "";
 

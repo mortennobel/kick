@@ -22,7 +22,7 @@ namespace kick {
         glm::mat4 projectionMatrix;
         glm::mat4 viewProjectionMatrix;
         glm::mat4 lightMatrix;
-        Camera *currentCamera;
+        std::shared_ptr<Camera> currentCamera;
         Transform* currentCameraTransform;
         SceneLights* sceneLights;
     };

@@ -34,7 +34,7 @@ namespace kick {
         return *this;
     }
     
-    Transform* Component::transform(){
+    std::shared_ptr<Transform> Component::transform(){
         return mGameObject->transform();
     }
 

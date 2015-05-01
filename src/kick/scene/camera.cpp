@@ -31,8 +31,8 @@ namespace kick {
     Camera::Camera(GameObject *gameObject)
     :Component(gameObject){
         Scene* scene = gameObject->scene();
-        componentListener = scene->componentEvents.createListener([&](pair<Component*, ComponentUpdateStatus> value){
-            auto r = dynamic_cast<ComponentRenderable*>(value.first);
+        componentListener = scene->componentEvents.createListener([&](pair<std::shared_ptr<Component>, ComponentUpdateStatus> value){
+            auto r = std::dynamic_pointer_cast<ComponentRenderable>(value.first);
             if (r) {
                 if (value.second == ComponentUpdateStatus::Created) {
                     mRenderableComponents.push_back(r);
@@ -59,7 +59,7 @@ namespace kick {
         mRenderableComponents.clear();
         for (auto & gameObject_ : *gameObject()->scene()) {
             for (auto & component :  *gameObject_){
-                auto r = dynamic_cast<ComponentRenderable*>(component);
+                auto r = std::dynamic_pointer_cast<ComponentRenderable>(component);
                 if (r){
                     mRenderableComponents.push_back(r);
                 }
@@ -119,10 +119,10 @@ namespace kick {
     
     void Camera::render(EngineUniforms *engineUniforms){
         auto sceneLights = engineUniforms->sceneLights;
-        engineUniforms->currentCameraTransform = transform();
+        engineUniforms->currentCameraTransform = transform().get();
 
         if (mShadow && sceneLights->directionalLight && sceneLights->directionalLight->shadowType() != ShadowType::None) {
-            renderShadowMap(sceneLights->directionalLight);
+            renderShadowMap(sceneLights->directionalLight.get());
         }
 
         if (mTarget){
@@ -135,6 +135,7 @@ namespace kick {
         setupCamera(engineUniforms);
         engineUniforms->sceneLights->recomputeLight(engineUniforms->viewMatrix);
         auto components = cull();
+
         sort(components.begin(), components.end(), [](ComponentRenderable* r1, ComponentRenderable* r2){
             return r1->renderOrder() < r2->renderOrder();
         });
@@ -372,13 +373,13 @@ namespace kick {
         std::vector<ComponentRenderable *> res;
         for (auto c : mRenderableComponents){
             if (c->gameObject()->layer() & mCullingMask) {
-                res.push_back(c);
+                res.push_back(c.get());
             }
         }
         return res;
     }
 
-    Camera *Camera::mainCamera() {
+    std::shared_ptr<Camera> Camera::mainCamera() {
         return Engine::activeScene()->mainCamera();
     }
 }
