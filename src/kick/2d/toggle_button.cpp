@@ -7,8 +7,8 @@
 
 namespace kick {
 
-    ToggleButton::ToggleButton(GameObject *gameObject)
-            :Button{gameObject}, mGroup{new ToggleButtonGroup{}} {
+    ToggleButton::ToggleButton(GameObject *gameObject, std::shared_ptr<Canvas> canvas)
+            :Button{gameObject, canvas}, mGroup{new ToggleButtonGroup{}} {
         mGroup->buttons.push_back(this);
 
     }

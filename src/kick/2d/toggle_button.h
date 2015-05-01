@@ -20,7 +20,7 @@ namespace kick {
         std::shared_ptr<ToggleButtonGroup> mGroup;
         std::string mSelectedSprite;
     public:
-        ToggleButton(GameObject *gameObject);
+        ToggleButton(GameObject *gameObject, std::shared_ptr<Canvas> canvas);
 
         std::shared_ptr<ToggleButtonGroup> group();
 

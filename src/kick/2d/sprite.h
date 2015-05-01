@@ -24,7 +24,7 @@ namespace kick {
 
     class Sprite : public Component2D {
     public:
-        Sprite(GameObject *gameObject);
+        Sprite(GameObject *gameObject, std::shared_ptr<Canvas> canvas);
 
         std::shared_ptr<TextureAtlas> textureAtlas() const;
 

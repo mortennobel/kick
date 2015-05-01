@@ -50,7 +50,7 @@ namespace kick{
         });
 
         vector<Sprite*> sprites;
-        TextureAtlas* textureAtlas = nullptr;
+        TextureAtlas*currentTextureAtlas = nullptr;
         for (auto& comp : mComponents){
             auto text = dynamic_pointer_cast<Label>(comp);
             if (text){
@@ -58,9 +58,9 @@ namespace kick{
                 text->render(engineUniforms);
             } else {
                 auto sprite = dynamic_pointer_cast<Sprite>(comp);
-                if (textureAtlas != sprite->textureAtlas().get()){
+                if (currentTextureAtlas != sprite->textureAtlas().get()){
                     renderSprites(sprites, engineUniforms, replacementMaterial);
-                    textureAtlas = sprite->textureAtlas().get();
+                    currentTextureAtlas = sprite->textureAtlas().get();
                 }
                 if (sprite){
                     sprites.push_back(sprite.get());
@@ -166,7 +166,7 @@ namespace kick{
     }
 
     void Canvas::renderSprites(vector<Sprite*> &sprites, kick::EngineUniforms *engineUniforms, Material* replacementMaterial) {
-        if (sprites.size()==0){
+        if (sprites.size() == 0){
             return;
         }
         updateVertexBuffer(sprites);
@@ -232,10 +232,7 @@ namespace kick{
     }
 
     std::shared_ptr<Sprite> Canvas::createSprite(std::shared_ptr<TextureAtlas> textureAtlas, std::string spriteName, glm::vec2 pos) {
-        GameObject *gameObject_ = gameObject()->scene()->createGameObject("Sprite");
-        gameObject_->transform()->setParent(transform());
-        auto sprite = gameObject_->addComponent<Sprite>();
-        registerComponent2D(sprite);
+        auto sprite = addComponent<Sprite>();
         sprite->setTextureAtlas(textureAtlas);
         sprite->setSpriteName(spriteName);
         return sprite;
@@ -243,11 +240,8 @@ namespace kick{
 
     std::shared_ptr<Button> Canvas::createButton(std::string text) {
         std::shared_ptr<TextureAtlas> textureAtlas = Project::loadTextureAtlas("assets/ui/ui.txt");
-        GameObject *gameObject_ = gameObject()->scene()->createGameObject("Button");
-        gameObject_->transform()->setParent(transform());
-        auto button = gameObject_->addComponent<Button>();
-        registerComponent2D(button);
-        button->setText("Button");
+        auto button = addComponent<Button>();
+
         button->setTextureAtlas(textureAtlas);
         button->setNormalSprite("button-normal.png");
         button->setHoverSprite("button-hover.png");
@@ -259,11 +253,8 @@ namespace kick{
     }
 
     std::shared_ptr<Label> Canvas::createLabel(std::string text, int fontsize) {
-        auto go = gameObject()->scene()->createGameObject("Label");
-        go->transform()->setParent(transform());
-        auto labelComponent = go->addComponent<Label>();
+        auto labelComponent = addComponent<Label>();
 
-        registerComponent2D(labelComponent);
 
         auto font = Project::loadFont(fontsize);
         labelComponent->setFont(font);
@@ -328,11 +319,8 @@ namespace kick{
 
     std::shared_ptr<ToggleButton> Canvas::createToggleButton(std::string text) {
         std::shared_ptr<TextureAtlas> textureAtlas = Project::loadTextureAtlas("assets/ui/ui.txt");
-        GameObject *gameObject_ = gameObject()->scene()->createGameObject("Button");
-        gameObject_->transform()->setParent(transform());
-        auto button = gameObject_->addComponent<ToggleButton>();
-        registerComponent2D(button);
-        button->setText("Button");
+
+        auto button = addComponent<ToggleButton>();
         button->setTextureAtlas(textureAtlas);
         button->setNormalSprite("button-normal.png");
         button->setHoverSprite("button-hover.png");
@@ -342,5 +330,9 @@ namespace kick{
         button->setText(text);
 
         return button;
+    }
+
+    GameObject *Canvas::createGameObject() {
+        return gameObject()->scene()->createGameObject();
     }
 }

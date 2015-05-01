@@ -13,7 +13,7 @@ using namespace glm;
 
 namespace kick {
 
-    Sprite::Sprite(GameObject *gameObject) : Component2D(gameObject) {
+    Sprite::Sprite(GameObject *gameObject, std::shared_ptr<Canvas> canvas) : Component2D(gameObject, canvas) {
     }
 
     std::shared_ptr<TextureAtlas> Sprite::textureAtlas() const {

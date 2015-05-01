@@ -14,7 +14,7 @@ namespace kick {
 
     class Component2D : public Component {
     public:
-        Component2D(GameObject *gameObject);
+        Component2D(GameObject *gameObject, std::shared_ptr<Canvas> canvas);
 
         int order() const;
         virtual void setOrder(int order);

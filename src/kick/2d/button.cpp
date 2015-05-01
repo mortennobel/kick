@@ -11,8 +11,8 @@
 using namespace std;
 
 namespace kick {
-    Button::Button(GameObject *gameObject)
-            : Sprite{gameObject},
+    Button::Button(GameObject *gameObject, std::shared_ptr<Canvas> canvas)
+            : Sprite{gameObject, canvas},
               onClick{[](Button*){}}
     {
         setType(SpriteType::Sliced);

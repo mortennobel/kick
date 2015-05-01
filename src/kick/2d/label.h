@@ -18,7 +18,7 @@ namespace kick {
 
     class Label : public Component2D {
     public:
-        Label(GameObject *gameObject);
+        Label(GameObject *gameObject, std::shared_ptr<Canvas> canvas);
         std::shared_ptr<Font> font() const;
         void setFont(std::shared_ptr<Font>& font);
         virtual void render(EngineUniforms *engineUniforms);

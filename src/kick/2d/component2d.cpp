@@ -10,8 +10,7 @@ using namespace std;
 
 namespace kick {
 
-    Component2D::Component2D(GameObject *gameObject) : Component(gameObject) {
-        mCanvas = gameObject->componentInParent<Canvas>();
+    Component2D::Component2D(GameObject *gameObject, std::shared_ptr<Canvas> canvas) : Component(gameObject), mCanvas(canvas) {
     }
 
     int Component2D::order() const {

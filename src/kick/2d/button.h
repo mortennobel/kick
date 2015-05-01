@@ -22,7 +22,7 @@ namespace kick {
 
     class Button : public Sprite, public SpriteMouseListener {
     public:
-        Button(GameObject *gameObject);
+        Button(GameObject *gameObject, std::shared_ptr<Canvas> canvas);
 
         std::string normalSprite() const;
         void setNormalSprite(std::string const &normal);

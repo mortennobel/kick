@@ -12,8 +12,8 @@ using namespace glm;
 
 namespace kick {
 
-    Label::Label(GameObject *gameObject)
-            : Component2D(gameObject),
+    Label::Label(GameObject *gameObject, std::shared_ptr<Canvas> canvas)
+            : Component2D(gameObject, canvas),
               mBounds{vec2{0,0},vec2{0,0}} {
         mMesh = new Mesh();
         mMeshData = make_shared<MeshData>();
