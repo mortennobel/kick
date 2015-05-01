@@ -17,11 +17,12 @@ namespace kick {
     {
         setType(SpriteType::Sliced);
         setAnchor({0.5f,0.5f});
-        mTextComponent = mPanel->createLabel(mText);
+        mTextComponent = mCanvas->createLabel(mText);
         mTextComponent->transform()->setParent(transform());
         mTextComponent->setText(mText);
         mTextComponent->setAnchor({0.5f,0.5f});
         mTextComponent->setOrder(order() + 1);
+        setOrder(order()); // force setting render order of text
         updateTextureAndTxtColor();
     }
 

@@ -43,12 +43,13 @@ namespace kick{
             return;
         }
         sort(mComponents.begin(), mComponents.end(), [](std::shared_ptr<Component2D> c1, std::shared_ptr<Component2D> c2){
-            int order = c1->order() - c2->order();
-            return order < 0 || (order==0 &&
-                    (c1->shader() < c2->shader()));
+            if (c1->order() != c2->order()){
+                return c1->order() < c2->order();
+            }
+            return c1->shader() < c2->shader();
         });
 
-        vector<std::shared_ptr<Sprite>> sprites;
+        vector<Sprite*> sprites;
         TextureAtlas* textureAtlas = nullptr;
         for (auto& comp : mComponents){
             auto text = dynamic_pointer_cast<Label>(comp);
@@ -62,19 +63,19 @@ namespace kick{
                     textureAtlas = sprite->textureAtlas().get();
                 }
                 if (sprite){
-                    sprites.push_back(sprite);
+                    sprites.push_back(sprite.get());
                 }
             }
         }
         renderSprites(sprites, engineUniforms, replacementMaterial);
     }
 
-    void Canvas::updateVertexBuffer(std::vector<std::shared_ptr<Sprite>> &sprites) {
+    void Canvas::updateVertexBuffer(std::vector<Sprite*> &sprites) {
         vector<vec3> position;
         vector<vec2> textureCoords;
         vector<vec4> colors;
         vector<GLushort> indices;
-        sort(sprites.begin(), sprites.end(), [](std::shared_ptr<Sprite> s1, std::shared_ptr<Sprite> s2){
+        sort(sprites.begin(), sprites.end(), [](Sprite* s1, Sprite* s2){
             return s1->order() < s2->order();
         });
         unsigned short index = 0;
@@ -164,7 +165,7 @@ namespace kick{
         mMesh->setMeshData(mMeshData);
     }
 
-    void Canvas::renderSprites(vector<std::shared_ptr<Sprite>> &sprites, kick::EngineUniforms *engineUniforms, Material* replacementMaterial) {
+    void Canvas::renderSprites(vector<Sprite*> &sprites, kick::EngineUniforms *engineUniforms, Material* replacementMaterial) {
         if (sprites.size()==0){
             return;
         }
@@ -207,7 +208,7 @@ namespace kick{
 
     void Canvas::registerComponent2D(std::shared_ptr<Component2D> comp) {
         mComponents.push_back(comp);
-        comp->mPanel = dynamic_pointer_cast<Canvas>(shared_from_this());
+        comp->mCanvas = dynamic_pointer_cast<Canvas>(shared_from_this());
 
 
         auto sml = dynamic_pointer_cast<SpriteMouseListener>(comp);
@@ -219,7 +220,7 @@ namespace kick{
     void Canvas::deregisterComponent2D(std::shared_ptr<Component2D> comp) {
         auto pos = find(mComponents.begin(), mComponents.end(), comp);
         if (pos != mComponents.end()){
-            (*pos)->mPanel = nullptr;
+            (*pos)->mCanvas = nullptr;
             mComponents.erase(pos);
 
             auto sml = dynamic_pointer_cast<SpriteMouseListener>(comp);
@@ -240,7 +241,7 @@ namespace kick{
         return sprite;
     }
 
-    std::shared_ptr<Button> Canvas::createButton() {
+    std::shared_ptr<Button> Canvas::createButton(std::string text) {
         std::shared_ptr<TextureAtlas> textureAtlas = Project::loadTextureAtlas("assets/ui/ui.txt");
         GameObject *gameObject_ = gameObject()->scene()->createGameObject("Button");
         gameObject_->transform()->setParent(transform());
@@ -252,6 +253,7 @@ namespace kick{
         button->setHoverSprite("button-hover.png");
         button->setPressedSprite("button-pressed.png");
         button->setScale({2,2});
+        button->setText(text);
 
         return button;
     }
@@ -324,7 +326,7 @@ namespace kick{
         }
     }
 
-    std::shared_ptr<ToggleButton> Canvas::createToggleButton() {
+    std::shared_ptr<ToggleButton> Canvas::createToggleButton(std::string text) {
         std::shared_ptr<TextureAtlas> textureAtlas = Project::loadTextureAtlas("assets/ui/ui.txt");
         GameObject *gameObject_ = gameObject()->scene()->createGameObject("Button");
         gameObject_->transform()->setParent(transform());
@@ -337,6 +339,7 @@ namespace kick{
         button->setPressedSprite("button-pressed.png");
         button->setSelectedSprite("button-pressed.png");
         button->setScale({2,2});
+        button->setText(text);
 
         return button;
     }

@@ -43,23 +43,24 @@ namespace kick {
         void setCamera(std::shared_ptr<Camera> camera);
 
         //
-        std::shared_ptr<ToggleButton> createToggleButton();
+        std::shared_ptr<ToggleButton> createToggleButton(std::string text = "");
 
         //
-        std::shared_ptr<Button> createButton();
+        std::shared_ptr<Button> createButton(std::string text = "");
         // helper function, which creates a gameobject and attaches an sprite object
         std::shared_ptr<Sprite> createSprite(std::shared_ptr<TextureAtlas> textureAtlas, std::string spriteName, glm::vec2 pos = glm::vec2{0});
         //
         std::shared_ptr<Label> createLabel(std::string text, int fontsize = 16);
 
     private:
-        void updateVertexBuffer(std::vector<std::shared_ptr<Sprite>> &sprites);
-        void renderSprites(std::vector<std::shared_ptr<Sprite>> &sprites, kick::EngineUniforms *engineUniforms, Material* replacementMaterial);
+        void updateVertexBuffer(std::vector<Sprite*> &sprites);
+        void renderSprites(std::vector<Sprite*> &sprites, kick::EngineUniforms *engineUniforms, Material* replacementMaterial);
         friend class Component2D;
         void updateRenderOrder(std::shared_ptr<Component2D> comp);
         void registerComponent2D(std::shared_ptr<Component2D> comp);
         void deregisterComponent2D(std::shared_ptr<Component2D> comp);
         std::shared_ptr<Camera> mCamera;
+        std::shared_ptr<Camera> mOwnCamera;
         std::vector<std::shared_ptr<Component2D>> mComponents;
         std::vector<std::shared_ptr<SpriteMouseListener>> mMouseListeners;
         std::vector<std::shared_ptr<SpriteMouseListener>> mMouseOver;
