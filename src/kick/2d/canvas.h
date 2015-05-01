@@ -34,7 +34,6 @@ namespace kick {
 
         virtual void render(EngineUniforms *engineUniforms, Material* replacementMaterial = nullptr) override;
 
-
         virtual void update() override;
 
         virtual int renderOrder();
@@ -43,15 +42,7 @@ namespace kick {
         void setCamera(std::shared_ptr<Camera> camera);
 
         template <typename C, typename... T>
-        std::shared_ptr<C> addComponent(T... t){
-            auto go = createGameObject();
-            go->transform()->setParent(transform());
-            auto c = go->addComponent<C>(std::dynamic_pointer_cast<Canvas>(shared_from_this()), t...);
-
-            registerComponent2D(c);
-
-            return c;
-        }
+        std::shared_ptr<C> addComponent(T... t);
 
         //
         std::shared_ptr<ToggleButton> createToggleButton(std::string text = "");
@@ -80,6 +71,7 @@ namespace kick {
         std::shared_ptr<MeshData> mMeshData;
         Material*mMaterial = nullptr;
         GameObject *createGameObject();
-
     };
 }
+
+#include "kick/2d/canvas.inl"
