@@ -79,36 +79,36 @@ namespace kick {
         int lastChar = -1;
         for (unsigned short i=0;i< mText.length();i++){
             const FontChar fc = mFont->getChar(mText[i]);
-            if (fc.width  <= 0){
-                continue;
-            }
+
             caret.x += mFont->getKerning(lastChar, mText[i]);
-            vec2 basePoint = caret + vec2{fc.xoffset, mFont->height()-fc.height-fc.yoffset};
-            position.push_back(vec3{basePoint,0});
-            position.push_back(vec3{basePoint+vec2{fc.width,0},0});
-            position.push_back(vec3{basePoint+vec2{fc.width,fc.height},0});
-            position.push_back(vec3{basePoint+vec2{0       ,fc.height},0});
+            bool visibleCharacter = fc.width  > 0;
+            if (visibleCharacter) {
+                vec2 basePoint = caret + vec2{fc.xoffset, mFont->height()-fc.height-fc.yoffset};
+                position.push_back(vec3{basePoint,0});
+                position.push_back(vec3{basePoint+vec2{fc.width,0},0});
+                position.push_back(vec3{basePoint+vec2{fc.width,fc.height},0});
+                position.push_back(vec3{basePoint+vec2{0       ,fc.height},0});
 
-            mBounds.min = glm::min(mBounds.min, basePoint);
-            mBounds.max = glm::max(mBounds.max, (vec2)position[position.size()-2]);
+                mBounds.min = glm::min(mBounds.min, basePoint);
+                mBounds.max = glm::max(mBounds.max, (vec2)position[position.size()-2]);
 
-            vec2 scale{1.0f / mFont->scaleW(), 1.0f / mFont->scaleH()};
+                vec2 scale{1.0f / mFont->scaleW(), 1.0f / mFont->scaleH()};
 
-            textureCoords.push_back(vec2{fc.x         , mFont->scaleH()-fc.y-fc.height}*scale);
-            textureCoords.push_back(vec2{fc.x+fc.width, mFont->scaleH()-fc.y-fc.height}*scale);
-            textureCoords.push_back(vec2{fc.x+fc.width, mFont->scaleH()-fc.y}*scale);
-            textureCoords.push_back(vec2{fc.x         , mFont->scaleH()-fc.y}*scale);
+                textureCoords.push_back(vec2{fc.x         , mFont->scaleH()-fc.y-fc.height}*scale);
+                textureCoords.push_back(vec2{fc.x+fc.width, mFont->scaleH()-fc.y-fc.height}*scale);
+                textureCoords.push_back(vec2{fc.x+fc.width, mFont->scaleH()-fc.y}*scale);
+                textureCoords.push_back(vec2{fc.x         , mFont->scaleH()-fc.y}*scale);
 
-            // push two triangles
-            indices.push_back(vertexCount);
-            indices.push_back(vertexCount + (GLushort)1);
-            indices.push_back(vertexCount + (GLushort)2);
-            indices.push_back(vertexCount + (GLushort)2);
-            indices.push_back(vertexCount + (GLushort)3);
-            indices.push_back(vertexCount);
+                // push two triangles
+                indices.push_back(vertexCount);
+                indices.push_back(vertexCount + (GLushort)1);
+                indices.push_back(vertexCount + (GLushort)2);
+                indices.push_back(vertexCount + (GLushort)2);
+                indices.push_back(vertexCount + (GLushort)3);
+                indices.push_back(vertexCount);
 
-            vertexCount += 4;
-
+                vertexCount += 4;
+            }
             caret.x += fc.xadvance;
             lastChar = mText[i];
         }
