@@ -114,8 +114,8 @@ glm::quat&#160;</td><td class="memItemRight" valign="bottom"><b>localRotation</b
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setLocalScale</b> (glm::vec3 scale)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a21bb6356c07e9c02b9f569e951599d89"></a><!-- doxytag: member="kick::Transform::localScale" ref="a21bb6356c07e9c02b9f569e951599d89" args="()" -->
 glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>localScale</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1db9cd45e244390c26fd686a521df58f"></a><!-- doxytag: member="kick::Transform::setParent" ref="a1db9cd45e244390c26fd686a521df58f" args="(Transform *parent)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setParent</b> (<a class="el" href="classkick_1_1_transform.html">Transform</a> *parent)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acf121cb529a196684dd91b8197240081"></a><!-- doxytag: member="kick::Transform::setParent" ref="acf121cb529a196684dd91b8197240081" args="(std::shared_ptr&lt; Transform &gt; parent)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setParent</b> (std::shared_ptr&lt; <a class="el" href="classkick_1_1_transform.html">Transform</a> &gt; parent)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1d16282116cb49741a0f1547c20de2b8"></a><!-- doxytag: member="kick::Transform::lookAt" ref="a1d16282116cb49741a0f1547c20de2b8" args="(glm::vec3 target, glm::vec3 up=glm::vec3{0, 1, 0})" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>lookAt</b> (glm::vec3 target, glm::vec3 up=glm::vec3{0, 1, 0})</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a498f69501192c5194554de779be4e0ad"></a><!-- doxytag: member="kick::Transform::lookAt" ref="a498f69501192c5194554de779be4e0ad" args="(Transform *target, glm::vec3 up=glm::vec3{0, 1, 0})" -->
@@ -128,10 +128,10 @@ glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><b>globalMatrix</b>
 glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><b>localTRSInverse</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa5f01fc06e69de62fea0c0219a89abfb"></a><!-- doxytag: member="kick::Transform::globalTRSInverse" ref="aa5f01fc06e69de62fea0c0219a89abfb" args="()" -->
 glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><b>globalTRSInverse</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a923067ab1b0a3026a7ff4211f2bb4019"></a><!-- doxytag: member="kick::Transform::root" ref="a923067ab1b0a3026a7ff4211f2bb4019" args="()" -->
-<a class="el" href="classkick_1_1_transform.html">Transform</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>root</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3d3527665107acea65f274e9ceb3b889"></a><!-- doxytag: member="kick::Transform::parent" ref="a3d3527665107acea65f274e9ceb3b889" args="()" -->
-<a class="el" href="classkick_1_1_transform.html">Transform</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>parent</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8435a7de2653ca7a09b21d55a1a507c7"></a><!-- doxytag: member="kick::Transform::root" ref="a8435a7de2653ca7a09b21d55a1a507c7" args="()" -->
+std::shared_ptr&lt; <a class="el" href="classkick_1_1_transform.html">Transform</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>root</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a189d34f7b2846aea567c5a545c89b122"></a><!-- doxytag: member="kick::Transform::parent" ref="a189d34f7b2846aea567c5a545c89b122" args="()" -->
+std::shared_ptr&lt; <a class="el" href="classkick_1_1_transform.html">Transform</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>parent</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a45aebb746e61c93192d80b386011efbe"></a><!-- doxytag: member="kick::Transform::begin" ref="a45aebb746e61c93192d80b386011efbe" args="()" -->
 TransformIter&#160;</td><td class="memItemRight" valign="bottom"><b>begin</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a67d71187a94550733b02e31e4840cd4b"></a><!-- doxytag: member="kick::Transform::end" ref="a67d71187a94550733b02e31e4840cd4b" args="()" -->
@@ -169,7 +169,7 @@ glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>right</b> ()</td
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Apr 20 2015 22:02:09 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun May 3 2015 22:46:51 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

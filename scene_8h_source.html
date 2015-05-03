@@ -95,7 +95,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00035"></a>00035     <span class="keyword">class </span>Sprite;
 <a name="l00036"></a>00036     <span class="keyword">class </span>TextureAtlas;
 <a name="l00037"></a>00037     <span class="keyword">class </span>Button;
-<a name="l00038"></a>00038     <span class="keyword">class </span>Panel;
+<a name="l00038"></a>00038     <span class="keyword">class </span>Canvas;
 <a name="l00039"></a>00039 
 <a name="l00040"></a><a class="code" href="classkick_1_1_scene.html">00040</a>     <span class="keyword">class </span><a class="code" href="classkick_1_1_scene.html">Scene</a> {
 <a name="l00041"></a>00041     <span class="keyword">public</span>:
@@ -110,14 +110,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00050"></a>00050         <span class="keywordtype">void</span> setName(std::string name);
 <a name="l00051"></a>00051         <span class="keywordtype">void</span> update();
 <a name="l00052"></a>00052         <span class="keywordtype">void</span> render(<a class="code" href="structkick_1_1_engine_uniforms.html">EngineUniforms</a>* engineUniforms);
-<a name="l00053"></a>00053         <a class="code" href="classkick_1_1_event.html">Event&lt;std::pair&lt;Component*, ComponentUpdateStatus&gt;</a>&gt; componentEvents;
+<a name="l00053"></a>00053         <a class="code" href="classkick_1_1_event.html">Event&lt;std::pair&lt;std::shared_ptr&lt;Component&gt;</a>, ComponentUpdateStatus&gt;&gt; componentEvents;
 <a name="l00054"></a>00054 
 <a name="l00055"></a>00055         <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;
-<a name="l00056"></a>00056         std::vector&lt;T*&gt; findComponents(){
-<a name="l00057"></a>00057             std::vector&lt;T*&gt; res;
+<a name="l00056"></a>00056         std::vector&lt;std::shared_ptr&lt;T&gt;&gt; findComponents(){
+<a name="l00057"></a>00057             std::vector&lt;std::shared_ptr&lt;T&gt;&gt; res;
 <a name="l00058"></a>00058             <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp; gameObject : *<span class="keyword">this</span>){
 <a name="l00059"></a>00059                 <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp; comp : *gameObject){
-<a name="l00060"></a>00060                     T* component = <span class="keyword">dynamic_cast&lt;</span>T*<span class="keyword">&gt;</span>(comp);
+<a name="l00060"></a>00060                     <span class="keyword">auto</span> component = std::dynamic_pointer_cast&lt;T&gt;(comp);
 <a name="l00061"></a>00061                     <span class="keywordflow">if</span> (component){
 <a name="l00062"></a>00062                         res.push_back(component);
 <a name="l00063"></a>00063                     }
@@ -127,10 +127,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00067"></a>00067         }
 <a name="l00068"></a>00068 
 <a name="l00069"></a>00069         <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;
-<a name="l00070"></a>00070         T* findComponent(){
+<a name="l00070"></a>00070         std::shared_ptr&lt;T&gt; findComponent(){
 <a name="l00071"></a>00071             <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp; gameObject : *<span class="keyword">this</span>){
 <a name="l00072"></a>00072                 <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp; comp : *gameObject){
-<a name="l00073"></a>00073                     T* component = <span class="keyword">dynamic_cast&lt;</span>T*<span class="keyword">&gt;</span>(comp);
+<a name="l00073"></a>00073                     <span class="keyword">auto</span> component = std::dynamic_pointer_cast&lt;T&gt;(comp);
 <a name="l00074"></a>00074                     <span class="keywordflow">if</span> (component){
 <a name="l00075"></a>00075                         <span class="keywordflow">return</span> component;
 <a name="l00076"></a>00076                     }
@@ -140,25 +140,25 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00080"></a>00080         }
 <a name="l00081"></a>00081 
 <a name="l00082"></a>00082         <span class="comment">// Creates a gameobject and attaches a perspective camera to it</span>
-<a name="l00083"></a>00083         <a class="code" href="classkick_1_1_camera_perspective.html">CameraPerspective</a>* createPerspectiveCamera(<a class="code" href="classkick_1_1_game_object.html">GameObject</a> *go = <span class="keyword">nullptr</span>);
+<a name="l00083"></a>00083         std::shared_ptr&lt;CameraPerspective&gt; createPerspectiveCamera(<a class="code" href="classkick_1_1_game_object.html">GameObject</a> *go = <span class="keyword">nullptr</span>);
 <a name="l00084"></a>00084         <span class="comment">// Creates a gameobject and attaches an orthographic camera to it</span>
-<a name="l00085"></a>00085         <a class="code" href="classkick_1_1_camera_orthographic.html">CameraOrthographic</a>* createOrthographicCamera(<a class="code" href="classkick_1_1_game_object.html">GameObject</a> *go = <span class="keyword">nullptr</span>);
+<a name="l00085"></a>00085         std::shared_ptr&lt;CameraOrthographic&gt; createOrthographicCamera(<a class="code" href="classkick_1_1_game_object.html">GameObject</a> *go = <span class="keyword">nullptr</span>);
 <a name="l00086"></a>00086         <span class="comment">// Creates a gameobject and attaches a line renderer with diffuse renderer</span>
-<a name="l00087"></a>00087         <a class="code" href="classkick_1_1_line_renderer.html">LineRenderer</a>* createLine(<a class="code" href="classkick_1_1_game_object.html">GameObject</a> *go = <span class="keyword">nullptr</span>, <span class="keyword">const</span> std::vector&lt;glm::vec3&gt; &amp;points = std::vector&lt;glm::vec3&gt;(), MeshType meshType = MeshType::Lines, <span class="keyword">const</span> std::vector&lt;GLushort&gt; &amp;indices = std::vector&lt;GLushort&gt;{});
+<a name="l00087"></a>00087         std::shared_ptr&lt;LineRenderer&gt; createLine(<a class="code" href="classkick_1_1_game_object.html">GameObject</a> *go = <span class="keyword">nullptr</span>, <span class="keyword">const</span> std::vector&lt;glm::vec3&gt; &amp;points = std::vector&lt;glm::vec3&gt;(), MeshType meshType = MeshType::Lines, <span class="keyword">const</span> std::vector&lt;GLushort&gt; &amp;indices = std::vector&lt;GLushort&gt;{});
 <a name="l00088"></a>00088         <span class="comment">// Creates a gameobject and attaches a cube with diffuse renderer</span>
-<a name="l00089"></a>00089         <a class="code" href="classkick_1_1_mesh_renderer.html">MeshRenderer</a>* createCube(<a class="code" href="classkick_1_1_game_object.html">GameObject</a> *go = <span class="keyword">nullptr</span>, <span class="keywordtype">float</span> length = 1);
+<a name="l00089"></a>00089         std::shared_ptr&lt;MeshRenderer&gt; createCube(<a class="code" href="classkick_1_1_game_object.html">GameObject</a> *go = <span class="keyword">nullptr</span>, <span class="keywordtype">float</span> length = 1);
 <a name="l00090"></a>00090         <span class="comment">// Creates a gameobject and attaches a sphere with diffuse renderer</span>
-<a name="l00091"></a>00091         <a class="code" href="classkick_1_1_mesh_renderer.html">MeshRenderer</a>* createSphere(<a class="code" href="classkick_1_1_game_object.html">GameObject</a> *go = <span class="keyword">nullptr</span>);
+<a name="l00091"></a>00091         std::shared_ptr&lt;MeshRenderer&gt; createSphere(<a class="code" href="classkick_1_1_game_object.html">GameObject</a> *go = <span class="keyword">nullptr</span>);
 <a name="l00092"></a>00092         <span class="comment">// Creates a gameobject and attaches a plane with diffuse renderer</span>
-<a name="l00093"></a>00093         <a class="code" href="classkick_1_1_mesh_renderer.html">MeshRenderer</a>* createPlane(<a class="code" href="classkick_1_1_game_object.html">GameObject</a> *go = <span class="keyword">nullptr</span>);
+<a name="l00093"></a>00093         std::shared_ptr&lt;MeshRenderer&gt; createPlane(<a class="code" href="classkick_1_1_game_object.html">GameObject</a> *go = <span class="keyword">nullptr</span>);
 <a name="l00094"></a>00094         <span class="comment">// Creates a gameobject and attaches a point light</span>
-<a name="l00095"></a>00095         <a class="code" href="classkick_1_1_light.html">Light</a>* createPointLight(<a class="code" href="classkick_1_1_game_object.html">GameObject</a> *go = <span class="keyword">nullptr</span>);
+<a name="l00095"></a>00095         std::shared_ptr&lt;Light&gt; createPointLight(<a class="code" href="classkick_1_1_game_object.html">GameObject</a> *go = <span class="keyword">nullptr</span>);
 <a name="l00096"></a>00096         <span class="comment">// Creates a gameobject and attaches a directional light</span>
-<a name="l00097"></a>00097         <a class="code" href="classkick_1_1_light.html">Light</a>* createDirectionalLight(<a class="code" href="classkick_1_1_game_object.html">GameObject</a> *go = <span class="keyword">nullptr</span>);
+<a name="l00097"></a>00097         std::shared_ptr&lt;Light&gt; createDirectionalLight(<a class="code" href="classkick_1_1_game_object.html">GameObject</a> *go = <span class="keyword">nullptr</span>);
 <a name="l00098"></a>00098         <span class="comment">// Creates a gameobject and attaches an ambient light</span>
-<a name="l00099"></a>00099         <a class="code" href="classkick_1_1_light.html">Light</a>* createAmbientLight(<span class="keywordtype">float</span> intensity = 0.3f, glm::vec3 color = glm::vec3(1));
-<a name="l00100"></a>00100         <span class="comment">// create a Panel</span>
-<a name="l00101"></a>00101         <a class="code" href="classkick_1_1_panel.html">Panel</a>* createPanel(<span class="keywordtype">bool</span> includeUICamera = <span class="keyword">true</span>);
+<a name="l00099"></a>00099         std::shared_ptr&lt;Light&gt; createAmbientLight(<span class="keywordtype">float</span> intensity = 0.3f, glm::vec3 color = glm::vec3(1));
+<a name="l00100"></a>00100         <span class="comment">// create a Canvas</span>
+<a name="l00101"></a>00101         std::shared_ptr&lt;Canvas&gt; createCanvas(<span class="keywordtype">bool</span> includeUICamera = <span class="keyword">true</span>);
 <a name="l00102"></a>00102 
 <a name="l00103"></a>00103         <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classkick_1_1_engine.html">Engine</a>;
 <a name="l00104"></a>00104         <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classkick_1_1_game_object.html">GameObject</a>;
@@ -167,17 +167,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00107"></a>00107 
 <a name="l00108"></a>00108         <span class="comment">// Return the first camera component marked as main camera (or any camera if no camera marked).</span>
 <a name="l00109"></a>00109         <span class="comment">// Return nullptr if no camera component in scene</span>
-<a name="l00110"></a>00110         <a class="code" href="classkick_1_1_camera.html">Camera</a> *mainCamera();
+<a name="l00110"></a>00110         std::shared_ptr&lt;Camera&gt; mainCamera();
 <a name="l00111"></a>00111     <span class="keyword">private</span>:
 <a name="l00112"></a>00112         <a class="code" href="classkick_1_1_scene.html">Scene</a>(<span class="keyword">const</span> std::string &amp; name);
 <a name="l00113"></a>00113         <a class="code" href="classkick_1_1_scene.html">Scene</a>(<span class="keyword">const</span> <a class="code" href="classkick_1_1_scene.html">Scene</a>&amp; scene) = <span class="keyword">delete</span>;
-<a name="l00114"></a>00114         <span class="keywordtype">void</span> componentListener(<a class="code" href="classkick_1_1_component.html">Component</a>* component, ComponentUpdateStatus status);
-<a name="l00115"></a>00115         <span class="keywordtype">void</span> addLight(<a class="code" href="classkick_1_1_light.html">Light</a> *light);
+<a name="l00114"></a>00114         <span class="keywordtype">void</span> componentListener(std::shared_ptr&lt;Component&gt; component, ComponentUpdateStatus status);
+<a name="l00115"></a>00115         <span class="keywordtype">void</span> addLight(std::shared_ptr&lt;Light&gt; light);
 <a name="l00116"></a>00116         std::vector&lt;std::unique_ptr&lt;GameObject&gt;&gt; mGameObjects;
-<a name="l00117"></a>00117         std::map&lt;GameObject*,EventListener&lt;std::pair&lt;Component*, ComponentUpdateStatus&gt;&gt;&gt; mComponentListeners;
-<a name="l00118"></a>00118         std::vector&lt;Camera*&gt; mCameras;
-<a name="l00119"></a>00119         std::vector&lt;Updatable *&gt; mUpdatable;
-<a name="l00120"></a>00120         std::unordered_map&lt;Light*, EventListener&lt;Light*&gt;&gt; mLights;
+<a name="l00117"></a>00117         std::map&lt;GameObject*,EventListener&lt;std::pair&lt;std::shared_ptr&lt;Component&gt;, ComponentUpdateStatus&gt;&gt;&gt; mComponentListeners;
+<a name="l00118"></a>00118         std::vector&lt;std::shared_ptr&lt;Camera&gt;&gt; mCameras;
+<a name="l00119"></a>00119         std::vector&lt;std::shared_ptr&lt;Updatable&gt;&gt; mUpdatable;
+<a name="l00120"></a>00120         std::unordered_map&lt;std::shared_ptr&lt;Light&gt;, <a class="code" href="classkick_1_1_event_listener.html">EventListener&lt;std::shared_ptr&lt;Light&gt;</a>&gt;&gt; mLights;
 <a name="l00121"></a>00121         <a class="code" href="structkick_1_1_scene_lights.html">SceneLights</a> mSceneLights;
 <a name="l00122"></a>00122         std::string mName = <span class="stringliteral">&quot;&quot;</span>;
 <a name="l00123"></a>00123 
@@ -204,7 +204,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Apr 20 2015 22:02:09 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun May 3 2015 22:46:50 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

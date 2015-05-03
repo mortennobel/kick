@@ -91,8 +91,8 @@ Inheritance diagram for kick::ToggleButton:</div>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a34ec4c8ae0cdad1ba7c899ddcf9792b6"></a><!-- doxytag: member="kick::ToggleButton::ToggleButton" ref="a34ec4c8ae0cdad1ba7c899ddcf9792b6" args="(GameObject *gameObject)" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>ToggleButton</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *gameObject)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a66fb9d454a14307042db8010ee73b875"></a><!-- doxytag: member="kick::ToggleButton::ToggleButton" ref="a66fb9d454a14307042db8010ee73b875" args="(GameObject *gameObject, std::shared_ptr&lt; Canvas &gt; canvas)" -->
+&#160;</td><td class="memItemRight" valign="bottom"><b>ToggleButton</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *gameObject, std::shared_ptr&lt; <a class="el" href="classkick_1_1_canvas.html">Canvas</a> &gt; canvas)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3608a81cf0794a453a8a85ee66263ac3"></a><!-- doxytag: member="kick::ToggleButton::group" ref="a3608a81cf0794a453a8a85ee66263ac3" args="()" -->
 std::shared_ptr<br class="typebreak"/>
 &lt; <a class="el" href="classkick_1_1_toggle_button_group.html">ToggleButtonGroup</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>group</b> ()</td></tr>
@@ -100,10 +100,10 @@ std::shared_ptr<br class="typebreak"/>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setGroup</b> (std::shared_ptr&lt; <a class="el" href="classkick_1_1_toggle_button_group.html">ToggleButtonGroup</a> &gt; group)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a88f1d71f25a3e32f1fa13e33c32c1ec9"></a><!-- doxytag: member="kick::ToggleButton::selected" ref="a88f1d71f25a3e32f1fa13e33c32c1ec9" args="()" -->
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>selected</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3d7afc59a5649b418675c860b2fbe1cc"></a><!-- doxytag: member="kick::ToggleButton::select" ref="a3d7afc59a5649b418675c860b2fbe1cc" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>select</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af6c508fdc2dba084bac662320f178ee9"></a><!-- doxytag: member="kick::ToggleButton::deselect" ref="af6c508fdc2dba084bac662320f178ee9" args="()" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>deselect</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a47eaf1a9c3b33b504b5b0ce923781107"></a><!-- doxytag: member="kick::ToggleButton::setSelected" ref="a47eaf1a9c3b33b504b5b0ce923781107" args="(bool selectedState)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setSelected</b> (bool selectedState)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a15b99086699d7cd6760ca210239313ba"></a><!-- doxytag: member="kick::ToggleButton::toggleSelected" ref="a15b99086699d7cd6760ca210239313ba" args="()" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>toggleSelected</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adba9a058f84d62b0cf870097de4261a9"></a><!-- doxytag: member="kick::ToggleButton::selectedSprite" ref="adba9a058f84d62b0cf870097de4261a9" args="() const " -->
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>selectedSprite</b> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a94b2c0f639c8f4647d791c02fd139200"></a><!-- doxytag: member="kick::ToggleButton::setSelectedSprite" ref="a94b2c0f639c8f4647d791c02fd139200" args="(std::string const &amp;selectedSprite)" -->
@@ -112,9 +112,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setSelectedSprite</b>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setOnChange</b> (std::function&lt; void(<a class="el" href="classkick_1_1_toggle_button.html">ToggleButton</a> *)&gt; const &amp;onChange)</td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1818ea0437c44cb061162ee98e46f8d2"></a><!-- doxytag: member="kick::ToggleButton::getOnChange" ref="a1818ea0437c44cb061162ee98e46f8d2" args=")() const " -->
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4d3badfb89b838f1ada89b38ba1ce1c6"></a><!-- doxytag: member="kick::ToggleButton::onChange" ref="a4d3badfb89b838f1ada89b38ba1ce1c6" args=")() const " -->
 std::function&lt; void(<a class="el" href="classkick_1_1_toggle_button.html">ToggleButton</a> *)&gt;<br class="typebreak"/>
- const&#160;</td><td class="memItemRight" valign="bottom"><b>getOnChange</b> )() const </td></tr>
+ const&#160;</td><td class="memItemRight" valign="bottom"><b>onChange</b> )() const </td></tr>
 <tr><td colspan="2"><h2><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae46bcaf868d01fb87dc2ed257094ab10"></a><!-- doxytag: member="kick::ToggleButton::updateTextureAndTxtColor" ref="ae46bcaf868d01fb87dc2ed257094ab10" args="()" -->
@@ -123,12 +123,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>updateTexture
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>invokeClick</b> () override</td></tr>
 <tr><td colspan="2"><h2><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2ba54cd28f18b2eeed5a4598d5caf3e3"></a><!-- doxytag: member="kick::ToggleButton::onChange" ref="a2ba54cd28f18b2eeed5a4598d5caf3e3" args=")" -->
-std::function&lt; void(<a class="el" href="classkick_1_1_toggle_button.html">ToggleButton</a> *)&#160;</td><td class="memItemRight" valign="bottom"><b>onChange</b> ) = [](<a class="el" href="classkick_1_1_button.html">Button</a>*){}</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7e72e431fa359276a45d6a93e479f923"></a><!-- doxytag: member="kick::ToggleButton::mOnChange" ref="a7e72e431fa359276a45d6a93e479f923" args=")" -->
+std::function&lt; void(<a class="el" href="classkick_1_1_toggle_button.html">ToggleButton</a> *)&#160;</td><td class="memItemRight" valign="bottom"><b>mOnChange</b> ) = [](<a class="el" href="classkick_1_1_button.html">Button</a>*){}</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="toggle__button_8h_source.html#l00019">19</a> of file <a class="el" href="toggle__button_8h_source.html">toggle_button.h</a>.</p>
+<p>Definition at line <a class="el" href="toggle__button_8h_source.html#l00021">21</a> of file <a class="el" href="toggle__button_8h_source.html">toggle_button.h</a>.</p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>/Users/morten/Programmering/cpp/kick/src/kick/2d/<a class="el" href="toggle__button_8h_source.html">toggle_button.h</a></li>
 <li>/Users/morten/Programmering/cpp/kick/src/kick/2d/<a class="el" href="toggle__button_8cpp_source.html">toggle_button.cpp</a></li>
@@ -148,7 +148,7 @@ std::function&lt; void(<a class="el" href="classkick_1_1_toggle_button.html">Tog
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Apr 20 2015 22:02:09 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun May 3 2015 22:46:51 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

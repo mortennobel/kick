@@ -83,29 +83,29 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>GameObject</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> &amp;&amp;other)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a025bd9984ffb6666b6a45b8f7326bfde"></a><!-- doxytag: member="kick::GameObject::operator=" ref="a025bd9984ffb6666b6a45b8f7326bfde" args="(GameObject &amp;&amp;other)" -->
 <a class="el" href="classkick_1_1_game_object.html">GameObject</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> &amp;&amp;other)</td></tr>
-<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="a7f07375780810766bc960ea1791b0d17"></a><!-- doxytag: member="kick::GameObject::addComponent" ref="a7f07375780810766bc960ea1791b0d17" args="(T...t)" -->
+<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="ad7435800fa015f29b9c6540830314d14"></a><!-- doxytag: member="kick::GameObject::addComponent" ref="ad7435800fa015f29b9c6540830314d14" args="(T...t)" -->
 template&lt;typename C , typename... T&gt; </td></tr>
-<tr><td class="memTemplItemLeft" align="right" valign="top">C *&#160;</td><td class="memTemplItemRight" valign="bottom"><b>addComponent</b> (T...t)</td></tr>
-<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="aa4b47a073cdd39104085d0e93811455b"></a><!-- doxytag: member="kick::GameObject::component" ref="aa4b47a073cdd39104085d0e93811455b" args="()" -->
+<tr><td class="memTemplItemLeft" align="right" valign="top">std::shared_ptr&lt; C &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>addComponent</b> (T...t)</td></tr>
+<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="a612bf74942f77f7681f697f6224f6fd6"></a><!-- doxytag: member="kick::GameObject::component" ref="a612bf74942f77f7681f697f6224f6fd6" args="()" -->
 template&lt;typename C &gt; </td></tr>
-<tr><td class="memTemplItemLeft" align="right" valign="top">C *&#160;</td><td class="memTemplItemRight" valign="bottom"><b>component</b> ()</td></tr>
-<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="a1924722ad26ee2b33febf35dfb631335"></a><!-- doxytag: member="kick::GameObject::components" ref="a1924722ad26ee2b33febf35dfb631335" args="()" -->
+<tr><td class="memTemplItemLeft" align="right" valign="top">std::shared_ptr&lt; C &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>component</b> ()</td></tr>
+<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="a1a5c3dceae38d10df43aca79fd925644"></a><!-- doxytag: member="kick::GameObject::components" ref="a1a5c3dceae38d10df43aca79fd925644" args="()" -->
 template&lt;typename C &gt; </td></tr>
-<tr><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; C * &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>components</b> ()</td></tr>
-<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="aca506a63cc0193ce2036ebf9d3d7125c"></a><!-- doxytag: member="kick::GameObject::componentInParent" ref="aca506a63cc0193ce2036ebf9d3d7125c" args="()" -->
+<tr><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr&lt; C &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>components</b> ()</td></tr>
+<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="a0e4bb5708c2a86c7592d3fd58cee3175"></a><!-- doxytag: member="kick::GameObject::componentInParent" ref="a0e4bb5708c2a86c7592d3fd58cee3175" args="()" -->
 template&lt;typename C &gt; </td></tr>
-<tr><td class="memTemplItemLeft" align="right" valign="top">C *&#160;</td><td class="memTemplItemRight" valign="bottom"><b>componentInParent</b> ()</td></tr>
-<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="a14bacaa126bf554d40ca3a99d502f868"></a><!-- doxytag: member="kick::GameObject::componentsInParent" ref="a14bacaa126bf554d40ca3a99d502f868" args="()" -->
+<tr><td class="memTemplItemLeft" align="right" valign="top">std::shared_ptr&lt; C &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>componentInParent</b> ()</td></tr>
+<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="a3dad235653f529077bbd35fc4b13fee6"></a><!-- doxytag: member="kick::GameObject::componentsInParent" ref="a3dad235653f529077bbd35fc4b13fee6" args="()" -->
 template&lt;typename C &gt; </td></tr>
-<tr><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; C * &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>componentsInParent</b> ()</td></tr>
-<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="a3ad2bfe17a759da910854fb71120422c"></a><!-- doxytag: member="kick::GameObject::componentInChildren" ref="a3ad2bfe17a759da910854fb71120422c" args="()" -->
+<tr><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr&lt; C &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>componentsInParent</b> ()</td></tr>
+<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="aec95864b1fee58b2f9dbaeaa38c67566"></a><!-- doxytag: member="kick::GameObject::componentInChildren" ref="aec95864b1fee58b2f9dbaeaa38c67566" args="()" -->
 template&lt;typename C &gt; </td></tr>
-<tr><td class="memTemplItemLeft" align="right" valign="top">C *&#160;</td><td class="memTemplItemRight" valign="bottom"><b>componentInChildren</b> ()</td></tr>
-<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="a37e8ed8b3a31faafe5077e739399c33c"></a><!-- doxytag: member="kick::GameObject::componentsInChildren" ref="a37e8ed8b3a31faafe5077e739399c33c" args="()" -->
+<tr><td class="memTemplItemLeft" align="right" valign="top">std::shared_ptr&lt; C &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>componentInChildren</b> ()</td></tr>
+<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="a133dc051574ced90ae930f4da42638f7"></a><!-- doxytag: member="kick::GameObject::componentsInChildren" ref="a133dc051574ced90ae930f4da42638f7" args="()" -->
 template&lt;typename C &gt; </td></tr>
-<tr><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; C * &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>componentsInChildren</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a930661b8ef30b30ad3a72d04a97de796"></a><!-- doxytag: member="kick::GameObject::destroyComponent" ref="a930661b8ef30b30ad3a72d04a97de796" args="(Component *component)" -->
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>destroyComponent</b> (<a class="el" href="classkick_1_1_component.html">Component</a> *component)</td></tr>
+<tr><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr&lt; C &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>componentsInChildren</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4ebffdc42a86030a632cc2cf13c9776f"></a><!-- doxytag: member="kick::GameObject::destroyComponent" ref="a4ebffdc42a86030a632cc2cf13c9776f" args="(std::shared_ptr&lt; Component &gt; component)" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>destroyComponent</b> (std::shared_ptr&lt; <a class="el" href="classkick_1_1_component.html">Component</a> &gt; component)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeed95c202082d69250aa2c8882a9c58b"></a><!-- doxytag: member="kick::GameObject::begin" ref="aeed95c202082d69250aa2c8882a9c58b" args="() const " -->
 ConstComponentIter&#160;</td><td class="memItemRight" valign="bottom"><b>begin</b> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abbc61f890a9e85391e9fa3c3dba8dda9"></a><!-- doxytag: member="kick::GameObject::end" ref="abbc61f890a9e85391e9fa3c3dba8dda9" args="() const " -->
@@ -119,7 +119,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b> () co
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8169ca7c2a538dcc2f0baa6194e8a713"></a><!-- doxytag: member="kick::GameObject::setName" ref="a8169ca7c2a538dcc2f0baa6194e8a713" args="(std::string str)" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setName</b> (std::string str)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6b3eb3e587b7e655b17bf600edb1ac53"></a><!-- doxytag: member="kick::GameObject::transform" ref="a6b3eb3e587b7e655b17bf600edb1ac53" args="()" -->
-<a class="el" href="classkick_1_1_transform.html">Transform</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>transform</b> ()</td></tr>
+std::shared_ptr&lt; <a class="el" href="classkick_1_1_transform.html">Transform</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>transform</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0ccb3042133f7f0e4fe9869fecd7df6c"></a><!-- doxytag: member="kick::GameObject::scene" ref="a0ccb3042133f7f0e4fe9869fecd7df6c" args="()" -->
 <a class="el" href="classkick_1_1_scene.html">Scene</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>scene</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afd5deef59578895babaa4d1f5122dd8f"></a><!-- doxytag: member="kick::GameObject::layer" ref="afd5deef59578895babaa4d1f5122dd8f" args="() const " -->
@@ -130,9 +130,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setLayer</b> (int lay
 int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>uniqueId</b> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a882280732d76e811355826ebff3b38de"></a><!-- doxytag: member="kick::GameObject::componentEvent" ref="a882280732d76e811355826ebff3b38de" args="" -->
-<a class="el" href="classkick_1_1_event.html">Event</a>&lt; std::pair&lt; <a class="el" href="classkick_1_1_component.html">Component</a> <br class="typebreak"/>
-*, ComponentUpdateStatus &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>componentEvent</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afabf522e8ea3d7b179ca6cf0fde9cc53"></a><!-- doxytag: member="kick::GameObject::componentEvent" ref="afabf522e8ea3d7b179ca6cf0fde9cc53" args="" -->
+<a class="el" href="classkick_1_1_event.html">Event</a>&lt; std::pair<br class="typebreak"/>
+&lt; std::shared_ptr&lt; <a class="el" href="classkick_1_1_component.html">Component</a> &gt;<br class="typebreak"/>
+, ComponentUpdateStatus &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>componentEvent</b></td></tr>
 <tr><td colspan="2"><h2><a name="friends"></a>
 Friends</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a032858ae1fe02d2d1170981c2af2d67c"></a><!-- doxytag: member="kick::GameObject::Scene" ref="a032858ae1fe02d2d1170981c2af2d67c" args="" -->
@@ -162,7 +163,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Scene</b></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Apr 20 2015 22:02:09 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun May 3 2015 22:46:51 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

@@ -90,30 +90,32 @@ Inheritance diagram for kick::Component2D:</div>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a277d4e6ee0f39f39e0fa7e013e9cd92c"></a><!-- doxytag: member="kick::Component2D::Component2D" ref="a277d4e6ee0f39f39e0fa7e013e9cd92c" args="(GameObject *gameObject)" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>Component2D</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *gameObject)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3bc138365953bd54287ced70049eaf5a"></a><!-- doxytag: member="kick::Component2D::getOrder" ref="a3bc138365953bd54287ced70049eaf5a" args="() const " -->
-int&#160;</td><td class="memItemRight" valign="bottom"><b>getOrder</b> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2898a36e965f98905701795c94de7c08"></a><!-- doxytag: member="kick::Component2D::Component2D" ref="a2898a36e965f98905701795c94de7c08" args="(GameObject *gameObject, std::shared_ptr&lt; Canvas &gt; canvas)" -->
+&#160;</td><td class="memItemRight" valign="bottom"><b>Component2D</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *gameObject, std::shared_ptr&lt; <a class="el" href="classkick_1_1_canvas.html">Canvas</a> &gt; canvas)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adc2681ab7c187263d258a0a4ca69747a"></a><!-- doxytag: member="kick::Component2D::order" ref="adc2681ab7c187263d258a0a4ca69747a" args="() const " -->
+int&#160;</td><td class="memItemRight" valign="bottom"><b>order</b> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad120a8f06e255175c66d6a50c0d1d0b4"></a><!-- doxytag: member="kick::Component2D::setOrder" ref="ad120a8f06e255175c66d6a50c0d1d0b4" args="(int order)" -->
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setOrder</b> (int order)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5df3877cabe5b406542e79e65a66f5e1"></a><!-- doxytag: member="kick::Component2D::getShader" ref="a5df3877cabe5b406542e79e65a66f5e1" args="() const =0" -->
-virtual <a class="el" href="classkick_1_1_shader.html">Shader</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getShader</b> () const =0</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1e769aefc06914ddede125a50dfb7376"></a><!-- doxytag: member="kick::Component2D::shader" ref="a1e769aefc06914ddede125a50dfb7376" args="() const =0" -->
+virtual <a class="el" href="classkick_1_1_shader.html">Shader</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>shader</b> () const =0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a865c0e1da3676a85d1181dda77014609"></a><!-- doxytag: member="kick::Component2D::deactivated" ref="a865c0e1da3676a85d1181dda77014609" args="() override" -->
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>deactivated</b> () override</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ade7fcf0f7f89d808f82912705178742d"></a><!-- doxytag: member="kick::Component2D::bounds" ref="ade7fcf0f7f89d808f82912705178742d" args="() const =0" -->
+virtual <a class="el" href="structkick_1_1_bounds2.html">Bounds2</a>&#160;</td><td class="memItemRight" valign="bottom"><b>bounds</b> () const =0</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab821b22b1d9a6f6947f76b48fddccb14"></a><!-- doxytag: member="kick::Component2D::setBounds" ref="ab821b22b1d9a6f6947f76b48fddccb14" args="(Bounds2 bounds)=0" -->
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setBounds</b> (<a class="el" href="structkick_1_1_bounds2.html">Bounds2</a> bounds)=0</td></tr>
 <tr><td colspan="2"><h2><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a31444c4773aaa93603f8b1c5d3093508"></a><!-- doxytag: member="kick::Component2D::panel" ref="a31444c4773aaa93603f8b1c5d3093508" args="" -->
-<a class="el" href="classkick_1_1_panel.html">Panel</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>panel</b> = nullptr</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab2d3f776416cf3fab09f11b2abe8f508"></a><!-- doxytag: member="kick::Component2D::dirty" ref="ab2d3f776416cf3fab09f11b2abe8f508" args="" -->
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>dirty</b> = false</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2f9d3316b1f9ad2faa8048ed1c0a860d"></a><!-- doxytag: member="kick::Component2D::mCanvas" ref="a2f9d3316b1f9ad2faa8048ed1c0a860d" args="" -->
+std::shared_ptr&lt; <a class="el" href="classkick_1_1_canvas.html">Canvas</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mCanvas</b></td></tr>
 <tr><td colspan="2"><h2><a name="friends"></a>
 Friends</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac4e63dfd61166ef47eb1ae509c490784"></a><!-- doxytag: member="kick::Component2D::Panel" ref="ac4e63dfd61166ef47eb1ae509c490784" args="" -->
-class&#160;</td><td class="memItemRight" valign="bottom"><b>Panel</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9816083e25bae0b2f472e19382136687"></a><!-- doxytag: member="kick::Component2D::Canvas" ref="a9816083e25bae0b2f472e19382136687" args="" -->
+class&#160;</td><td class="memItemRight" valign="bottom"><b>Canvas</b></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="component2d_8h_source.html#l00014">14</a> of file <a class="el" href="component2d_8h_source.html">component2d.h</a>.</p>
+<p>Definition at line <a class="el" href="component2d_8h_source.html#l00015">15</a> of file <a class="el" href="component2d_8h_source.html">component2d.h</a>.</p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>/Users/morten/Programmering/cpp/kick/src/kick/2d/<a class="el" href="component2d_8h_source.html">component2d.h</a></li>
 <li>/Users/morten/Programmering/cpp/kick/src/kick/2d/<a class="el" href="component2d_8cpp_source.html">component2d.cpp</a></li>
@@ -133,7 +135,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Panel</b></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Apr 20 2015 22:02:09 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun May 3 2015 22:46:51 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

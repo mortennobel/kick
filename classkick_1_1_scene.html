@@ -97,41 +97,44 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setName</b> (std::str
 void&#160;</td><td class="memItemRight" valign="bottom"><b>update</b> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad29ddf058847e95f4105a6aa06cdcb87"></a><!-- doxytag: member="kick::Scene::render" ref="ad29ddf058847e95f4105a6aa06cdcb87" args="(EngineUniforms *engineUniforms)" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>render</b> (<a class="el" href="structkick_1_1_engine_uniforms.html">EngineUniforms</a> *engineUniforms)</td></tr>
-<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="ae59bc2ece1e769bd1b774ec65bf600b8"></a><!-- doxytag: member="kick::Scene::findComponents" ref="ae59bc2ece1e769bd1b774ec65bf600b8" args="()" -->
+<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="a0c41b74f88a158434386354cb652d012"></a><!-- doxytag: member="kick::Scene::findComponents" ref="a0c41b74f88a158434386354cb652d012" args="()" -->
 template&lt;typename T &gt; </td></tr>
-<tr><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; T * &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>findComponents</b> ()</td></tr>
-<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="a8a3c45e6a391593391abd2e2fff82368"></a><!-- doxytag: member="kick::Scene::findComponent" ref="a8a3c45e6a391593391abd2e2fff82368" args="()" -->
+<tr><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr&lt; T &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>findComponents</b> ()</td></tr>
+<tr><td class="memTemplParams" colspan="2"><a class="anchor" id="a3687e413a335670d644968f563a7825d"></a><!-- doxytag: member="kick::Scene::findComponent" ref="a3687e413a335670d644968f563a7825d" args="()" -->
 template&lt;typename T &gt; </td></tr>
-<tr><td class="memTemplItemLeft" align="right" valign="top">T *&#160;</td><td class="memTemplItemRight" valign="bottom"><b>findComponent</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa3e1b24be4ad542d0e3caf6dba4c1b48"></a><!-- doxytag: member="kick::Scene::createPerspectiveCamera" ref="aa3e1b24be4ad542d0e3caf6dba4c1b48" args="(GameObject *go=nullptr)" -->
-<a class="el" href="classkick_1_1_camera_perspective.html">CameraPerspective</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>createPerspectiveCamera</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *go=nullptr)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a522f7eceae1ad7280e402e954cd40c25"></a><!-- doxytag: member="kick::Scene::createOrthographicCamera" ref="a522f7eceae1ad7280e402e954cd40c25" args="(GameObject *go=nullptr)" -->
-<a class="el" href="classkick_1_1_camera_orthographic.html">CameraOrthographic</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>createOrthographicCamera</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *go=nullptr)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaf93607de063187fd1a162e04cb79c48"></a><!-- doxytag: member="kick::Scene::createLine" ref="aaf93607de063187fd1a162e04cb79c48" args="(GameObject *go=nullptr, const std::vector&lt; glm::vec3 &gt; &amp;points=std::vector&lt; glm::vec3 &gt;(), MeshType meshType=MeshType::Lines, const std::vector&lt; GLushort &gt; &amp;indices=std::vector&lt; GLushort &gt;{})" -->
-<a class="el" href="classkick_1_1_line_renderer.html">LineRenderer</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>createLine</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *go=nullptr, const std::vector&lt; glm::vec3 &gt; &amp;points=std::vector&lt; glm::vec3 &gt;(), MeshType meshType=MeshType::Lines, const std::vector&lt; GLushort &gt; &amp;indices=std::vector&lt; GLushort &gt;{})</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7a53b0bf61723f29117dce65ae379a04"></a><!-- doxytag: member="kick::Scene::createCube" ref="a7a53b0bf61723f29117dce65ae379a04" args="(GameObject *go=nullptr, float length=1)" -->
-<a class="el" href="classkick_1_1_mesh_renderer.html">MeshRenderer</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>createCube</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *go=nullptr, float length=1)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0226b901d0f96f1f779f69696369d959"></a><!-- doxytag: member="kick::Scene::createSphere" ref="a0226b901d0f96f1f779f69696369d959" args="(GameObject *go=nullptr)" -->
-<a class="el" href="classkick_1_1_mesh_renderer.html">MeshRenderer</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>createSphere</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *go=nullptr)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab32731d7ed0465324d8ef3e8a46c80ec"></a><!-- doxytag: member="kick::Scene::createPlane" ref="ab32731d7ed0465324d8ef3e8a46c80ec" args="(GameObject *go=nullptr)" -->
-<a class="el" href="classkick_1_1_mesh_renderer.html">MeshRenderer</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>createPlane</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *go=nullptr)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae23cbd1f215d98f05c76cb44dba3fbea"></a><!-- doxytag: member="kick::Scene::createPointLight" ref="ae23cbd1f215d98f05c76cb44dba3fbea" args="(GameObject *go=nullptr)" -->
-<a class="el" href="classkick_1_1_light.html">Light</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>createPointLight</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *go=nullptr)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4cb14ff8cdfafe5750d5befe2bb70aa4"></a><!-- doxytag: member="kick::Scene::createDirectionalLight" ref="a4cb14ff8cdfafe5750d5befe2bb70aa4" args="(GameObject *go=nullptr)" -->
-<a class="el" href="classkick_1_1_light.html">Light</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>createDirectionalLight</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *go=nullptr)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2c549225236ba1ff49d39a6b05286c04"></a><!-- doxytag: member="kick::Scene::createAmbientLight" ref="a2c549225236ba1ff49d39a6b05286c04" args="(float intensity=0.3f, glm::vec3 color=glm::vec3(1))" -->
-<a class="el" href="classkick_1_1_light.html">Light</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>createAmbientLight</b> (float intensity=0.3f, glm::vec3 color=glm::vec3(1))</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a24a1450d28bf78a39e43b7a7381b00db"></a><!-- doxytag: member="kick::Scene::createPanel" ref="a24a1450d28bf78a39e43b7a7381b00db" args="(bool includeUICamera=true)" -->
-<a class="el" href="classkick_1_1_panel.html">Panel</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>createPanel</b> (bool includeUICamera=true)</td></tr>
+<tr><td class="memTemplItemLeft" align="right" valign="top">std::shared_ptr&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>findComponent</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a431c7affd5579005f048684bc1bebcb9"></a><!-- doxytag: member="kick::Scene::createPerspectiveCamera" ref="a431c7affd5579005f048684bc1bebcb9" args="(GameObject *go=nullptr)" -->
+std::shared_ptr<br class="typebreak"/>
+&lt; <a class="el" href="classkick_1_1_camera_perspective.html">CameraPerspective</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>createPerspectiveCamera</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *go=nullptr)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a17784ea58e16c270222dbcf067b707e8"></a><!-- doxytag: member="kick::Scene::createOrthographicCamera" ref="a17784ea58e16c270222dbcf067b707e8" args="(GameObject *go=nullptr)" -->
+std::shared_ptr<br class="typebreak"/>
+&lt; <a class="el" href="classkick_1_1_camera_orthographic.html">CameraOrthographic</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>createOrthographicCamera</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *go=nullptr)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af5e98acfc7b943b99405222766717ba3"></a><!-- doxytag: member="kick::Scene::createLine" ref="af5e98acfc7b943b99405222766717ba3" args="(GameObject *go=nullptr, const std::vector&lt; glm::vec3 &gt; &amp;points=std::vector&lt; glm::vec3 &gt;(), MeshType meshType=MeshType::Lines, const std::vector&lt; GLushort &gt; &amp;indices=std::vector&lt; GLushort &gt;{})" -->
+std::shared_ptr&lt; <a class="el" href="classkick_1_1_line_renderer.html">LineRenderer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>createLine</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *go=nullptr, const std::vector&lt; glm::vec3 &gt; &amp;points=std::vector&lt; glm::vec3 &gt;(), MeshType meshType=MeshType::Lines, const std::vector&lt; GLushort &gt; &amp;indices=std::vector&lt; GLushort &gt;{})</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a98ec079e8d881b3813009636ef18d58d"></a><!-- doxytag: member="kick::Scene::createCube" ref="a98ec079e8d881b3813009636ef18d58d" args="(GameObject *go=nullptr, float length=1)" -->
+std::shared_ptr&lt; <a class="el" href="classkick_1_1_mesh_renderer.html">MeshRenderer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>createCube</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *go=nullptr, float length=1)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adb1a51afca3c91ea5d31168e8a269f46"></a><!-- doxytag: member="kick::Scene::createSphere" ref="adb1a51afca3c91ea5d31168e8a269f46" args="(GameObject *go=nullptr)" -->
+std::shared_ptr&lt; <a class="el" href="classkick_1_1_mesh_renderer.html">MeshRenderer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>createSphere</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *go=nullptr)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac607c650404060322d13fb60b40e10de"></a><!-- doxytag: member="kick::Scene::createPlane" ref="ac607c650404060322d13fb60b40e10de" args="(GameObject *go=nullptr)" -->
+std::shared_ptr&lt; <a class="el" href="classkick_1_1_mesh_renderer.html">MeshRenderer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>createPlane</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *go=nullptr)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5e9ea824ab938616ed4850a62defed78"></a><!-- doxytag: member="kick::Scene::createPointLight" ref="a5e9ea824ab938616ed4850a62defed78" args="(GameObject *go=nullptr)" -->
+std::shared_ptr&lt; <a class="el" href="classkick_1_1_light.html">Light</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>createPointLight</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *go=nullptr)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af07e9bb5d2a2503829c883fa3ec97b68"></a><!-- doxytag: member="kick::Scene::createDirectionalLight" ref="af07e9bb5d2a2503829c883fa3ec97b68" args="(GameObject *go=nullptr)" -->
+std::shared_ptr&lt; <a class="el" href="classkick_1_1_light.html">Light</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>createDirectionalLight</b> (<a class="el" href="classkick_1_1_game_object.html">GameObject</a> *go=nullptr)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4c8ceb1baeca49d365b7767039dd2319"></a><!-- doxytag: member="kick::Scene::createAmbientLight" ref="a4c8ceb1baeca49d365b7767039dd2319" args="(float intensity=0.3f, glm::vec3 color=glm::vec3(1))" -->
+std::shared_ptr&lt; <a class="el" href="classkick_1_1_light.html">Light</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>createAmbientLight</b> (float intensity=0.3f, glm::vec3 color=glm::vec3(1))</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab3f74f842c8c8548edd77a57846c23a3"></a><!-- doxytag: member="kick::Scene::createCanvas" ref="ab3f74f842c8c8548edd77a57846c23a3" args="(bool includeUICamera=true)" -->
+std::shared_ptr&lt; <a class="el" href="classkick_1_1_canvas.html">Canvas</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>createCanvas</b> (bool includeUICamera=true)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab1b21b9bff7ad70982e4b5a3473326e9"></a><!-- doxytag: member="kick::Scene::gameObjectByUID" ref="ab1b21b9bff7ad70982e4b5a3473326e9" args="(int32_t uid)" -->
 <a class="el" href="classkick_1_1_game_object.html">GameObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>gameObjectByUID</b> (int32_t uid)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a16a246ad1b3dedd6c3968dc10d525838"></a><!-- doxytag: member="kick::Scene::mainCamera" ref="a16a246ad1b3dedd6c3968dc10d525838" args="()" -->
-<a class="el" href="classkick_1_1_camera.html">Camera</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>mainCamera</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5faca1c0536f83b28629272691aac6eb"></a><!-- doxytag: member="kick::Scene::mainCamera" ref="a5faca1c0536f83b28629272691aac6eb" args="()" -->
+std::shared_ptr&lt; <a class="el" href="classkick_1_1_camera.html">Camera</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mainCamera</b> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ace40926961f64c2ca8920c991ba2fb9e"></a><!-- doxytag: member="kick::Scene::componentEvents" ref="ace40926961f64c2ca8920c991ba2fb9e" args="" -->
-<a class="el" href="classkick_1_1_event.html">Event</a>&lt; std::pair&lt; <a class="el" href="classkick_1_1_component.html">Component</a> <br class="typebreak"/>
-*, ComponentUpdateStatus &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>componentEvents</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a15b329aeae47dd15429952837cd06405"></a><!-- doxytag: member="kick::Scene::componentEvents" ref="a15b329aeae47dd15429952837cd06405" args="" -->
+<a class="el" href="classkick_1_1_event.html">Event</a>&lt; std::pair<br class="typebreak"/>
+&lt; std::shared_ptr&lt; <a class="el" href="classkick_1_1_component.html">Component</a> &gt;<br class="typebreak"/>
+, ComponentUpdateStatus &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>componentEvents</b></td></tr>
 <tr><td colspan="2"><h2><a name="friends"></a>
 Friends</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3e1914489e4bed4f9f23cdeab34a43dc"></a><!-- doxytag: member="kick::Scene::Engine" ref="a3e1914489e4bed4f9f23cdeab34a43dc" args="" -->
@@ -161,7 +164,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>GameObject</b></td><
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Apr 20 2015 22:02:09 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun May 3 2015 22:46:51 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

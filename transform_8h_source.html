@@ -79,8 +79,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00019"></a>00019     <span class="keyword">class </span>GameObject;
 <a name="l00020"></a>00020     <span class="keyword">class </span>Transform;
 <a name="l00021"></a>00021     
-<a name="l00022"></a>00022     <span class="keyword">typedef</span> std::vector&lt;Transform*&gt;::iterator TransformIter;
-<a name="l00023"></a>00023     <span class="keyword">typedef</span> std::vector&lt;Transform*&gt;::const_iterator ConstTransformIter;
+<a name="l00022"></a>00022     <span class="keyword">typedef</span> std::vector&lt;std::shared_ptr&lt;Transform&gt;&gt;::iterator TransformIter;
+<a name="l00023"></a>00023     <span class="keyword">typedef</span> std::vector&lt;std::shared_ptr&lt;Transform&gt;&gt;::const_iterator ConstTransformIter;
 <a name="l00024"></a>00024     
 <a name="l00025"></a><a class="code" href="classkick_1_1_transform.html">00025</a>     <span class="keyword">class </span><a class="code" href="classkick_1_1_transform.html">Transform</a> : <span class="keyword">public</span> <a class="code" href="classkick_1_1_component.html">Component</a> {
 <a name="l00026"></a>00026     <span class="keyword">public</span>:
@@ -99,15 +99,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00039"></a>00039         glm::quat localRotation();
 <a name="l00040"></a>00040         <span class="keywordtype">void</span> setLocalScale(glm::vec3 scale);
 <a name="l00041"></a>00041         glm::vec3 localScale();
-<a name="l00042"></a>00042         <span class="keywordtype">void</span> setParent(<a class="code" href="classkick_1_1_transform.html">Transform</a> *parent);
+<a name="l00042"></a>00042         <span class="keywordtype">void</span> setParent(std::shared_ptr&lt;Transform&gt; parent);
 <a name="l00043"></a>00043         <span class="keywordtype">void</span> lookAt(glm::vec3 target, glm::vec3 up = glm::vec3{0,1,0});
 <a name="l00044"></a>00044         <span class="keywordtype">void</span> lookAt(<a class="code" href="classkick_1_1_transform.html">Transform</a> *target, glm::vec3 up = glm::vec3{0,1,0});
 <a name="l00045"></a>00045         glm::mat4 localMatrix();
 <a name="l00046"></a>00046         glm::mat4 globalMatrix();
 <a name="l00047"></a>00047         glm::mat4 localTRSInverse();
 <a name="l00048"></a>00048         glm::mat4 globalTRSInverse();
-<a name="l00049"></a>00049                 <a class="code" href="classkick_1_1_transform.html">Transform</a>* root();
-<a name="l00050"></a>00050         <a class="code" href="classkick_1_1_transform.html">Transform</a>* parent();
+<a name="l00049"></a>00049                 std::shared_ptr&lt;Transform&gt; root();
+<a name="l00050"></a>00050         std::shared_ptr&lt;Transform&gt; parent();
 <a name="l00051"></a>00051         TransformIter begin();
 <a name="l00052"></a>00052         TransformIter end();
 <a name="l00053"></a>00053         ConstTransformIter begin() <span class="keyword">const</span>;
@@ -136,8 +136,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00076"></a>00076             <span class="keywordtype">bool</span> globalPos = <span class="keyword">true</span>;
 <a name="l00077"></a>00077             <span class="keywordtype">bool</span> globalRot = <span class="keyword">true</span>;
 <a name="l00078"></a>00078         } mDirty;
-<a name="l00079"></a>00079         std::vector&lt;Transform*&gt; mChildren;
-<a name="l00080"></a>00080         <a class="code" href="classkick_1_1_transform.html">Transform</a>*mParent = <span class="keyword">nullptr</span>;
+<a name="l00079"></a>00079         std::vector&lt;std::shared_ptr&lt;Transform&gt;&gt; mChildren;
+<a name="l00080"></a>00080         std::shared_ptr&lt;Transform&gt; mParent = <span class="keyword">nullptr</span>;
 <a name="l00081"></a>00081     };
 <a name="l00082"></a>00082 }
 </pre></div></div>
@@ -156,7 +156,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Apr 20 2015 22:02:09 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun May 3 2015 22:46:50 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

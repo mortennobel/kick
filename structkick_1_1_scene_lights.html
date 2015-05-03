@@ -82,12 +82,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>recomputeLight</b> (g
 void&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a63ad538899a72d9fbd2315518bad03b9"></a><!-- doxytag: member="kick::SceneLights::ambientLight" ref="a63ad538899a72d9fbd2315518bad03b9" args="" -->
-<a class="el" href="classkick_1_1_light.html">Light</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>ambientLight</b> = nullptr</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ba209a358b2389e4b7ad67239466c02"></a><!-- doxytag: member="kick::SceneLights::directionalLight" ref="a1ba209a358b2389e4b7ad67239466c02" args="" -->
-<a class="el" href="classkick_1_1_light.html">Light</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>directionalLight</b> = nullptr</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a21e2f2d62bfd5d9dc466e7007979db92"></a><!-- doxytag: member="kick::SceneLights::pointLights" ref="a21e2f2d62bfd5d9dc466e7007979db92" args="" -->
-std::vector&lt; <a class="el" href="classkick_1_1_light.html">Light</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>pointLights</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9381038dca6a233bb88797d7bf9c6b18"></a><!-- doxytag: member="kick::SceneLights::ambientLight" ref="a9381038dca6a233bb88797d7bf9c6b18" args="" -->
+std::shared_ptr&lt; <a class="el" href="classkick_1_1_light.html">Light</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ambientLight</b> = nullptr</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2a35945f076ad2dd193052e0346a0bb2"></a><!-- doxytag: member="kick::SceneLights::directionalLight" ref="a2a35945f076ad2dd193052e0346a0bb2" args="" -->
+std::shared_ptr&lt; <a class="el" href="classkick_1_1_light.html">Light</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>directionalLight</b> = nullptr</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae58cd10b461e4bf9c018238ad3f08093"></a><!-- doxytag: member="kick::SceneLights::pointLights" ref="ae58cd10b461e4bf9c018238ad3f08093" args="" -->
+std::vector&lt; std::shared_ptr<br class="typebreak"/>
+&lt; <a class="el" href="classkick_1_1_light.html">Light</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>pointLights</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adb844376fb96f56a6593ce6b4e5c7573"></a><!-- doxytag: member="kick::SceneLights::directionalLightData" ref="adb844376fb96f56a6593ce6b4e5c7573" args="" -->
 glm::mat3&#160;</td><td class="memItemRight" valign="bottom"><b>directionalLightData</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae06b04730801839055820d9223b6c358"></a><!-- doxytag: member="kick::SceneLights::pointLightData" ref="ae06b04730801839055820d9223b6c358" args="[KICK_MAX_POINT_LIGHTS]" -->
@@ -117,7 +118,7 @@ glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><b>directionalLight
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Apr 20 2015 22:02:09 for kick by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun May 3 2015 22:46:51 for kick by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
