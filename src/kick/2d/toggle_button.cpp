@@ -8,9 +8,9 @@
 namespace kick {
 
     ToggleButton::ToggleButton(GameObject *gameObject, std::shared_ptr<Canvas> canvas)
-            :Button{gameObject, canvas}, mGroup{new ToggleButtonGroup{}}
+            :Button{gameObject, canvas}//, mGroup{new ToggleButtonGroup{}}
     {
-        mGroup->buttons.push_back(this);
+        setGroup(std::make_shared<ToggleButtonGroup>());
     }
 
     ToggleButton::~ToggleButton() {
@@ -35,8 +35,8 @@ namespace kick {
             mGroup = group;
             if (mGroup){
                 mGroup->buttons.push_back(this);
-                if (mGroup->buttonCount()==2){
-                    mGroup->buttons[0]->select();
+                if (mGroup->buttonCount()==1){
+                    mGroup->buttons[0]->setSelected(true);
                 }
             }
         }
@@ -46,28 +46,28 @@ namespace kick {
         return this == mGroup->selectedButton;
     }
 
-    void ToggleButton::select() {
-        bool doToggle = mGroup->buttons.size() == 1;
-        if (doToggle && selected()) {
-            deselect();
-        } else {
+    void ToggleButton::toggleSelected(){
+        setSelected(!selected());
+    }
+
+    void ToggleButton::setSelected(bool selectedState) {
+        if (selectedState){
+            bool doToggle = mGroup->buttons.size() == 1;
             if (selected()) {
                 return;
             }
             if (mGroup->selectedButton) {
-                mGroup->selectedButton->deselect();
+                mGroup->selectedButton->setSelected(false);
             }
             mGroup->selectedButton = this;
-        }
-        updateTextureAndTxtColor();
-        mOnChange(this);
-    }
 
-    void ToggleButton::deselect() {
-        if (!selected()){
-            return;
         }
-        mGroup->selectedButton = nullptr;
+        if (!selectedState){
+            if (!selected()){
+                return;
+            }
+            mGroup->selectedButton = nullptr;
+        }
         updateTextureAndTxtColor();
         mOnChange(this);
     }
@@ -82,7 +82,11 @@ namespace kick {
     }
 
     void ToggleButton::invokeClick() {
-        select();
+        if (mGroup->buttonCount()==1){
+            toggleSelected();
+        } else {
+            setSelected(true);
+        }
         Button::invokeClick();
     }
 
@@ -100,6 +104,7 @@ namespace kick {
 
     void ToggleButton::setSelectedSprite(std::string const &selectedSprite) {
         mSelectedSprite = selectedSprite;
+        Button::updateTextureAndTxtColor();
     }
 
     int ToggleButtonGroup::buttonCount() {

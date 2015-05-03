@@ -30,9 +30,8 @@ namespace kick {
 
         bool selected();
 
-        void select();
-
-        void deselect();
+        void setSelected(bool selectedState);
+        void toggleSelected();
 
         std::string selectedSprite() const;
 
