@@ -24,7 +24,6 @@ namespace kick {
         Sprite::mTextureAtlas = textureAtlas;
         if (textureAtlas && mSpriteName.length()>0){
             mEntry = textureAtlas->get(mSpriteName);
-            spriteUpdated.notifyListeners(this);
         }
     }
 
@@ -37,7 +36,6 @@ namespace kick {
         Sprite::mSpriteName = spriteName;
         if (mTextureAtlas && spriteName != ""){
             mEntry = mTextureAtlas->get(spriteName);
-            spriteUpdated.notifyListeners(this);
         }
     }
 

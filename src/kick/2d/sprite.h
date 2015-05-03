@@ -34,8 +34,6 @@ namespace kick {
 
         void setSpriteName(std::string const &spriteName);
 
-        Event<Sprite*> spriteUpdated;
-
         TextureAtlasEntry entry() const;
 
         Bounds2 trimmedBounds() const;
