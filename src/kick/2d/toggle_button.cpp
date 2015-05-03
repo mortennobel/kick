@@ -3,14 +3,18 @@
 //
 
 #include "toggle_button.h"
-
+#include <algorithm>
 
 namespace kick {
 
     ToggleButton::ToggleButton(GameObject *gameObject, std::shared_ptr<Canvas> canvas)
-            :Button{gameObject, canvas}, mGroup{new ToggleButtonGroup{}} {
+            :Button{gameObject, canvas}, mGroup{new ToggleButtonGroup{}}
+    {
         mGroup->buttons.push_back(this);
+    }
 
+    ToggleButton::~ToggleButton() {
+        setGroup(std::shared_ptr<ToggleButtonGroup>()); // clean up group
     }
 
     std::shared_ptr<ToggleButtonGroup> ToggleButton::group() {
@@ -19,15 +23,22 @@ namespace kick {
 
     void ToggleButton::setGroup(std::shared_ptr<ToggleButtonGroup> group) {
         if (mGroup != group){
-            auto pos = std::find(mGroup->buttons.begin(),mGroup->buttons.end(), this);
-            if (pos != mGroup->buttons.end()){
-                mGroup->buttons.erase(pos);
-            }
-            if (mGroup->selectedButton == this){
-                mGroup->selectedButton = nullptr;
+            if (mGroup){
+                auto pos = std::find(mGroup->buttons.begin(),mGroup->buttons.end(), this);
+                if (pos != mGroup->buttons.end()){
+                    mGroup->buttons.erase(pos);
+                }
+                if (mGroup->selectedButton == this){
+                    mGroup->selectedButton = nullptr;
+                }
             }
             mGroup = group;
-            mGroup->buttons.push_back(this);
+            if (mGroup){
+                mGroup->buttons.push_back(this);
+                if (mGroup->buttonCount()==2){
+                    mGroup->buttons[0]->select();
+                }
+            }
         }
     }
 
@@ -49,6 +60,7 @@ namespace kick {
             mGroup->selectedButton = this;
         }
         updateTextureAndTxtColor();
+        mOnChange(this);
     }
 
     void ToggleButton::deselect() {
@@ -57,6 +69,7 @@ namespace kick {
         }
         mGroup->selectedButton = nullptr;
         updateTextureAndTxtColor();
+        mOnChange(this);
     }
 
     void ToggleButton::updateTextureAndTxtColor() {
@@ -87,5 +100,9 @@ namespace kick {
 
     void ToggleButton::setSelectedSprite(std::string const &selectedSprite) {
         mSelectedSprite = selectedSprite;
+    }
+
+    int ToggleButtonGroup::buttonCount() {
+        return buttons.size();
     }
 };

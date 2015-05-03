@@ -11,9 +11,11 @@ namespace kick {
     class ToggleButton;
 
     class ToggleButtonGroup {
+        std::vector<ToggleButton*> buttons;
     public:
         ToggleButton *selectedButton = nullptr;
-        std::vector<ToggleButton*> buttons;
+        int buttonCount();
+        friend class ToggleButton;
     };
 
     class ToggleButton : public Button {
@@ -21,7 +23,7 @@ namespace kick {
         std::string mSelectedSprite;
     public:
         ToggleButton(GameObject *gameObject, std::shared_ptr<Canvas> canvas);
-
+        virtual ~ToggleButton();
         std::shared_ptr<ToggleButtonGroup> group();
 
         void setGroup(std::shared_ptr<ToggleButtonGroup> group);
