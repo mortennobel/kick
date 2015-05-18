@@ -28,9 +28,13 @@ namespace kick {
         if (mMesh == nullptr){
             logWarning("Cannot render mesh is null");
         }
+        if (mMesh->meshData()->position().size()==0) {
+            return; // nothing to render
+        }
         for (unsigned int i=0;i< mMaterials.size();i++){
             auto material = replacementMaterial ? replacementMaterial : mMaterials[i];
             auto shader = material->shader().get();
+
             mMesh->bind(shader);
             shader->bind_uniforms(material, engineUniforms, mTransform.get());
             mMesh->render(i);
