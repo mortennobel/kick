@@ -42,12 +42,12 @@ namespace kick {
             return glm::vec3{v.r,v.g,v.b};
         }
 
-        void importNode(aiNode * node, Scene *scenePtr, Transform* parent, std::map<aiNode *,GameObject*>& nodeMap){
+        void importNode(aiNode * node, Scene *scenePtr, std::shared_ptr<Transform> parent, std::map<aiNode *,GameObject*>& nodeMap){
             // logInfo(std::string("Import node ")+node->mName.C_Str());
             for (int i=0;i<node->mNumChildren;i++){
                 aiNode * childNode = node->mChildren[i];
                 GameObject* go = scenePtr->createGameObject(childNode->mName.C_Str());
-                go->transform()->setParent(std::dynamic_pointer_cast<Transform>(parent->shared_from_this()));
+                go->transform()->setParent(parent);
                 nodeMap[childNode] = go;
 
                 aiMatrix4x4 aiMat4 = childNode->mTransformation;
@@ -61,7 +61,7 @@ namespace kick {
                 go->transform()->setLocalScale(toVec3(scaling));
                 // logInfo(std::string("RTS ")+/*glm::to_string(go->transform()->localRotation())+*/glm::to_string(go->transform()->localPosition())+glm::to_string(go->transform()->localScale()));
 
-                importNode(childNode, scenePtr, go->transform().get(), nodeMap);
+                importNode(childNode, scenePtr, go->transform(), nodeMap);
             }
         }
 
