@@ -49,7 +49,7 @@ namespace kick {
 
         // return the version number of the header
         inline static std::string headerVersion(){
-            return std::string("0.0.1")
+            return std::string("0.0.5")
 #ifdef DEBUG
                 +"d"
 #endif

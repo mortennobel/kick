@@ -65,14 +65,19 @@ namespace kick {
         return res;
     }
 
-    void Scene::destroyGameObject(GameObject *gameObject){
+    bool Scene::destroyGameObject(GameObject *gameObject){
         for (int i=0;i< mGameObjects.size();i++){
             if (mGameObjects[i].get() == gameObject){
+                //explicit destroy (since gameObject may be referenced from other places)
+                for (auto c : gameObject->components<Component>()){
+                    gameObject->destroyComponent(c);
+                }
                 mComponentListeners.erase(gameObject);
                 mGameObjects.erase(mGameObjects.begin()+i);
-                return;
+                return true;
             }
         }
+        return false;
     }
     
     std::string Scene::name() const{

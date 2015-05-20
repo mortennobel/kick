@@ -25,6 +25,9 @@ namespace kick {
     }
  
     GameObject::~GameObject(){
+        for (int i = mComponents.size()-1;i>=0;i--){
+            destroyComponent(mComponents[i]);
+        }
     }
     
     GameObject::GameObject(GameObject&& other)

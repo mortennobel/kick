@@ -43,7 +43,7 @@ namespace kick {
         Scene& operator=(Scene&& other);
         virtual ~Scene();
         GameObject *createGameObject(const std::string &name = "gameobject");
-        void destroyGameObject(GameObject * gameObject);
+        bool destroyGameObject(GameObject * gameObject);
         GameObjectIter begin() const;
         GameObjectIter end() const;
         std::string name() const;
