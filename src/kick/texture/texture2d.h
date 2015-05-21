@@ -50,6 +50,7 @@ namespace kick {
         ImageFormat imageFormat() const;
         friend class TextureRenderTarget;
 
+        Texture2DData getData();
         void saveBMPImage(std::string filename);
     private:
         GLuint mTextureid;

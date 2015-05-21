@@ -28,4 +28,16 @@ namespace kick {
     std::string Context::getBasePath(){
         return "./";
     }
+
+    Texture2DData Context::getScreenAsTextureData() {
+        // since we need to read from front buffer
+        swapBuffer();
+
+        ivec2 dim = getContextSurfaceDim();
+        vector<char> data(dim.x*dim.y*4);
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glReadPixels(0, 0, dim.x, dim.y, GL_RGBA, GL_UNSIGNED_BYTE, data.data());
+        swapBuffer();
+        return Texture2DData(data, dim.x, dim.y);
+    }
 }

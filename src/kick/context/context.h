@@ -16,6 +16,7 @@
 #include "kick/core/event.h"
 #include "kick/core/touch_input.h"
 #include "kick/context/window_config.h"
+#include "kick/texture/texture2d.h"
 
 namespace kick {
     class MouseInput;
@@ -41,6 +42,10 @@ namespace kick {
         glm::ivec2 getContextSurfaceDim();
         Event<glm::ivec2> contextSurfaceSize;
         std::string getGLSLPrefix();
+
+        // This will copy last frame into a texture.
+        // Should mainly be used for debug. For realtime applications use render textures instead.
+        Texture2DData getScreenAsTextureData();
 
     protected:
         glm::ivec2 contextSurfaceDim = glm::ivec2{512, 512};

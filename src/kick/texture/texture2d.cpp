@@ -77,26 +77,6 @@ namespace kick {
         return mImageFormat;
     }
 
-    void Texture2D::saveBMPImage(string filename) {
-        vector<char> res(mWidth * mHeight *4);
-#if defined(KICK_CONTEXT_ES2)
-    logWarning("Texture2D::getPngImage() is unsupported on ES2");
-#elif defined(EMSCRIPTEN)
-        logWarning("Texture2D::getPngImage() is unsupported on EMSCRIPTEN");
-#else
-        glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, res.data());
-#endif
-
-#ifndef EMSCRIPTEN
-        SDL_Surface* sdlSurface = SDL_CreateRGBSurfaceFrom(res.data(), mWidth, mHeight,32, mWidth *4, 0xff,0xff<<8,0xff<<16,0xff<<24);
-
-        SDL_SaveBMP(sdlSurface, filename.c_str());
-        sdlSurface->pixels = nullptr;
-        SDL_FreeSurface(sdlSurface);
-#endif
-    }
-
-
     void Texture2D::setEmptyColorTexture(int width, int height, int colorChannels, bool fpTexture) {
         ImageFormat imageFormat;
         if (fpTexture){
@@ -207,5 +187,17 @@ namespace kick {
                 logWarning("Unknown size");
         }
         return mWidth * mHeight * bytesPerTexel;
+    }
+
+    Texture2DData Texture2D::getData() {
+        vector<char> res(mWidth * mHeight *4);
+#if defined(KICK_CONTEXT_ES2)
+    logWarning("Texture2D::getData() is unsupported on ES2");
+#elif defined(EMSCRIPTEN)
+        logWarning("Texture2D::getData() is unsupported on EMSCRIPTEN");
+#else
+        glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, res.data());
+#endif
+        return Texture2DData(res, width(), height());
     }
 }

@@ -7,6 +7,7 @@
 #include <vector>
 #include "glm/glm.hpp"
 #include <cstdint>
+#include <string>
 
 namespace kick{
 
@@ -39,6 +40,8 @@ namespace kick{
         glm::vec3& vec3(int x,int y);
 
         glm::vec4& vec4(int x,int y);
+
+        void saveBMPImage(std::string filename, bool flipY = true);
     };
 }
 
