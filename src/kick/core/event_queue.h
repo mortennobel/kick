@@ -22,6 +22,9 @@ namespace kick {
     class EventQueue {
     public:
         EventQueue(){}
+        // schedule future event
+        // timeStart and timeEnd relative to starting time (Time::total())
+        // each event will at least be executed once (if timeStart is less than Time::total() and not cancelled)
         int scheduleEvent(std::function<void(int)>&& fn, float timeStart = 0, float timeEnd = 0);
         bool cancelEvent(int eventid);
         void run();
