@@ -14,7 +14,8 @@ namespace kick {
     LineRenderer::LineRenderer(GameObject *gameObject) : ComponentRenderable(gameObject) {
         mMesh = make_shared<Mesh>();
         auto meshData = make_shared<MeshData>();
-        auto shader = Project::loadShader("assets/shaders/unlit.shader");
+        auto shader = Project::loadShader("assets/shaders/unlit_line.shader");
+
         mMaterial = new Material();
         mMaterial->setShader(shader);
         mMesh->setMeshData(meshData);
