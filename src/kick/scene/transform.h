@@ -42,6 +42,7 @@ namespace kick {
         void setParent(std::shared_ptr<Transform> parent);
         void lookAt(glm::vec3 target, glm::vec3 up = glm::vec3{0,1,0});
         void lookAt(Transform *target, glm::vec3 up = glm::vec3{0,1,0});
+        void lookAt(std::shared_ptr<Transform> target, glm::vec3 up = glm::vec3{0,1,0});
         glm::mat4 localMatrix();
         glm::mat4 globalMatrix();
         glm::mat4 localTRSInverse();

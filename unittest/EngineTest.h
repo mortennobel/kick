@@ -536,7 +536,7 @@ int TestTransform(){
 int TestGetComponent(){
     auto gameObject = Engine::activeScene()->createGameObject("SomeObject");
 
-    MeshRenderer *mr = gameObject->addComponent<MeshRenderer>();
+    auto mr = gameObject->addComponent<MeshRenderer>();
     TINYTEST_EQUAL(mr, gameObject->component<MeshRenderer>());
     TINYTEST_EQUAL(nullptr, gameObject->component<Camera>());
     return 1;
@@ -545,12 +545,12 @@ int TestGetComponent(){
 int TestGetComponents(){
     auto gameObject = Engine::activeScene()->createGameObject("SomeObject");
 
-    MeshRenderer *mr = gameObject->addComponent<MeshRenderer>();
+    auto mr = gameObject->addComponent<MeshRenderer>();
     auto meshRenderers = gameObject->components<MeshRenderer>();
     TINYTEST_EQUAL(1, meshRenderers.size());
     TINYTEST_EQUAL(mr, meshRenderers.front());
     TINYTEST_EQUAL(nullptr, gameObject->component<Camera>());
-    MeshRenderer *mr2 = gameObject->addComponent<MeshRenderer>();
+    auto mr2 = gameObject->addComponent<MeshRenderer>();
     TINYTEST_ASSERT(mr2 != nullptr);
     meshRenderers = gameObject->components<MeshRenderer>();
     TINYTEST_EQUAL(2, meshRenderers.size());
@@ -578,9 +578,9 @@ int TestDeleteComponent(){
 
     static bool destroyed = false;
 
-    TrackComponent *tc = gameObject->addComponent<TrackComponent>();
+    auto tc = gameObject->addComponent<TrackComponent>();
     tc->destroyed= &destroyed;
-    TrackComponent *tc2 = gameObject->addComponent<TrackComponent>();
+    auto tc2 = gameObject->addComponent<TrackComponent>();
     tc2->destroyed = &destroyedOnClassDestruction;
     cout << "Pre destroy component"<<endl;
     gameObject->destroyComponent(tc);
@@ -595,7 +595,7 @@ int TestDeleteComponent(){
 }
 
 int TestTransformComponent(){
-    vector<Transform*> transforms;
+    vector<std::shared_ptr<Transform>> transforms;
     for (int i=0;i<3;i++){
         auto gameObject = Engine::activeScene()->createGameObject("SomeObject");
         auto transform = gameObject->transform();
@@ -641,7 +641,7 @@ bool isEqual_(glm::quat q1, glm::quat q2, float epsilon = 1e-4){
 }
 
 int TestTransformRotationsComponent(){
-    vector<Transform*> transforms;
+    vector<std::shared_ptr<Transform>> transforms;
     for (int i=0;i<3;i++){
         auto gameObject = Engine::activeScene()->createGameObject("SomeObject");
         auto transform = gameObject->transform();
@@ -696,7 +696,7 @@ int TestLoadCubemap(){
 
 int TestComponentListener(){
     static set<ComponentUpdateStatus> events;
-    auto listener = Engine::activeScene()->componentEvents.createListener([&](std::pair<Component*, ComponentUpdateStatus> e){
+    auto listener = Engine::activeScene()->componentEvents.createListener([&](std::pair<std::shared_ptr<Component>, ComponentUpdateStatus> e){
         events.insert(e.second);
     });
     auto gameObject = Engine::activeScene()->createGameObject("SomeObject");
@@ -735,7 +735,7 @@ int TestSprite(){
     textureAtlas->load("unittest/sprites/sprites.txt", "unittest/sprites/sprites.png");
 
     auto scene = Engine::activeScene();
-    auto res = scene->createPanel()->createSprite(textureAtlas, "Character Boy.png");
+    auto res = scene->createCanvas()->createSprite(textureAtlas, "Character Boy.png");
 
     return 1;
 }

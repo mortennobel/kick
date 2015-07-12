@@ -40,7 +40,7 @@ namespace kick {
         virtual Bounds2 bounds() const override;
         virtual void setBounds(Bounds2 b) override;
 
-        virtual Shader *shader() const;
+        virtual Shader *shader() const override;
 
         // when sprite is sliced slice x is two relative slice positions (between 0.0 and 1.0)
         glm::vec2 sliceX() const;

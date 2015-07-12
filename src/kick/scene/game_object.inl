@@ -53,7 +53,7 @@ namespace kick {
         std::vector<std::shared_ptr<C>> res;
         auto p = mTransform->parent();
         while (p){
-            std::vector<std::shared_ptr<C>> c = p->gameObject()->components<std::shared_ptr<C>>();
+            std::vector<std::shared_ptr<C>> c = p->gameObject()->components<C>();
             if (c.size()){
                 res.insert(res.begin(), c.begin(), c.end());
             }

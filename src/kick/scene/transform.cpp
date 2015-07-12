@@ -188,6 +188,11 @@ namespace kick {
         vec3 center = target->position();
         lookAt(center, up);
     }
+
+    void Transform::lookAt(std::shared_ptr<Transform> target, glm::vec3 up){
+        vec3 center = target->position();
+        lookAt(center, up);
+    }
     
     glm::mat4 Transform::localMatrix(){
         if (mDirty.local) {
