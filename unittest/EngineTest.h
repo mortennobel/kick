@@ -577,14 +577,15 @@ int TestDeleteComponent(){
     auto gameObject = Engine::activeScene()->createGameObject("SomeObject");
 
     static bool destroyed = false;
-
-    auto tc = gameObject->addComponent<TrackComponent>();
-    tc->destroyed= &destroyed;
-    auto tc2 = gameObject->addComponent<TrackComponent>();
-    tc2->destroyed = &destroyedOnClassDestruction;
-    cout << "Pre destroy component"<<endl;
-    gameObject->destroyComponent(tc);
-    cout << "Post destroy component"<<endl;
+    {
+        auto tc = gameObject->addComponent<TrackComponent>();
+        tc->destroyed= &destroyed;
+        auto tc2 = gameObject->addComponent<TrackComponent>();
+        tc2->destroyed = &destroyedOnClassDestruction;
+        cout << "Pre destroy component"<<endl;
+        gameObject->destroyComponent(tc);
+        cout << "Post destroy component"<<endl;
+    }
     TINYTEST_ASSERT(destroyed);
     cout << "Pre destroy gameObject"<<endl;
     Engine::activeScene()->destroyGameObject(gameObject);
@@ -818,7 +819,6 @@ int TestKDTree(){
             }
         }
     }
-    
 
     return 1;
 }
