@@ -25,7 +25,7 @@
 #include "glm/gtx/string_cast.hpp"
 #include "kick/texture/texture_atlas.h"
 #include "kick/2d/button.h"
-#include "canvas.h"
+#include "kick/2d/canvas.h"
 
 using namespace std;
 

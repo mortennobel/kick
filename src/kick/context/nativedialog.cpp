@@ -85,7 +85,7 @@ std::unique_ptr<std::string> kick::NativeDialog::saveFile(std::string title, std
     for (auto & f : filters){
         filtersConverted.push_back(f.c_str());
     }
-    char const * res = tinyfd_saveFileDialog(title.c_str(), aDefaultPathAndFile.c_str(), filters.size(), filtersConverted.data());
+    char const * res = tinyfd_saveFileDialog(title.c_str(), aDefaultPathAndFile.c_str(), filters.size(), filtersConverted.data(), nullptr);
     return std::unique_ptr<std::string>(res?new std::string(res): nullptr);
 }
 
@@ -94,7 +94,7 @@ std::vector<std::string> kick::NativeDialog::openFile(std::string  title, std::s
     for (auto & f : filters){
         filtersConverted.push_back(f.c_str());
     }
-    char const * resStr = tinyfd_openFileDialog(title.c_str(), aDefaultPathAndFile.c_str(), filters.size(), filtersConverted.data(), allowMultipleSelects);
+    char const * resStr = tinyfd_openFileDialog(title.c_str(), aDefaultPathAndFile.c_str(), filters.size(), filtersConverted.data(), nullptr, allowMultipleSelects);
     if (resStr){
         return split(resStr, '|');
     }

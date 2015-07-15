@@ -4,11 +4,17 @@ unique header file of "tiny file dialogs" created [November 9, 2014]
 Copyright (c) 2014 - 2015 Guillaume Vareille http://ysengrin.com
 http://tinyfiledialogs.sourceforge.net
 
-tiny file dialogs (cross-platform C C++) 
+ Let me know here mailto:tinfyfiledialogs@ysengrin.com
+	- if you are including tiny file dialogs,
+	  I'll be happy to add your link to the list of projects using it.
+	- If you are using it on not listed here hardware / OS / compiler.
+	- and please, leave a review on Sourceforge. Thanks.
+
+tiny file dialogs (cross-platform C C++)
 InputBox PasswordBox MessageBox ColorPicker
 OpenFileDialog SaveFileDialog SelectFolderDialog
 Native dialog library for WINDOWS MAC OSX GTK+ QT CONSOLE & more
-v1.11.4 [April 16, 2015] zlib licence.
+v2.2 [July 9, 2015] zlib licence.
 
 A single C file (add it to your C or C++ project) with 6 modal function calls:
 - message box & question box
@@ -18,8 +24,9 @@ A single C file (add it to your C or C++ project) with 6 modal function calls:
 - select folder dialog
 - color picker.
 
-Complement to OpenGL GLUT GLUI VTK SDL Ogre3D Unity3D or any GUI-less program,
-there is NO INIT & NO MAIN LOOP. The dialogs can be forced into console mode.
+Complement to OpenGL GLFW GLUT GLUI VTK SDL Ogre3D Unity3D
+or any GUI-less program, there is NO INIT & NO MAIN LOOP.
+The dialogs can be forced into console mode.
 
 On Windows:
 - native code & some vbs create the graphic dialogs
@@ -33,15 +40,16 @@ On Unix (command line call attempts):
 - kdialog
 - Xdialog
 - python2 tkinter
-- dialog (enhanced console mode)
+- dialog (opens a console if needed)
+- whiptail, gdialog, gxmessage
 - basic console input.
 The same executable can run across desktops & distributions.
 
-tinyfd is tested with C & C++ compilers
-on Windows Visual Studio Mac OSX LINUX FREEBSD ILLUMOS SOLARIS
+tested with C & C++ compilers
+on Windows Visual Studio MinGW Mac OSX LINUX FREEBSD ILLUMOS SOLARIS
 using Gnome Kde Enlightenment Mate Cinnamon Unity
 Lxde Lxqt Xfce WindowMaker IceWm Cde Jds
-
+ 
 - License -
 
 This software is provided 'as-is', without any express or implied
@@ -87,22 +95,24 @@ int tinyfd_messageBox (
 
 char const * tinyfd_inputBox (
 	char const * const aTitle , /* "" */
-	char const * const aMessage , /* "" may NOT contain \n nor \t */
+	char const * const aMessage , /* "" may NOT contain \n nor \t on windows */
 	char const * const aDefaultInput ) ;  /* "" , if NULL it's a passwordBox */
 	/* returns NULL on cancel */
 
 char const * tinyfd_saveFileDialog (
     char const * const aTitle , /* "" */
     char const * const aDefaultPathAndFile , /* "" */
-    int const aNumOfFileFilters , /* 0 */
-    char const * const * const aFileFilters ) ; /* NULL or {"*.txt"} */
+    int const aNumOfFilterPatterns , /* 0 */
+    char const * const * const aFilterPatterns , /* NULL or {"*.jpg","*.png"} */
+    char const * const aSingleFilterDescription ) ; /* NULL or "image files" */
 	/* returns NULL on cancel */
 
 char const * tinyfd_openFileDialog (
     char const * const aTitle , /* "" */
     char const * const aDefaultPathAndFile , /* "" */
-    int const aNumOfFileFilters , /* 0 */
-    char const * const * const aFileFilters , /* NULL or {"*.jpg","*.png"} */
+    int const aNumOfFilterPatterns , /* 0 */
+    char const * const * const aFilterPatterns , /* NULL or {"*.jpg","*.png"} */
+    char const * const aSingleFilterDescription , /* NULL or "image files" */
     int const aAllowMultipleSelects ) ; /* 0 or 1 */
 	/* in case of multiple files, the separator is | */
 	/* returns NULL on cancel */
@@ -132,9 +142,8 @@ for unix & windows: 0 (graphic mode) or 1 (console mode).
 on windows it only make sense for console applications */
 
 /* #define TINYFD_WIN_CONSOLE_ONLY //*/
-/* Define this on windows, if you don't want to include the windows code
-creating the GUI dialogs.
-Then you don't need link against the windows GUI libraries */
+/* On windows, Define this if you don't want to include the code
+creating the GUI dialogs. Then you don't need link against Comdlg32.lib */
 
 
 #ifdef	__cplusplus
@@ -147,21 +156,27 @@ Then you don't need link against the windows GUI libraries */
 /*
 - This is not for android nor ios.
 - The code is pure C, perfectly compatible with C++.
+- There's one file filter only, it may contain several patterns.
+- char const * filterPatterns[3] = { "*.obj" , "*.stl" , "*.dxf" } ;
 - On windows, inputbox and passwordbox are not as smooth as they should be:
   they open a console window for a few seconds.
-- On windows: link against Comdlg32.lib User32.lib Shell32.lib & Kernel32.lib
+- On windows link against Comdlg32.lib
   This linking is not compulsary for console mode (see above).
 - On unix: it tries command line calls, so no such need.
 - On unix you need applescript, zenity, kdialog, Xdialog, python2/tkinter
-  or dialog; Otherwise it will switch to basic console input.
-  One of those is already included on most (if not all) desktops.
+  or dialog (will open a terminal if running without console);
+- One of those is already included on most (if not all) desktops.
+- In the absence of those it will use gdialog, gxmessage or whiptail
+  with a textinputbox.
+- If nothing is found, it switches to basic console input,
+  it opens a console if needed.
+- Avoid using " and ' in titles and messages.
 - Use windows separators on windows and unix separators on unix.
-- char const * fileFilters[3] = { "*.obj" , "*.stl" , "*.dxf" } ;
 - String memory is preallocated statically for all the returned values.
 - File and path names are tested before return, they are valid.
 - If you pass only a path instead of path + filename,
   make sure it ends with a separator.
-- tinyfd_forceConsole=1; forces, at run time, all dialogs into console mode.
+- tinyfd_forceConsole=1; at run time, forces dialogs into console mode.
 - On windows, console mode only make sense for console applications.
 - Mutiple selects are not allowed in console mode.
 - The package dialog must be installed to run in enhanced console mode.
@@ -182,21 +197,27 @@ Then you don't need link against the windows GUI libraries */
 int main()
 {
   tinyfd_forceConsole = tinyfd_messageBox("Hello World",
-    "force dialogs into console mode?\n\t(it's better if dialog is installed)",
+    "force dialogs into console mode?\
+    \n\t(it's better if dialog is installed)",
     "yesno", "question", 0);
 
   char const * lThePassword =  tinyfd_inputBox(
     "a password box","your password will be revealed",NULL);
 
   if ( lThePassword )
-	tinyfd_messageBox("your password is", lThePassword, "ok", "info", 1);
+    tinyfd_messageBox("your password is", lThePassword, "ok", "info", 1);
 }
 
-on OSX :
+OSX :
 $ gcc -o main.app main.c tinyfiledialogs.c
  
-on UNIX :
+UNIX :
 $ gcc -o main main.c tinyfiledialogs.c
+
+MinGW :
+> gcc -o main.exe main.c tinyfiledialogs.c -LC:/mingw/lib -lcomdlg32
  
-on WINDOWS just create a console application project with visual studio.
+VisualStudio :
+  create a console application project
+  (by default it links against Comdlg32.lib)
 */
