@@ -3,6 +3,10 @@ kick
 
 Simple game engine for C++ 11 / OpenGL 3.x +.
 
+Note: kick is no longer actively maintained. Instead checkout :
+
+ - https://github.com/mortennobel/SimpleRenderEngine
+
 ## Cross platform
  - Desktop OpenGL 3.x and 4.x
  - OpenGL ES 2.0 and 3.x
